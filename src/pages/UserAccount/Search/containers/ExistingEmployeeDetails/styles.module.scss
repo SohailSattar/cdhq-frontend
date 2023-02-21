@@ -1,0 +1,20 @@
+.details {
+    display: flex;
+    // padding: 15px;
+
+    flex-direction: column;
+
+    .detail {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+    }
+
+    .buttonSection {
+        // margin-bottom: 5px;
+    }
+
+    .heading {
+        font-weight: 800;
+    }
+}

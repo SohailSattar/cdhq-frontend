@@ -1,0 +1,17 @@
+.footer {
+	position: absolute;
+	// margin-top: 30px;
+	height: 80px;
+	background-color: white;
+	padding: 15px;
+
+	justify-content: center;
+	// bottom: 0;
+	width: 100%;
+	border-top: 1px solid black;
+
+	.title{
+		display: flex;
+	justify-content: center;
+	}
+}

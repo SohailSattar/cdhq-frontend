@@ -1,0 +1,17 @@
+.details {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.detail {
+    .heading {
+        justify-content: center;
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    .text {
+        font-size: 12px;
+    }
+}

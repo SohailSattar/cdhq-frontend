@@ -1,0 +1,48 @@
+import React, { FC } from 'react';
+import clsx from 'clsx';
+import styles from './styles.module.scss';
+
+export interface Props
+	extends React.DetailedHTMLProps<
+		React.ButtonHTMLAttributes<HTMLButtonElement>,
+		HTMLButtonElement
+	> {
+	isPrimary?: boolean;
+	children: string | React.ReactNode;
+	className?: string;
+	isRound?: boolean;
+	isGradient?: boolean;
+	withIcon?: boolean;
+	isCritical?: boolean;
+	withIconTransparent?: boolean;
+}
+
+const Button: FC<Props> = ({
+	isPrimary,
+	className,
+	children,
+	isRound = false,
+	isGradient = false,
+	withIcon = false,
+	isCritical = false,
+	withIconTransparent = false,
+	...buttonProps
+}) => {
+	const classes = clsx(
+		styles.button,
+		isPrimary && styles.primary,
+		className,
+		isRound && styles.roundButton,
+		isGradient && styles.gradiant,
+		withIcon && styles.withIcon,
+		isCritical && styles.critical,
+		withIconTransparent && styles.withIconTransparent
+	);
+	return (
+		<button className={classes} {...buttonProps}>
+			{children}
+		</button>
+	);
+};
+
+export default Button;

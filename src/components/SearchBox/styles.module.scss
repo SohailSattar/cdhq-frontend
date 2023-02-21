@@ -1,0 +1,21 @@
+.container {
+    padding-top: 0;
+    padding-bottom: 0;
+    ;
+}
+
+.searchBox {
+    display: flex;
+
+    margin-right: 5px;
+
+    .searchIcon {
+        display: flex;
+        align-items: center;
+    }
+
+    .clearIcon {
+        display: flex;
+        align-items: center;
+    }
+}

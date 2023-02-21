@@ -1,0 +1,38 @@
+.editUser {
+    display: flex;
+    flex-direction: column;
+
+
+
+    .dropDownContainer {
+        width: 100%;
+        padding: 5px;
+    }
+
+    .section {
+        padding: 5px;
+        // width: 100%;
+        display: flex;
+        // flex-direction: row;
+    }
+
+    .field {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    .buttonSection {
+        margin-top: 15px;
+        display: flex;
+
+
+        .btn {
+            margin-left: 5px;
+        }
+
+        .btnLTR {
+            margin-right: 5px;
+        }
+    }
+
+}

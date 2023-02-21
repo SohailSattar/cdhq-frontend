@@ -1,0 +1,24 @@
+.project {
+    display: flex;
+
+    .detail {
+        flex: 1;
+        margin-right: 15px
+    }
+
+    .container {
+        overflow: scroll;
+    }
+
+    .btnSection {
+        display: flex;
+
+        .btn {
+            margin-left: 5px;
+        }
+
+        .btnLTR {
+            margin-right: 5px;
+        }
+    }
+}

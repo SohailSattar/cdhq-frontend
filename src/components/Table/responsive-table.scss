@@ -1,0 +1,56 @@
+@import '../../assets/css/mixins.scss';
+
+.responsiveTable td .tdBefore {
+  display: none;
+}
+
+@include respond-to('mobile') {
+  .responsiveTable table,
+  .responsiveTable thead,
+  .responsiveTable tbody,
+  .responsiveTable th,
+  .responsiveTable td,
+  .responsiveTable tr {
+    display: block;
+  }
+
+  .responsiveTable thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+    border-bottom: 2px solid #333;
+  }
+
+  .responsiveTable tbody tr {
+    padding: 0.1rem;
+    display: flex;
+    flex-wrap: wrap;
+    border-bottom: solid 2px #c78400;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .responsiveTable td.pivoted {
+    border: none !important;
+    word-break: break-word;
+    position: relative;
+    text-align: left !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .responsiveTable td .tdBefore {
+    position: relative;
+    display: block;
+    margin-bottom: 5px;
+
+    .info {
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+    }
+  }
+}

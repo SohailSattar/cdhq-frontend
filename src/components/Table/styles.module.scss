@@ -1,0 +1,174 @@
+@import '../../assets/css/variable.scss';
+@import '../../assets/css/mixins.scss';
+
+$border-radius: 0px;
+
+.tableWrapper {
+  overflow: auto;
+  width: 100%;
+  border-radius: 0px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); //5px 5px #888888;
+
+
+  .table {
+    width: 100%;
+    border: none;
+    position: relative;
+    border-collapse: separate;
+    border-spacing: 0 2px;
+
+
+    .tableHead {
+      height: 50px;
+
+      .info {
+        display: flex;
+        white-space: nowrap;
+        align-items: center;
+      }
+
+      th {
+        text-align: right;
+        // color: #000;
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 15px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        position: sticky;
+        top: 0;
+        cursor: pointer;
+
+        &:first-child {
+          // border-radius: 0 $border-radius 0 0;
+          // border-radius: $border-radius 0 0 0;
+        }
+
+        &:last-child {
+          // border-radius: $border-radius 0 0 0;
+          // border-radius: 0 $border-radius 0 0;
+        }
+
+        @include respond-to('mobile') {
+          padding: 1px;
+          white-space: nowrap;
+        }
+      }
+    }
+
+    .tableHeadLTR {
+      th {
+        text-align: left;
+      }
+    }
+
+
+    .tableBody {
+      color: #000;
+
+      .tableRow {
+        // border-radius: 8px;
+        margin-bottom: 2px;
+        // vertical-align: top;
+
+        &:hover {
+          // background: linear-gradient(to bottom, #06a899 -56.95%, rgba(20, 31, 51, 0) 186.3%) !important;
+          cursor: pointer;
+        }
+
+        &.subRow {
+          .nested {
+            width: 100%;
+            border-radius: $border-radius;
+
+            .table {
+              border-spacing: 0;
+
+              .tableBody {
+                tr {
+                  &:last-child {
+                    td {
+                      &:first-child {
+                        border-radius: 0 0 0 $border-radius;
+                      }
+
+                      &:last-child {
+                        border-radius: 0 0 $border-radius 0;
+                      }
+                    }
+                  }
+                }
+
+                td {
+                  border-radius: 0;
+                  border-bottom: 0.5px solid rgba(255, 255, 255, 0.5);
+
+                  &:first-child {
+                    border-left: 0.5px solid rgba(255, 255, 255, 0.5);
+                  }
+
+                  &:last-child {
+                    border-right: 0.5px solid rgba(255, 255, 255, 0.5);
+                  }
+                }
+              }
+            }
+
+            &:hover {
+              background-color: none;
+            }
+          }
+
+          &:hover {
+            cursor: default;
+            background: none !important;
+          }
+        }
+
+        td {
+          margin: 0;
+          padding: 6px 12px;
+
+          text-align: right;
+          font-style: normal;
+          // font-weight: bold;
+          line-height: 18px;
+
+          @include respond-to('mobile') {
+            padding: 10px;
+            white-space: nowrap;
+          }
+        }
+
+        td.noRecordsRow {
+          text-align: center;
+          border-radius: 0 0 $border-radius $border-radius !important;
+        }
+
+        td:first-child {
+          border-radius: $border-radius 0 0 $border-radius;
+        }
+
+        td:last-child {
+          border-radius: 0 $border-radius $border-radius 0;
+        }
+
+
+        @include respond-to('mobile') {
+          height: auto !important;
+        }
+      }
+
+
+      .tableRowLTR {
+
+        td {
+          text-align: left;
+        }
+      }
+    }
+
+  }
+}

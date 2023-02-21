@@ -1,0 +1,39 @@
+.container {
+    // padding: 15px 15px;
+    // max-height: auto;
+    overflow: inherit;
+}
+
+.newProject {
+    // display: flex;
+
+    .row {
+        display: flex;
+        margin-bottom: 15px;
+
+        .field {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+        }
+
+        .ddlField {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            margin: 0 5px;
+        }
+
+        .actions {
+            display: flex;
+
+            .btn {
+                margin-left: 5px;
+            }
+
+            .btnLTR {
+                margin-right: 5px
+            }
+        }
+    }
+}

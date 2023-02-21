@@ -1,0 +1,190 @@
+{
+	"header": {
+		"title": "وزارة الداخلية",
+		"menu": {
+			"projectManagement": "ادارة مشروع",
+			"userAccount": "المستعمل",
+			"departmentHierarchy": "الهللإدارة",
+			"department": "إِدَارَة"
+		}
+	},
+	"account": {
+		"logout": "تسجيل خروج"
+	},
+	"form": {
+		"signin": "تسجيل الدخول",
+		"password": "كلمة المرور",
+		"retypePassword": "اعد كتابة كلمة المرور",
+		"changePassword": "غير كلمة السر",
+		"signupText": "ليس لديك حساب؟ تواصل مع قسم الخدمات الإلكترونية.",
+		"userName": "اسم المستخدم"
+	},
+	"button": {
+		"view": "View",
+		"backToDetail": "العودة إلى التفاصيل",
+		"add": "يضيف",
+		"clear": "صاف",
+		"select": "تحديد",
+		"save": "حفظ",
+		"update": "تحديث",
+		"edit": "تعديل",
+		"detail": "التفاصيل",
+		"delete": "حذف",
+		"activate": "تفعيل",
+		"deactivate": "تعطيل",
+		"addNewDepartment": "إدارة جديد",
+		"addNewUser": "مستخدم جديد",
+		"addNewProject": "مشروع جديد",
+		"hierarchy": "التسلسل الهرمي",
+		"assign": "تعيين",
+		"assignProject": "تعيين المشروع",
+		"editPrivilege": "تحرير الامتياز",
+		"yes": "نعم",
+		"cancel": "الغي",
+		"assignToUser": "التعيين للمستخدم"
+	},
+	"home": {
+		"welcome": "مرحبا بك"
+	},
+	"user": {
+		"id": "هوية الموظف",
+		"logName": "اسم السجل",
+		"employeeNumber": "رقم الموظف",
+		"name": "اسم الموظف",
+		"nameEnglish": "اسم الموظف (انجليزي)",
+		"names": "المستخدمون",
+		"fullName": "الاسم الكامل",
+		"email": "البريد الإلكتروني",
+		"phone": "هاتف",
+		"phone2": "الهاتف 2",
+		"phoneOffice": "هاتف المكتب",
+		"hireDate": "موعد التوظيف",
+		"gender": "جنس",
+		"class": "class",
+		"department": "قسم",
+		"basicDetails": "تفاصيل أساسية",
+		"assignRole": "تعيين الدور",
+		"count": "إجمالي المستخدمين"
+	},
+	"employee": {
+		"names": "الموظفين"
+	},
+	"project": {
+		"id": "معرف المشروع",
+		"name": "اسم المشروع",
+		"nameArabic": "اسم المشروع [عربي]",
+		"nameEnglish": "اسم المشروع [إنجليزي]",
+		"projectsList": "قائمة المشاريع",
+		"description": "وصف المشروع",
+		"list": "قائمة المشاريع",
+		"parentProject": "المشروع الأم",
+		"projects": "المشاريع",
+		"group": "مجموعة المشروع",
+		"groupEnglish": "مجموعة المشروع [إنجليزي]",
+		"assign": "تعيين المشروع",
+		"canGrant": "يمكن منح المشروع للآخرين.",
+		"canNotGrant": "لا يمكن منح المشروع للآخرين.",
+		"withChild": "مع القسم الفرعي",
+		"withoutChild": "بدون قسم فرعي",
+		"count": "عدد المشاريع",
+		"noProject": "لم يتم تخصيص أي مشروع.",
+		"hasWorkflow": "لديه سير عمل؟"
+	},
+	"userProject": {
+		"workflowStart": "بداية التمرير",
+		"workflowEnd": "نهاية التمرير",
+		"canGrant": "يمكن أن تمنح؟",
+		"assignNewProject": "Assign new project to _USER_",
+		"assignNewUser": "",
+		"editUser": "تحرير المشروع  _USER_",
+		"withOrWithoutSubSection": "مع أقسام فرعية أو بدون أقسام فرعية؟"
+	},
+	"department": {
+		"name": "إِدَارَة",
+		"fullName": "الاسم الكامل [عربي]",
+		"fullNameEnglish": "الاسم الكامل [إنجليزي]",
+		"single": "قسم واحد",
+		"withChild": "قسم مع ",
+		"parent": "القسم الرئيسي"
+	},
+	"rank": {
+		"name": "الرتبة"
+	},
+	"emirate": {
+		"name": "الإمارة"
+	},
+	"error": {
+		"pageNotFound": {
+			"heading": "الصفحة غير موجودة",
+			"text": ".هذه الصفحة غير موجودة"
+		}
+	},
+	"privilege": {
+		"name": "امتياز",
+		"insert": "إدراج",
+		"delete": "حذف",
+		"update": "التحديث",
+		"read": "قراءة"
+	},
+	"global": {
+		"loading": "جار التحميل",
+		"actions": "أفعال",
+		"status": "حالة",
+		"name": "الاسم [عربي]",
+		"nameEnglish": "الاسم [إنجليزي]"
+	},
+	"pagination": {
+		"recordPerPage": "سجلات لكل صفحة",
+		"usersPerPage": "المستخدمون في كل صفحة",
+		"projectsPerPage": "المشاريع في الصفحة"
+	},
+	"filter": {
+		"byDepartment": "تصفية حسب الدائرة"
+	},
+	"message": {
+		"unauthorized": "ليس لديك صلاحية على الصفحة",
+		"noAccountContact": "ليس لديك حساب؟ اتصل بقسم الخدمات الألكترونية",
+		"employeeNotExists": "لا يوجد موظف برقم هذا الموظف! الرجاء الاتصال بوزارة الداخلية",
+		"employeeUserExists": "المستخدم موجود اصلا. لتحرير هذا المستخدم ، انقر فوق هذا الارتباط",
+		"userActivated": "المستخدم نشط الآن",
+		"userDeactivated": "تم إلغاء تنشيط المستخدم",
+		"userAdded": "تم إنشاء المستخدم",
+		"userDetailUpdated": "تم تحديث تفاصيل المستخدم",
+		"passwordUpdated": "تم تحديث كلمة السر",
+		"passwordNotMatched": "كلمات السر لا تتطابق",
+		"roleUpdated": "تم تحديث الدور",
+		"privilegeUpdated": "تم تحديث الامتياز",
+		"noProjectSelected": "لم يتم اختيار أي مشروع",
+		"userProjectAssigned": "تم تعيين المشروع بنجاح",
+		"userProjectNotAssigned": "فشل تعيين المشروع",
+		"noPrivilegeSelected": "لم يتم تحديد امتياز",
+		"userProjectDeleted": "تمت إزالة المشروع بنجاح",
+		"unvailable": "غير متاح",
+		"projectAdded": "تم إنشاء مشروع جديد",
+		"projectUpdated": "تم تحديث المشروع",
+		"projectActivated": "تم تفعيل المشروع",
+		"projectDeactivated": "المشروع معطل الآن",
+		"delete": "هل أنت متأكد أنك تريد حذف؟",
+		"deleteProject": "هل أنت متأكد أنك تريد حذف هذا المشروع؟",
+		"userProjectAdd": "تعيين مشروع جديد للمستخدم",
+		"userProjectEdit": "تحرير المشروع من أجل ",
+		"newsUpdated": "تم تحديث الخبر"
+	},
+	"dropdown": {
+		"select": "يختار..."
+	},
+	"table": {
+		"noProject": "لم يتم العثور على مشروع",
+		"noUser": "لم يتم العثور على المستخدم"
+	},
+	"footer": {
+		"text": "وزارة الداخلية - الدفاع المدني"
+	},
+	"news": {
+		"id": "رقم الخبر",
+		"title": "العنوان",
+		"shortSummary": "مقدمة",
+		"fullNews": "الخبر",
+		"type": "نوع الخبر"
+	}
+}

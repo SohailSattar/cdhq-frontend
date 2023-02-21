@@ -1,0 +1,17 @@
+.projectDetail {
+    display: flex;
+    justify-content: space-between;
+
+    .section {
+        flex: 1;
+
+        .content {
+            margin-bottom: 15px;
+        }
+
+        .title {
+            font-size: 14px;
+            font-weight: 600;
+        }
+    }
+}

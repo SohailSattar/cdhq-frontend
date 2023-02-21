@@ -1,0 +1,27 @@
+.loading {
+  font-size: 20px;
+  width: 100%;
+  text-align: center;
+  letter-spacing: normal;
+  line-height: normal;
+  font-family: Times, sans-serif;
+  display: inline-block;
+  margin: 0 auto;
+  // direction: rtl;
+}
+
+.loading:after {
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: top;
+  animation: ellipsis steps(4, end) 900ms infinite;
+  content: '\2026';
+  width: 0;
+  font-size: 0, 30px;
+}
+
+@keyframes ellipsis {
+  to {
+    width: 125px;
+  }
+}

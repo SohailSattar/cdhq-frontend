@@ -1,0 +1,17 @@
+.MuiTextField-root{
+}
+
+.MuiInputLabel-root{
+/* right: 0; */
+    color:red;
+}
+
+.MuiInputLabel-root:disabled{
+    color:red;
+    }
+
+
+.MuiFormControl-root-MuiTextField-root.Mui-disabled{
+    /* right: 0; */
+    color:red;
+    }

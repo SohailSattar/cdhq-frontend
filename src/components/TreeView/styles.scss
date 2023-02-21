@@ -1,0 +1,274 @@
+@import '../../assets/css/colors.scss';
+
+// .hyperTreeView {
+//     .hyperTreeNodeWrapper {
+//         position: relative;
+
+//         .hyperNodeWrapper {
+//             position: relative;
+//             opacity: 1;
+//             margin-left: 100px !important;
+//         }
+
+//         .child {
+//             position: relative;
+//             transition: all 0.2s ease;
+//             transform-origin: top;
+//             transform-style: flat;
+//             max-height: 99999px;
+//             transform: scaleY(1);
+//             opacity: 1;
+//             visibility: visible;
+
+//             &.collapsed {
+//                 transition: all 0.2s cubic-bezier(0, 1, 0, 1);
+//                 transform: scaleY(0);
+//                 max-height: 0;
+//                 opacity: 0;
+//                 visibility: hidden;
+//                 overflow: hidden;
+//             }
+//         }
+//     }
+// }
+
+.ht_selected {
+    background-color: white
+}
+
+.ht_child {
+    position: relative;
+    transition: all 0.2s ease;
+    transform-origin: top;
+    transform-style: flat;
+    max-height: 99999px;
+    transform: scaleY(1);
+    opacity: 1;
+    visibility: visible;
+}
+
+.ht_hyperNodeWrapper {
+    position: relative;
+    opacity: 1;
+    margin-left: 0 !important;
+    margin-right: 20px !important;
+}
+
+.ht_hyperTreeNodeWrapper {
+    margin-right: 20px !important;
+}
+
+.ht_verticalLine {
+    right: 5px;
+    margin-right: 20px;
+}
+
+.ht_horizontalLine {
+    width: 15px;
+    right: -18px !important;
+}
+
+// .tree-node {
+//     display: flex;
+//     align-items: center;
+//     min-height: 40px;
+//     max-height: 40px;
+// }
+
+
+.tree-node {
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+    max-height: 40px;
+    margin-bottom: 5px;
+
+    direction: rtl;
+
+    .tree-icon {
+        margin-left: 8px;
+        border-radius: 50%;
+        cursor: pointer;
+        background-repeat: no-repeat;
+
+        &.open-icon {
+            background-image: url('./assets/icons/plus.svg');
+            width: 12px;
+            height: 12px;
+            background-size: contain;
+        }
+
+        &.close-icon {
+            background-image: url('./assets/icons/minus.svg');
+            width: 12px;
+            height: 12px;
+            background-size: contain;
+        }
+
+        &.empty-icon {
+            // background-image: url('./assets/icons/empty.svg');
+            width: 12px;
+            height: 12px;
+            background-size: contain;
+        }
+    }
+
+    .node-content-wrapper {
+        cursor: pointer;
+        min-height: 40px;
+        max-height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: white;
+        width: 100%;
+        padding: 6px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+        transition: all 0.2s ease;
+
+        &:hover {
+            background-color: rgba($PRIMARY, 0.1);
+        }
+
+        &.node-selected {
+            border-left: 4px solid $PRIMARY;
+        }
+
+        .titles {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+
+            .node-title {
+                font-weight: 600;
+            }
+
+            .node-subtitle {
+                margin-top: 4px;
+                font-size: 10px;
+            }
+        }
+
+        .children-length {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-width: 24px;
+            height: 16px;
+            background-color: $PRIMARY;
+            color: white;
+            padding: 4px;
+            font-size: 12px;
+            border-radius: 16px;
+            margin-left: 12px;
+            font-weight: 600;
+        }
+    }
+}
+
+
+.tree-node-ltr {
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+    max-height: 40px;
+    margin-bottom: 5px;
+
+    direction: ltr;
+
+    .tree-icon {
+        margin-right: 8px;
+        border-radius: 50%;
+        cursor: pointer;
+        background-repeat: no-repeat;
+
+        &.open-icon {
+            background-image: url('./assets/icons/plus.svg');
+            width: 12px;
+            height: 12px;
+            background-size: contain;
+        }
+
+        &.close-icon {
+            background-image: url('./assets/icons/minus.svg');
+            width: 12px;
+            height: 12px;
+            background-size: contain;
+        }
+
+        &.empty-icon {
+            // background-image: url('./assets/icons/empty.svg');
+            width: 12px;
+            height: 12px;
+            background-size: contain;
+        }
+    }
+
+    .node-content-wrapper {
+        cursor: pointer;
+        min-height: 40px;
+        max-height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: white;
+        width: 100%;
+        padding: 6px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+        transition: all 0.2s ease;
+
+        &:hover {
+            background-color: rgba($PRIMARY, 0.1);
+        }
+
+        &.node-selected {
+            border-left: 4px solid $PRIMARY;
+        }
+
+        .titles {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+
+            .node-title {
+                font-weight: 600;
+            }
+
+            .node-subtitle {
+                margin-top: 4px;
+                font-size: 10px;
+            }
+        }
+
+        .children-length {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-width: 24px;
+            height: 16px;
+            background-color: $PRIMARY;
+            color: white;
+            padding: 4px;
+            font-size: 12px;
+            border-radius: 16px;
+            margin-left: 12px;
+            font-weight: 600;
+        }
+    }
+}
+
+
+.tree-wrapper {
+    width: 50%;
+    padding: 0 0 0 16px;
+
+    &.simple {
+        overflow: auto;
+    }
+
+    // @include mobile {
+    //     width: 100%;
+    //     padding: 0 0 0 0;
+    //     margin-top: 16px;
+    // }
+}

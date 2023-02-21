@@ -1,0 +1,201 @@
+{
+	"header": {
+		"title": "Ministry of Interior",
+		"menu": {
+			"projectManagement": "Project Management",
+			"userAccount": "User Account",
+			"departmentHierarchy": "Department Hierarchy",
+			"department": "Department"
+		}
+	},
+	"account": {
+		"logout": "Logout"
+	},
+	"form": {
+		"signin": "Sign In",
+		"password": "Password",
+		"retypePassword": "Retype Password",
+		"changePassword": "Change Password",
+		"signupText": "Don't have an account? Contact the electronic services department.",
+		"userName": "User Name"
+	},
+	"button": {
+		"view": "View",
+		"backToDetail": "Back to details",
+		"add": "Add",
+		"clear": "Clear",
+		"select": "Select",
+		"save": "Save",
+		"update": "Update",
+		"edit": "Edit",
+		"detail": "Detail",
+		"delete": "Delete",
+		"activate": "Activate",
+		"deactivate": "Deactivate",
+		"addNewDepartment": "New Department",
+		"addNewUser": "New User",
+		"addNewProject": "New Project",
+		"hierarchy": "Hierarchy",
+		"assign": "Assign",
+		"assignProject": "Assign Project",
+		"editPrivilege": "Edit Privilege",
+		"yes": "Yes",
+		"cancel": "Cancel",
+		"assignToUser": "Assign to User"
+	},
+	"home": {
+		"welcome": "Welcome"
+	},
+	"user": {
+		"id": "Employee Id",
+		"logName": "Log Name",
+		"employeeNumber": "Employee Number",
+		"name": "Employee Name",
+		"nameEnglish": "Employee Name (English)",
+		"names": "Users",
+		"fullName": "Full Name",
+		"email": "Email",
+		"phone": "Phone",
+		"phone2": "Phone 2",
+		"phoneOffice": "Office Phone",
+		"hireDate": "Hire Date",
+		"gender": "Gender",
+		"class": "Class",
+		"department": "Department",
+		"basicDetails": "Basic Details",
+		"assignRole": "Assign Role",
+		"count": "Total Users"
+	},
+	"employee": {
+		"names": "Employees"
+	},
+	"project": {
+		"id": "Project Id",
+		"name": "Project Name",
+		"nameArabic": "Project Name [Arabic]",
+		"nameEnglish": "Project Name [English]",
+		"projectsList": "Projects List",
+		"description": "Project Description",
+		"list": "Projects List",
+		"parentProject": "Parent Project",
+		"projects": "Projects",
+		"group": "Project Group",
+		"groupEnglish": "Project Group [English]",
+		"assign": "Assign Project",
+		"canGrant": "The project can be granted to others.",
+		"canNotGrant": "The project can not be granted to others.",
+		"withChild": "With sub-sections",
+		"withoutChild": "With no sub-section",
+		"count": "Projects Count",
+		"noProject": "No project is assigned.",
+		"hasWorkflow": "Has a workflow?"
+	},
+	"userProject": {
+		"workflowStart": "Workflow starts from",
+		"workflowEnd": "Workflow ends at",
+		"canGrant": "Can grant?",
+		"assignNewProject": "Assign new project to _USER_",
+		"assignNewUser": "",
+		"editUser": "Edit project for _USER_",
+		"withOrWithoutSubSection": "With sub-sections or without sub-sections?"
+	},
+	"department": {
+		"name": "Department",
+		"fullName": "Full Name [Arabic]",
+		"fullNameEnglish": "Full Name [English]",
+		"single": "Single Department",
+		"withChild": "Department with children",
+		"headquarter": "Headquarter",
+		"gd": "General Department",
+		"dp": "Department Name",
+		"sc": "Section",
+		"parent": "Parent Deparment"
+	},
+	"rank": {
+		"name": "Rank"
+	},
+	"emirate": {
+		"name": "Emirate"
+	},
+	"error": {
+		"pageNotFound": {
+			"heading": "Page Not Found",
+			"text": "This page doesn't not exist."
+		},
+		"form": {
+			"required": {
+				"employeeNo": "Employee No is required.",
+				"nameArabic": "Name is required",
+				"nameEnglish": "NameEnglish is required",
+				"title": "Title is required"
+			}
+		}
+	},
+	"privilege": {
+		"name": "Privilege",
+		"insert": "Insert",
+		"delete": "Delete",
+		"update": "Update",
+		"read": "Read"
+	},
+	"global": {
+		"loading": "Loading",
+		"actions": "Actions",
+		"status": "Status",
+		"name": "Name [Arabic]",
+		"nameEnglish": "Name [English]"
+	},
+	"pagination": {
+		"recordPerPage": "Records Per Page",
+		"usersPerPage": "Users Per Page",
+		"projectsPerPage": "Projects Per Page"
+	},
+	"filter": {
+		"byDepartment": "Filter by Department"
+	},
+	"message": {
+		"unauthorized": "You are not authorized to view this page",
+		"noAccountContact": "Don't have an account? Contact the electronic services department",
+		"employeeNotExists": "No employee with this employee number exists! Please contact the Ministry of Interior.",
+		"employeeUserExists": "User already exists. To edit this user, click on this link",
+		"userActivated": "User is now active",
+		"userDeactivated": "The user has been deactivated",
+		"userAdded": "User has been created",
+		"userDetailUpdated": "User detail has been updated",
+		"passwordUpdated": "Password updated",
+		"passwordNotMatched": "Passwords don't match",
+		"roleUpdated": "Role updated",
+		"privilegeUpdated": "Privilege Updated",
+		"noProjectSelected": "No project has been selected",
+		"userProjectAssigned": "The project is successfully assigned",
+		"userProjectNotAssigned": "Project assignment failed",
+		"userProjectDeleted": "Project removed successfully",
+		"unvailable": "N/A",
+		"projectAdded": "New project created",
+		"projectUpdated": "The project has been updated",
+		"projectActivated": "Project has been activated",
+		"projectDeactivated": "The project is now deactivated",
+		"delete": "Are you sure you want to delete?",
+		"deleteProject": "Are you sure you want to delete this project?",
+		"userProjectAdd": "Assign New Project to User",
+		"userProjectEdit": "Edit project for ",
+		"newsUpdated": "News has been updated"
+	},
+	"dropdown": {
+		"select": "Select..."
+	},
+	"table": {
+		"noProject": "No project found",
+		"noUser": "No user found"
+	},
+	"footer": {
+		"text": "Ministry of Interior - Civil Defense"
+	},
+	"news": {
+		"id": "News Id",
+		"title": "Title",
+		"shortSummary": "Short Summary",
+		"fullNews": "News",
+		"type": "News Type"
+	}
+}

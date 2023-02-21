@@ -1,0 +1,19 @@
+.summary {
+    display: flex;
+
+    .highlight {
+        font-weight: 800;
+    }
+
+    .details {
+        display: flex;
+        justify-content: space-between;
+        margin: 0 15px;
+        flex: 1;
+    }
+
+    .btn {
+        align-items: center;
+        display: flex;
+    }
+}

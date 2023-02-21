@@ -1,0 +1,50 @@
+.projectsTable {
+    .filter {
+        padding: 8px 5px;
+        display: flex;
+
+        .filterItem {
+            flex: 1;
+            margin-left: 5px;
+        }
+    }
+
+
+    .detailBar {
+        display: flex;
+
+        .info {
+            margin-left: 5px;
+            flex: 1;
+        }
+
+        .infoLTR {
+            flex: 1;
+            margin-right: 5px;
+        }
+
+        .selection {
+            flex: 1;
+            margin-right: 5px;
+        }
+
+        .selectionLTR {
+            flex: 1;
+            margin-left: 5px;
+        }
+    }
+
+
+    .paginationBar {
+        margin-top: 15px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+
+    .box {
+        padding: 6px;
+    }
+
+}

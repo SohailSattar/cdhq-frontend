@@ -1,0 +1,61 @@
+.paginatedTable {
+    margin-bottom: 15px;
+
+
+    .detailBar {
+        display: flex;
+
+        .info {
+            margin-left: 5px;
+            flex: 1;
+        }
+
+        .infoLTR {
+            flex: 1;
+            margin-right: 5px;
+        }
+
+        .selection {
+            flex: 1;
+            margin-right: 5px;
+        }
+
+        .selectionLTR {
+            flex: 1;
+            margin-left: 5px;
+        }
+    }
+
+    .name {
+        display: flex;
+        flex-direction: column;
+
+        .arabic {
+            display: flex;
+            justify-content: right;
+        }
+
+        .english {
+            display: flex;
+            justify-content: left;
+        }
+    }
+
+
+    .action {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .btnDiv {
+        margin-left: 5px;
+    }
+
+    .btnDivLTR {
+        margin-right: 5px;
+    }
+
+    .box {
+        padding: 6px;
+    }
+}

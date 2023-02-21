@@ -1,0 +1,48 @@
+@import '../../assets/css/colors.scss';
+
+.react-tabs {
+    &__tab-list {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0;
+        // justify-content: space-between;
+    }
+
+    &__tab {
+        display: inline-flex;
+        align-items: center;
+        height: 30px;
+        padding: 0 26px;
+        margin: 0 5px;
+        font-size: 12px;
+        font-weight: bold;
+        color: black;
+
+        list-style: none;
+        cursor: pointer;
+        outline: none;
+
+        &:hover,
+        &--selected {
+            color: black; //$WHITE;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
+            // background: linear-gradient(175.52deg, rgba(0, 0, 0, 0.39) 3.63%, rgba(0, 0, 0, 0) 131.16%), $PRIMARY;
+
+            .circle {
+                background: $WHITE;
+            }
+
+            box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.12),
+            0 -1px 2px rgba(0, 0, 0, 0.24)
+        }
+    }
+
+    &__tab-panel {
+        display: none;
+
+        &--selected {
+            display: block;
+        }
+    }
+}

@@ -1,0 +1,17 @@
+.textbox {
+    display: flex;
+    width: 100%;
+
+    .input {
+        justify-content: left;
+    }
+
+    .error {
+        color: red;
+    }
+
+    .test {
+        color: green;
+    }
+
+}
