@@ -33,8 +33,9 @@ import {
 	NewsHomePage,
 	NewsEditPage,
 	NewsDetailPage,
-} from "./pages";
-import { Layout, ProtectedRoute } from "./components";
+	LandingPage,
+} from './pages';
+import { Layout, ProtectedRoute } from './components';
 
 import * as RoutePath from "./RouteConfig";
 
@@ -66,9 +67,17 @@ function App() {
 							}
 						/>
 					</Route>
+					<Route
+							path='/'
+							element={
+								
+									<LandingPage />
+								
+							}
+						/>
 					<Route element={<ProtectedRoute />}>
 						<Route
-							path="/"
+							path='/home'
 							element={
 								<Layout>
 									<HomePage />

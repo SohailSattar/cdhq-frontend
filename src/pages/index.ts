@@ -1,3 +1,6 @@
+// Landing 
+export { default as LandingPage } from './Landing';
+
 export { default as DepartmentHierarchyPage } from './Department/Hierarchy';
 
 export { default as ChangePasswordPage } from './ChangePassword';
