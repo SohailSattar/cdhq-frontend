@@ -1,21 +1,21 @@
-import { DropdownOption } from '../Dropdown';
+import { DropdownOption } from "../Dropdown";
 
-export interface ILoginFormInputs{
-	userName:string;
-	password:string;
+export interface ILoginFormInputs {
+	userName: string;
+	password: string;
 }
 
-export interface IPasswordFormInputs{
-	password:string;
-	password2:string;
+export interface IPasswordFormInputs {
+	password: string;
+	password2: string;
 }
-
 
 export interface IProjectFormInputs {
 	name: string;
 	nameEnglish: string;
 	parentProject: DropdownOption;
 	projectGroup: DropdownOption;
+	departmentCategory?: DropdownOption;
 	hasWorkflow: boolean;
 }
 
@@ -50,20 +50,19 @@ export interface IProjectUserFormInputs extends IUserProjectForm {
 	user: DropdownOption;
 }
 
-
 // Phone Directory
-export interface IPhoneFormInputs{
+export interface IPhoneFormInputs {
 	id: number;
-	phone?:string;
-	phone2?:string;
-	phoneOffice?:string;
+	phone?: string;
+	phone2?: string;
+	phoneOffice?: string;
 }
 
-export interface INewsFormInputs{
-	title:string;
+export interface INewsFormInputs {
+	title: string;
 	shortSummary: string;
 	imageName: string;
 	newsType: DropdownOption;
-	fullNews:string;
-	thumbnail:File;
+	fullNews: string;
+	thumbnail: File;
 }

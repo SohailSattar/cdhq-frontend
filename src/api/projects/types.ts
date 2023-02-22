@@ -1,4 +1,5 @@
 import { APIActiveStatus } from "../activeStatus/types";
+import { APIDepartmentCategory } from "../departmentCategories/types";
 import { APIDepartmentItem } from "../departments/types";
 import { APIPrivilegeItem } from "../privileges/type";
 import { APIPaginate } from "../types";
@@ -12,7 +13,7 @@ export interface APIProjectItem {
 	isAvailable?: boolean;
 	iconName?: string;
 	pathLink?: string;
-	departmentSelectionType?: string;
+	departmentCategory?: APIDepartmentCategory;
 }
 
 export interface APIProject extends APIProjectItem {
@@ -41,6 +42,7 @@ export interface APIProjectDetail {
 	hasWorkflow?: boolean;
 	parent: APIProjectItem;
 	group: APIProjectGroup;
+	departmentCategory: APIDepartmentCategory;
 	activeStatus: APIActiveStatus;
 }
 
@@ -84,6 +86,7 @@ export interface APIUpdateProject {
 	nameEnglish: string;
 	parentId: number;
 	projectGroupId: number;
+	departmentCategoryId?: number;
 	hasWorkflow: boolean;
 }
 

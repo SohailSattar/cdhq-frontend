@@ -296,6 +296,7 @@ const UsersListPage = () => {
 								onTableSort={tableSortHandler}
 								onPageChange={pageChangeHandler}
 								onPageViewSelectionChange={pageViewSelectionHandler}
+								noRecordText={t("table.noUser", { framework: "React" })}
 							/>
 						</div>
 					</div>

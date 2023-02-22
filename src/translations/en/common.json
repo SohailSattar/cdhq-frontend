@@ -88,6 +88,7 @@
 		"withoutChild": "With no sub-section",
 		"count": "Projects Count",
 		"noProject": "No project is assigned.",
+		"deptCat": "Department Category",
 		"hasWorkflow": "Has a workflow?"
 	},
 	"userProject": {
@@ -186,7 +187,9 @@
 	},
 	"table": {
 		"noProject": "No project found",
-		"noUser": "No user found"
+		"noUser": "No user found",
+		"noEmployee": "No employee found",
+		"noNews": "No news found"
 	},
 	"footer": {
 		"text": "Ministry of Interior - Civil Defense"

@@ -28,6 +28,8 @@ import { IUserProjectFormInputs } from "../types";
 import styles from "./styles.module.scss";
 import { APIUserProjectDetail } from "../../../api/userProjects/types";
 import { getMainDepartments } from "../../../api/departments/get/getMainDepartments";
+import { da } from "date-fns/locale";
+import { DepartmentCategory } from "../../../data/departmentCategory";
 
 interface Props {
 	isNormalUser?: boolean;
@@ -77,7 +79,6 @@ const UserProjectForm: FC<Props> = ({
 	useEffect(() => {
 		const fetchData = async () => {
 			const { data } = await getProjectsList();
-
 			if (data) {
 				setProjectOptions(
 					(prevState) =>
@@ -90,7 +91,7 @@ const UserProjectForm: FC<Props> = ({
 								value: project.id,
 								meta: {
 									hasWorkflow: project.hasWorkflow!,
-									departmentSelectionType: project.departmentSelectionType!,
+									departmentSelectionType: project.departmentCategory?.code!,
 								},
 							};
 						}))
@@ -153,12 +154,15 @@ const UserProjectForm: FC<Props> = ({
 			if (data) {
 				setDepartmentsOptions(
 					data.map((dept: APIDepartmentItem) => {
-						return { label: dept.name, value: dept.id };
+						return {
+							label: language !== "ar" ? dept.name : dept.nameEnglish,
+							value: dept.id,
+						};
 					})
 				);
 			}
 		},
-		[setDepartmentsOptions]
+		[setDepartmentsOptions, language]
 	);
 
 	const fetchCategorizedDepartments = useMemo(
@@ -173,33 +177,19 @@ const UserProjectForm: FC<Props> = ({
 				);
 			}
 		},
-		[setDepartmentsOptions]
+		[setDepartmentsOptions, language]
 	);
 
 	useEffect(() => {
-		// const { departmentSelectionType } = data?.project!;
-
-		console.log(data?.project!.departmentSelectionType!);
-
-		if (data?.project?.departmentSelectionType! === "M") {
+		if (
+			data?.project!.departmentCategory!.code !==
+			DepartmentCategory.WorkLocation
+		) {
 			fetchMainDepartments();
-		} else if (data?.project?.departmentSelectionType! === "C") {
+		} else {
 			fetchCategorizedDepartments();
 		}
-
-		// const fetchData = async () => {
-		// 	const { data } = await getCategorizedDepartments();
-		// 	if (data) {
-		// 		setDepartmentsOptions(
-		// 			data.map((dept: APICategorizedDepartment) => {
-		// 				return { label: dept.longFullName, value: dept.id };
-		// 			})
-		// 		);
-		// 	}
-		// };
-		// fetchData();
-		// if(selectedPor)
-	}, [data?.project?.departmentSelectionType]);
+	}, [data?.project?.departmentCategory.code]);
 
 	// Structure Type
 	const departmentTypeOptions = useMemo(() => {

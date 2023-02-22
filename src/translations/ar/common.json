@@ -88,6 +88,7 @@
 		"withoutChild": "بدون قسم فرعي",
 		"count": "عدد المشاريع",
 		"noProject": "لم يتم تخصيص أي مشروع.",
+		"deptCat": "Department Category [Arabic]",
 		"hasWorkflow": "لديه سير عمل؟"
 	},
 	"userProject": {
@@ -175,7 +176,9 @@
 	},
 	"table": {
 		"noProject": "لم يتم العثور على مشروع",
-		"noUser": "لم يتم العثور على المستخدم"
+		"noUser": "لم يتم العثور على المستخدم",
+		"noEmployee": "لم يتم العثور على موظف",
+		"noNews": "لم يتم العثور على أخبار"
 	},
 	"footer": {
 		"text": "وزارة الداخلية - الدفاع المدني"

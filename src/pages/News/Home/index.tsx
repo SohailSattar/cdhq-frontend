@@ -142,6 +142,7 @@ const NewsHomePage = () => {
 					onTableSort={() => {}}
 					onPageChange={pageChangeHandler}
 					onPageViewSelectionChange={pageViewSelectionHandler}
+					noRecordText={t("table.noNews", { framework: "React" })}
 				/>
 			</div>
 		</div>

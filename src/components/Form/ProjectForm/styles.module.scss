@@ -1,39 +1,45 @@
 .container {
-    // padding: 15px 15px;
-    // max-height: auto;
-    overflow: inherit;
+	// padding: 15px 15px;
+	// max-height: auto;
+	overflow: inherit;
 }
 
 .project {
-    // display: flex;
+	// display: flex;
 
-    .row {
-        display: flex;
-        margin-bottom: 15px;
+	.row {
+		display: flex;
+		margin-bottom: 15px;
 
-        .field {
-            display: flex;
-            flex: 1;
-            flex-direction: column;
-        }
+		.field {
+			display: flex;
+			flex: 1;
+			flex-direction: column;
+		}
 
-        .ddlField {
-            display: flex;
-            flex: 1;
-            flex-direction: column;
-            margin: 0 5px;
-        }
+		.ddlField {
+			display: flex;
+			flex: 1;
+			flex-direction: column;
+			margin: 0 5px;
+		}
 
-        .actions {
-            display: flex;
+		.check {
+			display: flex;
+			align-content: center;
+			justify-content: end;
+		}
 
-            .btn {
-                margin-left: 5px;
-            }
+		.actions {
+			display: flex;
 
-            .btnLTR {
-                margin-right: 5px
-            }
-        }
-    }
+			.btn {
+				margin-left: 5px;
+			}
+
+			.btnLTR {
+				margin-right: 5px;
+			}
+		}
+	}
 }

@@ -6,7 +6,10 @@ import {
 	APIDepartmentItem,
 } from "../departments/types";
 import { APIPrivilegeItem, APIPrivileges } from "../privileges/type";
-import { APIProjectItem, APIProjectWithParentIdItem } from "../projects/types";
+import {
+	APIProjectDetail,
+	APIProjectWithParentIdItem,
+} from "../projects/types";
 import { APIUserItem } from "../users/types";
 
 export interface APIProjectPrivilege {
@@ -52,13 +55,13 @@ export interface APIPaginatedUserProject extends APIPaginate {
 
 export interface APIUserProjectItem {
 	id: number;
-	project: APIProjectItem;
+	project: APIProjectDetail;
 }
 
 export interface APIUserProjectDetail {
 	id: number;
 	user: APIUserItem;
-	project: APIProjectItem;
+	project: APIProjectDetail;
 	privilege: APIPrivilegeItem;
 	department: APICategorizedDepartment | APIDepartmentItem;
 	workflowStartFrom: APIActiveStatus;

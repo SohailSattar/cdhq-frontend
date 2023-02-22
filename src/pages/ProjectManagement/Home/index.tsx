@@ -41,14 +41,14 @@ const ProjectManagementPage = () => {
 		[]
 	);
 
-	const id = t('project.id', { framework: 'React' });
-	const projectName = t('project.name', { framework: 'React' });
-	const projectNameAr = t('project.nameArabic', { framework: 'React' });
-	const projectNameEng = t('project.nameEnglish', { framework: 'React' });
+	const id = t("project.id", { framework: "React" });
+	const projectName = t("project.name", { framework: "React" });
+	const projectNameAr = t("project.nameArabic", { framework: "React" });
+	const projectNameEng = t("project.nameEnglish", { framework: "React" });
 
 	//Actions
-	const actions = t('global.actions', { framework: 'React' });
-	const detail = t('button.detail', { framework: 'React' });
+	const actions = t("global.actions", { framework: "React" });
+	const detail = t("button.detail", { framework: "React" });
 
 	const columns: Column<ProjectColumns>[] = [
 		{
@@ -68,11 +68,11 @@ const ProjectManagementPage = () => {
 			accessor: (p) => p.nameEnglish,
 		},
 		{
-			Header: 'Group',
+			Header: "Group",
 			accessor: (p) => p.group?.nameArabic,
 		},
 		{
-			Header: 'Group [English]',
+			Header: "Group [English]",
 			accessor: (p) => p.group?.nameEnglish,
 		},
 		{
@@ -84,7 +84,7 @@ const ProjectManagementPage = () => {
 						<RedirectButton
 							label={detail}
 							redirectTo={`${RoutePath.PROJECT}/${value}`}
-							style={{ height: '20px', fontSize: '12px' }}
+							style={{ height: "20px", fontSize: "12px" }}
 						/>
 					</div>
 				</div>
@@ -97,7 +97,6 @@ const ProjectManagementPage = () => {
 			if (keyword === "") {
 				// Get all the projects if no keyword is mentioned
 				const { data, error } = await getProjects(currentPage, pageSize);
-
 				if (error) {
 					if (error?.response!.status! === 403) {
 						setCanView(false);
@@ -136,45 +135,45 @@ const ProjectManagementPage = () => {
 		}
 	}, [fetchProjects, pageSize, role]);
 
-	// Getting list of all projects
-	useEffect(() => {
-		const fetchData = async () => {
-			const { data } = await getProjectsList();
+	// // Getting list of all projects
+	// useEffect(() => {
+	// 	const fetchData = async () => {
+	// 		const { data } = await getProjectsList();
 
-			if (data) {
-				setProjectOptions(
-					data?.map((project) => {
-						return {
-							label: project.nameEnglish + "  -  " + project.name,
-							value: project.id,
-						};
-					})
-				);
-			}
-		};
+	// 		if (data) {
+	// 			setProjectOptions(
+	// 				data?.map((project) => {
+	// 					return {
+	// 						label: project.nameEnglish + "  -  " + project.name,
+	// 						value: project.id,
+	// 					};
+	// 				})
+	// 			);
+	// 		}
+	// 	};
 
-		fetchData();
-	}, []);
+	// 	fetchData();
+	// }, []);
 
-	// Getting list of all departments
-	useEffect(() => {
-		const fetchData = async () => {
-			const { data } = await getDepartments();
+	// // Getting list of all departments
+	// useEffect(() => {
+	// 	const fetchData = async () => {
+	// 		const { data } = await getDepartments();
 
-			if (data) {
-				setDepartmentOptions(
-					data?.map((dept) => {
-						return {
-							label: dept.nameEnglish + " - " + dept.name,
-							value: dept.id,
-						};
-					})
-				);
-			}
-		};
+	// 		if (data) {
+	// 			setDepartmentOptions(
+	// 				data?.map((dept) => {
+	// 					return {
+	// 						label: dept.nameEnglish + " - " + dept.name,
+	// 						value: dept.id,
+	// 					};
+	// 				})
+	// 			);
+	// 		}
+	// 	};
 
-		fetchData();
-	}, []);
+	// 	fetchData();
+	// }, []);
 
 	const projectSearchClickHandler = (keyword: string) => {
 		setKeyword(keyword);
@@ -214,6 +213,7 @@ const ProjectManagementPage = () => {
 				}}
 				onPageChange={pageChangeHandler}
 				onPageViewSelectionChange={pageViewSelectionHandler}
+				noRecordText={t("table.noProject", { framework: "React" })}
 			/>
 		</div>
 	) : (

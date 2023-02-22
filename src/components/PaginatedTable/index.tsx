@@ -22,6 +22,7 @@ interface Props {
 	pageSize: number;
 	data: any;
 	columns: Column<any>[];
+	noRecordText: string;
 	onSearch: (keyword: string) => void;
 	onTableSort: (columneId: string, isSortedDesc: boolean) => void;
 	onPageChange: (pageNo: number) => void;
@@ -35,6 +36,7 @@ const PaginatedTable: FC<Props> = ({
 	pageSize,
 	data,
 	columns,
+	noRecordText,
 	onSearch,
 	onTableSort,
 	onPageChange,
@@ -103,7 +105,7 @@ const PaginatedTable: FC<Props> = ({
 				columns={columns}
 				data={data}
 				onSort={onTableSort}
-				noRecordsText={t("table.noUser", { framework: "React" })}
+				noRecordsText={noRecordText}
 				// columnsToHide={
 				// 	displayActionsColumn
 				// 		? []

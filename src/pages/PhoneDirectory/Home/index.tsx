@@ -265,6 +265,7 @@ const PhoneDirectoryPage = () => {
 						onPageChange={pageChangeHandler}
 						onPageViewSelectionChange={pageViewSelectionHandler}
 						displayActionsColumn={privileges?.updatePrivilege!}
+						noRecordText={t("table.noEmployee", { framework: "React" })}
 					/>
 				</div>
 				<div></div>

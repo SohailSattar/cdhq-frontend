@@ -1,25 +1,25 @@
-import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { getExistingEmployee } from '../../../api/employees/get/getExistingEmployee';
-import { addUser } from '../../../api/users/add/addUser';
-import { checkIfUserExists } from '../../../api/users/get/checkIfUserExists';
-import { APINewUser, APIUserDetail } from '../../../api/users/types';
-import { NotAuthorized } from '../../../components';
-import { DropdownOption } from '../../../components/Dropdown';
-import { useStore } from '../../../utils/store';
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import { getExistingEmployee } from "../../../api/employees/get/getExistingEmployee";
+import { addUser } from "../../../api/users/add/addUser";
+import { checkIfUserExists } from "../../../api/users/get/checkIfUserExists";
+import { APINewUser, APIUserDetail } from "../../../api/users/types";
+import { NotAuthorized } from "../../../components";
+import { DropdownOption } from "../../../components/Dropdown";
+import { useStore } from "../../../utils/store";
 
-import * as RoutePath from '../../../RouteConfig';
+import * as RoutePath from "../../../RouteConfig";
 
-import { ROLE } from '../../../utils';
-import UserForm from '../../../components/Form/UserForm';
-import { IUserFormInputs } from '../../../components/Form/types';
-import { APIExistingEmployee } from '../../../api/employees/types';
+import { ROLE } from "../../../utils";
+import UserForm from "../../../components/Form/UserForm";
+import { IUserFormInputs } from "../../../components/Form/types";
+import { APIExistingEmployee } from "../../../api/employees/types";
 
 const NewUserPage = () => {
 	const { id } = useParams<{ id: string }>();
-	const [t] = useTranslation('common');
+	const [t] = useTranslation("common");
 	const navigate = useNavigate();
 	const language = useStore((state) => state.language);
 
@@ -30,14 +30,11 @@ const NewUserPage = () => {
 
 	const [employee, setEmployee] = useState<APIUserDetail>();
 
-	const [employeeNumber, setEmployeeNumber] = useState<string>('');
-	const [logName, setLogName] = useState<string>('');
+	const [employeeNumber, setEmployeeNumber] = useState<string>("");
+	const [logName, setLogName] = useState<string>("");
 
-	const [name, setName] = useState<string>('');
-	const [nameEnglish, setNameEnglish] = useState<string>('');
-
-	const [phone, setPhone] = useState<string>('');
-	const [email, setEmail] = useState<string>('');
+	const [name, setName] = useState<string>("");
+	const [nameEnglish, setNameEnglish] = useState<string>("");
 
 	const [selectedDepartment, setSelectedDepartment] =
 		useState<DropdownOption>();
@@ -46,9 +43,6 @@ const NewUserPage = () => {
 		useState<DropdownOption | undefined | null>(null);
 
 	const [selectedRank, setSelectedRank] = useState<DropdownOption>();
-
-	const [password, setPassword] = useState<string>('');
-	const [password2, setPassword2] = useState<string>('');
 
 	useEffect(() => {
 		if (role === ROLE.SUPERADMIN) {
@@ -81,7 +75,7 @@ const NewUserPage = () => {
 
 					setEmployee({
 						id: id,
-						logName: '',
+						logName: "",
 						employeeNo: empNo!,
 						name,
 						nameEnglish,
@@ -98,30 +92,30 @@ const NewUserPage = () => {
 					const lname = classDetail?.logPre! + empNo;
 					setLogName(lname);
 
-					setName(name);
-					setNameEnglish(nameEnglish!);
+					// setName(name);
+					// setNameEnglish(nameEnglish!);
 
-					let ddv: DropdownOption = {
-						label:
-							language !== 'ar' ? department!.name! : department!.nameEnglish!,
-						value: department!.id!,
-					};
-					setSelectedDepartment(ddv);
+					// let ddv: DropdownOption = {
+					// 	label:
+					// 		language !== 'ar' ? department!.name! : department!.nameEnglish!,
+					// 	value: department!.id!,
+					// };
+					// setSelectedDepartment(ddv);
 
-					ddv = {
-						label:
-							language !== 'ar'
-								? classDetail!.name!
-								: classDetail!.nameEnglish!,
-						value: classDetail!.id!,
-					};
-					setSelectedClass(ddv);
+					// ddv = {
+					// 	label:
+					// 		language !== 'ar'
+					// 			? classDetail!.name!
+					// 			: classDetail!.nameEnglish!,
+					// 	value: classDetail!.id!,
+					// };
+					// setSelectedClass(ddv);
 
-					ddv = {
-						label: language !== 'ar' ? rank!.name! : rank!.nameEnglish!,
-						value: rank!.id!,
-					};
-					setSelectedRank(ddv);
+					// ddv = {
+					// 	label: language !== 'ar' ? rank!.name! : rank!.nameEnglish!,
+					// 	value: rank!.id!,
+					// };
+					// setSelectedRank(ddv);
 				}
 			} else {
 				setEmployeeExists(false);
@@ -130,18 +124,6 @@ const NewUserPage = () => {
 
 		fetchData();
 	}, [id, language, navigate, role]);
-
-	const departmentSelectHandler = (option: DropdownOption) => {
-		setSelectedDepartment(option);
-	};
-
-	const classDropdownSelectHandler = (option: DropdownOption) => {
-		setSelectedClass(option);
-	};
-
-	const rankDropdownSelectHandler = (option: DropdownOption) => {
-		setSelectedRank(option);
-	};
 
 	const addNewUserHandler = async (details: IUserFormInputs) => {
 		const params: APINewUser = {
@@ -155,7 +137,7 @@ const NewUserPage = () => {
 
 		const { data } = await addUser(params);
 		if (data?.success!) {
-			toast.success(t('message.userAdded', { framework: 'React' }));
+			toast.success(t("message.userAdded", { framework: "React" }));
 			navigate(`${RoutePath.USER}/${id}`);
 		}
 
@@ -172,7 +154,7 @@ const NewUserPage = () => {
 				data={employee}
 				isExistingEmployee={employeeExists}
 				isNewUser={true}
-				actionButtonText={t('button.save', { framework: 'React' })}
+				actionButtonText={t("button.save", { framework: "React" })}
 				onSubmit={addNewUserHandler}
 			/>
 		</>
