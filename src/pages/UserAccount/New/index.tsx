@@ -137,7 +137,7 @@ const NewUserPage = () => {
 
 		const { data } = await addUser(params);
 		if (data?.success!) {
-			toast.success(t("message.userAdded", { framework: "React" }));
+			toast.success(t("message.userAdded", { framework: "React" }).toString());
 			navigate(`${RoutePath.USER}/${id}`);
 		}
 

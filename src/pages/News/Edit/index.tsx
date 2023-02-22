@@ -46,7 +46,9 @@ const EditNewsPage = () => {
 		const { data, error } = await updateNews(params);
 
 		if (data?.success) {
-			toast.success(t("message.newsUpdated", { framework: "React" }));
+			toast.success(
+				t("message.newsUpdated", { framework: "React" }).toString()
+			);
 		} else {
 			toast.error(error?.ErrorMessage);
 		}

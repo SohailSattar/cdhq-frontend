@@ -1,11 +1,11 @@
-import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
-import { updatePassword } from '../../api/users/update/updatePassword';
-import { PasswordBox, ShadowedContainer } from '../../components';
-import { useStore } from '../../utils/store';
+import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
+import { updatePassword } from "../../api/users/update/updatePassword";
+import { PasswordBox, ShadowedContainer } from "../../components";
+import { useStore } from "../../utils/store";
 
 const ChangePasswordPage = () => {
-	const [t] = useTranslation('common');
+	const [t] = useTranslation("common");
 
 	const { id } = useStore((state) => state.loggedInUser);
 
@@ -17,7 +17,9 @@ const ChangePasswordPage = () => {
 		const { data } = await updatePassword(params);
 
 		if (data) {
-			toast.success(t('message.passwordUpdated', { framework: 'React' }));
+			toast.success(
+				t("message.passwordUpdated", { framework: "React" }).toString()
+			);
 		}
 	};
 

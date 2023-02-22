@@ -51,7 +51,9 @@ const EditProjectPage = () => {
 
 		const { data } = await updateProject(params);
 		if (data) {
-			toast.success(t("message.projectUpdated", { framework: "React" }));
+			toast.success(
+				t("message.projectUpdated", { framework: "React" }).toString()
+			);
 		}
 	};
 
@@ -59,7 +61,7 @@ const EditProjectPage = () => {
 		<ProjectForm
 			data={project}
 			onSubmit={submitHandler}
-			actionButtonText={t("button.update", { framework: "React" })}
+			actionButtonText={t("button.update", { framework: "React" }).toString()}
 		/>
 	);
 };

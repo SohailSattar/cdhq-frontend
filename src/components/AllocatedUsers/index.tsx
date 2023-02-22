@@ -1,6 +1,6 @@
-import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Column } from 'react-table';
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Column } from "react-table";
 import {
 	Button,
 	DeleteConfirmation,
@@ -10,16 +10,16 @@ import {
 	ShadowedContainer,
 	Table,
 	TotalCount,
-} from '..';
-import { getProjectUsers } from '../../api/projects/get/getProjectUsers';
-import { useStore } from '../../utils/store';
-import { APIUserTable } from './types';
+} from "..";
+import { getProjectUsers } from "../../api/projects/get/getProjectUsers";
+import { useStore } from "../../utils/store";
+import { APIUserTable } from "./types";
 
-import * as RoutePath from '../../RouteConfig';
+import * as RoutePath from "../../RouteConfig";
 
-import styles from './styles.module.scss';
-import { toast } from 'react-toastify';
-import { deleteProject } from '../../api/users/delete/deleteProject';
+import styles from "./styles.module.scss";
+import { toast } from "react-toastify";
+import { deleteProject } from "../../api/users/delete/deleteProject";
 
 interface Props {
 	projectId: string;
@@ -27,12 +27,12 @@ interface Props {
 }
 
 const AllocatedUsers: FC<Props> = ({ projectId }) => {
-	const [t] = useTranslation('common');
+	const [t] = useTranslation("common");
 	const language = useStore((state) => state.language);
 
-	const [selectedProjectId, setSelectedProjectId] = useState('');
+	const [selectedProjectId, setSelectedProjectId] = useState("");
 
-	const [keyword, setKeyword] = useState('');
+	const [keyword, setKeyword] = useState("");
 
 	const [showModal, setShowModal] = useState(false);
 
@@ -55,8 +55,8 @@ const AllocatedUsers: FC<Props> = ({ projectId }) => {
 			if (data) {
 				setUsers(
 					data?.users.map((p) => {
-						let name = '';
-						if (language !== 'ar') {
+						let name = "";
+						if (language !== "ar") {
 							name = p.user.name;
 						} else {
 							name = p.user.nameEnglish || p.user.name;
@@ -67,11 +67,11 @@ const AllocatedUsers: FC<Props> = ({ projectId }) => {
 							userId: +p.user.employeeNo,
 							userName: name,
 							privilege:
-								language !== 'ar'
+								language !== "ar"
 									? p.privilege?.name!
 									: p.privilege?.nameEnglish!,
 							department:
-								language !== 'ar'
+								language !== "ar"
 									? p.department.name
 									: p.department.nameEnglish,
 						};
@@ -121,14 +121,14 @@ const AllocatedUsers: FC<Props> = ({ projectId }) => {
 		fetchData(keyword);
 	}, [fetchData, keyword]);
 
-	const employeeNumber = t('user.employeeNumber', { framework: 'React' });
-	const userName = t('user.name', { framework: 'React' });
-	const privilege = t('privilege.name', { framework: 'React' });
-	const department = t('department.name', { framework: 'React' });
+	const employeeNumber = t("user.employeeNumber", { framework: "React" });
+	const userName = t("user.name", { framework: "React" });
+	const privilege = t("privilege.name", { framework: "React" });
+	const department = t("department.name", { framework: "React" });
 
-	const actions = t('global.actions', { framework: 'React' });
-	const edit = t('button.edit', { framework: 'React' });
-	const deleteBtn = t('button.delete', { framework: 'React' });
+	const actions = t("global.actions", { framework: "React" });
+	const edit = t("button.edit", { framework: "React" });
+	const deleteBtn = t("button.delete", { framework: "React" });
 
 	const columns: Column<APIUserTable>[] = [
 		{
@@ -151,18 +151,19 @@ const AllocatedUsers: FC<Props> = ({ projectId }) => {
 			Header: actions,
 			accessor: (p) => p,
 			Cell: ({ value }: any) => (
-				<div className={language !== 'ar' ? styles.action : styles.actionLTR}>
+				<div className={language !== "ar" ? styles.action : styles.actionLTR}>
 					<div className={styles.btnDiv}>
 						<RedirectButton
 							label={edit}
 							redirectTo={`${RoutePath.PROJECT}/${projectId}/user/${value.id}/edit`}
-							style={{ height: '20px', fontSize: '12px' }}
+							style={{ height: "20px", fontSize: "12px" }}
 						/>
 					</div>
 					<div>
 						<Button
-							style={{ height: '20px', fontSize: '12px' }}
-							onClick={() => deleteClickHandler(value.id)}>
+							style={{ height: "20px", fontSize: "12px" }}
+							onClick={() => deleteClickHandler(value.id)}
+						>
 							{deleteBtn}
 						</Button>
 					</div>
@@ -182,12 +183,14 @@ const AllocatedUsers: FC<Props> = ({ projectId }) => {
 	};
 
 	const deleteConfirmationClickHandler = async () => {
-		if (selectedProjectId !== '') {
+		if (selectedProjectId !== "") {
 			const { data } = await deleteProject(selectedProjectId);
 
 			if (data) {
 				setUsers(users.filter((u) => u.id !== +selectedProjectId));
-				toast.success(t('message.userProjectDeleted', { framework: 'React' }));
+				toast.success(
+					t("message.userProjectDeleted", { framework: "React" }).toString()
+				);
 			}
 		}
 
@@ -202,30 +205,31 @@ const AllocatedUsers: FC<Props> = ({ projectId }) => {
 		setCurrentPage(pageNumber);
 	};
 
-	const newUserPath = RoutePath.PROJECT + '/' + projectId + '/user/assign';
+	const newUserPath = RoutePath.PROJECT + "/" + projectId + "/user/assign";
 
 	return (
 		<>
 			<div className={styles.detailBar}>
 				<div
 					className={
-						language !== 'ar' ? styles.detailSection : styles.detailSectionLTR
-					}>
+						language !== "ar" ? styles.detailSection : styles.detailSectionLTR
+					}
+				>
 					<TotalCount
-						label={t('user.count', { framework: 'React' })}
+						label={t("user.count", { framework: "React" })}
 						count={totalCount}
 					/>
 				</div>
-				<div className={language !== 'ar' ? styles.buttons : styles.buttonsLTR}>
+				<div className={language !== "ar" ? styles.buttons : styles.buttonsLTR}>
 					<ShadowedContainer className={styles.box}>
 						<RedirectButton
-							label={t('button.assignToUser', { framework: 'React' })}
+							label={t("button.assignToUser", { framework: "React" })}
 							redirectTo={newUserPath}
 						/>
 					</ShadowedContainer>
 				</div>
 			</div>
-			<SearchBox onClick={userSearchHandler} label='Search User' />
+			<SearchBox onClick={userSearchHandler} label="Search User" />
 			<Table data={users!} columns={columns} />
 			<Pagination
 				className={styles.paginationBar}

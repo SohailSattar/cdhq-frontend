@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import {
 	AllocatedUsers,
 	Button,
@@ -8,32 +8,32 @@ import {
 	RedirectButton,
 	ShadowedContainer,
 	Status,
-} from '../../../components';
-import ProjectDetail from './containers/ProjectDetail';
+} from "../../../components";
+import ProjectDetail from "./containers/ProjectDetail";
 
 import {
 	APIProject,
 	APIProjectDetail,
 	APIUpdateProjectStatus,
-} from '../../../api/projects/types';
-import { getProjectDetail } from '../../../api/projects/get/getProjectDetail';
+} from "../../../api/projects/types";
+import { getProjectDetail } from "../../../api/projects/get/getProjectDetail";
 
-import { ROLE } from '../../../utils';
+import { ROLE } from "../../../utils";
 
-import * as RoutePath from '../../../RouteConfig';
+import * as RoutePath from "../../../RouteConfig";
 
-import styles from './styles.module.scss';
-import { useStore } from '../../../utils/store';
-import { toast } from 'react-toastify';
-import { getActiveStatus } from '../../../api/activeStatus/get/getActiveStatus';
-import { t } from 'i18next';
-import { APIActiveStatus } from '../../../api/activeStatus/types';
-import { useTranslation } from 'react-i18next';
-import { updateProjectStatus } from '../../../api/projects/update/updateProjectStatus';
+import styles from "./styles.module.scss";
+import { useStore } from "../../../utils/store";
+import { toast } from "react-toastify";
+import { getActiveStatus } from "../../../api/activeStatus/get/getActiveStatus";
+import { t } from "i18next";
+import { APIActiveStatus } from "../../../api/activeStatus/types";
+import { useTranslation } from "react-i18next";
+import { updateProjectStatus } from "../../../api/projects/update/updateProjectStatus";
 
 const ProjectDetailPage = () => {
 	const { id } = useParams<{ id: string }>();
-	const [t] = useTranslation('common');
+	const [t] = useTranslation("common");
 	const navigate = useNavigate();
 
 	const language = useStore((state) => state.language);
@@ -85,7 +85,9 @@ const ProjectDetailPage = () => {
 			}
 		}
 
-		toast.success(t('message.projectActivated', { framework: 'React' }));
+		toast.success(
+			t("message.projectActivated", { framework: "React" }).toString()
+		);
 		setShowModal(false);
 	};
 
@@ -106,7 +108,9 @@ const ProjectDetailPage = () => {
 			}
 		}
 
-		toast.error(t('message.projectDeactivated', { framework: 'React' }));
+		toast.error(
+			t("message.projectDeactivated", { framework: "React" }).toString()
+		);
 		setShowModal(false);
 	};
 
@@ -122,20 +126,20 @@ const ProjectDetailPage = () => {
 				</div>
 				<div className={styles.detail}>
 					<ShadowedContainer className={styles.btnSection}>
-						<div className={language !== 'ar' ? styles.btn : styles.btnLTR}>
+						<div className={language !== "ar" ? styles.btn : styles.btnLTR}>
 							<RedirectButton
-								label={t('button.edit', { framework: 'React' })}
+								label={t("button.edit", { framework: "React" })}
 								redirectTo={`${RoutePath.PROJECT}/${id}/edit`}
 							/>
 						</div>
-						<div className={language !== 'ar' ? styles.btn : styles.btnLTR}>
+						<div className={language !== "ar" ? styles.btn : styles.btnLTR}>
 							{status?.id === 1 ? (
 								<Button onClick={deleteButtonClickHandler} isCritical>
-									{t('button.deactivate', { framework: 'React' })}
+									{t("button.deactivate", { framework: "React" })}
 								</Button>
 							) : (
 								<Button onClick={activateButtonClickHandler}>
-									{t('button.activate', { framework: 'React' })}
+									{t("button.activate", { framework: "React" })}
 								</Button>
 							)}
 						</div>

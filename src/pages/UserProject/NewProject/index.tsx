@@ -1,20 +1,20 @@
-import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { APIProjectToUser } from '../../../api/userProjects/types';
-import { assignNewProjectToUser } from '../../../api/userProjects/add/assignNewProjectToUser';
-import { getRole } from '../../../api/users/get/getRole';
-import { UserProjectForm } from '../../../components';
-import { DropdownOption } from '../../../components/Dropdown';
-import { IUserProjectFormInputs } from '../../../components/Form/types';
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import { APIProjectToUser } from "../../../api/userProjects/types";
+import { assignNewProjectToUser } from "../../../api/userProjects/add/assignNewProjectToUser";
+import { getRole } from "../../../api/users/get/getRole";
+import { UserProjectForm } from "../../../components";
+import { DropdownOption } from "../../../components/Dropdown";
+import { IUserProjectFormInputs } from "../../../components/Form/types";
 
-import * as RoutePath from '../../../RouteConfig';
-import { ROLE } from '../../../utils';
+import * as RoutePath from "../../../RouteConfig";
+import { ROLE } from "../../../utils";
 
 const AssignProjectToUserPage = () => {
 	const { id } = useParams<{ id: string }>();
-	const [t] = useTranslation('common');
+	const [t] = useTranslation("common");
 
 	const navigate = useNavigate();
 
@@ -59,10 +59,14 @@ const AssignProjectToUserPage = () => {
 		const { data: userProjectId } = await assignNewProjectToUser(params);
 
 		if (userProjectId) {
-			toast.success(t('message.userProjectAssigned', { framework: 'React' }));
+			toast.success(
+				t("message.userProjectAssigned", { framework: "React" }).toString()
+			);
 			navigate(`${RoutePath.USER}/${id}/project/${userProjectId}/edit`);
 		} else {
-			toast.error(t('message.userProjectNotAssigned', { framework: 'React' }));
+			toast.error(
+				t("message.userProjectNotAssigned", { framework: "React" }).toString()
+			);
 		}
 	};
 
@@ -71,7 +75,7 @@ const AssignProjectToUserPage = () => {
 			isNormalUser={isNormalUser}
 			title={t("message.userProjectAdd", { framework: "React" })}
 			onActionButtonClick={assignProjectClickHandler}
-			actionButtonText={t('button.save', { framework: 'React' })}
+			actionButtonText={t("button.save", { framework: "React" })}
 		/>
 	);
 };
