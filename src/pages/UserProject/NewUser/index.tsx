@@ -65,10 +65,14 @@ const AssignUserToProjectPage = () => {
 		const { data: userProjectId } = await assignNewProjectToUser(params);
 
 		if (userProjectId) {
-			toast.success(t("message.userProjectAssigned", { framework: "React" }));
+			toast.success(
+				t("message.userProjectAssigned", { framework: "React" }).toString()
+			);
 			navigate(`${RoutePath.USER}/${id}/project/${userProjectId}/edit`);
 		} else {
-			toast.error(t("message.userProjectNotAssigned", { framework: "React" }));
+			toast.error(
+				t("message.userProjectNotAssigned", { framework: "React" }).toString()
+			);
 		}
 	};
 

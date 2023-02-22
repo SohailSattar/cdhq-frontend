@@ -1,9 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import WebSession from "react-web-session";
-import { createBrowserHistory } from "history";
 import { ToastContainer } from "react-toastify";
-
-import ReactWebSession, { updateSession } from "react-web-session";
 
 import {
 	NewUserPage,

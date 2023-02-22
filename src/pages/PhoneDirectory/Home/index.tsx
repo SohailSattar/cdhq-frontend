@@ -220,7 +220,9 @@ const PhoneDirectoryPage = () => {
 
 		const { data } = await updatePhoneDetails(params);
 		if (data) {
-			toast.success(t("message.projectUpdated", { framework: "React" }));
+			toast.success(
+				t("message.projectUpdated", { framework: "React" }).toString()
+			);
 			fetchData(currentPage);
 		}
 	};

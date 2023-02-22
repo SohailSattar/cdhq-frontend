@@ -151,7 +151,9 @@ const EditUserPage = () => {
 
 		const { data, error } = await updateUser(params);
 		if (data?.success!) {
-			toast.success(t("message.userDetailUpdated", { framework: "React" }));
+			toast.success(
+				t("message.userDetailUpdated", { framework: "React" }).toString()
+			);
 		} else {
 			error?.map((err: any) => toast.error(err, { autoClose: false }));
 		}
@@ -168,7 +170,9 @@ const EditUserPage = () => {
 		const { data } = await updatePassword(params);
 
 		if (data) {
-			toast.success(t("message.passwordUpdated", { framework: "React" }));
+			toast.success(
+				t("message.passwordUpdated", { framework: "React" }).toString()
+			);
 		}
 	};
 
@@ -184,7 +188,7 @@ const EditUserPage = () => {
 			roleId: selectedRoleOption?.value!.toString()!,
 		};
 		updateRole(params);
-		toast.success(t("message.roleUpdated", { framework: "React" }));
+		toast.success(t("message.roleUpdated", { framework: "React" }).toString());
 	};
 
 	const activateUserProjectClickHandler = async (userProjectId: string) => {
@@ -195,7 +199,9 @@ const EditUserPage = () => {
 
 		const { data } = await updateUserProjectStatus(params);
 		if (data) {
-			toast.success(t("message.projectActivated", { framework: "React" }));
+			toast.success(
+				t("message.projectActivated", { framework: "React" }).toString()
+			);
 		}
 	};
 

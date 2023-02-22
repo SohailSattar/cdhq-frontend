@@ -88,7 +88,9 @@ const UserDetailPage = () => {
 			}
 		}
 
-		toast.success(t("message.userActivated", { framework: "React" }));
+		toast.success(
+			t("message.userActivated", { framework: "React" }).toString()
+		);
 		setShowModal(false);
 	};
 
@@ -109,7 +111,9 @@ const UserDetailPage = () => {
 			}
 		}
 
-		toast.error(t("message.userDeactivated", { framework: "React" }));
+		toast.error(
+			t("message.userDeactivated", { framework: "React" }).toString()
+		);
 		setShowModal(false);
 	};
 
@@ -120,7 +124,9 @@ const UserDetailPage = () => {
 	return (
 		<div className={styles.userDetail}>
 			{isLoading ? (
-				<Loading text={t("global.loading", { framework: "React" })} />
+				<Loading
+					text={t("global.loading", { framework: "React" }).toString()}
+				/>
 			) : (
 				<div>
 					{role !== ROLE.USER && (
