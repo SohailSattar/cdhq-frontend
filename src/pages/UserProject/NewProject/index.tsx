@@ -6,7 +6,6 @@ import { APIProjectToUser } from "../../../api/userProjects/types";
 import { assignNewProjectToUser } from "../../../api/userProjects/add/assignNewProjectToUser";
 import { getRole } from "../../../api/users/get/getRole";
 import { UserProjectForm } from "../../../components";
-import { DropdownOption } from "../../../components/Dropdown";
 import { IUserProjectFormInputs } from "../../../components/Form/types";
 
 import * as RoutePath from "../../../RouteConfig";

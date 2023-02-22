@@ -58,8 +58,8 @@ const UsersListPage = () => {
 	const actions = t("global.actions", { framework: "React" });
 	const edit = t("button.edit", { framework: "React" });
 	const detail = t("button.detail", { framework: "React" });
-	const activate = t("button.activate", { framework: "React" });
-	const deactivate = t("button.deactivate", { framework: "React" });
+	// const activate = t("button.activate", { framework: "React" });
+	// const deactivate = t("button.deactivate", { framework: "React" });
 
 	const columns: Column<UserColumns>[] = useMemo(
 		() => [

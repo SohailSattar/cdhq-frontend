@@ -8,8 +8,6 @@ import { updatePassword } from "../../../api/users/update/updatePassword";
 import { updateRole } from "../../../api/users/update/updateRole";
 import {
 	AuthorizedContainer,
-	Button,
-	PaginatedTable,
 	RedirectButton,
 	ShadowedContainer,
 	// UserForm,
