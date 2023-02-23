@@ -8,7 +8,7 @@ export async function getMainDepartments(
 	try {
 		let keyword = "";
 		if (code) {
-			keyword = `?keyword=M1`;
+			keyword = `?keyword=${code}`;
 		}
 
 		const config = getConfig();

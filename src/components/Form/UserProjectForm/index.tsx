@@ -148,8 +148,8 @@ const UserProjectForm: FC<Props> = ({
 
 	//Department
 	const fetchMainDepartments = useMemo(
-		() => async () => {
-			const { data } = await getMainDepartments();
+		() => async (code?: string) => {
+			const { data } = await getMainDepartments(code);
 
 			if (data) {
 				setDepartmentsOptions(
@@ -185,7 +185,7 @@ const UserProjectForm: FC<Props> = ({
 			data?.project!.departmentCategory!.code !==
 			DepartmentCategory.WorkLocation
 		) {
-			fetchMainDepartments();
+			fetchMainDepartments(data?.project!.departmentCategory!.code);
 		} else {
 			fetchCategorizedDepartments();
 		}
@@ -305,7 +305,7 @@ const UserProjectForm: FC<Props> = ({
 	]);
 
 	const projectSelectHandler = (option: DropdownOption) => {
-		if (option.meta.hasWorflow === false) {
+		if (option.meta.hasWorkflow === false) {
 			setDisableWorkflow(true);
 			setValue(
 				"workflowStart",
@@ -323,8 +323,11 @@ const UserProjectForm: FC<Props> = ({
 
 		setValue("project", option);
 
-		if (option.meta.departmentSelectionType === "M") {
-			fetchMainDepartments();
+		if (
+			option.meta.departmentSelectionType !== DepartmentCategory.WorkLocation
+		) {
+			console.log(option.meta.departmentSelectionType);
+			fetchMainDepartments(option.meta.departmentSelectionType);
 		} else {
 			fetchCategorizedDepartments();
 		}
