@@ -1,22 +1,21 @@
-import clsx from 'clsx';
+import clsx from "clsx";
 import React, {
 	MutableRefObject,
 	PropsWithChildren,
 	ReactElement,
 	ReactNode,
 	useMemo,
-} from 'react';
+} from "react";
 // import { Table as RTable, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 // import './responsive-table.scss';
-import { Column, useExpanded, useTable, useSortBy } from 'react-table';
-import { ReactComponent as InfoIcon } from '../../assets/icons/info.svg';
-import { ReactComponent as DownIcon } from './down.svg';
-import { ReactComponent as RightIcon } from './right.svg';
-
-import styles from './styles.module.scss';
-import { useMediaQuery, useTheme } from '@material-ui/core';
-import { useStore } from '../../utils/store';
+import { Column, useExpanded, useTable, useSortBy } from "react-table";
+import { ReactComponent as DownIcon } from "./down.svg";
+import { ReactComponent as RightIcon } from "./right.svg";
+import { useMediaQuery, useTheme } from "@material-ui/core";
+import { useStore } from "../../utils/store";
 // import { Tooltip } from '..';
+
+import styles from "./styles.module.scss";
 interface TableProps<T extends object> {
 	columns: Column<any>[];
 	data: T[];
@@ -39,14 +38,14 @@ interface TableProps<T extends object> {
 type Props<T extends object> = PropsWithChildren<TableProps<T>>;
 
 const expandColumn = {
-	id: 'expander',
+	id: "expander",
 	expander: true,
 	Cell: ({ row }: any) => (
 		<span {...row.getToggleRowExpandedProps()}>
 			{row.isExpanded ? (
-				<DownIcon style={{ width: 10, fill: 'black', stroke: 'black' }} />
+				<DownIcon style={{ width: 10, fill: "black", stroke: "black" }} />
 			) : (
-				<RightIcon style={{ width: 10, fill: 'black', stroke: 'black' }} />
+				<RightIcon style={{ width: 10, fill: "black", stroke: "black" }} />
 			)}
 		</span>
 	),
@@ -54,12 +53,12 @@ const expandColumn = {
 };
 
 Table.defaultProps = {
-	noRecordsText: 'No records found',
-	headerBackground: '#141f33',
-	headerColor: '#fff',
-	rowColor: 'rgba(0, 0, 0, 0.04)',
-	headerPadding: '6px 12px',
-	fontSize: '12px',
+	noRecordsText: "No records found",
+	headerBackground: "#141f33",
+	headerColor: "#fff",
+	rowColor: "rgba(0, 0, 0, 0.04)",
+	headerPadding: "6px 12px",
+	fontSize: "12px",
 	columnsToHide: [],
 	// rowHeight: '16px',
 };
@@ -104,15 +103,17 @@ export function Table<T extends object>(props: Props<T>): ReactElement {
 			<table
 				{...getTableProps()}
 				className={styles.table}
-				cellSpacing='0'
-				cellPadding='0'
+				cellSpacing="0"
+				cellPadding="0"
 				style={{ borderSpacing: `0 ${props.rowSpacing}` }}
-				ref={props.reference}>
+				ref={props.reference}
+			>
 				<thead
 					className={clsx(
 						styles.tableHead,
-						language === 'ar' && styles.tableHeadLTR
-					)}>
+						language === "ar" && styles.tableHeadLTR
+					)}
+				>
 					<tr {...headerGroups[0].getHeaderGroupProps()}>
 						{headerGroups[0].headers.map((column: any) => {
 							const sortByToggleProps = column.getSortByToggleProps({
@@ -134,8 +135,9 @@ export function Table<T extends object>(props: Props<T>): ReactElement {
 										color: props.headerColor,
 										padding: props.headerPadding,
 										background: props.headerBackground,
-									}}>
-									{!(column as any).tooltip && column.render('Header')}
+									}}
+								>
+									{!(column as any).tooltip && column.render("Header")}
 								</th>
 							);
 						})}
@@ -148,9 +150,10 @@ export function Table<T extends object>(props: Props<T>): ReactElement {
 						<tr
 							className={clsx(
 								styles.tableRow,
-								language === 'ar' && styles.tableRowLTR
+								language === "ar" && styles.tableRowLTR
 							)}
-							style={{ background: props.rowColor }}>
+							style={{ background: props.rowColor }}
+						>
 							<td className={styles.noRecordsRow} colSpan={maxColCount}>
 								{props.noRecordsText}
 							</td>
@@ -164,7 +167,7 @@ export function Table<T extends object>(props: Props<T>): ReactElement {
 									{...row.getRowProps()}
 									className={clsx(
 										styles.tableRow,
-										language === 'ar' && styles.tableRowLTR
+										language === "ar" && styles.tableRowLTR
 									)}
 									style={{
 										background: props.rowColor,
@@ -172,7 +175,8 @@ export function Table<T extends object>(props: Props<T>): ReactElement {
 									}}
 									onClick={() =>
 										props.onRowClick && props.onRowClick(row.original)
-									}>
+									}
+								>
 									{row.cells.map((cell, index) => {
 										return (
 											<td
@@ -186,8 +190,9 @@ export function Table<T extends object>(props: Props<T>): ReactElement {
 												onClick={(e) => {
 													if (index === row.cells.length - 1)
 														e.stopPropagation();
-												}}>
-												<>{cell.render('Cell')}</>
+												}}
+											>
+												<>{cell.render("Cell")}</>
 											</td>
 										);
 									})}
@@ -197,13 +202,15 @@ export function Table<T extends object>(props: Props<T>): ReactElement {
 									<tr
 										className={clsx(
 											styles.tableRow,
-											language === 'ar' && styles.tableRowLTR,
+											language === "ar" && styles.tableRowLTR,
 											styles.subRow
-										)}>
+										)}
+									>
 										<td
 											colSpan={visibleColumns.length}
 											style={{ background: props.rowColor }}
-											className={styles.nested}>
+											className={styles.nested}
+										>
 											{props.renderSubComponent(row.original)}
 										</td>
 									</tr>

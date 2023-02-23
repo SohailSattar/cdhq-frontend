@@ -56,7 +56,6 @@ const PhoneDirectoryPage = () => {
 	//Actions
 	const actions = t("global.actions", { framework: "React" });
 	const edit = t("button.edit", { framework: "React" });
-	const detail = t("button.detail", { framework: "React" });
 
 	const columns: Column<PhoneDirectoryColumns>[] = useMemo(
 		() => [
@@ -116,7 +115,7 @@ const PhoneDirectoryPage = () => {
 									}}
 									style={{ height: "20px", fontSize: "12px" }}
 								>
-									Edit
+									{edit}
 								</Button>
 							)}
 						</div>
@@ -124,17 +123,7 @@ const PhoneDirectoryPage = () => {
 				),
 			},
 		],
-		[
-			actions,
-			detail,
-			edit,
-			employeeNo,
-			fullName,
-			id,
-			language,
-			rank,
-			privileges,
-		] //role
+		[actions, edit, employeeNo, fullName, id, language, rank, privileges] //role
 	);
 
 	const pageViewSelectionHandler = (option: DropdownOption) => {

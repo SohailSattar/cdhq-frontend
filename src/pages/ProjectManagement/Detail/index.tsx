@@ -12,24 +12,20 @@ import {
 import ProjectDetail from "./containers/ProjectDetail";
 
 import {
-	APIProject,
 	APIProjectDetail,
 	APIUpdateProjectStatus,
 } from "../../../api/projects/types";
 import { getProjectDetail } from "../../../api/projects/get/getProjectDetail";
-
-import { ROLE } from "../../../utils";
+import { useStore } from "../../../utils/store";
+import { toast } from "react-toastify";
+import { getActiveStatus } from "../../../api/activeStatus/get/getActiveStatus";
+import { APIActiveStatus } from "../../../api/activeStatus/types";
+import { useTranslation } from "react-i18next";
+import { updateProjectStatus } from "../../../api/projects/update/updateProjectStatus";
 
 import * as RoutePath from "../../../RouteConfig";
 
 import styles from "./styles.module.scss";
-import { useStore } from "../../../utils/store";
-import { toast } from "react-toastify";
-import { getActiveStatus } from "../../../api/activeStatus/get/getActiveStatus";
-import { t } from "i18next";
-import { APIActiveStatus } from "../../../api/activeStatus/types";
-import { useTranslation } from "react-i18next";
-import { updateProjectStatus } from "../../../api/projects/update/updateProjectStatus";
 
 const ProjectDetailPage = () => {
 	const { id } = useParams<{ id: string }>();
@@ -42,8 +38,6 @@ const ProjectDetailPage = () => {
 
 	const [project, setProject] = useState<APIProjectDetail>();
 	const [status, setStatus] = useState<APIActiveStatus>();
-
-	const { role } = useStore((state) => state.loggedInUser);
 
 	useEffect(() => {
 		const fetchData = async () => {
