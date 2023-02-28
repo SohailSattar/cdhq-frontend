@@ -187,6 +187,7 @@
 		"user": "مستخدم البحث"
 	},
 	"news": {
+		"count": "Total News Count",
 		"id": "رقم الخبر",
 		"title": "العنوان",
 		"shortSummary": "مقدمة",

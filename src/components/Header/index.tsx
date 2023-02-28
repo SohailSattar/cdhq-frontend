@@ -61,7 +61,6 @@ const Header = () => {
 	const logoutClickHandler = () => {
 		navigate("../login");
 	};
-	console.log(loggedUser);
 
 	const getMenuButtons = () => {
 		return headerLinks

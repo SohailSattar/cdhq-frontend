@@ -11,17 +11,12 @@ import {
 	UsersHomePage,
 	EditUserPage,
 	PageNotFound,
-	DepartmentHierarchyPage,
 	NewProjectPage,
-	NewDepartmentPage,
 	EditProjectPage,
 	AssignUserToProjectPage,
 	EditUserProjectPage,
 	SearchUserPage,
 	ChangePasswordPage,
-	DepartmentHomePage,
-	DepartmentDetailPage,
-	DepartmentEditPage,
 	AssignProjectToUserPage,
 	EditProjectUserPage,
 	PhoneDirectory,
@@ -42,7 +37,6 @@ import "./assets/css/site.ar.css";
 import "./assets/fonts/index.css";
 import { useStore } from "./utils/store";
 import { Project } from "./data/projects";
-import { PrivilegeType } from "./data/privilegeType";
 
 function App() {
 	const language = useStore((state) => state.language);

@@ -1,33 +1,26 @@
-import { SetStateAction, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
-import { getDepartmentDetail } from '../../../api/departments/get/getDepartmentDetail';
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useParams } from "react-router-dom";
+import { getDepartmentDetail } from "../../../api/departments/get/getDepartmentDetail";
 import {
-	APIDepartmentDetail,
-	APIUpdateDepartment,
-} from '../../../api/departments/types';
-import { updateDepartment } from '../../../api/departments/update/updateDepartment';
-import {
-	Button,
 	DepartmentForm,
 	RedirectButton,
 	ShadowedContainer,
-} from '../../../components';
-import { DropdownOption } from '../../../components/Dropdown';
-import { useStore } from '../../../utils/store';
-import Layout from '../container/Layout';
-import * as RoutePath from '../../../RouteConfig';
+} from "../../../components";
+import { DropdownOption } from "../../../components/Dropdown";
+import { useStore } from "../../../utils/store";
+import * as RoutePath from "../../../RouteConfig";
 
 const EditDepartmentPage = () => {
 	const { id } = useParams<{ id: string }>();
-	const [t] = useTranslation('common');
+	const [t] = useTranslation("common");
 	const language = useStore((state) => state.language);
-	const [name, setName] = useState('');
+	const [name, setName] = useState("");
 	const [selectedLevel, setSelectedLevel] = useState<DropdownOption>();
-	const [fullName, setFullName] = useState('');
-	const [fullNameEnglish, setFullNameEnglish] = useState('');
+	const [fullName, setFullName] = useState("");
+	const [fullNameEnglish, setFullNameEnglish] = useState("");
 
-	const [nameEnglish, setNameEnglish] = useState('');
+	const [nameEnglish, setNameEnglish] = useState("");
 
 	const [selectedEmirate, setSelectedEmirate] = useState<DropdownOption>();
 	const [selectedParentDept, setSelectedParentDept] =
@@ -49,7 +42,7 @@ const EditDepartmentPage = () => {
 				const level = data?.level;
 				if (level) {
 					const levelName =
-						language !== 'ar' ? level?.name : level?.nameEnglish!;
+						language !== "ar" ? level?.name : level?.nameEnglish!;
 					setSelectedLevel(
 						(prevState) => (prevState = { label: levelName, value: level?.id! })
 					);
@@ -58,7 +51,7 @@ const EditDepartmentPage = () => {
 				// Emirate
 				const emirate = data?.emirate;
 				const emirateName =
-					language !== 'ar' ? emirate?.name : emirate?.nameEnglish!;
+					language !== "ar" ? emirate?.name : emirate?.nameEnglish!;
 				setSelectedEmirate({ label: emirateName, value: emirate.id });
 
 				// Parent Department
@@ -96,7 +89,7 @@ const EditDepartmentPage = () => {
 		<>
 			<ShadowedContainer>
 				<RedirectButton
-					label='Back to details'
+					label="Back to details"
 					redirectTo={RoutePath.DEPARTMENT}
 				/>
 			</ShadowedContainer>
@@ -117,7 +110,7 @@ const EditDepartmentPage = () => {
 				setSelectedEmirate={setSelectedEmirate}
 				selectedParentDepartment={selectedParentDept}
 				setSelectedPatrentDepartment={setSelectedParentDept}
-				actionButtonText={t('button.update', { framework: 'React' })}
+				actionButtonText={t("button.update", { framework: "React" })}
 				onActionClick={editClickHandler}
 			/>
 		</>

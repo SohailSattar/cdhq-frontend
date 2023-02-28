@@ -11,7 +11,6 @@ import React, {
 import { Column, useExpanded, useTable, useSortBy } from "react-table";
 import { ReactComponent as DownIcon } from "./down.svg";
 import { ReactComponent as RightIcon } from "./right.svg";
-import { useMediaQuery, useTheme } from "@material-ui/core";
 import { useStore } from "../../utils/store";
 // import { Tooltip } from '..';
 
@@ -73,8 +72,6 @@ export function Table<T extends object>(props: Props<T>): ReactElement {
 		[props.columns, props.renderSubComponent]
 	);
 	const data = useMemo(() => props.data, [props.data]);
-	const theme = useTheme();
-	const isMobile = useMediaQuery(theme.breakpoints.down(767));
 
 	const {
 		getTableProps,

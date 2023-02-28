@@ -1,12 +1,4 @@
-import {
-	Dispatch,
-	FC,
-	SetStateAction,
-	useEffect,
-	useMemo,
-	useRef,
-	useState,
-} from "react";
+import { FC, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getActiveStatusWithoutInactive } from "../../../api/activeStatus/get/getActiveStatusWithoutInactive";
 import { APIActiveStatus } from "../../../api/activeStatus/types";
@@ -18,20 +10,10 @@ import {
 import _ from "lodash/fp";
 import { getPrivileges } from "../../../api/privileges/get/getPrivileges";
 import { APIPrivilege } from "../../../api/privileges/type";
-import { getProjectsList } from "../../../api/projects/get/getProjectsList";
-import { APIProjectItem } from "../../../api/projects/types";
-import {
-	Button,
-	Checkbox,
-	Dropdown,
-	RadioButton,
-	ShadowedContainer,
-} from "../..";
+import { Button, Checkbox, Dropdown, ShadowedContainer } from "../..";
 import { useStore } from "../../../utils/store";
 import { DropdownOption } from "../../Dropdown";
-import { Id } from "../../../utils";
 import { getUsersListByDepartment } from "../../../api/departments/get/getUsersListByDepartment";
-import { getDepartments } from "../../../api/departments/get/getDepartments";
 import { getProjectInfoStatus } from "../../../api/projects/get/getProjectInfoStatus";
 
 import styles from "./styles.module.scss";

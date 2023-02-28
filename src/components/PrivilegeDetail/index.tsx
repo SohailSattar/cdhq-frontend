@@ -1,10 +1,9 @@
-import { FC } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useStore } from '../../utils/store';
-import ShadowedContainer from '../ShadowedContainer';
-import StatusIcon from '../StatusIcon';
+import { FC } from "react";
+import { useTranslation } from "react-i18next";
+import ShadowedContainer from "../ShadowedContainer";
+import StatusIcon from "../StatusIcon";
 
-import styles from './styles.module.scss';
+import styles from "./styles.module.scss";
 
 interface Props {
 	readPrivilege: boolean;
@@ -19,23 +18,23 @@ const PrivilegeDetail: FC<Props> = ({
 	updatePrivilege,
 	deletePrivilege,
 }) => {
-	const [t] = useTranslation('common');
+	const [t] = useTranslation("common");
 
 	return (
 		<ShadowedContainer className={styles.privilegeDetail}>
 			<table className={styles.table}>
 				<thead>
 					<tr>
-						<th>{t('privilege.read', { framework: 'React' })}</th>
-						<th>{t('privilege.insert', { framework: 'React' })}</th>
-						<th>{t('privilege.update', { framework: 'React' })}</th>
-						<th>{t('privilege.delete', { framework: 'React' })}</th>
+						<th>{t("privilege.read", { framework: "React" })}</th>
+						<th>{t("privilege.insert", { framework: "React" })}</th>
+						<th>{t("privilege.update", { framework: "React" })}</th>
+						<th>{t("privilege.delete", { framework: "React" })}</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
 						<td className={styles.rowIcon}>
-							<StatusIcon status={readPrivilege} />{' '}
+							<StatusIcon status={readPrivilege} />{" "}
 						</td>
 						<td className={styles.rowIcon}>
 							<StatusIcon status={insertPrivilege} />
@@ -44,7 +43,7 @@ const PrivilegeDetail: FC<Props> = ({
 							<StatusIcon status={updatePrivilege} />
 						</td>
 						<td className={styles.rowIcon}>
-							<StatusIcon status={deletePrivilege} />{' '}
+							<StatusIcon status={deletePrivilege} />{" "}
 						</td>
 					</tr>
 				</tbody>

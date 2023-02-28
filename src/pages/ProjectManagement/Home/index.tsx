@@ -7,22 +7,19 @@ import {
 	ShadowedContainer,
 } from "../../../components";
 import { DropdownOption } from "../../../components/Dropdown";
-import { ProjectsListTable } from "./containers";
 
 import { APIProject } from "../../../api/projects/types";
-import { getDepartments } from "../../../api/departments/get/getDepartments";
-import { getProjectsList } from "../../../api/projects/get/getProjectsList";
 import { getProjects } from "../../../api/projects/get/getProjects";
 import { getProjectsByKeyword } from "../../../api/projects/get/getProjectsByKeyword";
 
-import * as RoutePath from "../../../RouteConfig";
-
 import { ROLE } from "../../../utils";
 import { useStore } from "../../../utils/store";
-
-import styles from "./styles.module.scss";
 import { Column } from "react-table";
 import { ProjectColumns } from "../../../components/PaginatedTable/types";
+
+import * as RoutePath from "../../../RouteConfig";
+
+import styles from "./styles.module.scss";
 
 const ProjectManagementPage = () => {
 	const [t] = useTranslation("common");
@@ -35,11 +32,6 @@ const ProjectManagementPage = () => {
 	const [projects, setProjects] = useState<APIProject[]>([]);
 	const [totalCount, setTotalCount] = useState<number>(0);
 	const [pageSize, setPageSize] = useState<number>(10);
-
-	const [projectOptions, setProjectOptions] = useState<DropdownOption[]>([]);
-	const [departmentOptions, setDepartmentOptions] = useState<DropdownOption[]>(
-		[]
-	);
 
 	const id = t("project.id", { framework: "React" });
 	const projectName = t("project.name", { framework: "React" });
@@ -191,18 +183,21 @@ const ProjectManagementPage = () => {
 
 	return canView ? (
 		<div className={styles.projectsList}>
-			<ShadowedContainer className={styles.section}>
-				<div className={styles.actions}>
-					<div className={styles.btn}>
-						<RedirectButton
-							label={t("button.addNewProject", { framework: "React" })}
-							redirectTo={`${RoutePath.PROJECT}/new`}
-						/>
+			{role === ROLE.SUPERADMIN && (
+				<ShadowedContainer className={styles.section}>
+					<div className={styles.actions}>
+						<div className={styles.btn}>
+							<RedirectButton
+								label={t("button.addNewProject", { framework: "React" })}
+								redirectTo={`${RoutePath.PROJECT}/new`}
+							/>
+						</div>
 					</div>
-				</div>
-			</ShadowedContainer>
+				</ShadowedContainer>
+			)}
 
 			<PaginatedTable
+				totalCountText={t("project.count", { framework: "React" })}
 				totalCount={totalCount}
 				pageSize={pageSize}
 				data={projects}

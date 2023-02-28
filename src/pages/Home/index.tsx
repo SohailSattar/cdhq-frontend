@@ -1,20 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import {
 	Hr,
 	Loading,
 	PasswordExpiryMessage,
 	ProjectBoxList,
 	Welcome,
-} from '../../components';
+} from "../../components";
+import { useStore } from "../../utils/store";
 
-import { getUserProjectsList } from '../../api/userProjects/get/getUserProjectsList';
-import { useStore } from '../../utils/store';
+import { APIProjectItem } from "../../api/projects/types";
+import { getAllProjectsList } from "../../api/projects/get/getAllProjectsList";
 
-import * as RoutePath from '../../RouteConfig';
+import * as RoutePath from "../../RouteConfig";
 
-import styles from './styles.module.scss';
-import { APIProjectItem } from '../../api/projects/types';
-import { getAllProjectsList } from '../../api/projects/get/getAllProjectsList';
+import styles from "./styles.module.scss";
 
 const HomePage = () => {
 	const language = useStore((state) => state.language);
@@ -38,17 +37,17 @@ const HomePage = () => {
 			const { data } = await getAllProjectsList();
 
 			if (data) {
-				const x: APIProjectItem[] = data?.map((x: APIProjectItem) => {
-					// const isA = userProjects?.includes()
+				// const x: APIProjectItem[] = data?.map((x: APIProjectItem) => {
+				// 	// const isA = userProjects?.includes()
 
-					return {
-						id: x.id,
-						name: x.name,
-						nameEnglish: x.nameEnglish,
-						isAvailable: true,
-						iconName: x.iconName
-					};
-				});
+				// 	return {
+				// 		id: x.id,
+				// 		name: x.name,
+				// 		nameEnglish: x.nameEnglish,
+				// 		isAvailable: true,
+				// 		iconName: x.iconName,
+				// 	};
+				// });
 
 				setProjects(data);
 				setIsLoading(false);
@@ -75,7 +74,7 @@ const HomePage = () => {
 					/>
 				)}
 			<Welcome
-				name={language !== 'ar' ? loggedInUser.name : loggedInUser.nameEnglish}
+				name={language !== "ar" ? loggedInUser.name : loggedInUser.nameEnglish}
 				role={loggedInUser.role}
 			/>
 			<Hr />

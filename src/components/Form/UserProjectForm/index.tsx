@@ -3,13 +3,7 @@ import { FC, useEffect, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import _ from "lodash/fp";
 import { useTranslation } from "react-i18next";
-import {
-	Button,
-	Checkbox,
-	Dropdown,
-	RadioButton,
-	ShadowedContainer,
-} from "../..";
+import { Button, Checkbox, Dropdown, ShadowedContainer } from "../..";
 import { getActiveStatusWithoutInactive } from "../../../api/activeStatus/get/getActiveStatusWithoutInactive";
 import { APIActiveStatus } from "../../../api/activeStatus/types";
 import { getCategorizedDepartments } from "../../../api/departments/get/getCategorizedDepartments";
@@ -25,11 +19,11 @@ import { useStore } from "../../../utils/store";
 import { DropdownOption } from "../../Dropdown";
 
 import { IUserProjectFormInputs } from "../types";
-import styles from "./styles.module.scss";
 import { APIUserProjectDetail } from "../../../api/userProjects/types";
 import { getMainDepartments } from "../../../api/departments/get/getMainDepartments";
-import { da } from "date-fns/locale";
 import { DepartmentCategory } from "../../../data/departmentCategory";
+
+import styles from "./styles.module.scss";
 
 interface Props {
 	isNormalUser?: boolean;
@@ -55,7 +49,6 @@ const UserProjectForm: FC<Props> = ({
 		register,
 		formState: { errors },
 		handleSubmit,
-		getValues,
 		setValue,
 		control,
 	} = useForm<IUserProjectFormInputs>({ criteriaMode: "all" });
@@ -65,7 +58,6 @@ const UserProjectForm: FC<Props> = ({
 	const [privilegeOptions, setPrivilegeOptions] = useState<DropdownOption[]>(
 		[]
 	);
-	const [isPrivilegeDisabled, setIsPrivilegeDisabled] = useState(true);
 
 	const [disableWorkflow, setDisableWorkflow] = useState(false);
 	const [workflowRangeOptions, setWorkflowRangeOptions] = useState<
@@ -181,15 +173,19 @@ const UserProjectForm: FC<Props> = ({
 	);
 
 	useEffect(() => {
-		if (
-			data?.project!.departmentCategory!.code !==
-			DepartmentCategory.WorkLocation
-		) {
-			fetchMainDepartments(data?.project!.departmentCategory!.code);
+		if (data?.project?.departmentCategory !== null) {
+			if (
+				data?.project?.departmentCategory?.code! !==
+				DepartmentCategory.WorkLocation
+			) {
+				fetchMainDepartments(data?.project!.departmentCategory!.code);
+			} else {
+				fetchCategorizedDepartments();
+			}
 		} else {
 			fetchCategorizedDepartments();
 		}
-	}, [data?.project?.departmentCategory.code]);
+	}, [fetchMainDepartments, fetchCategorizedDepartments]);
 
 	// Structure Type
 	const departmentTypeOptions = useMemo(() => {
@@ -319,14 +315,11 @@ const UserProjectForm: FC<Props> = ({
 			}
 		}
 
-		setIsPrivilegeDisabled(false);
-
 		setValue("project", option);
 
 		if (
 			option.meta.departmentSelectionType !== DepartmentCategory.WorkLocation
 		) {
-			console.log(option.meta.departmentSelectionType);
 			fetchMainDepartments(option.meta.departmentSelectionType);
 		} else {
 			fetchCategorizedDepartments();

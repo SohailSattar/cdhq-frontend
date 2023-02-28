@@ -26,6 +26,7 @@ import { updateProjectStatus } from "../../../api/projects/update/updateProjectS
 import * as RoutePath from "../../../RouteConfig";
 
 import styles from "./styles.module.scss";
+import { ROLE } from "../../../utils";
 
 const ProjectDetailPage = () => {
 	const { id } = useParams<{ id: string }>();
@@ -33,6 +34,8 @@ const ProjectDetailPage = () => {
 	const navigate = useNavigate();
 
 	const language = useStore((state) => state.language);
+
+	const { role } = useStore((state) => state.loggedInUser);
 
 	const [showModal, setShowModal] = useState(false);
 
@@ -119,25 +122,27 @@ const ProjectDetailPage = () => {
 					<ProjectTree onNodeClick={projectTreeNodeClickHandler} />
 				</div>
 				<div className={styles.detail}>
-					<ShadowedContainer className={styles.btnSection}>
-						<div className={language !== "ar" ? styles.btn : styles.btnLTR}>
-							<RedirectButton
-								label={t("button.edit", { framework: "React" })}
-								redirectTo={`${RoutePath.PROJECT}/${id}/edit`}
-							/>
-						</div>
-						<div className={language !== "ar" ? styles.btn : styles.btnLTR}>
-							{status?.id === 1 ? (
-								<Button onClick={deleteButtonClickHandler} isCritical>
-									{t("button.deactivate", { framework: "React" })}
-								</Button>
-							) : (
-								<Button onClick={activateButtonClickHandler}>
-									{t("button.activate", { framework: "React" })}
-								</Button>
-							)}
-						</div>
-					</ShadowedContainer>
+					{role === ROLE.SUPERADMIN && (
+						<ShadowedContainer className={styles.btnSection}>
+							<div className={language !== "ar" ? styles.btn : styles.btnLTR}>
+								<RedirectButton
+									label={t("button.edit", { framework: "React" })}
+									redirectTo={`${RoutePath.PROJECT}/${id}/edit`}
+								/>
+							</div>
+							<div className={language !== "ar" ? styles.btn : styles.btnLTR}>
+								{status?.id === 1 ? (
+									<Button onClick={deleteButtonClickHandler} isCritical>
+										{t("button.deactivate", { framework: "React" })}
+									</Button>
+								) : (
+									<Button onClick={activateButtonClickHandler}>
+										{t("button.activate", { framework: "React" })}
+									</Button>
+								)}
+							</div>
+						</ShadowedContainer>
+					)}
 
 					<div>
 						<Status status={status!} />

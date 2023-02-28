@@ -1,13 +1,11 @@
-import React, { FunctionComponent, useReducer } from 'react';
-import { StateContext, DispatchContext } from './index';
-import { AppContextReducer } from './Reducer';
+import React, { FunctionComponent, useReducer } from "react";
+import { StateContext, DispatchContext } from "./index";
+import { AppContextReducer } from "./Reducer";
 // import { ThemeProvider } from "@material-ui/core/styles";
 // import { theme } from "../theme";
-import App from '../App';
-import WithAxios from '../network/WithAxios';
-import ResponsiveDialog from '../components/ResponsiveDialog';
-import { GlobalErrorSnackbar } from '../components';
-import { CookiesProvider } from 'react-cookie';
+import App from "../App";
+import ResponsiveDialog from "../components/ResponsiveDialog";
+import { CookiesProvider } from "react-cookie";
 
 const Setup: FunctionComponent = (): JSX.Element => {
 	const [appContextState, appContectDispatch] = useReducer(AppContextReducer, {

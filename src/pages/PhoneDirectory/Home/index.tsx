@@ -2,20 +2,11 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Column } from "react-table";
 import { toast } from "react-toastify";
-import { getPhoneDirectoryByDepartment } from "../../../api/phoneDirectory/get/getPhoneDirectoryByDepartment";
-import { getPhoneDirectoryList } from "../../../api/phoneDirectory/get/getPhoneDirectoryList";
-import {
-	APIPhoneDetail,
-	APIPhoneDirectory,
-} from "../../../api/phoneDirectory/types";
-import { updatePhoneDetails } from "../../../api/phoneDirectory/update/updatePhoneDetails";
 import { APIPrivileges } from "../../../api/privileges/type";
-import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPrivilege";
 import {
 	Button,
 	DepartmentTree,
 	Modal,
-	NotAuthorized,
 	PaginatedTable,
 	ShadowedContainer,
 } from "../../../components";
@@ -25,6 +16,17 @@ import { IPhoneFormInputs } from "../../../components/Form/types";
 import { PhoneDirectoryColumns } from "../../../components/PaginatedTable/types";
 import { Project } from "../../../data/projects";
 import { useStore } from "../../../utils/store";
+
+import {
+	APIPhoneDetail,
+	APIPhoneDirectory,
+} from "../../../api/phoneDirectory/types";
+
+import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPrivilege";
+import { updatePhoneDetails } from "../../../api/phoneDirectory/update/updatePhoneDetails";
+import { getPhoneDirectoryByDepartment } from "../../../api/phoneDirectory/get/getPhoneDirectoryByDepartment";
+import { getPhoneDirectoryList } from "../../../api/phoneDirectory/get/getPhoneDirectoryList";
+
 import styles from "./styles.module.scss";
 
 const PhoneDirectoryPage = () => {
@@ -47,7 +49,7 @@ const PhoneDirectoryPage = () => {
 	const [selectedRow, setSelectedRow] = useState<APIPhoneDirectory>();
 
 	const id = t("user.id", { framework: "React" });
-	const employeeNo = t("user.employeeNumber", { framework: "React" });
+	// const employeeNo = t("user.employeeNumber", { framework: "React" });
 	const rank = t("rank.name", { framework: "React" });
 	const fullName = t("user.name", { framework: "React" });
 	const phone = t("user.phone", { framework: "React" });
@@ -123,7 +125,17 @@ const PhoneDirectoryPage = () => {
 				),
 			},
 		],
-		[actions, edit, employeeNo, fullName, id, language, rank, privileges] //role
+		[
+			actions,
+			edit,
+			fullName,
+			phone,
+			phoneOffice,
+			id,
+			language,
+			rank,
+			privileges,
+		] //role
 	);
 
 	const pageViewSelectionHandler = (option: DropdownOption) => {
@@ -157,7 +169,7 @@ const PhoneDirectoryPage = () => {
 
 			if (privilege?.readPrivilege) {
 				if (selectedDepartment) {
-					const { data, error } = await getPhoneDirectoryByDepartment(
+					const { data } = await getPhoneDirectoryByDepartment(
 						selectedDepartment,
 						currentPage,
 						pageSize
@@ -186,7 +198,7 @@ const PhoneDirectoryPage = () => {
 
 	useEffect(() => {
 		fetchData(currentPage);
-	}, [fetchData]);
+	}, [fetchData, currentPage]);
 
 	const userSearchClickHandler = (keyword: string) => {
 		setKeyword(keyword);
@@ -247,6 +259,7 @@ const PhoneDirectoryPage = () => {
 				</div>
 				<div className={styles.table}>
 					<PaginatedTable
+						totalCountText={t("user.count", { framework: "React" })}
 						totalCount={totalCount}
 						pageSize={pageSize}
 						data={employees}

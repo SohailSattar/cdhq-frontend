@@ -4,19 +4,20 @@ import { useNavigate } from "react-router-dom";
 
 import { Footer, Header, Loader, NotAuthorized } from "..";
 import { getMyDetail } from "../../api/users/get/getMyDetail";
-import localStorageService from "../../network/localStorageService";
 import { useStore } from "../../utils/store";
-
-import * as RoutePath from "../../RouteConfig";
-
-import styles from "./styles.module.scss";
 import { getMyRole } from "../../api/users/get/getMyRole";
 import { APILoggedUser } from "../../api/users/types";
 import { getProjectPrivilege } from "../../api/userProjects/get/getProjectPrivilege";
 
+import { PrivilegeType } from "../types";
+
+import * as RoutePath from "../../RouteConfig";
+
+import styles from "./styles.module.scss";
+
 interface Props {
 	projectId?: number;
-	privilegeType?: "Read" | "Write" | "Update" | "Delete" | "All" | "None";
+	privilegeType?: PrivilegeType;
 	children: any;
 }
 
@@ -53,7 +54,7 @@ const Layout: FC<Props> = ({ projectId, privilegeType = "All", children }) => {
 			// 	setCanView(false);
 			// }
 		},
-		[projectId, canView, setCanView]
+		[projectId, privilegeType, setCanView]
 	);
 
 	useEffect(() => {
@@ -62,7 +63,7 @@ const Layout: FC<Props> = ({ projectId, privilegeType = "All", children }) => {
 		} else {
 			setCanView(true);
 		}
-	}, [projectId, canView, setCanView]);
+	}, [projectId, fetch, canView, setCanView]);
 
 	const loggedUser: APILoggedUser = useStore(
 		(state: { loggedInUser: any }) => state.loggedInUser
@@ -77,6 +78,9 @@ const Layout: FC<Props> = ({ projectId, privilegeType = "All", children }) => {
 			if (role !== loggedUser?.role!) {
 				setLoggedUser({ ...loggedUser, role: role });
 			}
+
+			// console.log(myRole);
+			// console.log(myRole, loggedUser);
 
 			if (loggedUser.userName === "") {
 				const { data, error } = await getMyDetail();
