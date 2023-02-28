@@ -32,13 +32,14 @@ import { DropdownOption } from "../../Dropdown";
 import { Id } from "../../../utils";
 import { getUsersListByDepartment } from "../../../api/departments/get/getUsersListByDepartment";
 import { getDepartments } from "../../../api/departments/get/getDepartments";
-import { getProjectWorkflowStatus } from "../../../api/projects/get/getProjectWorkflowStatus";
+import { getProjectInfoStatus } from "../../../api/projects/get/getProjectInfoStatus";
 
 import styles from "./styles.module.scss";
 import { Controller, useForm } from "react-hook-form";
 import { IProjectUserFormInputs } from "../types";
 import { ErrorMessage } from "@hookform/error-message";
 import { APIUserProjectDetail } from "../../../api/userProjects/types";
+import { getMainDepartments } from "../../../api/departments/get/getMainDepartments";
 
 interface Props {
 	mode: "ADD" | "EDIT";
@@ -135,29 +136,63 @@ const ProjectUserForm: FC<Props> = ({
 	}, [language]);
 
 	//Department
-	useEffect(() => {
-		const fetchData = async () => {
+	const fetchMainDepartments = useMemo(
+		() => async (code?: string) => {
+			console.log(code);
+			const { data } = await getMainDepartments(code);
+
+			if (data) {
+				setDepartmentsOptions(
+					data.map((dept: APIDepartmentItem) => {
+						return {
+							label: language !== "ar" ? dept.name : dept.nameEnglish,
+							value: dept.id,
+						};
+					})
+				);
+			}
+		},
+		[setDepartmentsOptions, language]
+	);
+
+	const fetchCategorizedDepartments = useMemo(
+		() => async () => {
 			const { data } = await getCategorizedDepartments();
 
 			if (data) {
-				const options: DropdownOption[] = data.map(
-					(dept: APICategorizedDepartment) => {
+				setDepartmentsOptions(
+					data.map((dept: APICategorizedDepartment) => {
 						return { label: dept.longFullName, value: dept.id };
-					}
+					})
 				);
-
-				setDepartmentsOptions(options);
-
-				setEmpDepartmentsOptions(options);
 			}
-		};
+		},
+		[setDepartmentsOptions, language]
+	);
 
-		fetchData();
-	}, []);
+	// useEffect(() => {
+	// 	const fetchData = async () => {
+	// 		const { data } = await getCategorizedDepartments();
+
+	// 		if (data) {
+	// 			const options: DropdownOption[] = data.map(
+	// 				(dept: APICategorizedDepartment) => {
+	// 					return { label: dept.longFullName, value: dept.id };
+	// 				}
+	// 			);
+
+	// 			setDepartmentsOptions(options);
+
+	// 			setEmpDepartmentsOptions(options);
+	// 		}
+	// 	};
+
+	// 	fetchData();
+	// }, []);
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const { data } = await getProjectWorkflowStatus(id);
+			const { data } = await getProjectInfoStatus(id);
 
 			if (data) {
 				if (data.hasWorkflow === false) {
@@ -173,6 +208,16 @@ const ProjectUserForm: FC<Props> = ({
 					);
 				} else {
 					setDisableWorkflow(false);
+				}
+
+				if (data?.departmentCategory! !== null) {
+					if (data?.departmentCategory?.code! !== "C") {
+						fetchMainDepartments(data?.departmentCategory?.code!);
+					} else {
+						fetchCategorizedDepartments();
+					}
+				} else {
+					fetchCategorizedDepartments();
 				}
 			}
 		};
@@ -269,7 +314,7 @@ const ProjectUserForm: FC<Props> = ({
 			);
 			setValue("structureType", selectedStructureType!);
 
-			setValue("canGrant", data?.canGrant);
+			setValue("canGrant", canGrant);
 		}
 	}, [
 		data,
@@ -335,7 +380,7 @@ const ProjectUserForm: FC<Props> = ({
 											value={value}
 											onSelect={onChange}
 											disabled={mode === "EDIT"}
-											reference={empDeptRef}
+											reference={userRef}
 										/>
 									)}
 									name="user"
@@ -410,7 +455,7 @@ const ProjectUserForm: FC<Props> = ({
 								/>
 							</div>
 						</div>
-						<div className={styles.row}>
+						{/* <div className={styles.row}>
 							<div className={styles.rowItem}>
 								<Controller
 									render={({ field: { value, onChange } }) => (
@@ -426,7 +471,7 @@ const ProjectUserForm: FC<Props> = ({
 									// rules={{ required: true }}
 								/>
 							</div>
-						</div>
+						</div> */}
 						<div className={styles.row}>
 							<div className={styles.rowItem}>
 								<Controller

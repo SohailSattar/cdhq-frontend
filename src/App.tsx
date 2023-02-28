@@ -307,16 +307,14 @@ function App() {
 							}
 						/>
 					</Route>
-					<Route element={<ProtectedRoute />}>
-						<Route
-							path={`${RoutePath.NEWS}/:id`}
-							element={
-								<Layout>
-									<NewsDetailPage />
-								</Layout>
-							}
-						/>
-					</Route>
+					<Route
+						path={`${RoutePath.NEWS}/:id`}
+						element={
+							<Layout>
+								<NewsDetailPage />
+							</Layout>
+						}
+					/>
 					<Route element={<ProtectedRoute />}>
 						<Route
 							path={`${RoutePath.NEWS}/:id/edit`}

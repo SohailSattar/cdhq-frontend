@@ -68,8 +68,9 @@ export interface APIPaginatedProjectUser extends APIPaginate {
 	users: APIProjectUser[];
 }
 
-export interface APIProjectWorkflowStatus {
+export interface APIProjectInfoStatus {
 	hasWorkflow: boolean;
+	departmentCategory?: APIDepartmentCategory;
 }
 
 export interface APINewProject {

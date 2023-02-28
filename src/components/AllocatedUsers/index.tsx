@@ -229,8 +229,15 @@ const AllocatedUsers: FC<Props> = ({ projectId }) => {
 					</ShadowedContainer>
 				</div>
 			</div>
-			<SearchBox onClick={userSearchHandler} label="Search User" />
-			<Table data={users!} columns={columns} />
+			<SearchBox
+				onClick={userSearchHandler}
+				label={t("search.user", { framework: "React" })}
+			/>
+			<Table
+				data={users!}
+				columns={columns}
+				noRecordsText={t("table.noUser", { framework: "React" })}
+			/>
 			<Pagination
 				className={styles.paginationBar}
 				currentPage={currentPage}

@@ -7,15 +7,14 @@ import { addUser } from "../../../api/users/add/addUser";
 import { checkIfUserExists } from "../../../api/users/get/checkIfUserExists";
 import { APINewUser, APIUserDetail } from "../../../api/users/types";
 import { NotAuthorized } from "../../../components";
-import { DropdownOption } from "../../../components/Dropdown";
 import { useStore } from "../../../utils/store";
 
 import * as RoutePath from "../../../RouteConfig";
+import UserForm from "../../../components/Form/UserForm";
 
 import { ROLE } from "../../../utils";
-import UserForm from "../../../components/Form/UserForm";
+
 import { IUserFormInputs } from "../../../components/Form/types";
-import { APIExistingEmployee } from "../../../api/employees/types";
 
 const NewUserPage = () => {
 	const { id } = useParams<{ id: string }>();
@@ -29,20 +28,6 @@ const NewUserPage = () => {
 	const [employeeExists, setEmployeeExists] = useState(true);
 
 	const [employee, setEmployee] = useState<APIUserDetail>();
-
-	const [employeeNumber, setEmployeeNumber] = useState<string>("");
-	const [logName, setLogName] = useState<string>("");
-
-	const [name, setName] = useState<string>("");
-	const [nameEnglish, setNameEnglish] = useState<string>("");
-
-	const [selectedDepartment, setSelectedDepartment] =
-		useState<DropdownOption>();
-
-	const [selectedClass, setSelectedClass] =
-		useState<DropdownOption | undefined | null>(null);
-
-	const [selectedRank, setSelectedRank] = useState<DropdownOption>();
 
 	useEffect(() => {
 		if (role === ROLE.SUPERADMIN) {
@@ -85,37 +70,6 @@ const NewUserPage = () => {
 						class: classDetail!,
 						rank: rank!,
 					});
-
-					setEmployeeNumber(empNo.toString()!);
-
-					// LogName is the combination of Class code + Employee Number
-					const lname = classDetail?.logPre! + empNo;
-					setLogName(lname);
-
-					// setName(name);
-					// setNameEnglish(nameEnglish!);
-
-					// let ddv: DropdownOption = {
-					// 	label:
-					// 		language !== 'ar' ? department!.name! : department!.nameEnglish!,
-					// 	value: department!.id!,
-					// };
-					// setSelectedDepartment(ddv);
-
-					// ddv = {
-					// 	label:
-					// 		language !== 'ar'
-					// 			? classDetail!.name!
-					// 			: classDetail!.nameEnglish!,
-					// 	value: classDetail!.id!,
-					// };
-					// setSelectedClass(ddv);
-
-					// ddv = {
-					// 	label: language !== 'ar' ? rank!.name! : rank!.nameEnglish!,
-					// 	value: rank!.id!,
-					// };
-					// setSelectedRank(ddv);
 				}
 			} else {
 				setEmployeeExists(false);

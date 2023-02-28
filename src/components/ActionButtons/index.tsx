@@ -71,13 +71,13 @@ const ActionButtons: FC<Props> = ({
 				)}
 				{isEditMode && showEdit && (
 					<div className={styles.divBtn}>
-						<Button>Update</Button>
+						<Button>{t("button.update", { framework: "React" })}</Button>
 					</div>
 				)}
 				{showDelete && (
 					<div className={styles.divBtn}>
 						<Button isCritical onClick={deleteClickHandler}>
-							Delete
+							{t("button.delete", { framework: "React" })}
 						</Button>
 					</div>
 				)}

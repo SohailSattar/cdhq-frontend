@@ -37,17 +37,17 @@ const EditProjectUserPage = () => {
 
 			if (data) {
 				setUserProject(data);
-				let userName = "";
+				// let userName = "";
 
-				if (language !== "ar") {
-					userName = data?.user.name!;
-				} else {
-					if (data?.user.nameEnglish! === null) {
-						userName = data?.user.name!;
-					} else {
-						userName = data?.user.nameEnglish!;
-					}
-				}
+				// if (language !== "ar") {
+				// 	userName = data?.user.name!;
+				// } else {
+				// 	if (data?.user.nameEnglish! === null) {
+				// 		userName = data?.user.name!;
+				// 	} else {
+				// 		userName = data?.user.nameEnglish!;
+				// 	}
+				// }
 
 				// Can Grant
 				if (data?.user.roleId === 0 || data?.user.roleId === 3) {

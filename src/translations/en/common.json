@@ -194,6 +194,9 @@
 	"footer": {
 		"text": "Ministry of Interior - Civil Defense"
 	},
+	"search": {
+		"user": "Search user"
+	},
 	"news": {
 		"id": "News Id",
 		"title": "Title",
