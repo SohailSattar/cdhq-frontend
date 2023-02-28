@@ -1,14 +1,10 @@
-import React, { FC } from 'react';
-import ReactModal from 'react-modal';
+import React, { FC } from "react";
+import ReactModal from "react-modal";
 
-import icon from '../../assets/icons/event-icon.svg';
-import location from '../../assets/icons/location.svg';
-import cross from '../../assets/icons/cross.svg';
-import date from '../../assets/icons/date.svg';
-import gateopen from '../../assets/icons/gateopen.svg';
+import cross from "../../assets/icons/cross.svg";
 
-import styles from './styles.module.scss';
-import './style.scss';
+import styles from "./styles.module.scss";
+import "./style.scss";
 
 interface Props {
 	hideXButton?: boolean;
@@ -28,10 +24,11 @@ export const Modal: FC<Props> = ({
 			className={styles.modalPopup}
 			isOpen={isOpen}
 			ariaHideApp={false}
-			shouldCloseOnOverlayClick={true}>
+			shouldCloseOnOverlayClick={true}
+		>
 			{!hideXButton && (
 				<div className={styles.closeLine}>
-					<img onClick={onClose} src={cross} alt='close' />
+					<img onClick={onClose} src={cross} alt="close" />
 				</div>
 			)}
 			<div className={styles.content}>{children}</div>

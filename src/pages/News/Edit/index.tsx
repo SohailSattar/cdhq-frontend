@@ -5,17 +5,12 @@ import { toast } from "react-toastify";
 import { getNewsDetail } from "../../../api/news/get/getNewsDetail";
 import { APINewsDetail, APIUpdateNews } from "../../../api/news/types";
 import { updateNews } from "../../../api/news/update/updateNews";
-import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPrivilege";
-import { NotAuthorized } from "../../../components";
 import NewsForm from "../../../components/Form/NewsForm";
 import { INewsFormInputs } from "../../../components/Form/types";
-import { Project } from "../../../data/projects";
 
 const EditNewsPage = () => {
 	const { id } = useParams<{ id: string }>();
 	const [t] = useTranslation("common");
-
-	const [canView, setCanView] = useState<boolean>(false);
 
 	const [news, setNews] = useState<APINewsDetail>();
 
@@ -24,14 +19,14 @@ const EditNewsPage = () => {
 			const { data } = await getNewsDetail(id!);
 			setNews(data);
 		},
-		[]
+		[id]
 	);
 
 	useEffect(() => {
 		if (id) {
 			fetch();
 		}
-	}, [id]);
+	}, [id, fetch]);
 
 	const editNewsHandler = async (values: INewsFormInputs) => {
 		const params: APIUpdateNews = {

@@ -1,12 +1,11 @@
-import { FC } from 'react';
-import { ProjectCard } from '../..';
-import Card from '../../Card';
+import { FC } from "react";
+import { ProjectCard } from "../..";
 
-import styles from './styles.module.scss';
+import styles from "./styles.module.scss";
 
 interface Props {
 	name: string;
-	icon:string;
+	icon: string;
 	available: boolean;
 }
 

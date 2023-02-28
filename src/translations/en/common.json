@@ -198,6 +198,7 @@
 		"user": "Search user"
 	},
 	"news": {
+		"count": "Total News Count",
 		"id": "News Id",
 		"title": "Title",
 		"shortSummary": "Short Summary",

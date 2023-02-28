@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { getNewsDetail } from "../../../api/news/get/getNewsDetail";
 import { APINewsDetail } from "../../../api/news/types";
-import { Hr, ShadowedContainer, Title } from "../../../components";
+import { ShadowedContainer } from "../../../components";
 import NewsContent from "./containers/Content";
 import NewsHeading from "./containers/Heading";
 import NewsMeta from "./containers/Meta";
@@ -12,7 +11,6 @@ import styles from "./styles.module.scss";
 
 const NewsDetailPage = () => {
 	const { id } = useParams<{ id: string }>();
-	const [t] = useTranslation("common");
 
 	const [detail, setDetail] = useState<APINewsDetail>();
 
@@ -29,7 +27,7 @@ const NewsDetailPage = () => {
 		};
 
 		fetchData();
-	}, []);
+	}, [id]);
 
 	return (
 		<div className={styles.detail}>

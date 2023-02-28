@@ -65,10 +65,7 @@ const radiusBordered = (base: any) =>
 	});
 
 const hidden = (base: any) => mergeProps(base, { display: "none" });
-const whiteColor = (base: any) => mergeProps(base, { color: "#fff" });
 const blackColor = (base: any) => mergeProps(base, { color: "#000" });
-
-const clearHandler = () => {};
 
 export const Dropdown: FC<Props> = ({
 	label = "",
@@ -121,61 +118,6 @@ export const Dropdown: FC<Props> = ({
 	const background = useCallback(
 		(base: any) => mergeProps(base, { background: backgroundColor }),
 		[backgroundColor]
-	);
-	const optionsBackground = useCallback(
-		(base: any) => mergeProps(base, { background: optionsBackgroundColor }),
-		[optionsBackgroundColor]
-	);
-	const styles = useMemo(
-		() =>
-			blurred
-				? {
-						container: compose(fontStyle, zIndexFunc),
-						placeholder: compose(fontStyle, blackColor),
-						menuList: compose(blackColor, fontStyle, optionsBackground),
-						singleValue: blackColor,
-						input: compose(blackColor, fontStyle),
-						control: compose(
-							fontStyle,
-							background,
-							bordered ? radiusBordered : radius
-						),
-						indicatorSeparator: hidden,
-						multiValueLabel: blackColor,
-						option: (provided: any, state: { isFocused: any }) =>
-							compose(() =>
-								mergeProps(provided, {
-									background: "transparent",
-									// zIndex: 5,
-									color: "#000",
-									// fontWeight: 'bold',
-								})
-							),
-				  }
-				: {
-						placeholder: compose(fontStyle, blackColor),
-						menuList: compose(blackColor, fontStyle, optionsBackground),
-						singleValue: blackColor,
-						input: compose(blackColor, fontStyle),
-						menu: zIndexFunc2,
-						control: compose(
-							fontStyle,
-							background,
-							bordered ? radiusBordered : radius
-						),
-						indicatorSeparator: hidden,
-						multiValueLabel: blackColor,
-						option: (provided: any, state: { isFocused: any }) =>
-							compose(() =>
-								mergeProps(provided, {
-									background: "transparent",
-									zIndex: 5,
-									color: "#000",
-									// fontWeight: 'bold',
-								})
-							),
-				  },
-		[blurred, fontStyle, optionsBackground, background, bordered]
 	);
 
 	return (

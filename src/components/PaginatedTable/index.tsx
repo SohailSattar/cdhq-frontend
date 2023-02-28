@@ -2,10 +2,8 @@ import { FC, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Column } from "react-table";
 import {
-	Button,
 	Dropdown,
 	Pagination,
-	RedirectButton,
 	SearchBox,
 	ShadowedContainer,
 	Table,
@@ -17,7 +15,7 @@ import { DropdownOption } from "../Dropdown";
 import styles from "./styles.module.scss";
 
 interface Props {
-	totalCountText?: string;
+	totalCountText: string;
 	totalCount: number;
 	pageSize: number;
 	data: any;
@@ -79,10 +77,7 @@ const PaginatedTable: FC<Props> = ({
 			</div>
 			<div className={styles.detailBar}>
 				<div className={language !== "ar" ? styles.info : styles.infoLTR}>
-					<TotalCount
-						label={t("user.count", { framework: "React" })}
-						count={totalCount}
-					/>
+					<TotalCount label={totalCountText} count={totalCount} />
 				</div>
 				<div
 					className={language !== "ar" ? styles.selection : styles.selectionLTR}
@@ -91,11 +86,9 @@ const PaginatedTable: FC<Props> = ({
 						<Dropdown
 							options={pageViewOptions}
 							onSelect={pageViewSelectionChangeHandler}
-							placeholder={
-								totalCountText === ""
-									? t("pagination.recordPerPage", { framework: "React" })
-									: totalCountText
-							}
+							placeholder={t("pagination.recordPerPage", {
+								framework: "React",
+							})}
 						/>
 					</ShadowedContainer>
 				</div>

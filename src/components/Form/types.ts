@@ -59,6 +59,7 @@ export interface IPhoneFormInputs {
 }
 
 export interface INewsFormInputs {
+	department: DropdownOption;
 	title: string;
 	shortSummary: string;
 	imageName: string;

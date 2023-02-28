@@ -3,17 +3,27 @@ import { instance } from "../../../network";
 import { APIDepartmentItem } from "../types";
 
 export async function getMainDepartments(
-	code?: string
+	code?: string,
+	projectId?: number
 ): Promise<APIResponse<APIDepartmentItem[]>> {
 	try {
-		let keyword = "";
-		if (code) {
-			keyword = `?keyword=${code}`;
-		}
-
 		const config = getConfig();
 
-		const url = `/departments/main` + keyword;
+		let keyword = "";
+		if (code) {
+			keyword = `keyword=${code}`;
+		}
+
+		let projectIdParam = "";
+		if (keyword !== "" && projectId) {
+			projectIdParam = "&";
+		}
+
+		if (projectId) {
+			projectIdParam += `projectid=6110`;
+		}
+
+		const url = `/departments/main?` + keyword + projectIdParam;
 
 		const response = await instance.get<APIDepartmentItem[]>(url, config);
 		const data = response.data;

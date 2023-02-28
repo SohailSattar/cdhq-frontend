@@ -12,3 +12,11 @@ export interface Message {
 	url?: string;
 	urlText?: string;
 }
+
+export type PrivilegeType =
+	| "Read"
+	| "Write"
+	| "Update"
+	| "Delete"
+	| "All"
+	| "None";

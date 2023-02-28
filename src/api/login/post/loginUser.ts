@@ -1,7 +1,6 @@
-import axios from 'axios';
-import { APILogin, APILoginResponse, APIResponse } from '../..';
-import { instance } from '../../../network';
-import property from '../../../network/property';
+import axios from "axios";
+import { APILogin, APILoginResponse, APIResponse } from "../..";
+import property from "../../../network/property";
 
 export async function loginUser(
 	loginParams: APILogin

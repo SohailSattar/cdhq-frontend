@@ -1,4 +1,4 @@
-import { FC, useCallback } from "react";
+import { FC, useCallback, useMemo } from "react";
 import classnames from "classnames";
 import Tree, {
 	DefaultNodeProps,
@@ -23,9 +23,12 @@ export interface Props {
 }
 
 const TreeView: FC<Props> = ({ node, onNodeClick, direction = "rtl" }) => {
-	const nodeClickHandler = (e: any) => {
-		onNodeClick(e);
-	};
+	const nodeClickHandler = useMemo(
+		() => (e: any) => {
+			onNodeClick(e);
+		},
+		[onNodeClick]
+	);
 
 	const renderNode = useCallback(
 		({ node, onToggle }: DefaultNodeProps) => (
@@ -70,7 +73,7 @@ const TreeView: FC<Props> = ({ node, onNodeClick, direction = "rtl" }) => {
 				</div>
 			</div>
 		),
-		[]
+		[direction, nodeClickHandler]
 	);
 
 	const data = { ...node }; //

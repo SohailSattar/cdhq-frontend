@@ -7,16 +7,15 @@ import { APINews } from "../../../api/news/types";
 import { APIPrivileges } from "../../../api/privileges/type";
 import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPrivilege";
 import {
-	Button,
 	PaginatedTable,
 	RedirectButton,
 	ShadowedContainer,
 	ActionButtons,
-	NotAuthorized,
 } from "../../../components";
 import { DropdownOption } from "../../../components/Dropdown";
 import { NewsColumns } from "../../../components/PaginatedTable/types";
 import { Project } from "../../../data/projects";
+
 import * as RoutePath from "../../../RouteConfig";
 
 import styles from "./styles.module.scss";
@@ -62,7 +61,7 @@ const NewsHomePage = () => {
 				}
 			}
 		},
-		[currentPage, pageSize]
+		[pageSize]
 	);
 
 	useEffect(() => {
@@ -80,16 +79,18 @@ const NewsHomePage = () => {
 		setPageSize(size);
 	};
 
-	const editClickHandler = (id: string) => {
-		navigate(`${RoutePath.NEWS}/${id}/edit`);
-	};
+	const editClickHandler = useMemo(
+		() => (id: string) => {
+			navigate(`${RoutePath.NEWS}/${id}/edit`);
+		},
+		[navigate]
+	);
 
 	const txtId = t("news.id", { framework: "React" });
 	const title = t("news.title", { framework: "React" });
 
 	//Actions
 	const actions = t("global.actions", { framework: "React" });
-	const edit = t("button.edit", { framework: "React" });
 
 	const columns: Column<NewsColumns>[] = useMemo(
 		() => [
@@ -118,7 +119,7 @@ const NewsHomePage = () => {
 				),
 			},
 		],
-		[privileges]
+		[privileges, actions, editClickHandler, title, txtId]
 	);
 
 	return (
@@ -134,6 +135,7 @@ const NewsHomePage = () => {
 
 			<div>
 				<PaginatedTable
+					totalCountText={t("news.count", { framework: "React" })}
 					totalCount={totalCount}
 					pageSize={pageSize}
 					data={news}

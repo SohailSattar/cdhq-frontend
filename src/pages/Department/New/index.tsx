@@ -1,19 +1,18 @@
-import { SetStateAction, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { DepartmentForm } from '../../../components';
-import { DropdownOption } from '../../../components/Dropdown';
-import Layout from '../container/Layout';
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { DepartmentForm } from "../../../components";
+import { DropdownOption } from "../../../components/Dropdown";
 
 const NewDepartmentPage = () => {
-	const [t] = useTranslation('common');
+	const [t] = useTranslation("common");
 
-	const [id, setId] = useState('');
-	const [name, setName] = useState('');
-	const [nameEnglish, setNameEnglish] = useState('');
+	const [id, setId] = useState("");
+	const [name, setName] = useState("");
+	const [nameEnglish, setNameEnglish] = useState("");
 	const [selectedLevelOption, setSelectedLevelOption] =
 		useState<DropdownOption>();
-	const [fullName, setFullName] = useState('');
-	const [fullNameEnglish, setFullNameEnglish] = useState('');
+	const [fullName, setFullName] = useState("");
+	const [fullNameEnglish, setFullNameEnglish] = useState("");
 	const [selectedEmirate, setSelectedEmirate] = useState<DropdownOption>();
 
 	const departmentSaveClickHandler = () => {};
@@ -32,7 +31,7 @@ const NewDepartmentPage = () => {
 			setFullName={setFullName}
 			fullNameEnglish={fullNameEnglish}
 			setFullNameEnglish={setFullNameEnglish}
-			actionButtonText={t('button.save', { framework: 'React' })}
+			actionButtonText={t("button.save", { framework: "React" })}
 			onActionClick={departmentSaveClickHandler}
 			selectedEmirate={selectedEmirate!}
 			setSelectedEmirate={setSelectedEmirate}
