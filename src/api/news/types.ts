@@ -3,10 +3,10 @@ import { APIPaginate } from "../types";
 export interface APINews {
 	id: number;
 	title: string;
+	shortSummary: string;
 }
 
 export interface APINewsDetail extends APINews {
-	shortSummary: string;
 	// imageName: string;
 	thumbnail: File;
 	newsType: APINewsType;
