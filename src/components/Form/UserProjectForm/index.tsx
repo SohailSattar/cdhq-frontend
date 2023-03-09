@@ -70,11 +70,11 @@ const UserProjectForm: FC<Props> = ({
 	// Project
 	useEffect(() => {
 		const fetchData = async () => {
-			const { data } = await getProjectsList();
-			if (data) {
+			const { data: list } = await getProjectsList();
+			if (list) {
 				setProjectOptions(
 					(prevState) =>
-						(prevState = data?.map((project: APIProjectItem) => {
+						(prevState = list?.map((project: APIProjectItem) => {
 							const name =
 								language !== "ar" ? project.name : project.nameEnglish;
 
@@ -169,7 +169,7 @@ const UserProjectForm: FC<Props> = ({
 				);
 			}
 		},
-		[setDepartmentsOptions, language]
+		[setDepartmentsOptions]
 	);
 
 	useEffect(() => {

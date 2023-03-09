@@ -89,6 +89,7 @@
 		"count": "Projects Count",
 		"noProject": "No project is assigned.",
 		"deptCat": "Department Category",
+		"withAcademy": "Should the academy also be in the list of departmentt?",
 		"hasWorkflow": "Has a workflow?"
 	},
 	"userProject": {
@@ -159,6 +160,7 @@
 		"noAccountContact": "Don't have an account? Contact the electronic services department",
 		"employeeNotExists": "No employee with this employee number exists! Please contact the Ministry of Interior.",
 		"employeeUserExists": "User already exists. To edit this user, click on this link",
+		"noUserInList": "Not in the list? Click on \"New User\"",
 		"userActivated": "User is now active",
 		"userDeactivated": "The user has been deactivated",
 		"userAdded": "User has been created",

@@ -78,6 +78,8 @@ export interface APINewProject {
 	nameEnglish: string;
 	parentId: number;
 	projectGroupId: number;
+	departmentCategoryId?: number;
+	withAcademy: boolean;
 	hasWorkflow: boolean;
 }
 
@@ -88,6 +90,7 @@ export interface APIUpdateProject {
 	parentId: number;
 	projectGroupId: number;
 	departmentCategoryId?: number;
+	withAcademy: boolean;
 	hasWorkflow: boolean;
 }
 

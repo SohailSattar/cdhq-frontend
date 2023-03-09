@@ -1,5 +1,7 @@
 import { DropdownOption } from "../Dropdown";
 
+export type FormMode = "ADD" | "EDIT";
+
 export interface ILoginFormInputs {
 	userName: string;
 	password: string;
@@ -16,6 +18,7 @@ export interface IProjectFormInputs {
 	parentProject: DropdownOption;
 	projectGroup: DropdownOption;
 	departmentCategory?: DropdownOption;
+	withAcademy: boolean;
 	hasWorkflow: boolean;
 }
 

@@ -17,11 +17,11 @@ import clsx from "clsx";
 
 interface Props {
 	data?: APIProjectDetail;
-	onSubmit: (data: IProjectFormInputs) => void;
 	actionButtonText: string;
+	onSubmit: (data: IProjectFormInputs) => void;
 }
 
-const ProjectForm: FC<Props> = ({ data, onSubmit, actionButtonText }) => {
+const ProjectForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 	const [t] = useTranslation("common");
 	const language = useStore((state) => state.language);
 
@@ -29,8 +29,6 @@ const ProjectForm: FC<Props> = ({ data, onSubmit, actionButtonText }) => {
 		register,
 		formState: { errors },
 		handleSubmit,
-		reset,
-		setError,
 		setValue,
 		control,
 	} = useForm<IProjectFormInputs>({ criteriaMode: "all" });
@@ -54,14 +52,17 @@ const ProjectForm: FC<Props> = ({ data, onSubmit, actionButtonText }) => {
 			if (data) {
 				setProjectsOptions(
 					data?.map((d) => {
-						return { label: `${d.name}  -  ${d.nameEnglish}`, value: d.id };
+						return {
+							label: language !== "ar" ? d.name : d.nameEnglish,
+							value: d.id,
+						};
 					})
 				);
 			}
 		};
 
 		fetchData();
-	}, []);
+	}, [language]);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -71,7 +72,7 @@ const ProjectForm: FC<Props> = ({ data, onSubmit, actionButtonText }) => {
 				setProjectsGroupOptions(
 					data?.map((d) => {
 						return {
-							label: `${d.nameArabic}  -  ${d.nameEnglish}`,
+							label: language !== "ar" ? d.nameArabic : d.nameEnglish,
 							value: d.id,
 						};
 					})
@@ -80,7 +81,7 @@ const ProjectForm: FC<Props> = ({ data, onSubmit, actionButtonText }) => {
 		};
 
 		fetchData();
-	}, []);
+	}, [language]);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -90,7 +91,7 @@ const ProjectForm: FC<Props> = ({ data, onSubmit, actionButtonText }) => {
 				setDepartmentCategoriesOptions(
 					data?.map((d) => {
 						return {
-							label: d.nameEnglish,
+							label: language !== "ar" ? d.name : d.nameEnglish,
 							value: d.id,
 						};
 					})
@@ -99,14 +100,7 @@ const ProjectForm: FC<Props> = ({ data, onSubmit, actionButtonText }) => {
 		};
 
 		fetchData();
-	}, []);
-
-	const clear = () => {
-		reset(
-			{ name: "", nameEnglish: "", projectGroup: { label: "", value: "" } },
-			{ keepIsValid: false, keepErrors: true }
-		);
-	};
+	}, [language]);
 
 	useEffect(() => {
 		// Project Name
@@ -165,7 +159,14 @@ const ProjectForm: FC<Props> = ({ data, onSubmit, actionButtonText }) => {
 
 			setValue("hasWorkflow", hasWorkflow!);
 		}
-	}, [data, projectsGroupOptions, projectsOptions, register, setValue]);
+	}, [
+		register,
+		setValue,
+		data,
+		projectsGroupOptions,
+		projectsOptions,
+		departmentCategoriesOptions,
+	]);
 
 	const submitHandler = (values: IProjectFormInputs) => {
 		onSubmit(values);
@@ -256,18 +257,34 @@ const ProjectForm: FC<Props> = ({ data, onSubmit, actionButtonText }) => {
 							/>
 						</div>
 						<div className={clsx(styles.field, styles.check)}>
-							<Controller
-								render={({ field: { onChange, value } }) => (
-									<Checkbox
-										label={t("project.hasWorkflow", { framework: "React" })}
-										checked={value}
-										onChange={onChange}
-									/>
-								)}
-								name="hasWorkflow"
-								control={control}
-								defaultValue={false}
-							/>
+							<div>
+								<Controller
+									render={({ field: { onChange, value } }) => (
+										<Checkbox
+											label={t("project.withAcademy", { framework: "React" })}
+											checked={value}
+											onChange={onChange}
+										/>
+									)}
+									name="withAcademy"
+									control={control}
+									defaultValue={false}
+								/>
+							</div>
+							<div>
+								<Controller
+									render={({ field: { onChange, value } }) => (
+										<Checkbox
+											label={t("project.hasWorkflow", { framework: "React" })}
+											checked={value}
+											onChange={onChange}
+										/>
+									)}
+									name="hasWorkflow"
+									control={control}
+									defaultValue={false}
+								/>
+							</div>
 						</div>
 					</div>
 

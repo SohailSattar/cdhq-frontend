@@ -9,22 +9,16 @@ import styles from "./styles.module.scss";
 
 interface Props {
 	data?: APIPhoneDirectory;
+	actionButtonText: string;
 	onSubmit: (data: IPhoneFormInputs) => void;
 }
 
-const PhoneForm: FC<Props> = ({ data, onSubmit }) => {
+const PhoneForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 	const [t] = useTranslation("common");
 
-	const {
-		register,
-		formState: { errors },
-		handleSubmit,
-		reset,
-		setError,
-		setValue,
-		getValues,
-		control,
-	} = useForm<IPhoneFormInputs>({ criteriaMode: "all" });
+	const { handleSubmit, setValue, control } = useForm<IPhoneFormInputs>({
+		criteriaMode: "all",
+	});
 
 	useEffect(() => {
 		if (data) {
@@ -91,9 +85,7 @@ const PhoneForm: FC<Props> = ({ data, onSubmit }) => {
 					</div>
 				</ShadowedContainer>
 				<div className={styles.section}>
-					<Button type="submit">
-						{t("button.update", { framework: "React" })}
-					</Button>
+					<Button type="submit">{actionButtonText}</Button>
 				</div>
 			</form>
 		</div>

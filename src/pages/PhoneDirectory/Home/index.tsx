@@ -274,7 +274,11 @@ const PhoneDirectoryPage = () => {
 				</div>
 				<div></div>
 				<Modal isOpen={isPopupOpen} onClose={popupCloseHandler}>
-					<PhoneForm data={selectedRow} onSubmit={recordUpdateHandler} />
+					<PhoneForm
+						data={selectedRow}
+						actionButtonText={t("button.update", { framework: "React" })}
+						onSubmit={recordUpdateHandler}
+					/>
 				</Modal>
 			</div>
 		</div>
