@@ -1,6 +1,6 @@
-import { APIResponse, getConfig } from "../..";
+import { APIResponse } from "../..";
 import { instance } from "../../../network";
-import { APINews, APIPaginatedNews } from "../types";
+import { APIPaginatedNews } from "../types";
 
 export async function getNews(
 	currentPage: number = 1,

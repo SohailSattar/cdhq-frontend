@@ -18,9 +18,6 @@ const PasswordForm: FC<Props> = ({ onSubmit }) => {
 		register,
 		formState: { errors },
 		handleSubmit,
-		reset,
-		setError,
-		setValue,
 		getValues,
 		control,
 	} = useForm<IPasswordFormInputs>({ criteriaMode: "all" });
@@ -38,7 +35,7 @@ const PasswordForm: FC<Props> = ({ onSubmit }) => {
 			validate: (value) =>
 				value === getValues("password") || "The passwords do not match",
 		});
-	}, []);
+	}, [register, getValues]);
 
 	return (
 		<div className={styles.passwordForm}>

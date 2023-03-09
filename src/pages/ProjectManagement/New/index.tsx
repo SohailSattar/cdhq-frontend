@@ -13,14 +13,23 @@ const NewProject = () => {
 	const navigate = useNavigate();
 
 	const submitHandler = async (values: IProjectFormInputs) => {
-		const { name, nameEnglish, parentProject, projectGroup, hasWorkflow } =
-			values;
+		const {
+			name,
+			nameEnglish,
+			parentProject,
+			projectGroup,
+			departmentCategory,
+			withAcademy,
+			hasWorkflow,
+		} = values;
 
 		const params: APINewProject = {
 			name: name,
 			nameEnglish: nameEnglish,
 			parentId: +parentProject?.value!,
 			projectGroupId: +projectGroup?.value!,
+			departmentCategoryId: +departmentCategory?.value!,
+			withAcademy: withAcademy,
 			hasWorkflow: hasWorkflow,
 		};
 

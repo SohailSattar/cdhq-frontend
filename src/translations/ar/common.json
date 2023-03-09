@@ -88,7 +88,8 @@
 		"withoutChild": "بدون قسم فرعي",
 		"count": "عدد المشاريع",
 		"noProject": "لم يتم تخصيص أي مشروع.",
-		"deptCat": "Department Category [Arabic]",
+		"deptCat": "فئة القسم",
+		"withAcademy": "هل يجب أن تكون الأكاديمية أيضًا في قائمة الأقسام؟",
 		"hasWorkflow": "لديه سير عمل؟"
 	},
 	"userProject": {
@@ -147,6 +148,7 @@
 		"noAccountContact": "ليس لديك حساب؟ اتصل بقسم الخدمات الألكترونية",
 		"employeeNotExists": "لا يوجد موظف برقم هذا الموظف! الرجاء الاتصال بوزارة الداخلية",
 		"employeeUserExists": "المستخدم موجود اصلا. لتحرير هذا المستخدم ، انقر فوق هذا الارتباط",
+		"noUserInList": "لست في القائمة؟ انقر فوق \"مستخدم جديد \"",
 		"userActivated": "المستخدم نشط الآن",
 		"userDeactivated": "تم إلغاء تنشيط المستخدم",
 		"userAdded": "تم إنشاء المستخدم",

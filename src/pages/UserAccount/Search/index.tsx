@@ -1,32 +1,32 @@
-import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
-import { getExistingEmployees } from '../../../api/employees/get/getExistingEmployeesList';
-import { APIEmployee } from '../../../api/employees/types';
-import { checkIfUserExists } from '../../../api/users/get/checkIfUserExists';
-import { getExistingUsers } from '../../../api/users/get/getExistingUsers';
-import { APIExistingUser } from '../../../api/users/types';
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { getExistingEmployees } from "../../../api/employees/get/getExistingEmployeesList";
+import { APIEmployee } from "../../../api/employees/types";
+import { checkIfUserExists } from "../../../api/users/get/checkIfUserExists";
+import { getExistingUsers } from "../../../api/users/get/getExistingUsers";
+import { APIExistingUser } from "../../../api/users/types";
 import {
 	Button,
 	NotAuthorized,
 	SearchBox,
 	ShadowedContainer,
-} from '../../../components';
-import { Tab, TabList, TabPanel, Tabs } from '../../../components/Tabs';
-import ExistingEmployeeDetailsSection from './containers/ExistingEmployeeDetailsSection';
-import ExistingUserDetailsSection from './containers/ExistingUserDetailsSection';
-import MessageBox from './containers/MessageBox';
+} from "../../../components";
+import { Tab, TabList, TabPanel, Tabs } from "../../../components/Tabs";
+import ExistingEmployeeDetailsSection from "./containers/ExistingEmployeeDetailsSection";
+import ExistingUserDetailsSection from "./containers/ExistingUserDetailsSection";
+import MessageBox from "./containers/MessageBox";
 
-import { useStore } from '../../../utils/store';
+import { useStore } from "../../../utils/store";
 
-import * as RoutePath from '../../../RouteConfig';
+import * as RoutePath from "../../../RouteConfig";
 
-import { ROLE } from '../../../utils';
+import { ROLE } from "../../../utils";
 
-import styles from './styles.module.scss';
+import styles from "./styles.module.scss";
 
 const SearchUserPage = () => {
-	const [t] = useTranslation('common');
+	const [t] = useTranslation("common");
 
 	const navigate = useNavigate();
 
@@ -92,18 +92,18 @@ const SearchUserPage = () => {
 		<div className={styles.newUser}>
 			<div className={styles.field}>
 				<SearchBox
-					label={t('user.employeeNumber', { framework: 'React' })}
+					label={t("user.employeeNumber", { framework: "React" })}
 					onClick={employeeSearchHandler}
 				/>
 			</div>
 			<Tabs>
 				<TabList>
 					<Tab>
-						{t('employee.names', { framework: 'React' })} (
+						{t("employee.names", { framework: "React" })} (
 						{existingEmployees.length})
 					</Tab>
 					<Tab>
-						{t('user.names', { framework: 'React' })} ({existingUsers.length})
+						{t("user.names", { framework: "React" })} ({existingUsers.length})
 					</Tab>
 				</TabList>
 				<TabPanel>
@@ -117,11 +117,11 @@ const SearchUserPage = () => {
 				<TabPanel>
 					<ShadowedContainer>
 						<MessageBox
-							message={'Not in the list? Click on New User'}
-							type={'primary'}
+							message={t("message.noUserInList", { framework: "React" })}
+							type={"primary"}
 						/>
 						<Button onClick={newUserClickHandler}>
-							{t('button.addNewUser', { framework: 'React' })}
+							{t("button.addNewUser", { framework: "React" })}
 						</Button>
 					</ShadowedContainer>
 					<ShadowedContainer className={styles.container}>

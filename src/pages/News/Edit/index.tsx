@@ -51,7 +51,11 @@ const EditNewsPage = () => {
 
 	return (
 		<div>
-			<NewsForm data={news} onSubmit={editNewsHandler} />
+			<NewsForm
+				data={news}
+				actionButtonText={t("button.update", { framework: "React" })}
+				onSubmit={editNewsHandler}
+			/>
 		</div>
 	);
 };

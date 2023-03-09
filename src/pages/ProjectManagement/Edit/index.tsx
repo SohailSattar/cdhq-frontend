@@ -36,6 +36,7 @@ const EditProjectPage = () => {
 			parentProject,
 			projectGroup,
 			departmentCategory,
+			withAcademy,
 			hasWorkflow,
 		} = values;
 
@@ -46,6 +47,7 @@ const EditProjectPage = () => {
 			parentId: +parentProject?.value!,
 			projectGroupId: +projectGroup?.value!,
 			departmentCategoryId: +departmentCategory?.value!,
+			withAcademy: withAcademy,
 			hasWorkflow: hasWorkflow,
 		};
 

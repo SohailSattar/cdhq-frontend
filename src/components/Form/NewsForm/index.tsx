@@ -3,7 +3,7 @@ import { ErrorMessage } from "@hookform/error-message";
 import { ChangeEvent, FC, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { Dropdown, ImageUploader, ShadowedContainer, TextBox } from "../..";
+import { Dropdown, ShadowedContainer, TextBox } from "../..";
 import { useStore } from "../../../utils/store";
 import Button from "../../Button";
 import { DropdownOption } from "../../Dropdown";
@@ -11,7 +11,6 @@ import { INewsFormInputs } from "../types";
 
 import styles from "./styles.module.scss";
 import { getNewsTypes } from "../../../api/news/get/getNewsTypes";
-import UploadImages from "../../UploadImages";
 import { APINewsDetail } from "../../../api/news/types";
 import { getMainDepartments } from "../../../api/departments/get/getMainDepartments";
 import { DepartmentCategory } from "../../../data/departmentCategory";
@@ -19,22 +18,19 @@ import { Project } from "../../../data/projects";
 
 interface Props {
 	data?: APINewsDetail;
+	actionButtonText: string;
 	onSubmit: (data: INewsFormInputs) => void;
 }
 
-const NewsForm: FC<Props> = ({ data, onSubmit }) => {
+const NewsForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 	const [t] = useTranslation("common");
 	const language = useStore((state) => state.language);
-
-	const [file, setFile] = useState<File>();
 	const [imageName, setImageName] = useState<string>("");
 
 	const {
 		register,
 		formState: { errors },
 		handleSubmit,
-		reset,
-		setError,
 		setValue,
 		control,
 	} = useForm<INewsFormInputs>({ criteriaMode: "all" });
@@ -42,7 +38,7 @@ const NewsForm: FC<Props> = ({ data, onSubmit }) => {
 	const [departmentOptions, setDepartmentOptions] = useState<DropdownOption[]>(
 		[]
 	);
-	const [newsTypeList, setNewsTypeList] = useState<DropdownOption[]>([]);
+	const [newsTypeOptions, setNewsTypeOptions] = useState<DropdownOption[]>([]);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -71,7 +67,7 @@ const NewsForm: FC<Props> = ({ data, onSubmit }) => {
 			const { data } = await getNewsTypes();
 
 			if (data) {
-				setNewsTypeList(
+				setNewsTypeOptions(
 					data?.map((d) => {
 						return {
 							label: `${d.name}  -  ${d.nameEnglish}`,
@@ -89,55 +85,35 @@ const NewsForm: FC<Props> = ({ data, onSubmit }) => {
 		// Department
 		register("department", {
 			required: "Department is required.",
-			// pattern: {
-			// 	value: /[\u0621-\u064As]+$/,
-			// 	message: 'Name should only be in alphabets.',
-			// }
 		});
 
 		// Project Name
 		register("title", {
 			required: "Ttile is required.",
-			// pattern: {
-			// 	value: /[\u0621-\u064As]+$/,
-			// 	message: 'Name should only be in arabic alphabets.',
-			// },
 		});
 
 		// Employee Name
 		register("shortSummary", {
-			required: "Short summary is required.", //'Short summary is required.',
-			// pattern: {
-			// 	value: /[\u0621-\u064As]+$/,
-			// 	message: 'Name should only be in alphabets.',
-			// }
+			required: "Short summary is required.",
 		});
 
 		// Project Group
 		register("newsType", {
 			required: "News Type is required.",
-			// pattern: {
-			// 	value: /[\u0621-\u064As]+$/,
-			// 	message: 'Name should only be in alphabets.',
-			// }
 		});
 
 		// Project Group
 		register("fullNews", {
 			required: "News is required.",
-			// pattern: {
-			// 	value: /[\u0621-\u064As]+$/,
-			// 	message: 'Name should only be in alphabets.',
-			// }
 		});
 
 		if (data) {
-			const { id, title, shortSummary, newsType, fullNews } = data;
+			const { title, shortSummary, newsType, fullNews } = data;
 
 			setValue("title", title);
 			setValue("shortSummary", shortSummary);
 
-			const selectedNewsType = newsTypeList.find(
+			const selectedNewsType = newsTypeOptions.find(
 				(x) => x.value === newsType?.id!
 			);
 
@@ -153,7 +129,6 @@ const NewsForm: FC<Props> = ({ data, onSubmit }) => {
 	const imageChngeHandler = (evnt: ChangeEvent<HTMLInputElement>) => {
 		if (evnt.target.files) {
 			setValue("thumbnail", evnt.target.files[0]);
-			setFile(evnt.target.files[0]);
 		}
 	};
 
@@ -214,7 +189,7 @@ const NewsForm: FC<Props> = ({ data, onSubmit }) => {
 								render={({ field: { onChange, value } }) => (
 									<Dropdown
 										label={t("news.type", { framework: "React" })}
-										options={newsTypeList}
+										options={newsTypeOptions}
 										onSelect={onChange}
 										value={value}
 									/>
@@ -342,7 +317,7 @@ const NewsForm: FC<Props> = ({ data, onSubmit }) => {
 					)}
 				</div>
 				<div>
-					<Button type="submit">Save</Button>
+					<Button type="submit">{actionButtonText}</Button>
 				</div>
 			</div>
 		</form>

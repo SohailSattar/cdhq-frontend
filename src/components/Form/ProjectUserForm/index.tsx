@@ -18,13 +18,14 @@ import { getProjectInfoStatus } from "../../../api/projects/get/getProjectInfoSt
 
 import styles from "./styles.module.scss";
 import { Controller, useForm } from "react-hook-form";
-import { IProjectUserFormInputs } from "../types";
+import { FormMode, IProjectUserFormInputs } from "../types";
 import { ErrorMessage } from "@hookform/error-message";
 import { APIUserProjectDetail } from "../../../api/userProjects/types";
 import { getMainDepartments } from "../../../api/departments/get/getMainDepartments";
+import { DepartmentCategory } from "../../../data/departmentCategory";
 
 interface Props {
-	mode: "ADD" | "EDIT";
+	mode: FormMode;
 	id: string;
 	isNormalUser?: boolean;
 	heading?: string;
@@ -120,7 +121,6 @@ const ProjectUserForm: FC<Props> = ({
 	//Department
 	const fetchMainDepartments = useMemo(
 		() => async (code?: string) => {
-			console.log(code);
 			const { data } = await getMainDepartments(code);
 
 			if (data) {
@@ -147,30 +147,33 @@ const ProjectUserForm: FC<Props> = ({
 						return { label: dept.longFullName, value: dept.id };
 					})
 				);
+
+				if (empDepartmentsOptions.length <= 0) {
+					setEmpDepartmentsOptions(
+						data.map((dept: APICategorizedDepartment) => {
+							return { label: dept.longFullName, value: dept.id };
+						})
+					);
+				}
 			}
 		},
-		[setDepartmentsOptions, language]
+		[empDepartmentsOptions, setDepartmentsOptions]
 	);
 
-	// useEffect(() => {
-	// 	const fetchData = async () => {
-	// 		const { data } = await getCategorizedDepartments();
-
-	// 		if (data) {
-	// 			const options: DropdownOption[] = data.map(
-	// 				(dept: APICategorizedDepartment) => {
-	// 					return { label: dept.longFullName, value: dept.id };
-	// 				}
-	// 			);
-
-	// 			setDepartmentsOptions(options);
-
-	// 			setEmpDepartmentsOptions(options);
-	// 		}
-	// 	};
-
-	// 	fetchData();
-	// }, []);
+	useEffect(() => {
+		if (data?.project?.departmentCategory !== null) {
+			if (
+				data?.project?.departmentCategory?.code! !==
+				DepartmentCategory.WorkLocation
+			) {
+				fetchMainDepartments(data?.project!.departmentCategory!.code);
+			} else {
+				fetchCategorizedDepartments();
+			}
+		} else {
+			fetchCategorizedDepartments();
+		}
+	}, [fetchMainDepartments, fetchCategorizedDepartments]);
 
 	useEffect(() => {
 		const fetchData = async () => {
