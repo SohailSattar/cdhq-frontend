@@ -1,15 +1,15 @@
-import { Button } from '@material-ui/core';
-import { FC, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import localStorageService from '../../network/localStorageService';
-import { useStore } from '../../utils/store';
+import { Button } from "@material-ui/core";
+import { FC, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import localStorageService from "../../network/localStorageService";
+import { useStore } from "../../utils/store";
 
 interface Props {
 	className?: string;
 }
 
 const ChangeLanguage: FC<Props> = ({ className }) => {
-	const [, i18n] = useTranslation('common');
+	const [, i18n] = useTranslation("common");
 
 	const toggleLanguage = useStore((state) => state.language);
 	const setToggleLanguage = useStore((state) => state.setLanguage);
@@ -17,13 +17,13 @@ const ChangeLanguage: FC<Props> = ({ className }) => {
 	// if(localStorageService.getLanguage === null){}
 
 	useEffect(() => {
-		if (toggleLanguage === '') {
+		if (toggleLanguage === "") {
 			let languageToChange = localStorageService.getLanguage();
 
-			if (languageToChange === null || languageToChange !== 'en') {
-				languageToChange = 'en';
+			if (languageToChange === null || languageToChange !== "en") {
+				languageToChange = "en";
 			} else {
-				languageToChange = 'ar';
+				languageToChange = "ar";
 			}
 
 			setToggleLanguage(languageToChange);
@@ -31,13 +31,13 @@ const ChangeLanguage: FC<Props> = ({ className }) => {
 	}, [setToggleLanguage, toggleLanguage]);
 
 	const changeLanguageHandler = () => {
-		if (toggleLanguage === 'en') {
-			setToggleLanguage('ar');
-			i18n.changeLanguage('en');
+		if (toggleLanguage === "en") {
+			setToggleLanguage("ar");
+			i18n.changeLanguage("en");
 			// localStorageService.setLanguage('en');
 		} else {
-			setToggleLanguage('en');
-			i18n.changeLanguage('ar');
+			setToggleLanguage("en");
+			i18n.changeLanguage("ar");
 			// localStorageService.setLanguage('ar');
 		}
 		localStorageService.setLanguage(toggleLanguage);
@@ -45,7 +45,7 @@ const ChangeLanguage: FC<Props> = ({ className }) => {
 
 	return (
 		<Button onClick={changeLanguageHandler} className={className}>
-			{toggleLanguage}
+			{toggleLanguage === "ar" ? "العربية" : "EN"}
 		</Button>
 	);
 };

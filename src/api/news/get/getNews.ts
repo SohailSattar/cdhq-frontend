@@ -1,4 +1,4 @@
-import { APIResponse } from "../..";
+import { APIResponse, getConfig } from "../..";
 import { instance } from "../../../network";
 import { APIPaginatedNews } from "../types";
 
@@ -8,9 +8,10 @@ export async function getNews(
 	parameter?: string
 ): Promise<APIResponse<APIPaginatedNews>> {
 	try {
+		const config = getConfig();
 		const url = `/news?page=${currentPage}&postsperpage=${pageSize}`;
 
-		const response = await instance.get<APIPaginatedNews>(url);
+		const response = await instance.get<APIPaginatedNews>(url, config);
 		const data = response.data;
 		return { data };
 	} catch (err: any) {

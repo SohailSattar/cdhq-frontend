@@ -1,4 +1,59 @@
+@import "../../assets/css/mixins.scss";
+
+.header {
+	display: flex;
+
+	.hamburger {
+		display: none;
+	}
+
+	.logo {
+	}
+
+	.menuItem {
+		// display: flex;
+		// flex-direction: row;
+	}
+}
+
 .userName {
-    // font-size: 0.875rem;
-    color: 'black'
+	// font-size: 0.875rem;
+	color: "black";
+}
+
+@include respond_to("mobile") {
+	.header {
+		display: flex !important;
+		flex-direction: column;
+
+		.hamburger {
+			display: block;
+		}
+
+		.logo {
+			width: 100%;
+			display: flex;
+			justify-content: center;
+		}
+
+		.menuSelectionHidden {
+			display: none;
+		}
+
+		.menuSection {
+			display: flex;
+			flex-direction: column;
+			width: 100%;
+			margin-bottom: 5px;
+			.menuItem {
+				display: flex;
+				margin: 0;
+				justify-content: center;
+			}
+		}
+
+		.actionBtn {
+			margin-top: 15px !important;
+		}
+	}
 }

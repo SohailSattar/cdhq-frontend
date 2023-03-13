@@ -8,7 +8,6 @@ export const updateProject = async (
 ): Promise<APIResponse<APIResponseStatus>> => {
 	try {
 		const config = getConfig();
-		console.log(updateProjectParams);
 		const url = "/projects";
 
 		const response = await instance.put<APIResponseStatus>(

@@ -1,7 +1,10 @@
-import { FC } from 'react';
-import { Button } from '@material-ui/core';
-import { useCookies } from 'react-cookie';
-import localStorageService from '../../network/localStorageService';
+import { FC } from "react";
+import { Button } from "@material-ui/core";
+import { useCookies } from "react-cookie";
+import localStorageService from "../../network/localStorageService";
+
+import styles from "./styles.module.scss";
+import clsx from "clsx";
 
 interface Props {
 	label: string;
@@ -11,11 +14,11 @@ interface Props {
 
 const Logout: FC<Props> = ({ label, onClick = () => {}, className }) => {
 	const [, , removeCookie] = useCookies([
-		'id',
-		'name',
-		'nameEnglish',
-		'userName',
-		'role',
+		"id",
+		"name",
+		"nameEnglish",
+		"userName",
+		"role",
 	]);
 
 	const removeLocalStorageData = () => {
@@ -23,11 +26,11 @@ const Logout: FC<Props> = ({ label, onClick = () => {}, className }) => {
 	};
 
 	const removeCookies = () => {
-		removeCookie('id', { path: '/' });
-		removeCookie('name', { path: '/' });
-		removeCookie('nameEnglish', { path: '/' });
-		removeCookie('userName', { path: '/' });
-		removeCookie('role', { path: '/' });
+		removeCookie("id", { path: "/" });
+		removeCookie("name", { path: "/" });
+		removeCookie("nameEnglish", { path: "/" });
+		removeCookie("userName", { path: "/" });
+		removeCookie("role", { path: "/" });
 	};
 
 	const logoutClickHandler = () => {
@@ -37,7 +40,11 @@ const Logout: FC<Props> = ({ label, onClick = () => {}, className }) => {
 	};
 
 	return (
-		<Button onClick={logoutClickHandler} className={className}>
+		<Button
+			onClick={logoutClickHandler}
+			className={clsx(className, styles.logoutButton)}
+		>
+			{/* className */}
 			{label}
 		</Button>
 	);

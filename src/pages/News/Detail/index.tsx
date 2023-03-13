@@ -38,7 +38,7 @@ const NewsDetailPage = () => {
 				<NewsMeta postedDate={new Date(detail?.newsDate!).toDateString()} />
 			</div>
 			<ShadowedContainer className={styles.container}>
-				<NewsContent data={detail?.fullNews!} />
+				<NewsContent imagePath={detail?.imageName} data={detail?.fullNews!} />
 			</ShadowedContainer>
 		</div>
 	);
