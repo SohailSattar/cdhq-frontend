@@ -43,6 +43,7 @@ export interface APIProjectDetail {
 	parent: APIProjectItem;
 	group: APIProjectGroup;
 	departmentCategory: APIDepartmentCategory;
+	withAcademy?: boolean;
 	activeStatus: APIActiveStatus;
 }
 

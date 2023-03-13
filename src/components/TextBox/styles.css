@@ -1,17 +1,17 @@
-.MuiTextField-root{
+.MuiInputLabel-formControl {
+	font-family: "DINNextLTArabic" !important;
 }
 
-.MuiInputLabel-root{
-/* right: 0; */
-    color:red;
+.MuiInputLabel-root {
+	/* right: 0; */
+	color: red;
 }
 
-.MuiInputLabel-root:disabled{
-    color:red;
-    }
+.MuiInputLabel-root:disabled {
+	color: red;
+}
 
-
-.MuiFormControl-root-MuiTextField-root.Mui-disabled{
-    /* right: 0; */
-    color:red;
-    }
+.MuiFormControl-root-MuiTextField-root.Mui-disabled {
+	/* right: 0; */
+	color: red;
+}

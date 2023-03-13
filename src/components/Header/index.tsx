@@ -1,4 +1,6 @@
 import { AppBar, Toolbar, makeStyles, Button } from "@material-ui/core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { Helmet, HelmetProvider } from "react-helmet-async";
@@ -13,6 +15,9 @@ import logoAr from "../../assets/logos/logo-ar.png";
 import { ChangeLanguage, HeaderLogo, LoggedUser, Logout } from "..";
 
 import * as RoutePath from "../../RouteConfig";
+
+import styles from "./styles.module.scss";
+import clsx from "clsx";
 
 const useStyles = makeStyles(() => ({
 	header: {
@@ -72,7 +77,7 @@ const Header = () => {
 							key: short,
 							to: url,
 							component: RouterLink,
-							className: menuButton,
+							className: clsx(styles.menuItem, menuButton),
 						}}
 					>
 						{t(`header.menu.${short}`, { framework: "React" })}
@@ -81,12 +86,16 @@ const Header = () => {
 			});
 	};
 
+	console.log(styles.menuSelectionHidden);
+
 	const displayDesktop = () => {
 		return (
-			<Toolbar className={toolbar}>
-				<HeaderLogo src={toggleLanguage === "en" ? logoAr : logoEn} />
-				<div>{getMenuButtons()}</div>
-				<div>
+			<Toolbar className={clsx(styles.header, toolbar)}>
+				<div className={styles.logo}>
+					<HeaderLogo src={toggleLanguage === "en" ? logoAr : logoEn} />
+				</div>
+				<div className={styles.menuSection}>{getMenuButtons()}</div>
+				<div className={styles.menuSection}>
 					{/* <Button onClick={changeLanguageHandler} className={menuButton}>
 						{toggleLanguage}
 					</Button> */}
@@ -97,7 +106,7 @@ const Header = () => {
 								: loggedUser.nameEnglish
 						}
 						userName={loggedUser.userName}
-						className={menuButton}
+						className={clsx(styles.menuItem, menuButton)}
 						onClick={userNameClickHandler}
 					/>
 					{/* <Button onClick={userNameClickHandler} className={menuButton}>
@@ -111,13 +120,19 @@ const Header = () => {
 						className={styles.userName}>
 						
 					</Link> */}
-					<ChangeLanguage className={menuButton} />
+					<ChangeLanguage className={clsx(styles.menuItem, menuButton)} />
 					<Logout
 						label={t("account.logout", { framework: "React" })}
 						onClick={logoutClickHandler}
-						className={menuButton}
+						className={clsx(styles.menuItem, styles.actionBtn, menuButton)}
 					/>
 				</div>
+				<FontAwesomeIcon
+					icon={faBars}
+					color="black"
+					onClick={() => alert("Hello")}
+					className={styles.hamburger}
+				/>
 			</Toolbar>
 		);
 	};

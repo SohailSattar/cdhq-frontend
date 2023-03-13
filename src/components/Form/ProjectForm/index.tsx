@@ -24,7 +24,6 @@ interface Props {
 const ProjectForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 	const [t] = useTranslation("common");
 	const language = useStore((state) => state.language);
-
 	const {
 		register,
 		formState: { errors },
@@ -86,7 +85,7 @@ const ProjectForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 	useEffect(() => {
 		const fetchData = async () => {
 			const { data } = await getDepartmentCategories();
-
+			console.log(data);
 			if (data) {
 				setDepartmentCategoriesOptions(
 					data?.map((d) => {
@@ -137,6 +136,7 @@ const ProjectForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 				parent,
 				group,
 				departmentCategory,
+				withAcademy,
 				hasWorkflow,
 			} = data;
 			setValue("name", name);
@@ -157,6 +157,7 @@ const ProjectForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 			);
 			setValue("departmentCategory", selectedDepartmentCategory!);
 
+			setValue("withAcademy", withAcademy!);
 			setValue("hasWorkflow", hasWorkflow!);
 		}
 	}, [

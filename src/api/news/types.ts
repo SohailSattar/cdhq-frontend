@@ -4,11 +4,15 @@ export interface APINews {
 	id: number;
 	title: string;
 	shortSummary: string;
+	imageName: string;
+	newsDate: Date;
 }
 
-export interface APINewsDetail extends APINews {
-	// imageName: string;
-	thumbnail: File;
+export interface APINewsDetail {
+	id: number;
+	title: string;
+	shortSummary: string;
+	imageName: string;
 	newsType: APINewsType;
 	fullNews: string;
 	newsDate: Date;
