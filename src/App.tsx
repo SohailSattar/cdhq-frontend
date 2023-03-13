@@ -56,9 +56,13 @@ function App() {
 							}
 						/>
 					</Route>
+					<Route
+						path={RoutePath.ROOT}
+						element={<Layout>{/* <LandingPage /> */}</Layout>}
+					/>
 					<Route element={<ProtectedRoute />}>
 						<Route
-							path="/"
+							path={`${RoutePath.HOME}`}
 							element={
 								<Layout>
 									<HomePage />
