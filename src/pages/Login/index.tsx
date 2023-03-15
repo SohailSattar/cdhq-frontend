@@ -79,7 +79,7 @@ const LoginPage = () => {
 				}
 			}
 
-			navigate("/");
+			navigate(RoutePath.HOME);
 		}
 	};
 
