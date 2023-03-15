@@ -1,0 +1,28 @@
+.Menu {
+    border: rgb(255, 255, 255) 1px solid;
+    background-color: #B58934;
+    color: white;
+    
+    text-align: center;
+    width: 100%;
+  }
+
+  .nav 
+  {
+    background-repeat: no-repeat;
+    background-size: cover;
+    text-align:center ;
+    background-image: url('https://images.unsplash.com/photo-1575867094974-9e16b6f55360?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80');
+  }
+
+
+  .NavDropdown
+  {
+    margin-left: 30px;
+  }
+
+  .NavDropdownHome
+  {
+    float: right;
+    margin-left: 70px;
+  }

@@ -6,25 +6,31 @@ import Button from 'react-bootstrap/Button';
 
 import Card from 'react-bootstrap/Card';
 
+import Carousel from 'react-bootstrap/Carousel';
+
+import React, { useState } from 'react';
+
+
 
 
 
 export interface Props {
 	title: string;
+    body :string;
 }
 
-const NewsCard: FC<Props> = ({ title }) => {
+const NewsCard: FC<Props> = ({ title, body }) => {
 	return (
 
         <>
 
         <div dir="rtl" className={styles.NewsCard}>
-            <Card style={{  width: '100%' }}>
-                <Card.Img variant="top" src="holder.js/100px180" />
+            <Card >
+                <Card.Img style={{height:'250px' ,width : '200px'}} variant="top" src="https://images.unsplash.com/photo-1580162914316-f74f56160ea9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80" />
                 <Card.Body>
-                    <Card.Title> العنوان</Card.Title>
+                    <Card.Title> {title}</Card.Title>
                         <Card.Text>
-                        دعت الإدارة العامة للدفاع المدني بعجمان مستخدمي السيارات الكهربائية اتخاذ الاجراءات الوقائية للحد من وقوع حوادث الحرائق أثناء شحن السيارات في المنازل
+                            {body}
                         </Card.Text>
                         <Button variant="warning">قراءة المزيد</Button>
                 </Card.Body>
@@ -34,7 +40,9 @@ const NewsCard: FC<Props> = ({ title }) => {
                 
             </div>
             
-            
+            <div>
+                
+            </div>
         </>
 	);
 };
