@@ -64,7 +64,7 @@ const Header = () => {
 	};
 
 	const logoutClickHandler = () => {
-		navigate("../login");
+		navigate(RoutePath.LOGIN);
 	};
 
 	const getMenuButtons = () => {
@@ -86,7 +86,7 @@ const Header = () => {
 			});
 	};
 
-	console.log(styles.menuSelectionHidden);
+	console.log(loggedUser);
 
 	const displayDesktop = () => {
 		return (
@@ -96,36 +96,27 @@ const Header = () => {
 				</div>
 				<div className={styles.menuSection}>{getMenuButtons()}</div>
 				<div className={styles.menuSection}>
-					{/* <Button onClick={changeLanguageHandler} className={menuButton}>
-						{toggleLanguage}
-					</Button> */}
-					<LoggedUser
-						fullName={
-							toggleLanguage !== "ar"
-								? loggedUser.name!
-								: loggedUser.nameEnglish
-						}
-						userName={loggedUser.userName}
-						className={clsx(styles.menuItem, menuButton)}
-						onClick={userNameClickHandler}
-					/>
-					{/* <Button onClick={userNameClickHandler} className={menuButton}>
-						{toggleLanguage !== 'ar'
-							? loggedUser.name!
-							: loggedUser.nameEnglish}{' '}
-						[{loggedUser.userName}]
-					</Button> */}
-					{/* <Link
-						to={`${RoutePath.USER}/${10007988}`}
-						className={styles.userName}>
-						
-					</Link> */}
+					{loggedUser.userName && (
+						<LoggedUser
+							fullName={
+								toggleLanguage !== "ar"
+									? loggedUser.name!
+									: loggedUser.nameEnglish
+							}
+							userName={loggedUser.userName}
+							className={clsx(styles.menuItem, menuButton)}
+							onClick={userNameClickHandler}
+						/>
+					)}
+
 					<ChangeLanguage className={clsx(styles.menuItem, menuButton)} />
-					<Logout
-						label={t("account.logout", { framework: "React" })}
-						onClick={logoutClickHandler}
-						className={clsx(styles.menuItem, styles.actionBtn, menuButton)}
-					/>
+					{loggedUser.userName && (
+						<Logout
+							label={t("account.logout", { framework: "React" })}
+							onClick={logoutClickHandler}
+							className={clsx(styles.menuItem, styles.actionBtn, menuButton)}
+						/>
+					)}
 				</div>
 				<FontAwesomeIcon
 					icon={faBars}

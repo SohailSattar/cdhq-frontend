@@ -1,7 +1,9 @@
-import { FC } from 'react';
-import { Link } from 'react-router-dom';
+import { FC } from "react";
+import { Link } from "react-router-dom";
 
-import styles from './styles.module.scss';
+import * as RoutePath from "../../RouteConfig";
+
+import styles from "./styles.module.scss";
 
 export interface Props {
 	src: string;
@@ -9,9 +11,9 @@ export interface Props {
 
 const HeaderLogo: FC<Props> = ({ src }) => {
 	return (
-		<Link to={'/'}>
-			{' '}
-			<img src={src} alt='' className={styles.logo} />
+		<Link to={RoutePath.ROOT}>
+			{" "}
+			<img src={src} alt="" className={styles.logo} />
 		</Link>
 	);
 };
