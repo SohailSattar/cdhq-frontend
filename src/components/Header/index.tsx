@@ -86,8 +86,6 @@ const Header = () => {
 			});
 	};
 
-	console.log(loggedUser);
-
 	const displayDesktop = () => {
 		return (
 			<Toolbar className={clsx(styles.header, toolbar)}>

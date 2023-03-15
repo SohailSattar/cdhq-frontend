@@ -85,7 +85,6 @@ const ProjectForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 	useEffect(() => {
 		const fetchData = async () => {
 			const { data } = await getDepartmentCategories();
-			console.log(data);
 			if (data) {
 				setDepartmentCategoriesOptions(
 					data?.map((d) => {
