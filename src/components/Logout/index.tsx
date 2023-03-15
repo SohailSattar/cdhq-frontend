@@ -5,6 +5,7 @@ import localStorageService from "../../network/localStorageService";
 
 import styles from "./styles.module.scss";
 import clsx from "clsx";
+import { useStore } from "../../utils/store";
 
 interface Props {
 	label: string;
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const Logout: FC<Props> = ({ label, onClick = () => {}, className }) => {
+	const setLoggedInUser = useStore((x) => x.setLoggedInUser);
 	const [, , removeCookie] = useCookies([
 		"id",
 		"name",
@@ -20,6 +22,16 @@ const Logout: FC<Props> = ({ label, onClick = () => {}, className }) => {
 		"userName",
 		"role",
 	]);
+
+	const clearLoggedInUserState = () => {
+		setLoggedInUser({
+			id: 0,
+			userName: "",
+			name: "",
+			nameEnglish: "",
+			role: "",
+		});
+	};
 
 	const removeLocalStorageData = () => {
 		localStorageService.clearToken();
@@ -34,6 +46,7 @@ const Logout: FC<Props> = ({ label, onClick = () => {}, className }) => {
 	};
 
 	const logoutClickHandler = () => {
+		clearLoggedInUserState();
 		removeLocalStorageData();
 		removeCookies();
 		onClick();

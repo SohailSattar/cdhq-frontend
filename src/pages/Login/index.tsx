@@ -8,10 +8,12 @@ import { useStore } from "../../utils/store";
 import { Flip, toast } from "react-toastify";
 import { getPasswordValidity } from "../../api/users/get/getPasswordValidity";
 import LoginForm from "../../components/Form/LoginForm";
-import { Footer } from "../../components";
+import { Footer, Header } from "../../components";
 import { ILoginFormInputs } from "../../components/Form/types";
 
 import * as RoutePath from "../../RouteConfig";
+
+import styles from "./styles.module.scss";
 
 const LoginPage = () => {
 	const navigate = useNavigate();
@@ -85,13 +87,16 @@ const LoginPage = () => {
 
 	return (
 		<>
-			<div className="container">
-				<main role="main" className="pb-3">
-					<div className="container container-custom-width">
-						<ImageLogo imagePath={logo} />
-						<LoginForm onSubmit={submitHandler} />
-					</div>
-				</main>
+			<Header />
+			<div className={styles.layout}>
+				<div className="container">
+					<main role="main" className="pb-3">
+						<div className="container container-custom-width">
+							<ImageLogo imagePath={logo} />
+							<LoginForm onSubmit={submitHandler} />
+						</div>
+					</main>
+				</div>
 			</div>
 			<Footer />
 		</>
