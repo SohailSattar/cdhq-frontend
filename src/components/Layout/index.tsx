@@ -88,6 +88,7 @@ const Layout: FC<Props> = ({ projectId, privilegeType = "All", children }) => {
 					if (error.response.status === 401) {
 						navigate(RoutePath.LOGIN);
 					}
+					console.log(error);
 				}
 
 				if (data) {
