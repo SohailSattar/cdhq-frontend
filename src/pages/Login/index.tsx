@@ -87,7 +87,7 @@ const LoginPage = () => {
 
 	return (
 		<>
-			<Header />
+			<Header hideLoginButton={true} />
 			<div className={styles.layout}>
 				<div className="container">
 					<main role="main" className="pb-3">

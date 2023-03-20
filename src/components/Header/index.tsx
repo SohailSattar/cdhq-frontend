@@ -12,12 +12,19 @@ import { useStore } from "../../utils/store";
 import logoEn from "../../assets/logos/logo.png";
 import logoAr from "../../assets/logos/logo-ar.png";
 
-import { ChangeLanguage, HeaderLogo, LoggedUser, Logout } from "..";
+import {
+	ChangeLanguage,
+	HeaderLogo,
+	LoggedUser,
+	Logout,
+	RedirectButton,
+} from "..";
 
 import * as RoutePath from "../../RouteConfig";
 
 import styles from "./styles.module.scss";
 import clsx from "clsx";
+import { FC } from "react";
 
 const useStyles = makeStyles(() => ({
 	header: {
@@ -35,7 +42,11 @@ const useStyles = makeStyles(() => ({
 	},
 }));
 
-const Header = () => {
+interface Props {
+	hideLoginButton?: boolean;
+}
+
+const Header: FC<Props> = ({ hideLoginButton = false }) => {
 	const [t, i18n] = useTranslation("common");
 	const navigate = useNavigate();
 
@@ -108,12 +119,20 @@ const Header = () => {
 					)}
 
 					<ChangeLanguage className={clsx(styles.menuItem, menuButton)} />
-					{loggedUser.userName && (
+					{loggedUser.userName ? (
 						<Logout
 							label={t("account.logout", { framework: "React" })}
 							onClick={logoutClickHandler}
 							className={clsx(styles.menuItem, styles.actionBtn, menuButton)}
 						/>
+					) : (
+						hideLoginButton !== true && (
+							<RedirectButton
+								label={t("account.login", { framework: "React" })}
+								redirectTo={RoutePath.LOGIN}
+								className={clsx(styles.menuItem, styles.actionBtn, menuButton)}
+							/>
+						)
 					)}
 				</div>
 				<FontAwesomeIcon

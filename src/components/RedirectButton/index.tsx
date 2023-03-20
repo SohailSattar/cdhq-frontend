@@ -1,13 +1,14 @@
-import { FC } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button } from '..';
+import { FC } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "..";
 
 interface Props {
 	label: string;
 	redirectTo: string;
 	style?: any;
+	className?: string;
 }
-const RedirectButton: FC<Props> = ({ label, redirectTo, style }) => {
+const RedirectButton: FC<Props> = ({ label, redirectTo, style, className }) => {
 	const navigate = useNavigate();
 
 	const redirectButtonClickHandler = () => {
@@ -15,7 +16,11 @@ const RedirectButton: FC<Props> = ({ label, redirectTo, style }) => {
 	};
 
 	return (
-		<Button onClick={redirectButtonClickHandler} style={style}>
+		<Button
+			onClick={redirectButtonClickHandler}
+			style={style}
+			className={className}
+		>
 			{label}
 		</Button>
 	);
