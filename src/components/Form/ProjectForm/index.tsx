@@ -105,28 +105,16 @@ const ProjectForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 		// Project Name
 		register("name", {
 			required: "Name is required.",
-			// pattern: {
-			// 	value: /[\u0621-\u064As]+$/,
-			// 	message: 'Name should only be in arabic alphabets.',
-			// },
 		});
 
 		// Employee Name
 		register("nameEnglish", {
 			required: "Name [English] is required.",
-			// pattern: {
-			// 	value: /[\u0621-\u064As]+$/,
-			// 	message: 'Name should only be in alphabets.',
-			// }
 		});
 
 		// Project Group
 		register("projectGroup", {
 			required: "Project group is required.",
-			// pattern: {
-			// 	value: /[\u0621-\u064As]+$/,
-			// 	message: 'Name should only be in alphabets.',
-			// }
 		});
 
 		if (data) {
@@ -178,6 +166,9 @@ const ProjectForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 			<form onSubmit={handleSubmit(submitHandler)}>
 				<div className={styles.project}>
 					<div className={styles.row}>
+						{/* <div>
+							<img src=""
+						</div> */}
 						<div className={styles.field}>
 							<Controller
 								render={({ field: { value, onChange } }) => (

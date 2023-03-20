@@ -9,6 +9,7 @@
 		}
 	},
 	"account": {
+		"login": "Login",
 		"logout": "Logout"
 	},
 	"form": {
