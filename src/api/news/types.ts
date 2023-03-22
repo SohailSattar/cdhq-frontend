@@ -31,10 +31,13 @@ export interface APIUpdateNews {
 	id: string;
 	title: string;
 	shortSummary: string;
-	// imageName: string;
-	thumbnail: File;
 	newsTypeId: number;
 	fullNews: string;
+}
+
+export interface APIUpdateNewsImage {
+	id: string;
+	thumbnail: File;
 }
 
 export interface APINewsType {

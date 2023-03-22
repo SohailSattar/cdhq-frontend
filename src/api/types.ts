@@ -43,3 +43,5 @@ export interface APIPaginate {
 	totalItems: number;
 	totalPages: number;
 }
+
+export type ContentType = "multipart/form-data" | "application/json";

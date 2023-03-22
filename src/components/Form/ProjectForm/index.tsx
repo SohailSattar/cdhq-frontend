@@ -1,6 +1,6 @@
 import _ from "lodash/fp";
 import { ErrorMessage } from "@hookform/error-message";
-import { FC, useEffect, useState } from "react";
+import { ChangeEvent, FC, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Button, Checkbox, Dropdown, ShadowedContainer, TextBox } from "../..";
@@ -14,14 +14,21 @@ import styles from "./styles.module.scss";
 import { APIProjectDetail } from "../../../api/projects/types";
 import { getDepartmentCategories } from "../../../api/departmentCategories/get/getDepartmentCategories";
 import clsx from "clsx";
+import { getFullPath } from "../../../utils";
 
 interface Props {
 	data?: APIProjectDetail;
 	actionButtonText: string;
 	onSubmit: (data: IProjectFormInputs) => void;
+	onImageUpload?: (image: File) => void;
 }
 
-const ProjectForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
+const ProjectForm: FC<Props> = ({
+	data,
+	actionButtonText,
+	onSubmit,
+	onImageUpload = () => {},
+}) => {
 	const [t] = useTranslation("common");
 	const language = useStore((state) => state.language);
 	const {
@@ -29,6 +36,7 @@ const ProjectForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 		formState: { errors },
 		handleSubmit,
 		setValue,
+		getValues,
 		control,
 	} = useForm<IProjectFormInputs>({ criteriaMode: "all" });
 
@@ -119,6 +127,7 @@ const ProjectForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 
 		if (data) {
 			const {
+				iconName,
 				name,
 				nameEnglish,
 				parent,
@@ -127,6 +136,9 @@ const ProjectForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 				withAcademy,
 				hasWorkflow,
 			} = data;
+
+			setValue("iconName", iconName);
+
 			setValue("name", name);
 			setValue("nameEnglish", nameEnglish);
 
@@ -157,8 +169,22 @@ const ProjectForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 		departmentCategoriesOptions,
 	]);
 
+	const imageChangeHandler = (evnt: ChangeEvent<HTMLInputElement>) => {
+		if (evnt.target.files) {
+			const file = evnt.target.files[0];
+			const x = getFullPath(file);
+			setValue("thumbnail", file);
+			setValue("iconName", x);
+		}
+	};
+
 	const submitHandler = (values: IProjectFormInputs) => {
 		onSubmit(values);
+	};
+
+	const imageUpdateHandler = () => {
+		const image = getValues("thumbnail");
+		onImageUpload(image!)!;
 	};
 
 	return (
@@ -166,9 +192,39 @@ const ProjectForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 			<form onSubmit={handleSubmit(submitHandler)}>
 				<div className={styles.project}>
 					<div className={styles.row}>
-						{/* <div>
-							<img src=""
-						</div> */}
+						<div
+							className={
+								language !== "ar"
+									? styles.imageContainer
+									: styles.imageContainerRTL
+							}
+						>
+							<Controller
+								render={({ field: { value, onChange } }) => (
+									<img src={value} className={styles.image} />
+								)}
+								name="iconName"
+								control={control}
+								defaultValue={""}
+							/>
+						</div>
+						<div className={styles.field}>
+							<div className={styles.inputField}>
+								<input
+									type="file"
+									name="thumbnail"
+									onChange={imageChangeHandler}
+									accept="image/*"
+								/>
+							</div>
+							<div>
+								<Button type="button" onClick={imageUpdateHandler}>
+									{t("button.update", { framework: "React" })}
+								</Button>
+							</div>
+						</div>
+					</div>
+					<div className={styles.row}>
 						<div className={styles.field}>
 							<Controller
 								render={({ field: { value, onChange } }) => (

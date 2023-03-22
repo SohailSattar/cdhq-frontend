@@ -15,23 +15,31 @@ import { APINewsDetail } from "../../../api/news/types";
 import { getMainDepartments } from "../../../api/departments/get/getMainDepartments";
 import { DepartmentCategory } from "../../../data/departmentCategory";
 import { Project } from "../../../data/projects";
+import { getFullPath } from "../../../utils";
+import clsx from "clsx";
 
 interface Props {
 	data?: APINewsDetail;
 	actionButtonText: string;
 	onSubmit: (data: INewsFormInputs) => void;
+	onImageUpload?: (image: File) => void;
 }
 
-const NewsForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
+const NewsForm: FC<Props> = ({
+	data,
+	actionButtonText,
+	onSubmit,
+	onImageUpload = () => {},
+}) => {
 	const [t] = useTranslation("common");
 	const language = useStore((state) => state.language);
-	const [imageName, setImageName] = useState<string>("");
 
 	const {
 		register,
 		formState: { errors },
 		handleSubmit,
 		setValue,
+		getValues,
 		control,
 	} = useForm<INewsFormInputs>({ criteriaMode: "all" });
 
@@ -108,7 +116,7 @@ const NewsForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 		});
 
 		if (data) {
-			const { title, shortSummary, newsType, fullNews } = data;
+			const { title, shortSummary, newsType, fullNews, imageName } = data;
 
 			setValue("title", title);
 			setValue("shortSummary", shortSummary);
@@ -119,17 +127,26 @@ const NewsForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 
 			setValue("newsType", selectedNewsType!);
 			setValue("fullNews", fullNews);
+			setValue("imageName", imageName);
 		}
 	}, [data, language, register]);
+
+	const imageChangeHandler = (evnt: ChangeEvent<HTMLInputElement>) => {
+		if (evnt.target.files) {
+			const file = evnt.target.files[0];
+			const x = getFullPath(file);
+			setValue("thumbnail", file);
+			setValue("imageName", x);
+		}
+	};
 
 	const submitHandler = (values: INewsFormInputs) => {
 		onSubmit(values);
 	};
 
-	const imageChngeHandler = (evnt: ChangeEvent<HTMLInputElement>) => {
-		if (evnt.target.files) {
-			setValue("thumbnail", evnt.target.files[0]);
-		}
+	const imageUpdateHandler = () => {
+		const image = getValues("thumbnail");
+		onImageUpload(image!)!;
 	};
 
 	return (
@@ -199,7 +216,25 @@ const NewsForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 								defaultValue={{ label: "", value: "" }}
 							/>
 						</div>
-
+						<div>
+							<div className={styles.field}>
+								<Controller
+									render={({ field: { value, onChange } }) => (
+										<TextBox
+											type="text"
+											label={t("news.fullNews", { framework: "React" })}
+											value={value}
+											onChange={onChange}
+											multiline={true}
+											maxRows={20}
+										/>
+									)}
+									name="fullNews"
+									control={control}
+									defaultValue={""}
+								/>
+							</div>
+						</div>
 						<div className={styles.row}>
 							<div className={styles.actions}>
 								<div className={language !== "ar" ? styles.btn : styles.btnLTR}>
@@ -208,50 +243,42 @@ const NewsForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 							</div>
 						</div>
 					</div>
-					<div>
+					<div
+						className={
+							language !== "ar"
+								? styles.thumbnailContainer
+								: styles.thumbnailContainerLTR
+						}
+					>
 						{/* <ImageUploader/> */}
-						<div>
-							{/* <Controller
-                render={({ field: { onChange } }) => (
-                  <input type="file" onChange={(e) => imageChngeHandler(onChange)} accept="image/*" />
-                )}
-                name="thumbnail"
-                control={control}
-              /> */}
+						<div className={styles.browse}>
 							<input
 								type="file"
 								name="thumbnail"
-								onChange={imageChngeHandler}
+								onChange={imageChangeHandler}
 								accept="image/*"
 							/>
 						</div>
 						<div>
-							<img src={imageName} alt="" />
+							<Controller
+								render={({ field: { value, onChange } }) => (
+									<ShadowedContainer>
+										<img src={value} alt="" className={styles.image} />
+									</ShadowedContainer>
+								)}
+								name="imageName"
+								control={control}
+								defaultValue={""}
+							/>
+						</div>
+						<div className={styles.uploadSection}>
+							<Button type="button" onClick={imageUpdateHandler}>
+								{t("button.update", { framework: "React" })}
+							</Button>
 						</div>
 					</div>
 				</div>
-				<div>
-					<div className={styles.field}>
-						<Controller
-							render={({ field: { value, onChange } }) => (
-								<TextBox
-									type="text"
-									label={t("news.fullNews", { framework: "React" })}
-									value={value}
-									onChange={onChange}
-									multiline={true}
-									maxRows={20}
-								/>
-							)}
-							name="fullNews"
-							control={control}
-							defaultValue={""}
-						/>
-					</div>
-					{/* <div>
-            <UploadImages />
-          </div> */}
-				</div>
+
 				<div>
 					{Object.keys(errors).length > 0 && (
 						<ShadowedContainer>

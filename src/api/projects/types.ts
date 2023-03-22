@@ -44,6 +44,7 @@ export interface APIProjectDetail {
 	group: APIProjectGroup;
 	departmentCategory: APIDepartmentCategory;
 	withAcademy?: boolean;
+	iconName?: string;
 	activeStatus: APIActiveStatus;
 }
 
@@ -98,4 +99,9 @@ export interface APIUpdateProject {
 export interface APIUpdateProjectStatus {
 	id: string;
 	activeStatusId: number;
+}
+
+export interface APIUpdateProjectThumbnail {
+	id: string;
+	thumbnail: File;
 }

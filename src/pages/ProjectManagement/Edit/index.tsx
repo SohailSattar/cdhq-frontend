@@ -6,8 +6,10 @@ import { getProjectDetail } from "../../../api/projects/get/getProjectDetail";
 import {
 	APIProjectDetail,
 	APIUpdateProject,
+	APIUpdateProjectThumbnail,
 } from "../../../api/projects/types";
 import { updateProject } from "../../../api/projects/update/updateProject";
+import { updateProjectThumbnail } from "../../../api/projects/update/updateProjectThumbnail";
 import { ProjectForm } from "../../../components";
 import { IProjectFormInputs } from "../../../components/Form/types";
 
@@ -28,6 +30,21 @@ const EditProjectPage = () => {
 			fetch();
 		}
 	}, [id]);
+
+	const imageUploadHandler = async (image: File) => {
+		const params: APIUpdateProjectThumbnail = {
+			id: id!,
+			thumbnail: image,
+		};
+
+		const { data } = await updateProjectThumbnail(params);
+		console.log(data);
+		if (data) {
+			// toast.success(
+			// 	t("message.projectUpdated", { framework: "React" }).toString()
+			// );
+		}
+	};
 
 	const submitHandler = async (values: IProjectFormInputs) => {
 		const {
@@ -63,6 +80,7 @@ const EditProjectPage = () => {
 		<ProjectForm
 			data={project}
 			onSubmit={submitHandler}
+			onImageUpload={imageUploadHandler}
 			actionButtonText={t("button.update", { framework: "React" }).toString()}
 		/>
 	);

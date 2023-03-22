@@ -66,6 +66,10 @@ const HomePage = () => {
 
 	return (
 		<div className={styles.home}>
+			<Welcome
+				name={language !== "ar" ? loggedInUser.name : loggedInUser.nameEnglish}
+				role={loggedInUser.role}
+			/>
 			{passwordValidity.expiringInDays > 0 &&
 				passwordValidity.expiringInDays <= 10 && (
 					<PasswordExpiryMessage
@@ -73,10 +77,6 @@ const HomePage = () => {
 						url={RoutePath.CHANGE_PASSWORD}
 					/>
 				)}
-			<Welcome
-				name={language !== "ar" ? loggedInUser.name : loggedInUser.nameEnglish}
-				role={loggedInUser.role}
-			/>
 			<Hr />
 			{isLoading ? <Loading /> : <ProjectBoxList data={projects} />}
 		</div>

@@ -11,7 +11,7 @@ export interface Props {
 
 const HeaderLogo: FC<Props> = ({ src }) => {
 	return (
-		<Link to={RoutePath.ROOT}>
+		<Link to={RoutePath.HOME}>
 			{" "}
 			<img src={src} alt="" className={styles.logo} />
 		</Link>

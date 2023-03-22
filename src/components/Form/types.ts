@@ -13,6 +13,7 @@ export interface IPasswordFormInputs {
 }
 
 export interface IProjectFormInputs {
+	iconName?: string;
 	name: string;
 	nameEnglish: string;
 	parentProject: DropdownOption;
@@ -20,6 +21,7 @@ export interface IProjectFormInputs {
 	departmentCategory?: DropdownOption;
 	withAcademy: boolean;
 	hasWorkflow: boolean;
+	thumbnail: File;
 }
 
 export interface IUserFormInputs {

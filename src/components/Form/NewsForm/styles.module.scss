@@ -1,39 +1,72 @@
-.newForm{
-    .row{
-        display: flex;
-justify-content: space-between;
-    }
+.newForm {
+	.row {
+		display: flex;
+		justify-content: space-between;
+	}
 
-    .basic{
-        width: 70%;
-        .row {
-            display: flex;
-            margin-bottom: 15px;
-    
-            .field {
-                display: flex;
-                flex: 1;
-                flex-direction: column;
-            }
-    
-            .ddlField {
-                display: flex;
-                flex: 1;
-                flex-direction: column;
-                margin: 0 5px;
-            }
-    
-            .actions {
-                display: flex;
-    
-                .btn {
-                    margin-left: 5px;
-                }
-    
-                .btnLTR {
-                    margin-right: 5px
-                }
-            }
-        }
-    }
+	.basic {
+		width: 70%;
+		.row {
+			display: flex;
+			margin-bottom: 15px;
+
+			.field {
+				display: flex;
+				flex: 1;
+				flex-direction: column;
+			}
+
+			.ddlField {
+				display: flex;
+				flex: 1;
+				flex-direction: column;
+				margin: 0 5px;
+			}
+
+			.actions {
+				display: flex;
+
+				.btn {
+					margin-left: 5px;
+				}
+				.btnLTR {
+					margin-right: 5px;
+				}
+			}
+		}
+	}
+
+	.thumbnailContainer {
+		margin-left: 15px;
+
+		.browse {
+			margin-bottom: 15px;
+		}
+		.image {
+			max-height: 300px;
+			max-width: 500px;
+		}
+
+		.uploadSection {
+			display: flex;
+			justify-content: left;
+		}
+	}
+
+	.thumbnailContainerLTR {
+		margin-right: 15px;
+
+		.browse {
+			margin-bottom: 15px;
+		}
+		.image {
+			max-height: 300px;
+			max-width: 500px;
+		}
+
+		.uploadSection {
+			display: flex;
+			justify-content: right;
+		}
+	}
 }

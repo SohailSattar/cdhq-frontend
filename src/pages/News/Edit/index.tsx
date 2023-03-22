@@ -3,8 +3,13 @@ import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getNewsDetail } from "../../../api/news/get/getNewsDetail";
-import { APINewsDetail, APIUpdateNews } from "../../../api/news/types";
+import {
+	APINewsDetail,
+	APIUpdateNews,
+	APIUpdateNewsImage,
+} from "../../../api/news/types";
 import { updateNews } from "../../../api/news/update/updateNews";
+import { updateNewsImage } from "../../../api/news/update/updateNewsImage";
 import NewsForm from "../../../components/Form/NewsForm";
 import { INewsFormInputs } from "../../../components/Form/types";
 
@@ -34,7 +39,7 @@ const EditNewsPage = () => {
 			title: values.title,
 			shortSummary: values.shortSummary,
 			newsTypeId: +values.newsType!.value,
-			thumbnail: values.thumbnail,
+			// thumbnail: values.thumbnail,
 			fullNews: values.fullNews,
 		};
 
@@ -49,12 +54,27 @@ const EditNewsPage = () => {
 		}
 	};
 
+	const imageUploadHandler = async (image: File) => {
+		const params: APIUpdateNewsImage = {
+			id: id!,
+			thumbnail: image,
+		};
+
+		const { data } = await updateNewsImage(params);
+		if (data) {
+			// toast.success(
+			// 	t("message.projectUpdated", { framework: "React" }).toString()
+			// );
+		}
+	};
+
 	return (
 		<div>
 			<NewsForm
 				data={news}
 				actionButtonText={t("button.update", { framework: "React" })}
 				onSubmit={editNewsHandler}
+				onImageUpload={imageUploadHandler}
 			/>
 		</div>
 	);

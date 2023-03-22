@@ -148,6 +148,7 @@ const ProjectDetailPage = () => {
 						<Status status={status!} />
 					</div>
 					<ProjectDetail
+						imageSrc={project?.iconName}
 						name={project?.name!}
 						nameEnglish={project?.nameEnglish!}
 						groupName={project?.group?.nameArabic!}
