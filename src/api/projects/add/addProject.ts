@@ -1,15 +1,15 @@
-import { instance } from '../../../network';
-import { APIResponse, APIResponseStatus, getConfig } from '../..';
-import { APINewProject } from '../types';
+import { instance } from "../../../network";
+import { APIResponse, APIResponseStatus, getConfig } from "../..";
+import { APINewProject } from "../types";
 
 export async function addProject(
 	projectParams: APINewProject
 ): Promise<APIResponse<APIResponseStatus>> {
 	try {
-		const config = getConfig();
+		const config = getConfig("multipart/form-data");
 
 		const response = await instance.post<APIResponseStatus>(
-			'/projects/',
+			"/projects/",
 			projectParams,
 			config
 		);

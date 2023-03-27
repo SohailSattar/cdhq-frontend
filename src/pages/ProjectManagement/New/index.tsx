@@ -21,6 +21,7 @@ const NewProject = () => {
 			departmentCategory,
 			withAcademy,
 			hasWorkflow,
+			thumbnail,
 		} = values;
 
 		const params: APINewProject = {
@@ -31,6 +32,7 @@ const NewProject = () => {
 			departmentCategoryId: +departmentCategory?.value!,
 			withAcademy: withAcademy,
 			hasWorkflow: hasWorkflow,
+			thumbnail: thumbnail,
 		};
 
 		const { data } = await addProject(params);

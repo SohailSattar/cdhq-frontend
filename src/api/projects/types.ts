@@ -83,6 +83,7 @@ export interface APINewProject {
 	departmentCategoryId?: number;
 	withAcademy: boolean;
 	hasWorkflow: boolean;
+	thumbnail: File;
 }
 
 export interface APIUpdateProject {

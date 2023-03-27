@@ -4,19 +4,22 @@ import { ChangeEvent, FC, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Dropdown, ShadowedContainer, TextBox } from "../..";
-import { useStore } from "../../../utils/store";
 import Button from "../../Button";
 import { DropdownOption } from "../../Dropdown";
 import { INewsFormInputs } from "../types";
-
-import styles from "./styles.module.scss";
-import { getNewsTypes } from "../../../api/news/get/getNewsTypes";
-import { APINewsDetail } from "../../../api/news/types";
-import { getMainDepartments } from "../../../api/departments/get/getMainDepartments";
 import { DepartmentCategory } from "../../../data/departmentCategory";
 import { Project } from "../../../data/projects";
+
+import { APINewsDetail } from "../../../api/news/types";
+
+import { getMainDepartments } from "../../../api/departments/get/getMainDepartments";
+import { getNewsTypes } from "../../../api/news/get/getNewsTypes";
+
 import { getFullPath } from "../../../utils";
-import clsx from "clsx";
+
+import { useStore } from "../../../utils/store";
+
+import styles from "./styles.module.scss";
 
 interface Props {
 	data?: APINewsDetail;
@@ -47,6 +50,8 @@ const NewsForm: FC<Props> = ({
 		[]
 	);
 	const [newsTypeOptions, setNewsTypeOptions] = useState<DropdownOption[]>([]);
+
+	const [hideUploadButton, setHideUploadButton] = useState<boolean>(true);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -118,6 +123,8 @@ const NewsForm: FC<Props> = ({
 		if (data) {
 			const { title, shortSummary, newsType, fullNews, imageName } = data;
 
+			setHideUploadButton(true);
+
 			setValue("title", title);
 			setValue("shortSummary", shortSummary);
 
@@ -129,7 +136,7 @@ const NewsForm: FC<Props> = ({
 			setValue("fullNews", fullNews);
 			setValue("imageName", imageName);
 		}
-	}, [data, language, register]);
+	}, [data, language, register, newsTypeOptions, setValue]);
 
 	const imageChangeHandler = (evnt: ChangeEvent<HTMLInputElement>) => {
 		if (evnt.target.files) {
@@ -271,11 +278,13 @@ const NewsForm: FC<Props> = ({
 								defaultValue={""}
 							/>
 						</div>
-						<div className={styles.uploadSection}>
-							<Button type="button" onClick={imageUpdateHandler}>
-								{t("button.update", { framework: "React" })}
-							</Button>
-						</div>
+						{!hideUploadButton && (
+							<div className={styles.uploadSection}>
+								<Button type="button" onClick={imageUpdateHandler}>
+									{t("button.update", { framework: "React" })}
+								</Button>
+							</div>
+						)}
 					</div>
 				</div>
 

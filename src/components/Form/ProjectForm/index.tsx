@@ -47,6 +47,8 @@ const ProjectForm: FC<Props> = ({
 	const [departmentCategoriesOptions, setDepartmentCategoriesOptions] =
 		useState<DropdownOption[]>([]);
 
+	const [hideUploadButton, setHideUploadButton] = useState<boolean>(true);
+
 	// useEffect(() => {
 
 	// 	setProject(data!);
@@ -137,6 +139,8 @@ const ProjectForm: FC<Props> = ({
 				hasWorkflow,
 			} = data;
 
+			setHideUploadButton(true);
+
 			setValue("iconName", iconName);
 
 			setValue("name", name);
@@ -217,11 +221,13 @@ const ProjectForm: FC<Props> = ({
 									accept="image/*"
 								/>
 							</div>
-							<div>
-								<Button type="button" onClick={imageUpdateHandler}>
-									{t("button.update", { framework: "React" })}
-								</Button>
-							</div>
+							{!hideUploadButton && (
+								<div>
+									<Button type="button" onClick={imageUpdateHandler}>
+										{t("button.update", { framework: "React" })}
+									</Button>
+								</div>
+							)}
 						</div>
 					</div>
 					<div className={styles.row}>
