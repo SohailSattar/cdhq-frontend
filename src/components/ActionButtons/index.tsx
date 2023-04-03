@@ -14,6 +14,7 @@ export interface Props {
 	showEdit?: boolean;
 	showDelete?: boolean;
 	onEdit: (id: string) => void;
+	onDelete: (id: Id) => void;
 }
 
 const ActionButtons: FC<Props> = ({
@@ -23,6 +24,7 @@ const ActionButtons: FC<Props> = ({
 	showEdit,
 	showDelete = false,
 	onEdit,
+	onDelete,
 }) => {
 	const [t, i18n] = useTranslation("common");
 
@@ -44,7 +46,8 @@ const ActionButtons: FC<Props> = ({
 	};
 
 	const deleteConfirmationClickHandler = () => {
-		// setShowModal(true)
+		setShowModal(true);
+		onDelete(id);
 	};
 
 	const deleteCancelHandler = () => {

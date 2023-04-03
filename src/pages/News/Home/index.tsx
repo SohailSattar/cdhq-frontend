@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Column } from "react-table";
+import { deleteNews } from "../../../api/news/delete/deleteNews";
 import { getNews } from "../../../api/news/get/getNews";
 import { APINews } from "../../../api/news/types";
 import { APIPrivileges } from "../../../api/privileges/type";
@@ -17,6 +18,7 @@ import { NewsColumns } from "../../../components/PaginatedTable/types";
 import { Project } from "../../../data/projects";
 
 import * as RoutePath from "../../../RouteConfig";
+import { Id } from "../../../utils";
 
 import styles from "./styles.module.scss";
 
@@ -86,6 +88,14 @@ const NewsHomePage = () => {
 		[navigate]
 	);
 
+	const deleteClickHandler = async (id: Id) => {
+		const { data } = await deleteNews(id);
+
+		if (data) {
+			fetchData(currentPage);
+		}
+	};
+
 	const txtId = t("news.id", { framework: "React" });
 	const title = t("news.title", { framework: "React" });
 
@@ -114,6 +124,7 @@ const NewsHomePage = () => {
 						showView={privileges?.readPrivilege}
 						showEdit={privileges?.updatePrivilege}
 						showDelete={privileges?.deletePrivilege}
+						onDelete={deleteClickHandler}
 						onEdit={() => editClickHandler(value.id)}
 					/>
 				),

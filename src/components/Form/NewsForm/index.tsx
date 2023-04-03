@@ -121,12 +121,19 @@ const NewsForm: FC<Props> = ({
 		});
 
 		if (data) {
-			const { title, shortSummary, newsType, fullNews, imageName } = data;
+			const { title, shortSummary, newsType, department, fullNews, imageName } =
+				data;
 
-			setHideUploadButton(true);
+			setHideUploadButton(false);
 
 			setValue("title", title);
 			setValue("shortSummary", shortSummary);
+
+			const selectedDepartment = departmentOptions.find(
+				(x) => x.value === department?.id!
+			);
+
+			setValue("department", selectedDepartment!);
 
 			const selectedNewsType = newsTypeOptions.find(
 				(x) => x.value === newsType?.id!
@@ -161,6 +168,21 @@ const NewsForm: FC<Props> = ({
 			<div className={styles.newForm}>
 				<div className={styles.row}>
 					<div className={styles.basic}>
+						<div className={styles.ddlField}>
+							<Controller
+								render={({ field: { onChange, value } }) => (
+									<Dropdown
+										label={t("news.type", { framework: "React" })}
+										options={newsTypeOptions}
+										onSelect={onChange}
+										value={value}
+									/>
+								)}
+								name="newsType"
+								control={control}
+								defaultValue={{ label: "", value: "" }}
+							/>
+						</div>
 						<div className={styles.field}>
 							<Controller
 								render={({ field: { value, onChange } }) => (
@@ -207,22 +229,6 @@ const NewsForm: FC<Props> = ({
 								defaultValue={""}
 							/>
 						</div>
-
-						<div className={styles.ddlField}>
-							<Controller
-								render={({ field: { onChange, value } }) => (
-									<Dropdown
-										label={t("news.type", { framework: "React" })}
-										options={newsTypeOptions}
-										onSelect={onChange}
-										value={value}
-									/>
-								)}
-								name="newsType"
-								control={control}
-								defaultValue={{ label: "", value: "" }}
-							/>
-						</div>
 						<div>
 							<div className={styles.field}>
 								<Controller
@@ -245,7 +251,7 @@ const NewsForm: FC<Props> = ({
 						<div className={styles.row}>
 							<div className={styles.actions}>
 								<div className={language !== "ar" ? styles.btn : styles.btnLTR}>
-									{/* <Button type='submit'>{actionButtonText}</Button> */}
+									<Button type="submit">{actionButtonText}</Button>
 								</div>
 							</div>
 						</div>
@@ -291,6 +297,19 @@ const NewsForm: FC<Props> = ({
 				<div>
 					{Object.keys(errors).length > 0 && (
 						<ShadowedContainer>
+							<ErrorMessage
+								errors={errors}
+								name="department"
+								render={({ messages }) => {
+									return messages
+										? _.entries(messages).map(([type, message]) => (
+												<p key={type} className="error">
+													{message}
+												</p>
+										  ))
+										: null;
+								}}
+							/>
 							<ErrorMessage
 								errors={errors}
 								name="title"
@@ -351,9 +370,6 @@ const NewsForm: FC<Props> = ({
 							/>
 						</ShadowedContainer>
 					)}
-				</div>
-				<div>
-					<Button type="submit">{actionButtonText}</Button>
 				</div>
 			</div>
 		</form>

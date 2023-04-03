@@ -1,4 +1,5 @@
 export enum DepartmentCategory {
-	WorkLocation = "C",
+	WorkLocation = "w",
 	Main = "M",
+	Center = "C",
 }

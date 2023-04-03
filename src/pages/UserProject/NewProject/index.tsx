@@ -9,7 +9,7 @@ import { UserProjectForm } from "../../../components";
 import { IUserProjectFormInputs } from "../../../components/Form/types";
 
 import * as RoutePath from "../../../RouteConfig";
-import { ROLE } from "../../../utils";
+import { Id, ROLE } from "../../../utils";
 
 const AssignProjectToUserPage = () => {
 	const { id } = useParams<{ id: string }>();
@@ -36,9 +36,16 @@ const AssignProjectToUserPage = () => {
 	const assignProjectClickHandler = async (
 		formInputs: IUserProjectFormInputs
 	) => {
+		let departId: Id = 0;
+		departId = formInputs.department?.value!;
+
+		if (formInputs.center) {
+			departId = formInputs.center.value;
+		}
+
 		const projectId = formInputs.project.value!.toString();
 		const privilegeId = formInputs.privilege?.value!.toString();
-		const deptId = formInputs.department?.value!.toString();
+		const deptId = departId;
 		const workflowStartId = formInputs.workflowStart?.value!.toString();
 		const workflowEndId = formInputs.workflowEnd?.value!.toString();
 		const structType = formInputs.structureType?.value!.toString();

@@ -43,6 +43,7 @@ interface IUserProjectForm {
 	workflowStart: DropdownOption;
 	workflowEnd: DropdownOption;
 	department: DropdownOption;
+	center: DropdownOption;
 	structureType: DropdownOption;
 	canGrant: boolean;
 }

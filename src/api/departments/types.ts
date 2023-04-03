@@ -1,10 +1,11 @@
-import { APIDepartmentLevel } from '../departmentLevel/types';
-import { APIEmirate } from '../emirates/types';
+import { APIDepartmentLevel } from "../departmentLevel/types";
+import { APIEmirate } from "../emirates/types";
 
 export interface APIDepartmentItem {
 	id: number;
 	name: string;
 	nameEnglish: string;
+	longFullName: string;
 }
 
 export interface APIDepartmentDetail extends APIDepartmentItem {

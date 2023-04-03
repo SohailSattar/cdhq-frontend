@@ -112,7 +112,9 @@
 		"gd": "General Department",
 		"dp": "Department Name",
 		"sc": "Section",
-		"parent": "Parent Deparment"
+		"parent": "Parent Deparment",
+		"centers": "Centers",
+		"center": "Center"
 	},
 	"rank": {
 		"name": "Rank"
@@ -183,6 +185,8 @@
 		"deleteProject": "Are you sure you want to delete this project?",
 		"userProjectAdd": "Assign New Project to User",
 		"userProjectEdit": "Edit project for ",
+		"imageUpdated": "Image has been updated",
+		"newsAdded": "News has been added",
 		"newsUpdated": "News has been updated"
 	},
 	"dropdown": {

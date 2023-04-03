@@ -1,9 +1,9 @@
-import { FC, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Button, PrivilegeDetail } from '../..';
-import { GetNextWorkflowStatus } from '../../../utils';
+import { FC, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Button, PrivilegeDetail } from "../..";
+import { GetNextWorkflowStatus } from "../../../utils";
 
-import styles from './styles.module.scss';
+import styles from "./styles.module.scss";
 
 interface Props {
 	id: number;
@@ -32,8 +32,8 @@ const ProjectSummary: FC<Props> = ({
 	status,
 	displayActionButton = false,
 }) => {
-	const [t] = useTranslation('common');
-	const [buttonName, setButtonName] = useState('');
+	const [t] = useTranslation("common");
+	const [buttonName, setButtonName] = useState("");
 	const updateStatusClickHandler = () => {
 		onUpdateStatusClick(id);
 	};
@@ -48,13 +48,13 @@ const ProjectSummary: FC<Props> = ({
 				<div className={styles.details}>
 					<div>
 						{canGrant === true
-							? t('project.canGrant', { framework: 'React' })
-							: t('project.cantGrant', { framework: 'React' })}
+							? t("project.canGrant", { framework: "React" })
+							: t("project.canNotGrant", { framework: "React" })}
 
 						<div>
 							{departmentStructureType === 9
-								? t('department.withChild', { framework: 'React' })
-								: t('department.single', { framework: 'React' })}
+								? t("department.withChild", { framework: "React" })
+								: t("department.single", { framework: "React" })}
 						</div>
 					</div>
 					<div>{department}</div>
@@ -65,7 +65,7 @@ const ProjectSummary: FC<Props> = ({
 					</div>
 				)}
 			</div>
-			<div style={{ marginTop: '15px' }}>
+			<div style={{ marginTop: "15px" }}>
 				<PrivilegeDetail
 					readPrivilege={readPrivilege}
 					insertPrivilege={insertPrivilege}

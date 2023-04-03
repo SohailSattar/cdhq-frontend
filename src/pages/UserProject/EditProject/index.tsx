@@ -18,6 +18,7 @@ import {
 	APIUpdateUserProjectDetail,
 	APIUserProjectDetail,
 } from "../../../api/userProjects/types";
+import { Id } from "../../../utils";
 
 const EditUserProjectPage = () => {
 	const { userId, userProjectId } =
@@ -64,10 +65,17 @@ const EditUserProjectPage = () => {
 	const updateUserProjectClickHandler = async (
 		formInput: IUserProjectFormInputs
 	) => {
+		let departId: Id = 0;
+		departId = formInput.department?.value!;
+
+		if (formInput.center) {
+			departId = formInput.center.value;
+		}
+
 		const params: APIUpdateUserProjectDetail = {
 			id: userProjectId!,
 			privilegeId: formInput.privilege.value!.toString(),
-			departmentId: formInput.department.value!.toString()!,
+			departmentId: departId!,
 			workflowStartFromId: formInput.workflowStart?.value!.toString()!,
 			workflowEndToId: formInput.workflowEnd?.value!.toString()!,
 			departmentStructureType: formInput.structureType?.value!.toString(),

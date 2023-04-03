@@ -26,7 +26,7 @@ export interface APIProjectToUser {
 	userId: string;
 	projectId: string;
 	privilegeId: string;
-	departmentId: string;
+	departmentId: Id;
 	WorkflowStartFromId: string;
 	WorkflowEndToId: string;
 	departmentStructureType: string;

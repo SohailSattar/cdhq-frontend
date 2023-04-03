@@ -36,6 +36,7 @@ const EditNewsPage = () => {
 	const editNewsHandler = async (values: INewsFormInputs) => {
 		const params: APIUpdateNews = {
 			id: id!,
+			departmentId: values.department.value,
 			title: values.title,
 			shortSummary: values.shortSummary,
 			newsTypeId: +values.newsType!.value,
@@ -62,9 +63,9 @@ const EditNewsPage = () => {
 
 		const { data } = await updateNewsImage(params);
 		if (data) {
-			// toast.success(
-			// 	t("message.projectUpdated", { framework: "React" }).toString()
-			// );
+			toast.success(
+				t("message.imageUpdated", { framework: "React" }).toString()
+			);
 		}
 	};
 
