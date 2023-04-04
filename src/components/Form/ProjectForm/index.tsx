@@ -16,6 +16,8 @@ import { getDepartmentCategories } from "../../../api/departmentCategories/get/g
 import clsx from "clsx";
 import { getFullPath } from "../../../utils";
 
+import Carousel from "react-elastic-carousel";
+
 interface Props {
 	data?: APIProjectDetail;
 	actionButtonText: string;
@@ -95,7 +97,6 @@ const ProjectForm: FC<Props> = ({
 	useEffect(() => {
 		const fetchData = async () => {
 			const { data } = await getDepartmentCategories();
-			console.log(data);
 			if (data) {
 				setDepartmentCategoriesOptions(
 					data?.map((d) => {
@@ -137,6 +138,8 @@ const ProjectForm: FC<Props> = ({
 				departmentCategory,
 				withAcademy,
 				hasWorkflow,
+				pathLink,
+				isExternalPath,
 			} = data;
 
 			setHideUploadButton(true);
@@ -163,6 +166,8 @@ const ProjectForm: FC<Props> = ({
 
 			setValue("withAcademy", withAcademy!);
 			setValue("hasWorkflow", hasWorkflow!);
+			setValue("pathLink", pathLink);
+			setValue("isExternalPath", isExternalPath!);
 		}
 	}, [
 		register,
@@ -341,7 +346,39 @@ const ProjectForm: FC<Props> = ({
 							</div>
 						</div>
 					</div>
-
+					<div className={styles.row}>
+						<div className={styles.ddlField}>
+							<Controller
+								render={({ field: { value, onChange } }) => (
+									<TextBox
+										type="text"
+										label={t("project.urlLink", { framework: "React" })}
+										value={value}
+										onChange={onChange}
+									/>
+								)}
+								name="pathLink"
+								control={control}
+								defaultValue={""}
+							/>
+						</div>
+						<div className={clsx(styles.field, styles.check)}>
+							<div>
+								<Controller
+									render={({ field: { onChange, value } }) => (
+										<Checkbox
+											label={t("project.isExternal", { framework: "React" })}
+											checked={value}
+											onChange={onChange}
+										/>
+									)}
+									name="isExternalPath"
+									control={control}
+									defaultValue={false}
+								/>
+							</div>
+						</div>
+					</div>
 					{Object.keys(errors).length > 0 && (
 						<ShadowedContainer>
 							<ErrorMessage

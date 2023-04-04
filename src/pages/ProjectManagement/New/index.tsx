@@ -21,6 +21,8 @@ const NewProject = () => {
 			departmentCategory,
 			withAcademy,
 			hasWorkflow,
+			pathLink,
+			isExternalPath,
 			thumbnail,
 		} = values;
 
@@ -32,6 +34,8 @@ const NewProject = () => {
 			departmentCategoryId: +departmentCategory?.value!,
 			withAcademy: withAcademy,
 			hasWorkflow: hasWorkflow,
+			pathLink: pathLink,
+			isExternalPath: isExternalPath,
 			thumbnail: thumbnail,
 		};
 

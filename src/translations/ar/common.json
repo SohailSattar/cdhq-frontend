@@ -91,7 +91,9 @@
 		"noProject": "لم يتم تخصيص أي مشروع.",
 		"deptCat": "فئة القسم",
 		"withAcademy": "هل يجب أن تكون الأكاديمية أيضًا في قائمة الأقسام؟",
-		"hasWorkflow": "لديه سير عمل؟"
+		"hasWorkflow": "لديه سير عمل؟",
+		"urlLink": "URL",
+		"isExternal": "Is the link external?"
 	},
 	"userProject": {
 		"workflowStart": "بداية التمرير",

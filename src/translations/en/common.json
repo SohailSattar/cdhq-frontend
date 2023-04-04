@@ -91,7 +91,9 @@
 		"noProject": "No project is assigned.",
 		"deptCat": "Department Category",
 		"withAcademy": "Should the academy also be in the list of departmentt?",
-		"hasWorkflow": "Has a workflow?"
+		"hasWorkflow": "Has a workflow?",
+		"urlLink": "URL link",
+		"isExternal": "Is the link external?"
 	},
 	"userProject": {
 		"workflowStart": "Workflow starts from",

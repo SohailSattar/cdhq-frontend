@@ -22,7 +22,6 @@ const EditProjectPage = () => {
 	useEffect(() => {
 		const fetch = async () => {
 			const { data } = await getProjectDetail(id!);
-
 			setProject(data);
 		};
 
@@ -55,6 +54,8 @@ const EditProjectPage = () => {
 			departmentCategory,
 			withAcademy,
 			hasWorkflow,
+			pathLink,
+			isExternalPath,
 		} = values;
 
 		const params: APIUpdateProject = {
@@ -66,6 +67,8 @@ const EditProjectPage = () => {
 			departmentCategoryId: +departmentCategory?.value!,
 			withAcademy: withAcademy,
 			hasWorkflow: hasWorkflow,
+			pathLink: pathLink,
+			isExternalPath: isExternalPath,
 		};
 
 		const { data } = await updateProject(params);

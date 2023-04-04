@@ -13,6 +13,7 @@ export interface APIProjectItem {
 	isAvailable?: boolean;
 	iconName?: string;
 	pathLink?: string;
+	isExternalPath?: boolean;
 	departmentCategory?: APIDepartmentCategory;
 }
 
@@ -45,6 +46,8 @@ export interface APIProjectDetail {
 	departmentCategory: APIDepartmentCategory;
 	withAcademy?: boolean;
 	iconName?: string;
+	pathLink: string;
+	isExternalPath: boolean;
 	activeStatus: APIActiveStatus;
 }
 
@@ -83,6 +86,8 @@ export interface APINewProject {
 	departmentCategoryId?: number;
 	withAcademy: boolean;
 	hasWorkflow: boolean;
+	pathLink?: string;
+	isExternalPath: boolean;
 	thumbnail: File;
 }
 
@@ -95,6 +100,8 @@ export interface APIUpdateProject {
 	departmentCategoryId?: number;
 	withAcademy: boolean;
 	hasWorkflow: boolean;
+	pathLink?: string;
+	isExternalPath: boolean;
 }
 
 export interface APIUpdateProjectStatus {

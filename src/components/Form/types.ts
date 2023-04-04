@@ -21,6 +21,8 @@ export interface IProjectFormInputs {
 	departmentCategory?: DropdownOption;
 	withAcademy: boolean;
 	hasWorkflow: boolean;
+	pathLink?: string;
+	isExternalPath: boolean;
 	thumbnail: File;
 }
 
