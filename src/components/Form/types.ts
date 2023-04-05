@@ -1,3 +1,4 @@
+import { Id } from "../../utils";
 import { DropdownOption } from "../Dropdown";
 
 export type FormMode = "ADD" | "EDIT";
@@ -58,14 +59,17 @@ export interface IProjectUserFormInputs extends IUserProjectForm {
 	user: DropdownOption;
 }
 
-// Phone Directory
-export interface IPhoneFormInputs {
-	id: number;
-	phone?: string;
-	phone2?: string;
-	phoneOffice?: string;
+// Honor
+export interface IHonorFormInputs {
+	employeeId: Id;
+	name: string;
+	rank: string;
+	department: string;
+	imageName: string;
+	thumbnail: File;
 }
 
+// News
 export interface INewsFormInputs {
 	department: DropdownOption;
 	title: string;
@@ -74,4 +78,12 @@ export interface INewsFormInputs {
 	newsType: DropdownOption;
 	fullNews: string;
 	thumbnail: File;
+}
+
+// Phone Directory
+export interface IPhoneFormInputs {
+	id: number;
+	phone?: string;
+	phone2?: string;
+	phoneOffice?: string;
 }

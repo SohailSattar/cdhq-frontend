@@ -127,46 +127,6 @@ const ProjectManagementPage = () => {
 		}
 	}, [fetchProjects, pageSize, role]);
 
-	// // Getting list of all projects
-	// useEffect(() => {
-	// 	const fetchData = async () => {
-	// 		const { data } = await getProjectsList();
-
-	// 		if (data) {
-	// 			setProjectOptions(
-	// 				data?.map((project) => {
-	// 					return {
-	// 						label: project.nameEnglish + "  -  " + project.name,
-	// 						value: project.id,
-	// 					};
-	// 				})
-	// 			);
-	// 		}
-	// 	};
-
-	// 	fetchData();
-	// }, []);
-
-	// // Getting list of all departments
-	// useEffect(() => {
-	// 	const fetchData = async () => {
-	// 		const { data } = await getDepartments();
-
-	// 		if (data) {
-	// 			setDepartmentOptions(
-	// 				data?.map((dept) => {
-	// 					return {
-	// 						label: dept.nameEnglish + " - " + dept.name,
-	// 						value: dept.id,
-	// 					};
-	// 				})
-	// 			);
-	// 		}
-	// 	};
-
-	// 	fetchData();
-	// }, []);
-
 	const projectSearchClickHandler = (keyword: string) => {
 		setKeyword(keyword);
 	};
@@ -189,7 +149,7 @@ const ProjectManagementPage = () => {
 						<div className={styles.btn}>
 							<RedirectButton
 								label={t("button.addNewProject", { framework: "React" })}
-								redirectTo={`${RoutePath.PROJECT}/new`}
+								redirectTo={RoutePath.PROJECT_NEW}
 							/>
 						</div>
 					</div>

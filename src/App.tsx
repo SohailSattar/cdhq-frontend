@@ -2,20 +2,20 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
 import {
-	NewUserPage,
+	UserNewPage,
 	HomePage,
 	LoginPage,
 	ProjectDetailPage,
 	ProjectManagementHomePage,
 	UserDetailPage,
 	UsersHomePage,
-	EditUserPage,
+	UserEditPage,
 	PageNotFound,
-	NewProjectPage,
-	EditProjectPage,
+	ProjectCreatePage,
+	ProjectEditPage,
 	AssignUserToProjectPage,
 	EditUserProjectPage,
-	SearchUserPage,
+	UserSearchPage,
 	ChangePasswordPage,
 	AssignProjectToUserPage,
 	EditProjectUserPage,
@@ -24,6 +24,9 @@ import {
 	NewsHomePage,
 	NewsEditPage,
 	NewsDetailPage,
+	HonorsHomePage,
+	HonorNewPage,
+	HonorEditPage,
 } from "./pages";
 import { Layout, ProtectedRoute } from "./components";
 
@@ -45,6 +48,10 @@ function App() {
 			{/* <WebSession /> */}
 			<Router basename="/portal">
 				<Routes>
+					<Route
+						path={RoutePath.ROOT}
+						element={<Layout>{/* <LandingPage /> */}</Layout>}
+					/>
 					<Route path="/login" element={<LoginPage />} />
 					<Route element={<ProtectedRoute />}>
 						<Route
@@ -56,10 +63,6 @@ function App() {
 							}
 						/>
 					</Route>
-					<Route
-						path={RoutePath.ROOT}
-						element={<Layout>{/* <LandingPage /> */}</Layout>}
-					/>
 					<Route element={<ProtectedRoute />}>
 						<Route
 							path={`${RoutePath.HOME}`}
@@ -93,30 +96,30 @@ function App() {
 					</Route>
 					<Route element={<ProtectedRoute />}>
 						<Route
-							path={`${RoutePath.USER}/new`}
+							path={RoutePath.USER_NEW}
 							element={
 								<Layout>
-									<NewUserPage />
+									<UserNewPage />
 								</Layout>
 							}
 						/>
 					</Route>
 					<Route element={<ProtectedRoute />}>
 						<Route
-							path={`${RoutePath.USER}/new/:id`}
+							path={`${RoutePath.USER_NEW}/:id`}
 							element={
 								<Layout>
-									<NewUserPage />
+									<UserNewPage />
 								</Layout>
 							}
 						/>
 					</Route>
 					<Route element={<ProtectedRoute />}>
 						<Route
-							path={`${RoutePath.USER}/search`}
+							path={RoutePath.USER_SEARCH}
 							element={
 								<Layout>
-									<SearchUserPage />
+									<UserSearchPage />
 								</Layout>
 							}
 						/>
@@ -126,7 +129,7 @@ function App() {
 							path={`${RoutePath.USER}/:id/edit`}
 							element={
 								<Layout>
-									<EditUserPage />
+									<UserEditPage />
 								</Layout>
 							}
 						/>
@@ -162,10 +165,10 @@ function App() {
 					/>
 					<Route element={<ProtectedRoute />}>
 						<Route
-							path={`${RoutePath.PROJECT}/new`}
+							path={RoutePath.PROJECT_NEW}
 							element={
 								<Layout>
-									<NewProjectPage />
+									<ProjectCreatePage />
 								</Layout>
 							}
 						/>
@@ -186,7 +189,7 @@ function App() {
 							path={`${RoutePath.PROJECT}/:id/edit`}
 							element={
 								<Layout>
-									<EditProjectPage />
+									<ProjectEditPage />
 								</Layout>
 							}
 						/>
@@ -275,6 +278,38 @@ function App() {
 						/>
 					</Route> */}
 
+					{/* Honors */}
+					<Route element={<ProtectedRoute />}>
+						<Route
+							path={`${RoutePath.HONORS}`}
+							element={
+								<Layout projectId={Project.Honors}>
+									<HonorsHomePage />
+								</Layout>
+							}
+						/>
+					</Route>
+					<Route element={<ProtectedRoute />}>
+						<Route
+							path={`${RoutePath.HONORS_NEW}`}
+							element={
+								<Layout projectId={Project.Honors}>
+									<HonorNewPage />
+								</Layout>
+							}
+						/>
+					</Route>
+					<Route element={<ProtectedRoute />}>
+						<Route
+							path={`${RoutePath.HONORS_EDIT}`}
+							element={
+								<Layout projectId={Project.Honors}>
+									<HonorEditPage />
+								</Layout>
+							}
+						/>
+					</Route>
+
 					{/* News */}
 					<Route element={<ProtectedRoute />}>
 						<Route
@@ -297,7 +332,7 @@ function App() {
 						/>
 					</Route>
 					<Route
-						path={`${RoutePath.NEWS}/:id`}
+						path={RoutePath.NEWS_DETAIL}
 						element={
 							<Layout>
 								<NewsDetailPage />
@@ -306,7 +341,7 @@ function App() {
 					/>
 					<Route element={<ProtectedRoute />}>
 						<Route
-							path={`${RoutePath.NEWS}/:id/edit`}
+							path={RoutePath.NEWS_EDIT}
 							element={
 								<Layout projectId={Project.News} privilegeType="Update">
 									<NewsEditPage />

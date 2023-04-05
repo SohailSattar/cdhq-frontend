@@ -38,7 +38,7 @@ import styles from "./styles.module.scss";
 import { updateUserProjectStatus } from "../../../api/userProjects/update/updateUserProjectStatus";
 import { APIProjectStatus } from "../../../api/userProjects/types";
 
-const EditUserPage = () => {
+const UserEditPage = () => {
 	const { id } = useParams<{ id: string }>();
 	const [t] = useTranslation("common");
 
@@ -279,4 +279,4 @@ const EditUserPage = () => {
 	);
 };
 
-export default EditUserPage;
+export default UserEditPage;

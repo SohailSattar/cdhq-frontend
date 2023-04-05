@@ -13,7 +13,7 @@ import { updateNewsImage } from "../../../api/news/update/updateNewsImage";
 import NewsForm from "../../../components/Form/NewsForm";
 import { INewsFormInputs } from "../../../components/Form/types";
 
-const EditNewsPage = () => {
+const NewsEditPage = () => {
 	const { id } = useParams<{ id: string }>();
 	const [t] = useTranslation("common");
 
@@ -81,4 +81,4 @@ const EditNewsPage = () => {
 	);
 };
 
-export default EditNewsPage;
+export default NewsEditPage;

@@ -206,6 +206,13 @@
 	"search": {
 		"user": "Search user"
 	},
+	"honor": {
+		"count": "Total Honors Count",
+		"id": "Honor Id",
+		"honoredOn": "Honored On",
+		"name": "Name",
+		"type": "News Type"
+	},
 	"news": {
 		"count": "Total News Count",
 		"id": "News Id",

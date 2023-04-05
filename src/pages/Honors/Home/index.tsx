@@ -2,19 +2,19 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Column } from "react-table";
-import { deleteNews } from "../../../api/news/delete/deleteNews";
-import { getNews } from "../../../api/news/get/getNews";
-import { APINews } from "../../../api/news/types";
+import { getHonors } from "../../../api/honors/get/getHonors";
+import { APIHonorDetail } from "../../../api/honors/types";
 import { APIPrivileges } from "../../../api/privileges/type";
 import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPrivilege";
 import {
+	ActionButtons,
+	PhotoThumbnailImage,
 	PaginatedTable,
 	RedirectButton,
 	ShadowedContainer,
-	ActionButtons,
 } from "../../../components";
 import { DropdownOption } from "../../../components/Dropdown";
-import { NewsColumns } from "../../../components/PaginatedTable/types";
+import { HonorColumn } from "../../../components/PaginatedTable/types";
 import { Project } from "../../../data/projects";
 
 import * as RoutePath from "../../../RouteConfig";
@@ -22,7 +22,7 @@ import { Id } from "../../../utils";
 
 import styles from "./styles.module.scss";
 
-const NewsHomePage = () => {
+const HonorsHomePage = () => {
 	const [t] = useTranslation("common");
 	const navigate = useNavigate();
 
@@ -32,11 +32,11 @@ const NewsHomePage = () => {
 
 	const [privileges, setPrivileges] = useState<APIPrivileges>();
 
-	const [news, setNews] = useState<APINews[]>([]);
+	const [honors, setHonors] = useState<APIHonorDetail[]>([]);
 
 	const fetchData = useMemo(
 		() => async (currentPage: number) => {
-			const { data: privilege } = await getProjectPrivilege(Project.News);
+			const { data: privilege } = await getProjectPrivilege(Project.Honors);
 
 			if (privilege) {
 				const {
@@ -53,10 +53,10 @@ const NewsHomePage = () => {
 					deletePrivilege,
 				});
 
-				const { data } = await getNews(currentPage, pageSize);
+				const { data } = await getHonors(currentPage, pageSize);
 
 				if (data) {
-					setNews(data.news);
+					setHonors(data.honors);
 					setTotalCount(data.totalItems);
 				} else {
 					// navigate(RoutePath.ROOT);
@@ -83,41 +83,57 @@ const NewsHomePage = () => {
 
 	const editClickHandler = useMemo(
 		() => (id: string) => {
-			console.log(
-				RoutePath.NEWS_EDIT,
-				RoutePath.NEWS_EDIT.replace(RoutePath.ID, id)
-			);
-			const editPath = RoutePath.NEWS_EDIT.replace(RoutePath.ID, id);
+			const editPath = RoutePath.HONORS_EDIT.replace(RoutePath.ID, id);
 			navigate(editPath);
 		},
 		[navigate]
 	);
 
-	const deleteClickHandler = async (id: Id) => {
-		const { data } = await deleteNews(id);
-
-		if (data) {
-			fetchData(currentPage);
-		}
-	};
-
-	const txtId = t("news.id", { framework: "React" });
-	const title = t("news.title", { framework: "React" });
+	const txtId = t("honor.id", { framework: "React" });
+	const honoredOn = t("honor.honoredOn", { framework: "React" });
+	const name = t("honor.name", { framework: "React" });
+	const rank = t("rank.name", { framework: "React" });
+	const department = t("department.name", { framework: "React" });
 
 	//Actions
 	const actions = t("global.actions", { framework: "React" });
 
-	const columns: Column<NewsColumns>[] = useMemo(
+	const columns: Column<HonorColumn>[] = useMemo(
 		() => [
+			{
+				id: "img",
+				accessor: (p) => p.imageName,
+				Cell: ({ value }: any) => <PhotoThumbnailImage src={value!} />,
+			},
 			{
 				Header: txtId,
 				id: "id",
 				accessor: (p) => p.id,
 			},
 			{
-				Header: title,
-				id: "title",
-				accessor: (p) => p.title,
+				Header: honoredOn,
+				id: "honoredOn",
+				accessor: (p) => p,
+				Cell: ({ value }: any) => (
+					<>
+						{value.mmm}, {value.yyy}
+					</>
+				),
+			},
+			{
+				Header: name,
+				id: "name",
+				accessor: (p) => p.name,
+			},
+			{
+				Header: rank,
+				id: "rank",
+				accessor: (p) => p.rank,
+			},
+			{
+				Header: department,
+				id: "department",
+				accessor: (p) => p.locationFullName,
 			},
 			{
 				Header: actions,
@@ -126,25 +142,34 @@ const NewsHomePage = () => {
 					<ActionButtons
 						id={value.id}
 						detailPageLink={`${value.id}`}
-						showView={privileges?.readPrivilege}
+						showView={false}
 						showEdit={privileges?.updatePrivilege}
 						showDelete={privileges?.deletePrivilege}
-						onDelete={deleteClickHandler}
-						onEdit={() => editClickHandler(value.id)}
-					/>
+						onEdit={() => editClickHandler(value.id)} onDelete={function (id: Id): void {
+							throw new Error("Function not implemented.");
+						} }					/>
 				),
 			},
 		],
-		[privileges, actions, editClickHandler, title, txtId]
+		[
+			privileges,
+			actions,
+			txtId,
+			honoredOn,
+			name,
+			rank,
+			department,
+			editClickHandler,
+		]
 	);
 
 	return (
-		<div className={styles.news}>
+		<div className={styles.honors}>
 			{privileges?.insertPrivilege && (
 				<ShadowedContainer className={styles.section}>
 					<RedirectButton
 						label={t("button.add", { framework: "React" })}
-						redirectTo={RoutePath.NEWS_NEW}
+						redirectTo={RoutePath.HONORS_NEW}
 					/>
 				</ShadowedContainer>
 			)}
@@ -154,7 +179,7 @@ const NewsHomePage = () => {
 					totalCountText={t("news.count", { framework: "React" })}
 					totalCount={totalCount}
 					pageSize={pageSize}
-					data={news}
+					data={honors}
 					columns={columns}
 					onSearch={() => {}}
 					onTableSort={() => {}}
@@ -167,4 +192,4 @@ const NewsHomePage = () => {
 	);
 };
 
-export default NewsHomePage;
+export default HonorsHomePage;

@@ -7,7 +7,7 @@ import NewsForm from "../../../components/Form/NewsForm";
 import { INewsFormInputs } from "../../../components/Form/types";
 import * as RoutePath from "../..//../RouteConfig";
 
-const CreateNewsPage = () => {
+const NewsCreatePage = () => {
 	const [t] = useTranslation("common");
 	const navigate = useNavigate();
 
@@ -38,4 +38,4 @@ const CreateNewsPage = () => {
 	);
 };
 
-export default CreateNewsPage;
+export default NewsCreatePage;

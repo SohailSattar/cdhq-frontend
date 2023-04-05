@@ -1,9 +1,9 @@
-import React from 'react';
-import HeaderLogo, { Props as HeaderLogoProps } from '.';
+import React from "react";
+import HeaderLogo, { Props as HeaderLogoProps } from ".";
 
 export default {
-	title: 'Components/HeaderLogo',
+	title: "Components/HeaderLogo",
 	component: HeaderLogo,
 };
 
-export const Primary = () => <HeaderLogo src='' />;
+export const Primary = () => <HeaderLogo src="" isLoggedIn={true} />;
