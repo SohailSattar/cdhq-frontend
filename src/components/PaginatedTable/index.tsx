@@ -25,7 +25,6 @@ interface Props {
 	onTableSort: (columneId: string, isSortedDesc: boolean) => void;
 	onPageChange: (pageNo: number) => void;
 	onPageViewSelectionChange: (option: DropdownOption) => void;
-	displayActionsColumn?: boolean;
 }
 
 const PaginatedTable: FC<Props> = ({
@@ -39,7 +38,6 @@ const PaginatedTable: FC<Props> = ({
 	onTableSort,
 	onPageChange,
 	onPageViewSelectionChange,
-	displayActionsColumn = true,
 }) => {
 	const [t] = useTranslation("common");
 
@@ -99,11 +97,6 @@ const PaginatedTable: FC<Props> = ({
 				data={data}
 				onSort={onTableSort}
 				noRecordsText={noRecordText}
-				// columnsToHide={
-				// 	displayActionsColumn
-				// 		? []
-				// 		: [columns[columns.length - 1].Header!.toString()]
-				// }
 			/>
 			<div>
 				<Pagination

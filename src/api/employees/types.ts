@@ -1,10 +1,14 @@
-import { APIClass } from '../classes/types';
-import { APIDepartmentItem } from '../departments/types';
-import { APIGender } from '../genders/type';
-import { APIRank } from '../ranks/types';
+import { Id } from "../../utils";
+import { APIClass } from "../classes/types";
+import {
+	APIDepartmentItem,
+	APICategorizedDepartment,
+} from "../departments/types";
+import { APIGender } from "../genders/type";
+import { APIRank } from "../ranks/types";
 
 export interface APIEmployee {
-	id: number;
+	id: Id;
 	employeeNo: number;
 	fullName: string;
 	nameEnglish: string;
@@ -18,6 +22,7 @@ export interface APIEmployee {
 	genderId: number;
 	rankId: number;
 	rank?: APIRank;
+	department?: APICategorizedDepartment;
 }
 
 export interface APIExistingEmployee {

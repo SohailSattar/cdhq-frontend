@@ -11,7 +11,7 @@ import { DropdownOption } from "../../../components/Dropdown";
 import { useStore } from "../../../utils/store";
 import * as RoutePath from "../../../RouteConfig";
 
-const EditDepartmentPage = () => {
+const DepartmentEditPage = () => {
 	const { id } = useParams<{ id: string }>();
 	const [t] = useTranslation("common");
 	const language = useStore((state) => state.language);
@@ -117,4 +117,4 @@ const EditDepartmentPage = () => {
 	);
 };
 
-export default EditDepartmentPage;
+export default DepartmentEditPage;

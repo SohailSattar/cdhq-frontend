@@ -83,7 +83,12 @@ const NewsHomePage = () => {
 
 	const editClickHandler = useMemo(
 		() => (id: string) => {
-			navigate(`${RoutePath.NEWS}/${id}/edit`);
+			console.log(
+				RoutePath.NEWS_EDIT,
+				RoutePath.NEWS_EDIT.replace(RoutePath.ID, id)
+			);
+			const editPath = RoutePath.NEWS_EDIT.replace(RoutePath.ID, id);
+			navigate(editPath);
 		},
 		[navigate]
 	);
@@ -139,7 +144,7 @@ const NewsHomePage = () => {
 				<ShadowedContainer className={styles.section}>
 					<RedirectButton
 						label={t("button.add", { framework: "React" })}
-						redirectTo={`${RoutePath.NEWS}/new`}
+						redirectTo={RoutePath.NEWS_NEW}
 					/>
 				</ShadowedContainer>
 			)}

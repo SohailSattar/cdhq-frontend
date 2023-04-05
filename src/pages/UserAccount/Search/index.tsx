@@ -25,7 +25,7 @@ import { ROLE } from "../../../utils";
 
 import styles from "./styles.module.scss";
 
-const SearchUserPage = () => {
+const UserSearchPage = () => {
 	const [t] = useTranslation("common");
 
 	const navigate = useNavigate();
@@ -138,4 +138,4 @@ const SearchUserPage = () => {
 	);
 };
 
-export default SearchUserPage;
+export default UserSearchPage;

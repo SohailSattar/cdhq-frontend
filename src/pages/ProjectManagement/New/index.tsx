@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 
 import * as RoutePath from "../..//../RouteConfig";
 
-const NewProject = () => {
+const ProjectNewPage = () => {
 	const [t] = useTranslation("common");
 	const navigate = useNavigate();
 
@@ -56,4 +56,4 @@ const NewProject = () => {
 	);
 };
 
-export default NewProject;
+export default ProjectNewPage;

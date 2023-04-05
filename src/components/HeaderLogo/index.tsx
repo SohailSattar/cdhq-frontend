@@ -7,11 +7,12 @@ import styles from "./styles.module.scss";
 
 export interface Props {
 	src: string;
+	isLoggedIn: boolean;
 }
 
-const HeaderLogo: FC<Props> = ({ src }) => {
+const HeaderLogo: FC<Props> = ({ src, isLoggedIn }) => {
 	return (
-		<Link to={RoutePath.HOME}>
+		<Link to={isLoggedIn ? RoutePath.HOME : RoutePath.ROOT}>
 			{" "}
 			<img src={src} alt="" className={styles.logo} />
 		</Link>

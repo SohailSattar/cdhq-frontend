@@ -13,7 +13,7 @@ import { updateProjectThumbnail } from "../../../api/projects/update/updateProje
 import { ProjectForm } from "../../../components";
 import { IProjectFormInputs } from "../../../components/Form/types";
 
-const EditProjectPage = () => {
+const ProjectEditPage = () => {
 	const { id } = useParams<{ id: string }>();
 	const [t] = useTranslation("common");
 
@@ -89,4 +89,4 @@ const EditProjectPage = () => {
 	);
 };
 
-export default EditProjectPage;
+export default ProjectEditPage;

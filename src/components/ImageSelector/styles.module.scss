@@ -1,0 +1,61 @@
+.imageSelector {
+	margin-left: 15px;
+
+	.browse {
+		margin-bottom: 15px;
+	}
+
+	.imageContainer {
+		// display: flex;
+		// justify-content: left;
+		.thumbnail {
+			width: 154px;
+		}
+
+		.actionContainer {
+			justify-content: right;
+		}
+	}
+
+	// .image {
+	// 	max-height: 300px;
+	// 	max-width: 500px;
+	// }
+
+	.uploadSection {
+		display: flex;
+		justify-content: left;
+	}
+}
+
+.imageSelectorLTR {
+	margin-right: 15px;
+
+	.browse {
+		margin-bottom: 15px;
+	}
+	// .image {
+	// 	max-height: 300px;
+	// 	max-width: 500px;
+	// }
+
+	.imageContainer {
+		display: flex;
+		justify-content: right;
+
+		.thumbnail {
+			width: 154px;
+		}
+
+		.actionContainer {
+			margin-top: 5px;
+			display: flex;
+			justify-content: right;
+		}
+	}
+
+	.uploadSection {
+		display: flex;
+		justify-content: right;
+	}
+}

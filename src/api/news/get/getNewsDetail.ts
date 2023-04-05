@@ -1,8 +1,11 @@
-import { APIResponse, getConfig } from '../..';
-import { instance } from '../../../network';
-import {  APINewsDetail } from '../types';
+import { APIResponse, getConfig } from "../..";
+import { instance } from "../../../network";
+import { Id } from "../../../utils";
+import { APINewsDetail } from "../types";
 
-export async function getNewsDetail(id: string): Promise<APIResponse<APINewsDetail>> {
+export async function getNewsDetail(
+	id: Id
+): Promise<APIResponse<APINewsDetail>> {
 	try {
 		const config = getConfig();
 

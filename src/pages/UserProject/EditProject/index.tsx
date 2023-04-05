@@ -20,7 +20,7 @@ import {
 } from "../../../api/userProjects/types";
 import { Id } from "../../../utils";
 
-const EditUserProjectPage = () => {
+const UserProjectEditPage = () => {
 	const { userId, userProjectId } =
 		useParams<{ userId: string; userProjectId: string }>();
 
@@ -112,4 +112,4 @@ const EditUserProjectPage = () => {
 	);
 };
 
-export default EditUserProjectPage;
+export default UserProjectEditPage;

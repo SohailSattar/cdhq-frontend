@@ -195,6 +195,13 @@
 	"search": {
 		"user": "مستخدم البحث"
 	},
+	"honor": {
+		"count": "Total Honors Count",
+		"id": "السجل",
+		"honoredOn": "تكريم يوم",
+		"name": "اسم الموظف",
+		"type": "News Type"
+	},
 	"news": {
 		"count": "Total News Count",
 		"id": "رقم الخبر",

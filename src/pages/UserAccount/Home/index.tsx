@@ -27,7 +27,7 @@ import { UserColumns } from "../../../components/PaginatedTable/types";
 
 import styles from "./styles.module.scss";
 
-const UsersListPage = () => {
+const UserAccountPage = () => {
 	const [t] = useTranslation("common");
 	const navigate = useNavigate();
 	const language = useStore((state) => state.language);
@@ -262,7 +262,7 @@ const UsersListPage = () => {
 						<ShadowedContainer className={styles.section}>
 							<RedirectButton
 								label={t("button.addNewUser", { framework: "React" })}
-								redirectTo={`${RoutePath.USER}/search`}
+								redirectTo={RoutePath.USER_SEARCH}
 							/>
 						</ShadowedContainer>
 					)}
@@ -306,4 +306,4 @@ const UsersListPage = () => {
 	);
 };
 
-export default UsersListPage;
+export default UserAccountPage;

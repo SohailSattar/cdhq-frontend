@@ -1,6 +1,7 @@
 // export const projects = [{"name":"News", "id": 6610}]
 
 export enum Project {
-	PhoneDirectory = 1910,
+	Honors = 6210,
 	News = 6110,
+	PhoneDirectory = 1910,
 }

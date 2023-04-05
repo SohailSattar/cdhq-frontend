@@ -16,7 +16,7 @@ import { ROLE } from "../../../utils";
 
 import { IUserFormInputs } from "../../../components/Form/types";
 
-const NewUserPage = () => {
+const UserNewPage = () => {
 	const { id } = useParams<{ id: string }>();
 	const [t] = useTranslation("common");
 	const navigate = useNavigate();
@@ -117,4 +117,4 @@ const NewUserPage = () => {
 	);
 };
 
-export default NewUserPage;
+export default UserNewPage;
