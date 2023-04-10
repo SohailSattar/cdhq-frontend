@@ -9,6 +9,7 @@ import { APIExistingUser } from "../../../api/users/types";
 import {
 	Button,
 	NotAuthorized,
+	PageContainer,
 	SearchBox,
 	ShadowedContainer,
 } from "../../../components";
@@ -89,7 +90,7 @@ const UserSearchPage = () => {
 	};
 
 	return canView ? (
-		<div className={styles.newUser}>
+		<PageContainer showBackButton className={styles.newUser}>
 			<div className={styles.field}>
 				<SearchBox
 					label={t("user.employeeNumber", { framework: "React" })}
@@ -132,7 +133,7 @@ const UserSearchPage = () => {
 					</ShadowedContainer>
 				</TabPanel>
 			</Tabs>
-		</div>
+		</PageContainer>
 	) : (
 		<NotAuthorized />
 	);

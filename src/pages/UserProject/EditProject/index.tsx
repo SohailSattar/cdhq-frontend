@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
 	Button,
+	PageContainer,
 	ShadowedContainer,
 	UserProjectForm,
 } from "../../../components";
@@ -89,17 +90,12 @@ const UserProjectEditPage = () => {
 		}
 	};
 
-	const backButtonClickHandler = () => {
-		navigate(`${RoutePath.USER}/${userId}`);
-	};
-
 	return (
-		<>
-			<ShadowedContainer>
-				<Button onClick={backButtonClickHandler}>
-					{t("button.backToDetail", { framework: "React" })}
-				</Button>
-			</ShadowedContainer>
+		<PageContainer
+			showBackButton
+			btnBackLabel={t("button.backToDetail", { framework: "React" })}
+			btnBackUrlLink={`${RoutePath.USER}/${userId}`}
+		>
 			<UserProjectForm
 				isNormalUser={isNormalUser}
 				title={heading}
@@ -108,7 +104,7 @@ const UserProjectEditPage = () => {
 				actionButtonText={t("button.update", { framework: "React" })}
 				onActionButtonClick={updateUserProjectClickHandler}
 			/>
-		</>
+		</PageContainer>
 	);
 };
 

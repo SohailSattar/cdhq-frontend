@@ -10,8 +10,10 @@ import {
 } from "../../../api/projects/types";
 import { updateProject } from "../../../api/projects/update/updateProject";
 import { updateProjectThumbnail } from "../../../api/projects/update/updateProjectThumbnail";
-import { ProjectForm } from "../../../components";
+import { PageContainer, ProjectForm } from "../../../components";
 import { IProjectFormInputs } from "../../../components/Form/types";
+
+import * as RoutePath from "../../../RouteConfig";
 
 const ProjectEditPage = () => {
 	const { id } = useParams<{ id: string }>();
@@ -80,12 +82,18 @@ const ProjectEditPage = () => {
 	};
 
 	return (
-		<ProjectForm
-			data={project}
-			onSubmit={submitHandler}
-			onImageUpload={imageUploadHandler}
-			actionButtonText={t("button.update", { framework: "React" }).toString()}
-		/>
+		<PageContainer
+			showBackButton
+			btnBackLabel={t("button.backToDetail", { framework: "React" }).toString()}
+			btnBackUrlLink={RoutePath.PROJECT_DETAIL.replace(RoutePath.ID, id!)}
+		>
+			<ProjectForm
+				data={project}
+				onSubmit={submitHandler}
+				onImageUpload={imageUploadHandler}
+				actionButtonText={t("button.update", { framework: "React" }).toString()}
+			/>
+		</PageContainer>
 	);
 };
 

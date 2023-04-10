@@ -210,7 +210,7 @@ const ProjectForm: FC<Props> = ({
 						>
 							<Controller
 								render={({ field: { value, onChange } }) => (
-									<img src={value} className={styles.image} />
+									<img src={value} alt="" className={styles.image} />
 								)}
 								name="iconName"
 								control={control}

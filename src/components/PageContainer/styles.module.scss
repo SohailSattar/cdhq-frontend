@@ -1,0 +1,13 @@
+.container {
+	.btnSection {
+		display: flex;
+
+		.btn {
+			margin-left: 5px;
+		}
+
+		.btnLTR {
+			margin-right: 5px;
+		}
+	}
+}

@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { APIProjectToUser } from "../../../api/userProjects/types";
 import { assignNewProjectToUser } from "../../../api/userProjects/add/assignNewProjectToUser";
 import { getRole } from "../../../api/users/get/getRole";
-import { UserProjectForm } from "../../../components";
+import { PageContainer, UserProjectForm } from "../../../components";
 import { IUserProjectFormInputs } from "../../../components/Form/types";
 
 import * as RoutePath from "../../../RouteConfig";
@@ -77,12 +77,18 @@ const AssignProjectToUserPage = () => {
 	};
 
 	return (
-		<UserProjectForm
-			isNormalUser={isNormalUser}
-			title={t("message.userProjectAdd", { framework: "React" })}
-			onActionButtonClick={assignProjectClickHandler}
-			actionButtonText={t("button.save", { framework: "React" })}
-		/>
+		<PageContainer
+			showBackButton
+			btnBackUrlLink={`${RoutePath.USER_DETAIL.replace(":id", id!)}`}
+			btnBackLabel={t("button.backToDetail", { framework: "React" })}
+		>
+			<UserProjectForm
+				isNormalUser={isNormalUser}
+				title={t("message.userProjectAdd", { framework: "React" })}
+				onActionButtonClick={assignProjectClickHandler}
+				actionButtonText={t("button.save", { framework: "React" })}
+			/>
+		</PageContainer>
 	);
 };
 

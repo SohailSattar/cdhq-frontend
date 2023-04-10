@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Column } from "react-table";
@@ -12,6 +12,7 @@ import {
 	RedirectButton,
 	ShadowedContainer,
 	ActionButtons,
+	PageContainer,
 } from "../../../components";
 import { DropdownOption } from "../../../components/Dropdown";
 import { NewsColumns } from "../../../components/PaginatedTable/types";
@@ -93,13 +94,16 @@ const NewsHomePage = () => {
 		[navigate]
 	);
 
-	const deleteClickHandler = async (id: Id) => {
-		const { data } = await deleteNews(id);
+	const deleteClickHandler = useCallback(
+		() => async (id: Id) => {
+			const { data } = await deleteNews(id);
 
-		if (data) {
-			fetchData(currentPage);
-		}
-	};
+			if (data) {
+				fetchData(currentPage);
+			}
+		},
+		[currentPage, fetchData]
+	);
 
 	const txtId = t("news.id", { framework: "React" });
 	const title = t("news.title", { framework: "React" });
@@ -135,35 +139,29 @@ const NewsHomePage = () => {
 				),
 			},
 		],
-		[privileges, actions, editClickHandler, title, txtId]
+		[privileges, actions, editClickHandler, deleteClickHandler, title, txtId]
 	);
 
 	return (
-		<div className={styles.news}>
-			{privileges?.insertPrivilege && (
-				<ShadowedContainer className={styles.section}>
-					<RedirectButton
-						label={t("button.add", { framework: "React" })}
-						redirectTo={RoutePath.NEWS_NEW}
-					/>
-				</ShadowedContainer>
-			)}
-
-			<div>
-				<PaginatedTable
-					totalCountText={t("news.count", { framework: "React" })}
-					totalCount={totalCount}
-					pageSize={pageSize}
-					data={news}
-					columns={columns}
-					onSearch={() => {}}
-					onTableSort={() => {}}
-					onPageChange={pageChangeHandler}
-					onPageViewSelectionChange={pageViewSelectionHandler}
-					noRecordText={t("table.noNews", { framework: "React" })}
-				/>
-			</div>
-		</div>
+		<PageContainer
+			showAddButton={privileges?.insertPrivilege}
+			btnAddUrlLink={RoutePath.NEWS_NEW}
+			btnAddLabel={t("button.add", { framework: "React" })}
+			className={styles.news}
+		>
+			<PaginatedTable
+				totalCountText={t("news.count", { framework: "React" })}
+				totalCount={totalCount}
+				pageSize={pageSize}
+				data={news}
+				columns={columns}
+				onSearch={() => {}}
+				onTableSort={() => {}}
+				onPageChange={pageChangeHandler}
+				onPageViewSelectionChange={pageViewSelectionHandler}
+				noRecordText={t("table.noNews", { framework: "React" })}
+			/>
+		</PageContainer>
 	);
 };
 

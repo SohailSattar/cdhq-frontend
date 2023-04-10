@@ -10,8 +10,10 @@ import {
 } from "../../../api/news/types";
 import { updateNews } from "../../../api/news/update/updateNews";
 import { updateNewsImage } from "../../../api/news/update/updateNewsImage";
+import { PageContainer } from "../../../components";
 import NewsForm from "../../../components/Form/NewsForm";
 import { INewsFormInputs } from "../../../components/Form/types";
+import * as RoutePath from "../../../RouteConfig";
 
 const NewsEditPage = () => {
 	const { id } = useParams<{ id: string }>();
@@ -70,14 +72,18 @@ const NewsEditPage = () => {
 	};
 
 	return (
-		<div>
+		<PageContainer
+			showBackButton
+			btnBackLabel={t("button.backToDetail", { framework: "React" })}
+			btnBackUrlLink={RoutePath.NEWS_DETAIL.replace(":id", id!)}
+		>
 			<NewsForm
 				data={news}
 				actionButtonText={t("button.update", { framework: "React" })}
 				onSubmit={editNewsHandler}
 				onImageUpload={imageUploadHandler}
 			/>
-		</div>
+		</PageContainer>
 	);
 };
 

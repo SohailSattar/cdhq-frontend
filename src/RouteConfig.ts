@@ -6,12 +6,15 @@ export const LOGIN = `/login`;
 export const DEPARTMENT = `/department`;
 
 export const USER = `/user`;
-export const USER_DETAIL = `/user/:id`;
-export const USER_NEW = USER + "/new";
+export const USER_DETAIL = `/user/${ID}`;
+export const USER_EDIT = `${USER_DETAIL}/edit`;
+export const USER_NEW = `${USER}/new`;
 export const USER_SEARCH = USER + "/search";
 
 export const PROJECT = `/project`;
-export const PROJECT_NEW = PROJECT + "/new";
+export const PROJECT_DETAIL = `${PROJECT}/${ID}`;
+export const PROJECT_EDIT = `${PROJECT_DETAIL}/edit`;
+export const PROJECT_NEW = `${PROJECT}/new`;
 
 export const CHANGE_PASSWORD = `/change-password`;
 
@@ -24,8 +27,8 @@ export const HONORS_NEW = HONORS + "/new";
 
 // News
 export const NEWS = "/news";
-export const NEWS_DETAIL = NEWS + "/:id";
-export const NEWS_EDIT = NEWS + "/" + ID + "/edit";
+export const NEWS_DETAIL = NEWS + "/" + ID;
+export const NEWS_EDIT = NEWS_DETAIL + "/edit";
 export const NEWS_NEW = NEWS + "/new";
 
 export const PHONE_DIRECTORY = `/phone-directory`;

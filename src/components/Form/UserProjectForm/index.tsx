@@ -49,7 +49,6 @@ const UserProjectForm: FC<Props> = ({
 		formState: { errors },
 		handleSubmit,
 		setValue,
-		getValues,
 		control,
 	} = useForm<IUserProjectFormInputs>({ criteriaMode: "all" });
 
@@ -219,7 +218,6 @@ const UserProjectForm: FC<Props> = ({
 				privilege,
 				workflowStartFrom,
 				workflowEndTo,
-				department,
 				departmentStructureType,
 			} = data;
 
@@ -301,7 +299,7 @@ const UserProjectForm: FC<Props> = ({
 	useEffect(() => {
 		const fetch = async () => {
 			if (data) {
-				const { project, department } = data!;
+				const { project } = data!;
 
 				if (
 					project.departmentCategory &&
@@ -341,13 +339,18 @@ const UserProjectForm: FC<Props> = ({
 					}
 				} else {
 					fetchCategorizedDepartments();
-					// setValue("department");
 				}
 			}
 		};
 
 		fetch();
-	}, [data]);
+	}, [
+		data,
+		centersOptions,
+		departmentsOptions,
+		fetchCategorizedDepartments,
+		fetchMainDepartments,
+	]);
 
 	const projectSelectHandler = (option: DropdownOption) => {
 		setShowCenterOptions(false);

@@ -25,7 +25,7 @@ const ProjectDetail: FC<Props> = ({
 			<div className={styles.projectDetail}>
 				{imageSrc && (
 					<div className={styles.section}>
-						<img src={imageSrc} className={styles.image} />
+						<img src={imageSrc} alt="logo" className={styles.image} />
 					</div>
 				)}
 				<div className={styles.section}>

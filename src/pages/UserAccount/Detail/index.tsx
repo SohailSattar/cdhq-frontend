@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import {
-	Button,
 	DeleteConfirmation,
 	Loading,
+	PageContainer,
+	RedirectButton,
 	ShadowedContainer,
 	Status,
 	UserProjectTable,
@@ -13,26 +15,26 @@ import Details from "./containers/Details";
 
 import { getUserDetail } from "../../../api/users/get/getUserDetail";
 
-import * as RoutePath from "../../../RouteConfig";
-
-import { toast } from "react-toastify";
 import { useStore } from "../../../utils/store";
 import { APIUpdateUserStatus, APIUserDetail } from "../../../api/users/types";
 import { ROLE } from "../../../utils";
-
-import styles from "./styles.module.scss";
 import { APIActiveStatus } from "../../../api/activeStatus/types";
 import { getActiveStatus } from "../../../api/activeStatus/get/getActiveStatus";
 import { updateUserStatus } from "../../../api/users/update/updateUserStatus";
 
+import * as RoutePath from "../../../RouteConfig";
+
+import styles from "./styles.module.scss";
+
 const UserDetailPage = () => {
 	const { id } = useParams<{ id: string }>();
 	const [t] = useTranslation("common");
+	const language = useStore((state) => state.language);
+
 	const navigate = useNavigate();
 
 	const [showModal, setShowModal] = useState(false);
 
-	const language = useStore((state) => state.language);
 	const { id: loggedUserId, role } = useStore((state) => state.loggedInUser);
 
 	const [isLoading, setIsLoading] = useState(true);
@@ -58,14 +60,6 @@ const UserDetailPage = () => {
 
 		setIsLoading(false);
 	}, [id, loggedUserId, navigate, role]);
-
-	const editClickHandler = () => {
-		navigate(`${RoutePath.USER}/${id}/edit`);
-	};
-
-	const assignProjectClickHandler = () => {
-		navigate(`${RoutePath.USER}/${id}/project/assign`);
-	};
 
 	const deleteButtonClickHandler = () => {
 		setShowModal(true);
@@ -128,59 +122,46 @@ const UserDetailPage = () => {
 					text={t("global.loading", { framework: "React" }).toString()}
 				/>
 			) : (
-				<div>
-					{role !== ROLE.USER && (
-						<ShadowedContainer className={styles.btnSection}>
-							{role === ROLE.SUPERADMIN && (
-								<div className={language !== "ar" ? styles.btn : styles.btnLTR}>
-									<Button onClick={editClickHandler}>
-										{t("button.edit", { framework: "React" })}
-									</Button>
-								</div>
-							)}
+				<PageContainer
+					showEditButton={role === ROLE.SUPERADMIN}
+					btnEditUrlLink={`${RoutePath.USER_EDIT.replace(RoutePath.ID, id!)}`}
+					showChangeStatusButton={
+						role === ROLE.SUPERADMIN && loggedUserId !== user?.id
+					}
+					currentStatus={status?.id === 7 ? "ACTIVE" : "DEACTIVE"}
+					onActivate={activateButtonClickHandler}
+					onDectivate={deleteButtonClickHandler}
+				>
+					<div>
+						{(role === ROLE.ADMIN || role === ROLE.SUPERADMIN) && (
+							<ShadowedContainer className={styles.btnSection}>
+								{
+									<div
+										className={language !== "ar" ? styles.btn : styles.btnLTR}
+									>
+										<RedirectButton
+											label={t("button.assignProject", { framework: "React" })}
+											redirectTo={`${RoutePath.USER}/${id}/project/assign`}
+										/>
+									</div>
+								}
+							</ShadowedContainer>
+						)}
 
-							<>
-								{(role === ROLE.ADMIN || role === ROLE.SUPERADMIN) && (
-									<div
-										className={language !== "ar" ? styles.btn : styles.btnLTR}
-									>
-										<Button onClick={assignProjectClickHandler}>
-											{t("button.assignProject", { framework: "React" })}
-										</Button>
-									</div>
-								)}
-								{role === ROLE.SUPERADMIN && loggedUserId !== user?.id && (
-									<div
-										className={language !== "ar" ? styles.btn : styles.btnLTR}
-									>
-										{status?.id === 7 ? (
-											<Button onClick={deleteButtonClickHandler} isCritical>
-												{t("button.deactivate", { framework: "React" })}
-											</Button>
-										) : (
-											<Button onClick={activateButtonClickHandler}>
-												{t("button.activate", { framework: "React" })}
-											</Button>
-										)}
-									</div>
-								)}
-							</>
+						<Status status={status!} />
+						<ShadowedContainer>
+							<Details user={user!} />
 						</ShadowedContainer>
-					)}
 
-					<Status status={status!} />
-					<ShadowedContainer>
-						<Details user={user!} />
-					</ShadowedContainer>
+						<UserProjectTable id={id!} />
 
-					<UserProjectTable id={id!} />
-
-					<DeleteConfirmation
-						isOpen={showModal}
-						onYesClick={deleteConfirmationClickHandler}
-						onCancelClick={deleteCancelHandler}
-					/>
-				</div>
+						<DeleteConfirmation
+							isOpen={showModal}
+							onYesClick={deleteConfirmationClickHandler}
+							onCancelClick={deleteCancelHandler}
+						/>
+					</div>
+				</PageContainer>
 			)}
 		</div>
 	);

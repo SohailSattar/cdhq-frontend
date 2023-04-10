@@ -23,6 +23,7 @@
 	"button": {
 		"view": "عرض",
 		"backToDetail": "العودة إلى التفاصيل",
+		"backToHome": "Back to home",
 		"add": "يضيف",
 		"clear": "صاف",
 		"select": "تحديد",

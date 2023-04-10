@@ -3,11 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { getUsers } from "../../../api/users/get/getUsers";
 import {
+	ActionButtons,
 	Button,
 	DepartmentTree,
 	NotAuthorized,
+	PageContainer,
 	PaginatedTable,
-	RedirectButton,
 	ShadowedContainer,
 } from "../../../components";
 import { getUsersByKeyword } from "../../../api/users/get/getUsersByKeyword";
@@ -56,8 +57,6 @@ const UserAccountPage = () => {
 
 	//Actions
 	const actions = t("global.actions", { framework: "React" });
-	const edit = t("button.edit", { framework: "React" });
-	const detail = t("button.detail", { framework: "React" });
 	// const activate = t("button.activate", { framework: "React" });
 	// const deactivate = t("button.deactivate", { framework: "React" });
 
@@ -93,46 +92,17 @@ const UserAccountPage = () => {
 				Header: actions,
 				accessor: (p) => p,
 				Cell: ({ value }: any) => (
-					<div className={styles.action}>
-						{role === ROLE.SUPERADMIN && (
-							<div
-								className={language !== "ar" ? styles.btnDiv : styles.btnDivLTR}
-							>
-								<RedirectButton
-									label={edit}
-									redirectTo={`${RoutePath.USER}/${value.id}/edit`}
-								/>
-							</div>
-						)}
-						<div
-							className={language !== "ar" ? styles.btnDiv : styles.btnDivLTR}
-						>
-							<RedirectButton
-								label={detail}
-								redirectTo={`${RoutePath.USER}/${value.id}`}
-							/>
-						</div>
-						{/* {role === ROLE.SUPERADMIN && (
-							<div
-								className={
-									language !== 'ar' ? styles.btnDiv : styles.btnDivLTR
-								}>
-								{value.activeStatus.id !== 7 ? (
-									<Button>
-										{t('button.activate', { framework: 'React' })}
-									</Button>
-								) : (
-									<Button>
-										{t('button.deactivate', { framework: 'React' })}
-									</Button>
-								)}
-							</div>
-						)} */}
-					</div>
+					<ActionButtons
+						id={""}
+						showEdit={role === ROLE.SUPERADMIN}
+						showView={true}
+						detailPageLink={`${RoutePath.USER}/${value.id}`}
+						editPageLink={`${RoutePath.USER}/${value.id}/edit`}
+					/>
 				),
 			},
 		],
-		[actions, detail, edit, employeeNo, fullName, id, language, logName, role]
+		[actions, employeeNo, fullName, id, logName, role]
 	);
 
 	const fetchData = useMemo(
@@ -257,15 +227,12 @@ const UserAccountPage = () => {
 			{!canView ? (
 				<NotAuthorized />
 			) : (
-				<div className={styles.userList}>
-					{role === ROLE.SUPERADMIN && (
-						<ShadowedContainer className={styles.section}>
-							<RedirectButton
-								label={t("button.addNewUser", { framework: "React" })}
-								redirectTo={RoutePath.USER_SEARCH}
-							/>
-						</ShadowedContainer>
-					)}
+				<PageContainer
+					className={styles.userList}
+					showAddButton
+					btnAddLabel={t("button.addNewUser", { framework: "React" })}
+					btnAddUrlLink={RoutePath.USER_SEARCH}
+				>
 					<div className={styles.content}>
 						<div>
 							<ShadowedContainer
@@ -300,7 +267,7 @@ const UserAccountPage = () => {
 							/>
 						</div>
 					</div>
-				</div>
+				</PageContainer>
 			)}
 		</>
 	);

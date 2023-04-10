@@ -31,6 +31,7 @@ export { default as MessageBox } from "./MessageBox";
 export { default as Modal } from "./Modal";
 export { default as NewsBar } from "./NewsBar";
 export { default as NotAuthorized } from "./NotAuthorized";
+export { default as PageContainer } from "./PageContainer";
 export { default as PaginatedTable } from "./PaginatedTable";
 export { default as Pagination } from "./Pagination";
 export { default as PasswordBox } from "./PasswordBox";
@@ -64,3 +65,5 @@ export { default as UserProjectForm } from "./Form/UserProjectForm";
 export { default as UserProjectTable } from "./UserProjectTable";
 export { default as UserTable } from "./UserTable";
 export { default as Welcome } from "./Welcome";
+
+// Forms

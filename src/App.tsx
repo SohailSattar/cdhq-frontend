@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import { Layout, ProtectedRoute } from "./components";
 
 import {
 	UserNewPage,
@@ -28,7 +29,6 @@ import {
 	HonorNewPage,
 	HonorEditPage,
 } from "./pages";
-import { Layout, ProtectedRoute } from "./components";
 
 import * as RoutePath from "./RouteConfig";
 

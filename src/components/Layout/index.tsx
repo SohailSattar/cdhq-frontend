@@ -9,6 +9,8 @@ import { getMyRole } from "../../api/users/get/getMyRole";
 import { APILoggedUser } from "../../api/users/types";
 import { getProjectPrivilege } from "../../api/userProjects/get/getProjectPrivilege";
 
+import localStorageService from "../../network/localStorageService";
+
 import { PrivilegeType } from "../types";
 
 import * as RoutePath from "../../RouteConfig";
@@ -72,27 +74,28 @@ const Layout: FC<Props> = ({ projectId, privilegeType = "All", children }) => {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const { data: myRole } = await getMyRole();
-			const role = myRole?.role.name!;
+			const token = localStorageService.getJwtToken();
+			if (token) {
+				const { data: myRole } = await getMyRole();
+				const role = myRole?.role.name!;
 
-			if (role !== loggedUser?.role!) {
-				setLoggedUser({ ...loggedUser, role: role });
-			}
-
-			// console.log(myRole);
-			// console.log(myRole, loggedUser);
-
-			if (loggedUser.userName === "") {
-				const { data, error } = await getMyDetail();
-				if (error) {
-					if (error.response.status === 401) {
-						navigate(RoutePath.LOGIN);
-					}
-					console.log(error);
+				if (role !== loggedUser?.role!) {
+					setLoggedUser({ ...loggedUser, role: role });
 				}
 
-				if (data) {
-					setLoggedUser(data);
+				// console.log(myRole);
+				// console.log(myRole, loggedUser);
+
+				if (loggedUser.userName === "") {
+					const { data, error } = await getMyDetail();
+					if (error) {
+						if (error.response.status === 401) {
+							navigate(RoutePath.LOGIN);
+						}
+					}
+					if (data) {
+						setLoggedUser(data);
+					}
 				}
 			}
 		};
