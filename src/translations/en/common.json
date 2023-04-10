@@ -23,6 +23,7 @@
 	"button": {
 		"view": "View",
 		"backToDetail": "Back to details",
+		"backToHome": "Back to home",
 		"add": "Add",
 		"clear": "Clear",
 		"select": "Select",
@@ -91,7 +92,9 @@
 		"noProject": "No project is assigned.",
 		"deptCat": "Department Category",
 		"withAcademy": "Should the academy also be in the list of departmentt?",
-		"hasWorkflow": "Has a workflow?"
+		"hasWorkflow": "Has a workflow?",
+		"urlLink": "URL link",
+		"isExternal": "Is the link external?"
 	},
 	"userProject": {
 		"workflowStart": "Workflow starts from",
@@ -112,7 +115,9 @@
 		"gd": "General Department",
 		"dp": "Department Name",
 		"sc": "Section",
-		"parent": "Parent Deparment"
+		"parent": "Parent Deparment",
+		"centers": "Centers",
+		"center": "Center"
 	},
 	"rank": {
 		"name": "Rank"
@@ -183,6 +188,8 @@
 		"deleteProject": "Are you sure you want to delete this project?",
 		"userProjectAdd": "Assign New Project to User",
 		"userProjectEdit": "Edit project for ",
+		"imageUpdated": "Image has been updated",
+		"newsAdded": "News has been added",
 		"newsUpdated": "News has been updated"
 	},
 	"dropdown": {
@@ -199,6 +206,13 @@
 	},
 	"search": {
 		"user": "Search user"
+	},
+	"honor": {
+		"count": "Total Honors Count",
+		"id": "Honor Id",
+		"honoredOn": "Honored On",
+		"name": "Name",
+		"type": "News Type"
 	},
 	"news": {
 		"count": "Total News Count",

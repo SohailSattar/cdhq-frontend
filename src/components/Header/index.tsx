@@ -71,7 +71,11 @@ const Header: FC<Props> = ({ hideLoginButton = false }) => {
 	// };
 
 	const userNameClickHandler = () => {
-		navigate(`${RoutePath.USER}/${loggedUser.id}`);
+		const detailPath = RoutePath.USER_DETAIL.replace(
+			RoutePath.ID,
+			loggedUser.id.toString()
+		);
+		navigate(detailPath);
 	};
 
 	const logoutClickHandler = () => {
@@ -101,7 +105,10 @@ const Header: FC<Props> = ({ hideLoginButton = false }) => {
 		return (
 			<Toolbar className={clsx(styles.header, toolbar)}>
 				<div className={styles.logo}>
-					<HeaderLogo src={toggleLanguage === "en" ? logoAr : logoEn} />
+					<HeaderLogo
+						src={toggleLanguage === "en" ? logoAr : logoEn}
+						isLoggedIn={loggedUser.id !== 0}
+					/>
 				</div>
 				<div className={styles.menuSection}>{getMenuButtons()}</div>
 				<div className={styles.menuSection}>

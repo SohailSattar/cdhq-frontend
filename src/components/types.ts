@@ -20,3 +20,5 @@ export type PrivilegeType =
 	| "Delete"
 	| "All"
 	| "None";
+
+export type StatusType = "ACTIVE" | "DEACTIVE";

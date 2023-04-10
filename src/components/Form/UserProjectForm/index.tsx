@@ -7,10 +7,7 @@ import { Button, Checkbox, Dropdown, ShadowedContainer } from "../..";
 import { getActiveStatusWithoutInactive } from "../../../api/activeStatus/get/getActiveStatusWithoutInactive";
 import { APIActiveStatus } from "../../../api/activeStatus/types";
 import { getCategorizedDepartments } from "../../../api/departments/get/getCategorizedDepartments";
-import {
-	APICategorizedDepartment,
-	APIDepartmentItem,
-} from "../../../api/departments/types";
+import { APIDepartmentItem } from "../../../api/departments/types";
 import { getPrivileges } from "../../../api/privileges/get/getPrivileges";
 import { APIPrivilege } from "../../../api/privileges/type";
 import { getProjectsList } from "../../../api/projects/get/getProjectsList";
@@ -20,10 +17,12 @@ import { DropdownOption } from "../../Dropdown";
 
 import { IUserProjectFormInputs } from "../types";
 import { APIUserProjectDetail } from "../../../api/userProjects/types";
-import { getMainDepartments } from "../../../api/departments/get/getMainDepartments";
 import { DepartmentCategory } from "../../../data/departmentCategory";
 
 import styles from "./styles.module.scss";
+import { getDepartmentsByProject } from "../../../api/departments/get/getDepartmentsByProject";
+import { Id } from "../../../utils";
+import { getCentersByDepartment } from "../../../api/departments/get/getCentersByDepartment";
 
 interface Props {
 	isNormalUser?: boolean;
@@ -66,6 +65,9 @@ const UserProjectForm: FC<Props> = ({
 	const [departmentsOptions, setDepartmentsOptions] = useState<
 		DropdownOption[]
 	>([]);
+
+	const [showCenterOptions, setShowCenterOptions] = useState<boolean>(false);
+	const [centersOptions, setCentersOptions] = useState<DropdownOption[]>([]);
 
 	// Project
 	useEffect(() => {
@@ -140,8 +142,8 @@ const UserProjectForm: FC<Props> = ({
 
 	//Department
 	const fetchMainDepartments = useMemo(
-		() => async (code?: string) => {
-			const { data } = await getMainDepartments(code);
+		() => async (id: Id) => {
+			const { data } = await getDepartmentsByProject(id);
 
 			if (data) {
 				setDepartmentsOptions(
@@ -163,7 +165,7 @@ const UserProjectForm: FC<Props> = ({
 
 			if (data) {
 				setDepartmentsOptions(
-					data.map((dept: APICategorizedDepartment) => {
+					data.map((dept: APIDepartmentItem) => {
 						return { label: dept.longFullName, value: dept.id };
 					})
 				);
@@ -171,21 +173,6 @@ const UserProjectForm: FC<Props> = ({
 		},
 		[setDepartmentsOptions]
 	);
-
-	useEffect(() => {
-		if (data?.project?.departmentCategory !== null) {
-			if (
-				data?.project?.departmentCategory?.code! !==
-				DepartmentCategory.WorkLocation
-			) {
-				fetchMainDepartments(data?.project!.departmentCategory!.code);
-			} else {
-				fetchCategorizedDepartments();
-			}
-		} else {
-			fetchCategorizedDepartments();
-		}
-	}, [fetchMainDepartments, fetchCategorizedDepartments]);
 
 	// Structure Type
 	const departmentTypeOptions = useMemo(() => {
@@ -231,7 +218,6 @@ const UserProjectForm: FC<Props> = ({
 				privilege,
 				workflowStartFrom,
 				workflowEndTo,
-				department,
 				departmentStructureType,
 			} = data;
 
@@ -266,10 +252,10 @@ const UserProjectForm: FC<Props> = ({
 			);
 			setValue("workflowEnd", selectedWorkflowEnd!);
 
-			const selectedDepartment = departmentsOptions.find(
-				(x) => x.value === department.id
-			);
-			setValue("department", selectedDepartment!);
+			// const selectedDepartment = departmentsOptions.find(
+			// 	(x) => x.value === department.id
+			// );
+			// setValue("department", selectedDepartment!);
 
 			const selectedStructureType = departmentTypeOptions.find(
 				(x) => x.value === departmentStructureType.toString()
@@ -298,16 +284,82 @@ const UserProjectForm: FC<Props> = ({
 		register,
 		setValue,
 		workflowRangeOptions,
+		language,
+	]);
+
+	useEffect(() => {
+		if (showCenterOptions) {
+			// Department Structure Type
+			register("center", {
+				required: "Center is required.",
+			});
+		}
+	}, [register, setValue, language, showCenterOptions]);
+
+	useEffect(() => {
+		const fetch = async () => {
+			if (data) {
+				const { project } = data!;
+
+				if (
+					project.departmentCategory &&
+					project.departmentCategory.code !== DepartmentCategory.WorkLocation
+				) {
+					fetchMainDepartments(project.id);
+
+					if (project.departmentCategory.code === DepartmentCategory.Center) {
+						setShowCenterOptions(true);
+
+						const centerPrefix = data.department.id.toString().substring(0, 3);
+
+						const mainDepartment = departmentsOptions.find((x) =>
+							x.value.toString().startsWith(centerPrefix)
+						);
+
+						setValue("department", mainDepartment!);
+
+						const { data: centersList } = await getCentersByDepartment(
+							mainDepartment?.value!
+						);
+
+						setCentersOptions(
+							centersList!.map((dept: APIDepartmentItem) => {
+								return {
+									label: language !== "ar" ? dept.name : dept.nameEnglish,
+									value: dept.id,
+								};
+							})
+						);
+
+						const currentCenter = centersOptions.find(
+							(x) => x.value === data.department.id
+						);
+
+						setValue("center", currentCenter!);
+					}
+				} else {
+					fetchCategorizedDepartments();
+				}
+			}
+		};
+
+		fetch();
+	}, [
+		data,
+		centersOptions,
+		departmentsOptions,
+		fetchCategorizedDepartments,
+		fetchMainDepartments,
 	]);
 
 	const projectSelectHandler = (option: DropdownOption) => {
+		setShowCenterOptions(false);
 		if (option.meta.hasWorkflow === false) {
 			setDisableWorkflow(true);
 			setValue(
 				"workflowStart",
 				workflowRangeOptions.find((x) => x.value === 7)!
 			);
-
 			setValue("workflowEnd", workflowRangeOptions.find((x) => x.value === 1)!);
 		} else {
 			if (disableWorkflow === true) {
@@ -317,12 +369,42 @@ const UserProjectForm: FC<Props> = ({
 
 		setValue("project", option);
 
-		if (
+		setValue("department", { label: "", value: "", meta: null });
+
+		if (!option.meta.departmentSelectionType) {
+			fetchCategorizedDepartments();
+		} else if (
 			option.meta.departmentSelectionType !== DepartmentCategory.WorkLocation
 		) {
-			fetchMainDepartments(option.meta.departmentSelectionType);
+			fetchMainDepartments(option.value);
+
+			if (option.meta.departmentSelectionType === DepartmentCategory.Center) {
+				setShowCenterOptions(true);
+				setCentersOptions([]);
+			} else {
+				setShowCenterOptions(false);
+			}
 		} else {
 			fetchCategorizedDepartments();
+		}
+	};
+
+	const departmentSelectHandler = async (option: DropdownOption) => {
+		setCentersOptions([]);
+		setValue("center", { label: "", value: "", meta: null });
+		setValue("department", option);
+
+		if (showCenterOptions) {
+			const { data } = await getCentersByDepartment(option.value);
+
+			setCentersOptions(
+				data!.map((dept: APIDepartmentItem) => {
+					return {
+						label: language !== "ar" ? dept.name : dept.nameEnglish,
+						value: dept.id,
+					};
+				})
+			);
 		}
 	};
 
@@ -413,11 +495,11 @@ const UserProjectForm: FC<Props> = ({
 					<div className={styles.row}>
 						<div className={styles.rowItem}>
 							<Controller
-								render={({ field: { value, onChange } }) => (
+								render={({ field: { value } }) => (
 									<Dropdown
 										label={t("department.name", { framework: "React" })}
 										options={departmentsOptions}
-										onSelect={onChange}
+										onSelect={departmentSelectHandler}
 										value={value}
 										// disabled={isExistingEmployee}
 										// disabled={disableField}
@@ -428,6 +510,25 @@ const UserProjectForm: FC<Props> = ({
 								// rules={{ required: true }}
 							/>
 						</div>
+						{showCenterOptions && (
+							<div className={styles.rowItem}>
+								<Controller
+									render={({ field: { value, onChange } }) => (
+										<Dropdown
+											label={t("department.center", { framework: "React" })}
+											options={centersOptions}
+											onSelect={onChange}
+											value={value}
+											// disabled={isExistingEmployee}
+											// disabled={disableField}
+										/>
+									)}
+									name="center"
+									control={control}
+									// rules={{ required: true }}
+								/>
+							</div>
+						)}
 					</div>
 					<div className={styles.row}>
 						<div className={styles.rowItem}>
@@ -507,6 +608,19 @@ const UserProjectForm: FC<Props> = ({
 							<ErrorMessage
 								errors={errors}
 								name="department"
+								render={({ messages }) => {
+									return messages
+										? _.entries(messages).map(([type, message]) => (
+												<p key={type} className="error">
+													{message}
+												</p>
+										  ))
+										: null;
+								}}
+							/>
+							<ErrorMessage
+								errors={errors}
+								name="center"
 								render={({ messages }) => {
 									return messages
 										? _.entries(messages).map(([type, message]) => (

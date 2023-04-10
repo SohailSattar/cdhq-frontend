@@ -12,8 +12,10 @@ export interface Props {
 	detailPageLink?: string;
 	showView?: boolean;
 	showEdit?: boolean;
+	editPageLink?: string;
+	onEdit?: (id: string) => void;
 	showDelete?: boolean;
-	onEdit: (id: string) => void;
+	onDelete?: (id: Id) => void;
 }
 
 const ActionButtons: FC<Props> = ({
@@ -21,8 +23,10 @@ const ActionButtons: FC<Props> = ({
 	detailPageLink = "",
 	showView,
 	showEdit,
+	editPageLink,
+	onEdit = () => {},
 	showDelete = false,
-	onEdit,
+	onDelete = () => {},
 }) => {
 	const [t, i18n] = useTranslation("common");
 
@@ -44,7 +48,8 @@ const ActionButtons: FC<Props> = ({
 	};
 
 	const deleteConfirmationClickHandler = () => {
-		// setShowModal(true)
+		setShowModal(true);
+		onDelete(id);
 	};
 
 	const deleteCancelHandler = () => {
@@ -64,9 +69,16 @@ const ActionButtons: FC<Props> = ({
 				)}
 				{!isEditMode && showEdit && (
 					<div className={styles.divBtn}>
-						<Button onClick={onEditClick}>
-							{t("button.edit", { framework: "React" })}
-						</Button>
+						{editPageLink ? (
+							<RedirectButton
+								label={t("button.edit", { framework: "React" })}
+								redirectTo={editPageLink!}
+							/>
+						) : (
+							<Button onClick={onEditClick}>
+								{t("button.edit", { framework: "React" })}
+							</Button>
+						)}
 					</div>
 				)}
 				{isEditMode && showEdit && (

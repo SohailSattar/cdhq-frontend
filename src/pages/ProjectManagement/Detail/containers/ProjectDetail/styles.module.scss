@@ -1,17 +1,24 @@
 .projectDetail {
-    display: flex;
-    justify-content: space-between;
+	display: flex;
+	justify-content: space-between;
 
-    .section {
-        flex: 1;
+	.section {
+		flex: 1;
 
-        .content {
-            margin-bottom: 15px;
-        }
+		.image {
+			color: white;
+			background-color: rgb(97, 239, 97);
+			height: 114px;
+			border: 2px rgb(97, 239, 97) solid;
+		}
 
-        .title {
-            font-size: 14px;
-            font-weight: 600;
-        }
-    }
+		.content {
+			margin-bottom: 15px;
+		}
+
+		.title {
+			font-size: 14px;
+			font-weight: 600;
+		}
+	}
 }

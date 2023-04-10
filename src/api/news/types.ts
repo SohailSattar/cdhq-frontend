@@ -1,3 +1,5 @@
+import { Id } from "../../utils";
+import { APIDepartmentItem } from "../departments/types";
 import { APIPaginate } from "../types";
 
 export interface APINews {
@@ -14,11 +16,13 @@ export interface APINewsDetail {
 	shortSummary: string;
 	imageName: string;
 	newsType: APINewsType;
+	department: APIDepartmentItem;
 	fullNews: string;
 	newsDate: Date;
 }
 
 export interface APINewNews {
+	departmentId: Id;
 	title: string;
 	shortSummary: string;
 	// imageName: string;
@@ -29,12 +33,16 @@ export interface APINewNews {
 
 export interface APIUpdateNews {
 	id: string;
+	departmentId: Id;
 	title: string;
 	shortSummary: string;
-	// imageName: string;
-	thumbnail: File;
 	newsTypeId: number;
 	fullNews: string;
+}
+
+export interface APIUpdateNewsImage {
+	id: string;
+	thumbnail: File;
 }
 
 export interface APINewsType {

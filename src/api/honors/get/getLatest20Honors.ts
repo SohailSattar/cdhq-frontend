@@ -1,10 +1,12 @@
 import { APIResponse } from "../..";
 import { instance } from "../../../network";
-import { APIHonor } from "../types";
+import { APIHonorDetail } from "../types";
 
-export async function getLatest20Honors(): Promise<APIResponse<APIHonor[]>> {
+export async function getLatest20Honors(): Promise<
+	APIResponse<APIHonorDetail[]>
+> {
 	try {
-		const response = await instance.get<APIHonor[]>("/honors/latest");
+		const response = await instance.get<APIHonorDetail[]>("/honors/latest");
 		const data = response.data;
 		return { data };
 	} catch (err: any) {

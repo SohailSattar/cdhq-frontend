@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { ProjectForm } from "../../../components";
+import { PageContainer, ProjectForm } from "../../../components";
 import { addProject } from "../../../api/projects/add/addProject";
 import { APINewProject } from "../../../api/projects/types";
 import { IProjectFormInputs } from "../../../components/Form/types";
@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 
 import * as RoutePath from "../..//../RouteConfig";
 
-const NewProject = () => {
+const ProjectNewPage = () => {
 	const [t] = useTranslation("common");
 	const navigate = useNavigate();
 
@@ -21,6 +21,9 @@ const NewProject = () => {
 			departmentCategory,
 			withAcademy,
 			hasWorkflow,
+			pathLink,
+			isExternalPath,
+			thumbnail,
 		} = values;
 
 		const params: APINewProject = {
@@ -31,6 +34,9 @@ const NewProject = () => {
 			departmentCategoryId: +departmentCategory?.value!,
 			withAcademy: withAcademy,
 			hasWorkflow: hasWorkflow,
+			pathLink: pathLink,
+			isExternalPath: isExternalPath,
+			thumbnail: thumbnail,
 		};
 
 		const { data } = await addProject(params);
@@ -38,16 +44,23 @@ const NewProject = () => {
 			toast.success(
 				t("message.projectAdded", { framework: "React" }).toString()
 			);
-			navigate(`${RoutePath.PROJECT}/${data.id}`);
+			navigate(
+				`${RoutePath.PROJECT_DETAIL.replace(
+					RoutePath.ID,
+					data.id?.toString()!
+				)}/${data.id}`
+			);
 		}
 	};
 
 	return (
-		<ProjectForm
-			onSubmit={submitHandler}
-			actionButtonText={t("button.add", { framework: "React" })}
-		/>
+		<PageContainer showBackButton btnBackUrlLink={RoutePath.PROJECT}>
+			<ProjectForm
+				onSubmit={submitHandler}
+				actionButtonText={t("button.add", { framework: "React" })}
+			/>
+		</PageContainer>
 	);
 };
 
-export default NewProject;
+export default ProjectNewPage;

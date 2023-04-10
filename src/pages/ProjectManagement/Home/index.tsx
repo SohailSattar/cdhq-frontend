@@ -2,9 +2,9 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
 	NotAuthorized,
+	PageContainer,
 	PaginatedTable,
 	RedirectButton,
-	ShadowedContainer,
 } from "../../../components";
 import { DropdownOption } from "../../../components/Dropdown";
 
@@ -127,46 +127,6 @@ const ProjectManagementPage = () => {
 		}
 	}, [fetchProjects, pageSize, role]);
 
-	// // Getting list of all projects
-	// useEffect(() => {
-	// 	const fetchData = async () => {
-	// 		const { data } = await getProjectsList();
-
-	// 		if (data) {
-	// 			setProjectOptions(
-	// 				data?.map((project) => {
-	// 					return {
-	// 						label: project.nameEnglish + "  -  " + project.name,
-	// 						value: project.id,
-	// 					};
-	// 				})
-	// 			);
-	// 		}
-	// 	};
-
-	// 	fetchData();
-	// }, []);
-
-	// // Getting list of all departments
-	// useEffect(() => {
-	// 	const fetchData = async () => {
-	// 		const { data } = await getDepartments();
-
-	// 		if (data) {
-	// 			setDepartmentOptions(
-	// 				data?.map((dept) => {
-	// 					return {
-	// 						label: dept.nameEnglish + " - " + dept.name,
-	// 						value: dept.id,
-	// 					};
-	// 				})
-	// 			);
-	// 		}
-	// 	};
-
-	// 	fetchData();
-	// }, []);
-
 	const projectSearchClickHandler = (keyword: string) => {
 		setKeyword(keyword);
 	};
@@ -182,20 +142,12 @@ const ProjectManagementPage = () => {
 	};
 
 	return canView ? (
-		<div className={styles.projectsList}>
-			{role === ROLE.SUPERADMIN && (
-				<ShadowedContainer className={styles.section}>
-					<div className={styles.actions}>
-						<div className={styles.btn}>
-							<RedirectButton
-								label={t("button.addNewProject", { framework: "React" })}
-								redirectTo={`${RoutePath.PROJECT}/new`}
-							/>
-						</div>
-					</div>
-				</ShadowedContainer>
-			)}
-
+		<PageContainer
+			showAddButton={role === ROLE.SUPERADMIN}
+			btnAddLabel={t("button.addNewProject", { framework: "React" })}
+			btnAddUrlLink={RoutePath.PROJECT_NEW}
+			className={styles.projectsList}
+		>
 			<PaginatedTable
 				totalCountText={t("project.count", { framework: "React" })}
 				totalCount={totalCount}
@@ -210,7 +162,7 @@ const ProjectManagementPage = () => {
 				onPageViewSelectionChange={pageViewSelectionHandler}
 				noRecordText={t("table.noProject", { framework: "React" })}
 			/>
-		</div>
+		</PageContainer>
 	) : (
 		<NotAuthorized />
 	);

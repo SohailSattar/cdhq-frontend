@@ -18,7 +18,7 @@ import {
 } from "../../../api/userProjects/types";
 import { IProjectUserFormInputs } from "../../../components/Form/types";
 
-const EditProjectUserPage = () => {
+const ProjectUserEditPage = () => {
 	const { id, userProjectId } =
 		useParams<{ id: string; userProjectId: string }>();
 	const [t] = useTranslation("common");
@@ -124,4 +124,4 @@ const EditProjectUserPage = () => {
 	);
 };
 
-export default EditProjectUserPage;
+export default ProjectUserEditPage;

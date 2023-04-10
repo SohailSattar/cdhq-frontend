@@ -23,6 +23,7 @@
 	"button": {
 		"view": "عرض",
 		"backToDetail": "العودة إلى التفاصيل",
+		"backToHome": "Back to home",
 		"add": "يضيف",
 		"clear": "صاف",
 		"select": "تحديد",
@@ -91,7 +92,9 @@
 		"noProject": "لم يتم تخصيص أي مشروع.",
 		"deptCat": "فئة القسم",
 		"withAcademy": "هل يجب أن تكون الأكاديمية أيضًا في قائمة الأقسام؟",
-		"hasWorkflow": "لديه سير عمل؟"
+		"hasWorkflow": "لديه سير عمل؟",
+		"urlLink": "URL",
+		"isExternal": "Is the link external?"
 	},
 	"userProject": {
 		"workflowStart": "بداية التمرير",
@@ -108,7 +111,9 @@
 		"fullNameEnglish": "الاسم الكامل [إنجليزي]",
 		"single": "قسم واحد",
 		"withChild": "قسم مع ",
-		"parent": "القسم الرئيسي"
+		"parent": "القسم الرئيسي",
+		"centers": "Centers",
+		"center": "مركز"
 	},
 	"rank": {
 		"name": "الرتبة"
@@ -172,6 +177,8 @@
 		"deleteProject": "هل أنت متأكد أنك تريد حذف هذا المشروع؟",
 		"userProjectAdd": "تعيين مشروع جديد للمستخدم",
 		"userProjectEdit": "تحرير المشروع من أجل ",
+		"imageUpdated": "تم تحديث الصورة",
+		"newsAdded": "تمت إضافة الأخبار",
 		"newsUpdated": "تم تحديث الخبر"
 	},
 	"dropdown": {
@@ -188,6 +195,13 @@
 	},
 	"search": {
 		"user": "مستخدم البحث"
+	},
+	"honor": {
+		"count": "Total Honors Count",
+		"id": "السجل",
+		"honoredOn": "تكريم يوم",
+		"name": "اسم الموظف",
+		"type": "News Type"
 	},
 	"news": {
 		"count": "Total News Count",

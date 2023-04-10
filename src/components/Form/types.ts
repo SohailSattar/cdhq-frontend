@@ -1,3 +1,4 @@
+import { Id } from "../../utils";
 import { DropdownOption } from "../Dropdown";
 
 export type FormMode = "ADD" | "EDIT";
@@ -13,6 +14,7 @@ export interface IPasswordFormInputs {
 }
 
 export interface IProjectFormInputs {
+	iconName?: string;
 	name: string;
 	nameEnglish: string;
 	parentProject: DropdownOption;
@@ -20,6 +22,9 @@ export interface IProjectFormInputs {
 	departmentCategory?: DropdownOption;
 	withAcademy: boolean;
 	hasWorkflow: boolean;
+	pathLink?: string;
+	isExternalPath: boolean;
+	thumbnail: File;
 }
 
 export interface IUserFormInputs {
@@ -41,6 +46,7 @@ interface IUserProjectForm {
 	workflowStart: DropdownOption;
 	workflowEnd: DropdownOption;
 	department: DropdownOption;
+	center: DropdownOption;
 	structureType: DropdownOption;
 	canGrant: boolean;
 }
@@ -53,14 +59,17 @@ export interface IProjectUserFormInputs extends IUserProjectForm {
 	user: DropdownOption;
 }
 
-// Phone Directory
-export interface IPhoneFormInputs {
-	id: number;
-	phone?: string;
-	phone2?: string;
-	phoneOffice?: string;
+// Honor
+export interface IHonorFormInputs {
+	employeeId: Id;
+	name: string;
+	rank: string;
+	department: string;
+	imageName: string;
+	thumbnail: File;
 }
 
+// News
 export interface INewsFormInputs {
 	department: DropdownOption;
 	title: string;
@@ -69,4 +78,12 @@ export interface INewsFormInputs {
 	newsType: DropdownOption;
 	fullNews: string;
 	thumbnail: File;
+}
+
+// Phone Directory
+export interface IPhoneFormInputs {
+	id: number;
+	phone?: string;
+	phone2?: string;
+	phoneOffice?: string;
 }

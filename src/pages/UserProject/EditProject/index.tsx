@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
 	Button,
+	PageContainer,
 	ShadowedContainer,
 	UserProjectForm,
 } from "../../../components";
@@ -18,8 +19,9 @@ import {
 	APIUpdateUserProjectDetail,
 	APIUserProjectDetail,
 } from "../../../api/userProjects/types";
+import { Id } from "../../../utils";
 
-const EditUserProjectPage = () => {
+const UserProjectEditPage = () => {
 	const { userId, userProjectId } =
 		useParams<{ userId: string; userProjectId: string }>();
 
@@ -64,10 +66,17 @@ const EditUserProjectPage = () => {
 	const updateUserProjectClickHandler = async (
 		formInput: IUserProjectFormInputs
 	) => {
+		let departId: Id = 0;
+		departId = formInput.department?.value!;
+
+		if (formInput.center) {
+			departId = formInput.center.value;
+		}
+
 		const params: APIUpdateUserProjectDetail = {
 			id: userProjectId!,
 			privilegeId: formInput.privilege.value!.toString(),
-			departmentId: formInput.department.value!.toString()!,
+			departmentId: departId!,
 			workflowStartFromId: formInput.workflowStart?.value!.toString()!,
 			workflowEndToId: formInput.workflowEnd?.value!.toString()!,
 			departmentStructureType: formInput.structureType?.value!.toString(),
@@ -81,17 +90,12 @@ const EditUserProjectPage = () => {
 		}
 	};
 
-	const backButtonClickHandler = () => {
-		navigate(`${RoutePath.USER}/${userId}`);
-	};
-
 	return (
-		<>
-			<ShadowedContainer>
-				<Button onClick={backButtonClickHandler}>
-					{t("button.backToDetail", { framework: "React" })}
-				</Button>
-			</ShadowedContainer>
+		<PageContainer
+			showBackButton
+			btnBackLabel={t("button.backToDetail", { framework: "React" })}
+			btnBackUrlLink={`${RoutePath.USER}/${userId}`}
+		>
 			<UserProjectForm
 				isNormalUser={isNormalUser}
 				title={heading}
@@ -100,8 +104,8 @@ const EditUserProjectPage = () => {
 				actionButtonText={t("button.update", { framework: "React" })}
 				onActionButtonClick={updateUserProjectClickHandler}
 			/>
-		</>
+		</PageContainer>
 	);
 };
 
-export default EditUserProjectPage;
+export default UserProjectEditPage;

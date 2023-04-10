@@ -3,13 +3,13 @@ import { APIRank } from "../../api/ranks/types";
 
 export interface PhoneDirectoryColumns {
 	id: number;
-	rank:APIRank;
+	rank: APIRank;
 	// department: APIDe;
 	fullName: string;
 	nameEnglish: string;
-	phone?:string;
-	phone2?:string;
-	phoneOffice?:string;
+	phone?: string;
+	phone2?: string;
+	phoneOffice?: string;
 }
 
 export interface UserColumns {
@@ -20,9 +20,20 @@ export interface UserColumns {
 	nameEnglish: string;
 }
 
-export interface NewsColumns{
-	id:number;
-	title:string
+export interface HonorColumn {
+	id: number;
+	imageName: string;
+	mmm: string;
+	yyy: string;
+	name: string;
+	rank: string;
+	locationFullName: string;
+	type: string;
+}
+
+export interface NewsColumns {
+	id: number;
+	title: string;
 }
 
 export interface ProjectColumns {

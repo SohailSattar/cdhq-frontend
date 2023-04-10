@@ -1,7 +1,8 @@
-import { APIResponse, getConfig } from '../..';
-import { instance } from '../../../network';
+import { APIResponse, getConfig } from "../..";
+import { instance } from "../../../network";
+import { Id } from "../../../utils";
 
-export async function deleteNews(id: string): Promise<APIResponse<boolean>> {
+export async function deleteNews(id: Id): Promise<APIResponse<boolean>> {
 	try {
 		const config = getConfig();
 

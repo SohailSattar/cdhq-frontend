@@ -1,9 +1,10 @@
 import { APIResponse, getConfig } from "../..";
 import { instance } from "../../../network";
+import { Id } from "../../../utils";
 import { APIDepartmentItem } from "../types";
 
 export async function getDepartmentsByProject(
-	projectId: number
+	projectId: Id
 ): Promise<APIResponse<APIDepartmentItem[]>> {
 	try {
 		const config = getConfig();

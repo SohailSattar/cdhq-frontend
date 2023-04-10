@@ -11,10 +11,38 @@
 		display: flex;
 		margin-bottom: 15px;
 
+		.imageContainer {
+			margin-left: 15px;
+
+			.image {
+				color: white;
+				background-color: rgb(97, 239, 97);
+				max-height: 200px;
+				// border: 2px rgb(97, 239, 97) solid;
+				width: auto;
+			}
+		}
+
+		.imageContainerRTL {
+			margin-right: 15px;
+
+			.image {
+				color: white;
+				background-color: rgb(97, 239, 97);
+				max-height: 200px;
+				// border: 2px rgb(97, 239, 97) solid;
+				width: auto;
+			}
+		}
+
 		.field {
 			display: flex;
 			flex: 1;
 			flex-direction: column;
+		}
+
+		.inputField {
+			margin-bottom: 15px;
 		}
 
 		.ddlField {
@@ -27,7 +55,7 @@
 		.check {
 			display: flex;
 			align-content: center;
-			justify-content: end;
+			justify-content: flex-end;
 		}
 
 		.actions {

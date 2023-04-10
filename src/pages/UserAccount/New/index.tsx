@@ -6,7 +6,7 @@ import { getExistingEmployee } from "../../../api/employees/get/getExistingEmplo
 import { addUser } from "../../../api/users/add/addUser";
 import { checkIfUserExists } from "../../../api/users/get/checkIfUserExists";
 import { APINewUser, APIUserDetail } from "../../../api/users/types";
-import { NotAuthorized } from "../../../components";
+import { NotAuthorized, PageContainer } from "../../../components";
 import { useStore } from "../../../utils/store";
 
 import * as RoutePath from "../../../RouteConfig";
@@ -16,7 +16,7 @@ import { ROLE } from "../../../utils";
 
 import { IUserFormInputs } from "../../../components/Form/types";
 
-const NewUserPage = () => {
+const UserNewPage = () => {
 	const { id } = useParams<{ id: string }>();
 	const [t] = useTranslation("common");
 	const navigate = useNavigate();
@@ -103,7 +103,7 @@ const NewUserPage = () => {
 	};
 
 	return canView ? (
-		<>
+		<PageContainer showBackButton btnBackUrlLink={RoutePath.USER}>
 			<UserForm
 				data={employee}
 				isExistingEmployee={employeeExists}
@@ -111,10 +111,10 @@ const NewUserPage = () => {
 				actionButtonText={t("button.save", { framework: "React" })}
 				onSubmit={addNewUserHandler}
 			/>
-		</>
+		</PageContainer>
 	) : (
 		<NotAuthorized />
 	);
 };
 
-export default NewUserPage;
+export default UserNewPage;

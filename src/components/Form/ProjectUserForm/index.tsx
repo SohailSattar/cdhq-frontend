@@ -15,8 +15,6 @@ import { useStore } from "../../../utils/store";
 import { DropdownOption } from "../../Dropdown";
 import { getUsersListByDepartment } from "../../../api/departments/get/getUsersListByDepartment";
 import { getProjectInfoStatus } from "../../../api/projects/get/getProjectInfoStatus";
-
-import styles from "./styles.module.scss";
 import { Controller, useForm } from "react-hook-form";
 import { FormMode, IProjectUserFormInputs } from "../types";
 import { ErrorMessage } from "@hookform/error-message";
@@ -24,6 +22,7 @@ import { APIUserProjectDetail } from "../../../api/userProjects/types";
 import { getMainDepartments } from "../../../api/departments/get/getMainDepartments";
 import { DepartmentCategory } from "../../../data/departmentCategory";
 
+import styles from "./styles.module.scss";
 interface Props {
 	mode: FormMode;
 	id: string;

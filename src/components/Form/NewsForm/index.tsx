@@ -4,34 +4,45 @@ import { ChangeEvent, FC, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Dropdown, ShadowedContainer, TextBox } from "../..";
-import { useStore } from "../../../utils/store";
 import Button from "../../Button";
 import { DropdownOption } from "../../Dropdown";
 import { INewsFormInputs } from "../types";
-
-import styles from "./styles.module.scss";
-import { getNewsTypes } from "../../../api/news/get/getNewsTypes";
-import { APINewsDetail } from "../../../api/news/types";
-import { getMainDepartments } from "../../../api/departments/get/getMainDepartments";
 import { DepartmentCategory } from "../../../data/departmentCategory";
 import { Project } from "../../../data/projects";
+
+import { APINewsDetail } from "../../../api/news/types";
+
+import { getMainDepartments } from "../../../api/departments/get/getMainDepartments";
+import { getNewsTypes } from "../../../api/news/get/getNewsTypes";
+
+import { getFullPath } from "../../../utils";
+
+import { useStore } from "../../../utils/store";
+
+import styles from "./styles.module.scss";
 
 interface Props {
 	data?: APINewsDetail;
 	actionButtonText: string;
 	onSubmit: (data: INewsFormInputs) => void;
+	onImageUpload?: (image: File) => void;
 }
 
-const NewsForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
+const NewsForm: FC<Props> = ({
+	data,
+	actionButtonText,
+	onSubmit,
+	onImageUpload = () => {},
+}) => {
 	const [t] = useTranslation("common");
 	const language = useStore((state) => state.language);
-	const [imageName, setImageName] = useState<string>("");
 
 	const {
 		register,
 		formState: { errors },
 		handleSubmit,
 		setValue,
+		getValues,
 		control,
 	} = useForm<INewsFormInputs>({ criteriaMode: "all" });
 
@@ -39,6 +50,8 @@ const NewsForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 		[]
 	);
 	const [newsTypeOptions, setNewsTypeOptions] = useState<DropdownOption[]>([]);
+
+	const [hideUploadButton, setHideUploadButton] = useState<boolean>(true);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -108,10 +121,19 @@ const NewsForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 		});
 
 		if (data) {
-			const { title, shortSummary, newsType, fullNews } = data;
+			const { title, shortSummary, newsType, department, fullNews, imageName } =
+				data;
+
+			setHideUploadButton(false);
 
 			setValue("title", title);
 			setValue("shortSummary", shortSummary);
+
+			const selectedDepartment = departmentOptions.find(
+				(x) => x.value === department?.id!
+			);
+
+			setValue("department", selectedDepartment!);
 
 			const selectedNewsType = newsTypeOptions.find(
 				(x) => x.value === newsType?.id!
@@ -119,17 +141,26 @@ const NewsForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 
 			setValue("newsType", selectedNewsType!);
 			setValue("fullNews", fullNews);
+			setValue("imageName", imageName);
 		}
-	}, [data, language, register]);
+	}, [data, language, register, newsTypeOptions, setValue]);
+
+	const imageChangeHandler = (evnt: ChangeEvent<HTMLInputElement>) => {
+		if (evnt.target.files) {
+			const file = evnt.target.files[0];
+			const x = getFullPath(file);
+			setValue("thumbnail", file);
+			setValue("imageName", x);
+		}
+	};
 
 	const submitHandler = (values: INewsFormInputs) => {
 		onSubmit(values);
 	};
 
-	const imageChngeHandler = (evnt: ChangeEvent<HTMLInputElement>) => {
-		if (evnt.target.files) {
-			setValue("thumbnail", evnt.target.files[0]);
-		}
+	const imageUpdateHandler = () => {
+		const image = getValues("thumbnail");
+		onImageUpload(image!)!;
 	};
 
 	return (
@@ -137,6 +168,21 @@ const NewsForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 			<div className={styles.newForm}>
 				<div className={styles.row}>
 					<div className={styles.basic}>
+						<div className={styles.ddlField}>
+							<Controller
+								render={({ field: { onChange, value } }) => (
+									<Dropdown
+										label={t("news.type", { framework: "React" })}
+										options={newsTypeOptions}
+										onSelect={onChange}
+										value={value}
+									/>
+								)}
+								name="newsType"
+								control={control}
+								defaultValue={{ label: "", value: "" }}
+							/>
+						</div>
 						<div className={styles.field}>
 							<Controller
 								render={({ field: { value, onChange } }) => (
@@ -183,78 +229,87 @@ const NewsForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 								defaultValue={""}
 							/>
 						</div>
-
-						<div className={styles.ddlField}>
-							<Controller
-								render={({ field: { onChange, value } }) => (
-									<Dropdown
-										label={t("news.type", { framework: "React" })}
-										options={newsTypeOptions}
-										onSelect={onChange}
-										value={value}
-									/>
-								)}
-								name="newsType"
-								control={control}
-								defaultValue={{ label: "", value: "" }}
-							/>
+						<div>
+							<div className={styles.field}>
+								<Controller
+									render={({ field: { value, onChange } }) => (
+										<TextBox
+											type="text"
+											label={t("news.fullNews", { framework: "React" })}
+											value={value}
+											onChange={onChange}
+											multiline={true}
+											maxRows={20}
+										/>
+									)}
+									name="fullNews"
+									control={control}
+									defaultValue={""}
+								/>
+							</div>
 						</div>
-
 						<div className={styles.row}>
 							<div className={styles.actions}>
 								<div className={language !== "ar" ? styles.btn : styles.btnLTR}>
-									{/* <Button type='submit'>{actionButtonText}</Button> */}
+									<Button type="submit">{actionButtonText}</Button>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div>
+					<div
+						className={
+							language !== "ar"
+								? styles.thumbnailContainer
+								: styles.thumbnailContainerLTR
+						}
+					>
 						{/* <ImageUploader/> */}
-						<div>
-							{/* <Controller
-                render={({ field: { onChange } }) => (
-                  <input type="file" onChange={(e) => imageChngeHandler(onChange)} accept="image/*" />
-                )}
-                name="thumbnail"
-                control={control}
-              /> */}
+						<div className={styles.browse}>
 							<input
 								type="file"
 								name="thumbnail"
-								onChange={imageChngeHandler}
+								onChange={imageChangeHandler}
 								accept="image/*"
 							/>
 						</div>
 						<div>
-							<img src={imageName} alt="" />
+							<Controller
+								render={({ field: { value, onChange } }) => (
+									<ShadowedContainer>
+										<img src={value} alt="" className={styles.image} />
+									</ShadowedContainer>
+								)}
+								name="imageName"
+								control={control}
+								defaultValue={""}
+							/>
 						</div>
+						{!hideUploadButton && (
+							<div className={styles.uploadSection}>
+								<Button type="button" onClick={imageUpdateHandler}>
+									{t("button.update", { framework: "React" })}
+								</Button>
+							</div>
+						)}
 					</div>
 				</div>
-				<div>
-					<div className={styles.field}>
-						<Controller
-							render={({ field: { value, onChange } }) => (
-								<TextBox
-									type="text"
-									label={t("news.fullNews", { framework: "React" })}
-									value={value}
-									onChange={onChange}
-									multiline={true}
-									maxRows={20}
-								/>
-							)}
-							name="fullNews"
-							control={control}
-							defaultValue={""}
-						/>
-					</div>
-					{/* <div>
-            <UploadImages />
-          </div> */}
-				</div>
+
 				<div>
 					{Object.keys(errors).length > 0 && (
 						<ShadowedContainer>
+							<ErrorMessage
+								errors={errors}
+								name="department"
+								render={({ messages }) => {
+									return messages
+										? _.entries(messages).map(([type, message]) => (
+												<p key={type} className="error">
+													{message}
+												</p>
+										  ))
+										: null;
+								}}
+							/>
 							<ErrorMessage
 								errors={errors}
 								name="title"
@@ -315,9 +370,6 @@ const NewsForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 							/>
 						</ShadowedContainer>
 					)}
-				</div>
-				<div>
-					<Button type="submit">{actionButtonText}</Button>
 				</div>
 			</div>
 		</form>
