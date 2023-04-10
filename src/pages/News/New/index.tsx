@@ -5,6 +5,8 @@ import { addNews } from "../../../api/news/add/addNews";
 import { APINewNews } from "../../../api/news/types";
 import NewsForm from "../../../components/Form/NewsForm";
 import { INewsFormInputs } from "../../../components/Form/types";
+import { PageContainer } from "../../../components";
+
 import * as RoutePath from "../..//../RouteConfig";
 
 const NewsCreatePage = () => {
@@ -29,12 +31,12 @@ const NewsCreatePage = () => {
 	};
 
 	return (
-		<div>
+		<PageContainer showBackButton btnBackUrlLink={RoutePath.NEWS}>
 			<NewsForm
 				actionButtonText={t("button.save", { framework: "React" })}
 				onSubmit={addNewsHandler}
 			/>
-		</div>
+		</PageContainer>
 	);
 };
 

@@ -23,6 +23,7 @@
 	"button": {
 		"view": "View",
 		"backToDetail": "Back to details",
+		"backToHome": "Back to home",
 		"add": "Add",
 		"clear": "Clear",
 		"select": "Select",

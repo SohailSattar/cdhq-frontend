@@ -19,7 +19,12 @@ const ProjectBoxList: FC<Props> = ({ data }) => {
 		<div className={styles.boxList}>
 			{data.map((d, index) =>
 				d.isExternalPath ? (
-					<a href={d.pathLink || "#"} key={index} target="_blank">
+					<a
+						href={d.pathLink || "#"}
+						key={index}
+						target="_blank"
+						rel="noreferrer"
+					>
 						<ProjectBox
 							key={d.id}
 							name={language !== "ar" ? d.name : d.nameEnglish}

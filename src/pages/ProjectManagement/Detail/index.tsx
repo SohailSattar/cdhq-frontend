@@ -4,6 +4,7 @@ import {
 	AllocatedUsers,
 	Button,
 	DeleteConfirmation,
+	PageContainer,
 	ProjectTree,
 	RedirectButton,
 	ShadowedContainer,
@@ -116,7 +117,7 @@ const ProjectDetailPage = () => {
 	};
 
 	return (
-		<div>
+		<PageContainer showBackButton btnBackUrlLink={RoutePath.PROJECT}>
 			<div className={styles.project}>
 				<div>
 					<ProjectTree onNodeClick={projectTreeNodeClickHandler} />
@@ -127,7 +128,10 @@ const ProjectDetailPage = () => {
 							<div className={language !== "ar" ? styles.btn : styles.btnLTR}>
 								<RedirectButton
 									label={t("button.edit", { framework: "React" })}
-									redirectTo={`${RoutePath.PROJECT}/${id}/edit`}
+									redirectTo={`${RoutePath.PROJECT_EDIT.replace(
+										RoutePath.ID,
+										id!
+									)}`}
 								/>
 							</div>
 							<div className={language !== "ar" ? styles.btn : styles.btnLTR}>
@@ -163,7 +167,7 @@ const ProjectDetailPage = () => {
 					/>
 				</div>
 			</div>
-		</div>
+		</PageContainer>
 	);
 };
 
