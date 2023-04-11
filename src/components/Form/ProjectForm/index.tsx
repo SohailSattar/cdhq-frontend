@@ -16,8 +16,6 @@ import { getDepartmentCategories } from "../../../api/departmentCategories/get/g
 import clsx from "clsx";
 import { getFullPath } from "../../../utils";
 
-import Carousel from "react-elastic-carousel";
-
 interface Props {
 	data?: APIProjectDetail;
 	actionButtonText: string;
@@ -50,11 +48,6 @@ const ProjectForm: FC<Props> = ({
 		useState<DropdownOption[]>([]);
 
 	const [hideUploadButton, setHideUploadButton] = useState<boolean>(true);
-
-	// useEffect(() => {
-
-	// 	setProject(data!);
-	// }, [data, setValue]);
 
 	useEffect(() => {
 		const fetchData = async () => {
