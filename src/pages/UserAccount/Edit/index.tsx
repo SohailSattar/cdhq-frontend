@@ -11,7 +11,7 @@ import {
 	RedirectButton,
 	ShadowedContainer,
 	// UserForm,
-	UserProjectTable,
+	UserProjectTable
 } from "../../../components";
 import { DropdownOption } from "../../../components/Dropdown";
 import { Tab, TabList, TabPanel, Tabs } from "../../../components/Tabs";
@@ -28,15 +28,16 @@ import { checkIfEmployeeExists } from "../../../api/employees/get/checkIfEmploye
 import * as RoutePath from "../../../RouteConfig";
 
 import { ROLE } from "../../../utils";
-import UserForm from "../../../components/Form/UserForm";
 import {
+	UserForm,
 	IPasswordFormInputs,
-	IUserFormInputs,
-} from "../../../components/Form/types";
+	IUserFormInputs
+} from "../../../components";
 
-import styles from "./styles.module.scss";
 import { updateUserProjectStatus } from "../../../api/userProjects/update/updateUserProjectStatus";
 import { APIProjectStatus } from "../../../api/userProjects/types";
+
+import styles from "./styles.module.scss";
 
 const UserEditPage = () => {
 	const { id } = useParams<{ id: string }>();
@@ -89,7 +90,7 @@ const UserEditPage = () => {
 				if (data.role) {
 					setSelectedRoleOption({
 						value: data.role?.id!,
-						label: data?.role?.name!,
+						label: data?.role?.name!
 					});
 				}
 
@@ -132,7 +133,7 @@ const UserEditPage = () => {
 			email,
 			department,
 			userClass,
-			rank,
+			rank
 		} = values;
 
 		const params: APIUpdateUser = {
@@ -144,7 +145,7 @@ const UserEditPage = () => {
 			email: email,
 			departmentId: department.value!.toString()!,
 			classId: userClass.value!.toString()!,
-			rankId: rank.value!.toString()!,
+			rankId: rank.value!.toString()!
 		};
 
 		const { data, error } = await updateUser(params);
@@ -162,7 +163,7 @@ const UserEditPage = () => {
 	const updatePasswordClickHandler = async (values: IPasswordFormInputs) => {
 		const params = {
 			userId: id!,
-			password: values.password,
+			password: values.password
 		};
 
 		const { data } = await updatePassword(params);
@@ -183,7 +184,7 @@ const UserEditPage = () => {
 	const roleAssignmentButtonClickHandler = () => {
 		const params = {
 			userId: id!.toString(),
-			roleId: selectedRoleOption?.value!.toString()!,
+			roleId: selectedRoleOption?.value!.toString()!
 		};
 		updateRole(params);
 		toast.success(t("message.roleUpdated", { framework: "React" }).toString());
@@ -192,7 +193,7 @@ const UserEditPage = () => {
 	const activateUserProjectClickHandler = async (userProjectId: string) => {
 		const params: APIProjectStatus = {
 			id: userProjectId,
-			statusId: 1,
+			statusId: 1
 		};
 
 		const { data } = await updateUserProjectStatus(params);
@@ -207,7 +208,9 @@ const UserEditPage = () => {
 		navigate(`${RoutePath.USER}/${id}/project/${projectId}/edit`);
 	};
 
-	const deleteUserProjectClickHandler = (projectId: string) => {};
+	const deleteUserProjectClickHandler = (projectId: string) => {
+		// TODO - Add logic
+	};
 
 	return (
 		<AuthorizedContainer isAuthorized={canView}>

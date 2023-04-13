@@ -3,8 +3,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
 	Button,
+	IProjectUserFormInputs,
 	ProjectUserForm,
-	ShadowedContainer,
+	ShadowedContainer
 } from "../../../components";
 import { useStore } from "../../../utils/store";
 
@@ -14,9 +15,8 @@ import { getUserProject } from "../../../api/userProjects/get/getUserProject";
 import { updateUserProject } from "../../../api/userProjects/update/updateUserProject";
 import {
 	APIUpdateUserProjectDetail,
-	APIUserProjectDetail,
+	APIUserProjectDetail
 } from "../../../api/userProjects/types";
-import { IProjectUserFormInputs } from "../../../components/Form/types";
 
 const ProjectUserEditPage = () => {
 	const { id, userProjectId } =
@@ -74,7 +74,7 @@ const ProjectUserEditPage = () => {
 			workflowStart,
 			workflowEnd,
 			structureType,
-			canGrant,
+			canGrant
 		} = values;
 
 		const params: APIUpdateUserProjectDetail = {
@@ -84,7 +84,7 @@ const ProjectUserEditPage = () => {
 			workflowStartFromId: workflowStart.value,
 			workflowEndToId: workflowEnd.value,
 			departmentStructureType: structureType.value,
-			canGrant: canGrant,
+			canGrant: canGrant
 		};
 
 		const { data } = await updateUserProject(params);

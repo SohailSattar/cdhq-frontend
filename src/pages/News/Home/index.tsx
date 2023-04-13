@@ -9,10 +9,8 @@ import { APIPrivileges } from "../../../api/privileges/type";
 import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPrivilege";
 import {
 	PaginatedTable,
-	RedirectButton,
-	ShadowedContainer,
 	ActionButtons,
-	PageContainer,
+	PageContainer
 } from "../../../components";
 import { DropdownOption } from "../../../components/Dropdown";
 import { NewsColumns } from "../../../components/PaginatedTable/types";
@@ -44,14 +42,14 @@ const NewsHomePage = () => {
 					readPrivilege,
 					insertPrivilege,
 					updatePrivilege,
-					deletePrivilege,
+					deletePrivilege
 				} = privilege;
 
 				setPrivileges({
 					readPrivilege,
 					insertPrivilege,
 					updatePrivilege,
-					deletePrivilege,
+					deletePrivilege
 				});
 
 				const { data } = await getNews(currentPage, pageSize);
@@ -116,12 +114,12 @@ const NewsHomePage = () => {
 			{
 				Header: txtId,
 				id: "id",
-				accessor: (p) => p.id,
+				accessor: (p) => p.id
 			},
 			{
 				Header: title,
 				id: "title",
-				accessor: (p) => p.title,
+				accessor: (p) => p.title
 			},
 			{
 				Header: actions,
@@ -136,14 +134,15 @@ const NewsHomePage = () => {
 						onDelete={deleteClickHandler}
 						onEdit={() => editClickHandler(value.id)}
 					/>
-				),
-			},
+				)
+			}
 		],
 		[privileges, actions, editClickHandler, deleteClickHandler, title, txtId]
 	);
 
 	return (
 		<PageContainer
+			title="News Page"
 			showAddButton={privileges?.insertPrivilege}
 			btnAddUrlLink={RoutePath.NEWS_NEW}
 			btnAddLabel={t("button.add", { framework: "React" })}

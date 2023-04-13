@@ -1,9 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { PageContainer, ProjectForm } from "../../../components";
+import {
+	PageContainer,
+	ProjectForm,
+	IProjectFormInputs
+} from "../../../components";
 import { addProject } from "../../../api/projects/add/addProject";
 import { APINewProject } from "../../../api/projects/types";
-import { IProjectFormInputs } from "../../../components/Form/types";
 import { useTranslation } from "react-i18next";
 
 import * as RoutePath from "../..//../RouteConfig";
@@ -23,7 +26,7 @@ const ProjectNewPage = () => {
 			hasWorkflow,
 			pathLink,
 			isExternalPath,
-			thumbnail,
+			thumbnail
 		} = values;
 
 		const params: APINewProject = {
@@ -36,7 +39,7 @@ const ProjectNewPage = () => {
 			hasWorkflow: hasWorkflow,
 			pathLink: pathLink,
 			isExternalPath: isExternalPath,
-			thumbnail: thumbnail,
+			thumbnail: thumbnail
 		};
 
 		const { data } = await addProject(params);

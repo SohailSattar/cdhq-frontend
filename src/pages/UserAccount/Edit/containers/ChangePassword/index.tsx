@@ -1,6 +1,5 @@
 import { FC } from "react";
-import PasswordForm from "../../../../../components/Form/PasswordForm";
-import { IPasswordFormInputs } from "../../../../../components/Form/types";
+import { PasswordForm, IPasswordFormInputs } from "../../../../../components";
 
 import styles from "./styles.module.scss";
 

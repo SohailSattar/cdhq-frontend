@@ -1,10 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import HonorForm from "../../../components/Form/HonorForm";
+import { HonorForm, IHonorFormInputs } from "../../../components";
 import { getHonorDetail } from "../../../api/honors/get/getHonorDetail";
 import { APIHonorDetail } from "../../../api/honors/types";
-import { IHonorFormInputs } from "../../../components/Form/types";
 
 const HonorEditPage = () => {
 	const { id } = useParams<{ id: string }>();

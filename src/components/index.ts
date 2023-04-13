@@ -67,3 +67,4 @@ export { default as UserTable } from "./UserTable";
 export { default as Welcome } from "./Welcome";
 
 // Forms
+export * from "./Form";

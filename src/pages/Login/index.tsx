@@ -7,9 +7,8 @@ import localStorageService from "../../network/localStorageService";
 import { useStore } from "../../utils/store";
 import { Flip, toast } from "react-toastify";
 import { getPasswordValidity } from "../../api/users/get/getPasswordValidity";
-import LoginForm from "../../components/Form/LoginForm";
+import { LoginForm, ILoginFormInputs } from "../../components";
 import { Footer, Header } from "../../components";
-import { ILoginFormInputs } from "../../components/Form/types";
 
 import * as RoutePath from "../../RouteConfig";
 
@@ -29,7 +28,7 @@ const LoginPage = () => {
 			toast.error(error.ErrorMessage, {
 				// autoClose: false,
 				autoClose: 2500,
-				transition: Flip,
+				transition: Flip
 			});
 		}
 
@@ -55,7 +54,7 @@ const LoginPage = () => {
 				userName: data.userName,
 				name: data.name,
 				nameEnglish: data.nameEnglish,
-				role: data.role,
+				role: data.role
 			});
 
 			// localStorageService?.setUserInfo({
