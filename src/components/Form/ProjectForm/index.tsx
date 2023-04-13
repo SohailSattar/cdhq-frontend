@@ -49,11 +49,6 @@ const ProjectForm: FC<Props> = ({
 
 	const [hideUploadButton, setHideUploadButton] = useState<boolean>(true);
 
-	// useEffect(() => {
-
-	// 	setProject(data!);
-	// }, [data, setValue]);
-
 	useEffect(() => {
 		const fetchData = async () => {
 			const { data } = await getParentProjectsList();
