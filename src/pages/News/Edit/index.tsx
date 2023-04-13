@@ -6,13 +6,12 @@ import { getNewsDetail } from "../../../api/news/get/getNewsDetail";
 import {
 	APINewsDetail,
 	APIUpdateNews,
-	APIUpdateNewsImage,
+	APIUpdateNewsImage
 } from "../../../api/news/types";
 import { updateNews } from "../../../api/news/update/updateNews";
 import { updateNewsImage } from "../../../api/news/update/updateNewsImage";
 import { PageContainer } from "../../../components";
-import NewsForm from "../../../components/Form/NewsForm";
-import { INewsFormInputs } from "../../../components/Form/types";
+import { NewsForm, INewsFormInputs } from "../../../components";
 import * as RoutePath from "../../../RouteConfig";
 
 const NewsEditPage = () => {
@@ -43,7 +42,7 @@ const NewsEditPage = () => {
 			shortSummary: values.shortSummary,
 			newsTypeId: +values.newsType!.value,
 			// thumbnail: values.thumbnail,
-			fullNews: values.fullNews,
+			fullNews: values.fullNews
 		};
 
 		const { data, error } = await updateNews(params);
@@ -60,7 +59,7 @@ const NewsEditPage = () => {
 	const imageUploadHandler = async (image: File) => {
 		const params: APIUpdateNewsImage = {
 			id: id!,
-			thumbnail: image,
+			thumbnail: image
 		};
 
 		const { data } = await updateNewsImage(params);
@@ -73,6 +72,7 @@ const NewsEditPage = () => {
 
 	return (
 		<PageContainer
+			title="Edit News"
 			showBackButton
 			btnBackLabel={t("button.backToDetail", { framework: "React" })}
 			btnBackUrlLink={RoutePath.NEWS_DETAIL.replace(":id", id!)}

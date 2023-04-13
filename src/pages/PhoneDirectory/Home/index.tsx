@@ -7,19 +7,19 @@ import {
 	Button,
 	DepartmentTree,
 	Modal,
+	PageContainer,
 	PaginatedTable,
-	ShadowedContainer,
+	ShadowedContainer
 } from "../../../components";
 import { DropdownOption } from "../../../components/Dropdown";
-import PhoneForm from "../../../components/Form/PhoneForm";
-import { IPhoneFormInputs } from "../../../components/Form/types";
+import { PhoneForm, IPhoneFormInputs } from "../../../components";
 import { PhoneDirectoryColumns } from "../../../components/PaginatedTable/types";
 import { Project } from "../../../data/projects";
 import { useStore } from "../../../utils/store";
 
 import {
 	APIPhoneDetail,
-	APIPhoneDirectory,
+	APIPhoneDirectory
 } from "../../../api/phoneDirectory/types";
 
 import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPrivilege";
@@ -65,7 +65,7 @@ const PhoneDirectoryPage = () => {
 				Header: id,
 				id: "id",
 				accessor: (p) => p.id,
-				Cell: ({ value }: any) => <div className={styles.name}>{value}</div>,
+				Cell: ({ value }: any) => <div className={styles.name}>{value}</div>
 			},
 			{
 				Header: rank,
@@ -75,7 +75,7 @@ const PhoneDirectoryPage = () => {
 					<div className={styles.name}>
 						{language !== "ar" ? value.name : value.nameEnglish}
 					</div>
-				),
+				)
 			},
 			{
 				Header: fullName,
@@ -85,22 +85,22 @@ const PhoneDirectoryPage = () => {
 					<div className={styles.name}>
 						{language !== "ar" ? value?.fullName! : value?.nameEnglish!}
 					</div>
-				),
+				)
 			},
 			{
 				Header: phone,
 				id: "phone",
-				accessor: (p) => p.phone,
+				accessor: (p) => p.phone
 			},
 			{
 				Header: phone,
 				id: "phone2",
-				accessor: (p) => p.phone2,
+				accessor: (p) => p.phone2
 			},
 			{
 				Header: phoneOffice,
 				id: "phoneOffice",
-				accessor: (p) => p.phoneOffice,
+				accessor: (p) => p.phoneOffice
 			},
 			{
 				Header: actions,
@@ -122,8 +122,8 @@ const PhoneDirectoryPage = () => {
 							)}
 						</div>
 					</div>
-				),
-			},
+				)
+			}
 		],
 		[
 			actions,
@@ -134,7 +134,7 @@ const PhoneDirectoryPage = () => {
 			id,
 			language,
 			rank,
-			privileges,
+			privileges
 		] //role
 	);
 
@@ -156,14 +156,14 @@ const PhoneDirectoryPage = () => {
 					readPrivilege,
 					insertPrivilege,
 					updatePrivilege,
-					deletePrivilege,
+					deletePrivilege
 				} = privilege;
 
 				setPrivileges({
 					readPrivilege,
 					insertPrivilege,
 					updatePrivilege,
-					deletePrivilege,
+					deletePrivilege
 				});
 			}
 
@@ -216,7 +216,7 @@ const PhoneDirectoryPage = () => {
 			id: id!,
 			phone: phone,
 			phone2: phone2,
-			phoneOffice: phoneOffice,
+			phoneOffice: phoneOffice
 		};
 
 		const { data } = await updatePhoneDetails(params);
@@ -243,7 +243,7 @@ const PhoneDirectoryPage = () => {
 	};
 
 	return (
-		<div className={styles.phoneDirectory}>
+		<PageContainer title="Phone Directory" className={styles.phoneDirectory}>
 			<div className={styles.content}>
 				<div>
 					<ShadowedContainer
@@ -281,7 +281,7 @@ const PhoneDirectoryPage = () => {
 					/>
 				</Modal>
 			</div>
-		</div>
+		</PageContainer>
 	);
 };
 

@@ -6,12 +6,15 @@ import { getProjectDetail } from "../../../api/projects/get/getProjectDetail";
 import {
 	APIProjectDetail,
 	APIUpdateProject,
-	APIUpdateProjectThumbnail,
+	APIUpdateProjectThumbnail
 } from "../../../api/projects/types";
 import { updateProject } from "../../../api/projects/update/updateProject";
 import { updateProjectThumbnail } from "../../../api/projects/update/updateProjectThumbnail";
-import { PageContainer, ProjectForm } from "../../../components";
-import { IProjectFormInputs } from "../../../components/Form/types";
+import {
+	PageContainer,
+	ProjectForm,
+	IProjectFormInputs
+} from "../../../components";
 
 import * as RoutePath from "../../../RouteConfig";
 
@@ -35,7 +38,7 @@ const ProjectEditPage = () => {
 	const imageUploadHandler = async (image: File) => {
 		const params: APIUpdateProjectThumbnail = {
 			id: id!,
-			thumbnail: image,
+			thumbnail: image
 		};
 
 		const { data } = await updateProjectThumbnail(params);
@@ -57,7 +60,7 @@ const ProjectEditPage = () => {
 			withAcademy,
 			hasWorkflow,
 			pathLink,
-			isExternalPath,
+			isExternalPath
 		} = values;
 
 		const params: APIUpdateProject = {
@@ -70,7 +73,7 @@ const ProjectEditPage = () => {
 			withAcademy: withAcademy,
 			hasWorkflow: hasWorkflow,
 			pathLink: pathLink,
-			isExternalPath: isExternalPath,
+			isExternalPath: isExternalPath
 		};
 
 		const { data } = await updateProject(params);

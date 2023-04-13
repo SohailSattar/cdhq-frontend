@@ -2,19 +2,22 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { getExistingEmployee } from "../../../api/employees/get/getExistingEmployee";
-import { addUser } from "../../../api/users/add/addUser";
-import { checkIfUserExists } from "../../../api/users/get/checkIfUserExists";
-import { APINewUser, APIUserDetail } from "../../../api/users/types";
-import { NotAuthorized, PageContainer } from "../../../components";
 import { useStore } from "../../../utils/store";
+import {
+	UserForm,
+	IUserFormInputs,
+	NotAuthorized,
+	PageContainer
+} from "../../../components";
+
+import { APINewUser, APIUserDetail } from "../../../api/users/types";
+import { getExistingEmployee } from "../../../api/employees/get/getExistingEmployee";
+import { checkIfUserExists } from "../../../api/users/get/checkIfUserExists";
+import { addUser } from "../../../api/users/add/addUser";
 
 import * as RoutePath from "../../../RouteConfig";
-import UserForm from "../../../components/Form/UserForm";
 
 import { ROLE } from "../../../utils";
-
-import { IUserFormInputs } from "../../../components/Form/types";
 
 const UserNewPage = () => {
 	const { id } = useParams<{ id: string }>();
@@ -53,7 +56,7 @@ const UserNewPage = () => {
 						email,
 						department,
 						class: classDetail,
-						rank,
+						rank
 					} = data;
 
 					setEmployeeExists(true);
@@ -68,7 +71,7 @@ const UserNewPage = () => {
 						email: email!,
 						department: department!,
 						class: classDetail!,
-						rank: rank!,
+						rank: rank!
 					});
 				}
 			} else {
@@ -86,7 +89,7 @@ const UserNewPage = () => {
 			departmentId: +details.department?.value!,
 			classId: +details.userClass?.value!,
 			rankId: +details.rank?.value!,
-			password: details.password,
+			password: details.password
 		};
 
 		const { data } = await addUser(params);

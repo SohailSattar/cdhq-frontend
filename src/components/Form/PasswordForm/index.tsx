@@ -19,7 +19,7 @@ const PasswordForm: FC<Props> = ({ onSubmit }) => {
 		formState: { errors },
 		handleSubmit,
 		getValues,
-		control,
+		control
 	} = useForm<IPasswordFormInputs>({ criteriaMode: "all" });
 
 	useEffect(() => {
@@ -27,13 +27,13 @@ const PasswordForm: FC<Props> = ({ onSubmit }) => {
 			required: "Password is required.",
 			minLength: {
 				value: 12,
-				message: "Password should be 12 characters long",
-			},
+				message: "Password should be 12 characters long"
+			}
 		});
 		register("password2", {
 			required: "You have to retype the password",
 			validate: (value) =>
-				value === getValues("password") || "The passwords do not match",
+				value === getValues("password") || "The passwords do not match"
 		});
 	}, [register, getValues]);
 
@@ -44,7 +44,7 @@ const PasswordForm: FC<Props> = ({ onSubmit }) => {
 					<Controller
 						render={({ field: { value, onChange } }) => (
 							<TextBox
-								type="text"
+								type="password"
 								label={t("form.password", { framework: "React" })}
 								value={value}
 								onChange={onChange}
@@ -59,7 +59,7 @@ const PasswordForm: FC<Props> = ({ onSubmit }) => {
 					<Controller
 						render={({ field: { value, onChange } }) => (
 							<TextBox
-								type="text"
+								type="password"
 								label={t("form.retypePassword", { framework: "React" })}
 								value={value}
 								onChange={onChange}

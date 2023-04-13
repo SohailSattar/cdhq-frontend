@@ -1,6 +1,5 @@
 import { useTranslation } from "react-i18next";
-import HonorForm from "../../../components/Form/HonorForm";
-import { IHonorFormInputs } from "../../../components/Form/types";
+import { HonorForm, IHonorFormInputs } from "../../../components";
 
 const HonorNewPage = () => {
 	const [t] = useTranslation("common");

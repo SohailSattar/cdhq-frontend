@@ -3,13 +3,13 @@ import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getRole } from "../../../api/users/get/getRole";
-import { ProjectUserForm } from "../../../components";
+import { ProjectUserForm, IProjectUserFormInputs } from "../../../components";
 import { ROLE } from "../../../utils";
 import { APIProjectToUser } from "../../../api/userProjects/types";
 
-import * as RoutePath from "../../../RouteConfig";
-import { IProjectUserFormInputs } from "../../../components/Form/types";
 import { assignNewProjectToUser } from "../../../api/userProjects/add/assignNewProjectToUser";
+
+import * as RoutePath from "../../../RouteConfig";
 
 const AssignUserToProjectPage = () => {
 	const { id } = useParams<{ id: string }>();
@@ -59,7 +59,7 @@ const AssignUserToProjectPage = () => {
 			WorkflowEndToId: workflowEndId!,
 			departmentId: deptId!,
 			departmentStructureType: deptStruct,
-			canGrant: canGrant,
+			canGrant: canGrant
 		};
 
 		const { data: userProjectId } = await assignNewProjectToUser(params);

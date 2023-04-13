@@ -3,10 +3,9 @@ import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
-	Button,
+	IUserProjectFormInputs,
 	PageContainer,
-	ShadowedContainer,
-	UserProjectForm,
+	UserProjectForm
 } from "../../../components";
 import { useStore } from "../../../utils/store";
 
@@ -14,10 +13,9 @@ import { getUserProject } from "../../../api/userProjects/get/getUserProject";
 import { updateUserProject } from "../../../api/userProjects/update/updateUserProject";
 
 import * as RoutePath from "../../../RouteConfig";
-import { IUserProjectFormInputs } from "../../../components/Form/types";
 import {
 	APIUpdateUserProjectDetail,
-	APIUserProjectDetail,
+	APIUserProjectDetail
 } from "../../../api/userProjects/types";
 import { Id } from "../../../utils";
 
@@ -80,7 +78,7 @@ const UserProjectEditPage = () => {
 			workflowStartFromId: formInput.workflowStart?.value!.toString()!,
 			workflowEndToId: formInput.workflowEnd?.value!.toString()!,
 			departmentStructureType: formInput.structureType?.value!.toString(),
-			canGrant: formInput.canGrant,
+			canGrant: formInput.canGrant
 		};
 
 		const { data } = await updateUserProject(params);
