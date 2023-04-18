@@ -49,7 +49,7 @@ const UserEditPage = () => {
 
 	const { id: loggedUserId, role } = useStore((state) => state.loggedInUser);
 
-	const [canView, setCanView] = useState(true);
+	const [canView, setCanView] = useState<boolean>();
 
 	const [isExistingEmployee, setIsExistingEmployee] = useState(true);
 
