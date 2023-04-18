@@ -10,7 +10,7 @@ export interface APIProjectItem {
 	name: string;
 	nameEnglish: string;
 	hasWorkflow?: boolean;
-	isAvailable?: boolean;
+	isAvailable: boolean;
 	iconName?: string;
 	pathLink?: string;
 	isExternalPath?: boolean;

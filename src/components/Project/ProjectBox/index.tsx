@@ -12,7 +12,7 @@ interface Props {
 const ProjectBox: FC<Props> = ({ name, icon, available }) => {
 	return (
 		<div className={styles.projectBox}>
-			<ProjectCard name={name} icon={icon} />
+			<ProjectCard name={name} icon={icon} isLocked={!available} />
 		</div>
 	);
 };

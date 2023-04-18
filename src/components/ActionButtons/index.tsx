@@ -26,7 +26,7 @@ const ActionButtons: FC<Props> = ({
 	editPageLink,
 	onEdit = () => {},
 	showDelete = false,
-	onDelete = () => {},
+	onDelete = () => {}
 }) => {
 	const [t, i18n] = useTranslation("common");
 
@@ -48,7 +48,7 @@ const ActionButtons: FC<Props> = ({
 	};
 
 	const deleteConfirmationClickHandler = () => {
-		setShowModal(true);
+		setShowModal(false);
 		onDelete(id);
 	};
 
@@ -60,7 +60,7 @@ const ActionButtons: FC<Props> = ({
 		<>
 			<div className={styles.actionButtons}>
 				{showView && (
-					<div>
+					<div className={styles.divBtn}>
 						<RedirectButton
 							label={t("button.view", { framework: "React" })}
 							redirectTo={detailPageLink}

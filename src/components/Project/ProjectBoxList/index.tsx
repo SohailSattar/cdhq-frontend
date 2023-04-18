@@ -29,7 +29,7 @@ const ProjectBoxList: FC<Props> = ({ data }) => {
 							key={d.id}
 							name={language !== "ar" ? d.name : d.nameEnglish}
 							icon={d.iconName!}
-							available={true}
+							available={d.isAvailable || false}
 						/>
 					</a>
 				) : (
@@ -38,7 +38,7 @@ const ProjectBoxList: FC<Props> = ({ data }) => {
 							key={d.id}
 							name={language !== "ar" ? d.name : d.nameEnglish}
 							icon={d.iconName!}
-							available={true}
+							available={d.isAvailable || false}
 						/>
 					</Link>
 				)
