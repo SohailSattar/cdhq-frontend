@@ -16,8 +16,6 @@ import { getDepartmentCategories } from "../../../api/departmentCategories/get/g
 import clsx from "clsx";
 import { getFullPath } from "../../../utils";
 
-import Carousel from "react-elastic-carousel";
-
 interface Props {
 	data?: APIProjectDetail;
 	actionButtonText: string;
@@ -29,7 +27,7 @@ const ProjectForm: FC<Props> = ({
 	data,
 	actionButtonText,
 	onSubmit,
-	onImageUpload = () => {},
+	onImageUpload = () => {}
 }) => {
 	const [t] = useTranslation("common");
 	const language = useStore((state) => state.language);
@@ -39,7 +37,7 @@ const ProjectForm: FC<Props> = ({
 		handleSubmit,
 		setValue,
 		getValues,
-		control,
+		control
 	} = useForm<IProjectFormInputs>({ criteriaMode: "all" });
 
 	const [projectsOptions, setProjectsOptions] = useState<DropdownOption[]>([]);
@@ -65,7 +63,7 @@ const ProjectForm: FC<Props> = ({
 					data?.map((d) => {
 						return {
 							label: language !== "ar" ? d.name : d.nameEnglish,
-							value: d.id,
+							value: d.id
 						};
 					})
 				);
@@ -84,7 +82,7 @@ const ProjectForm: FC<Props> = ({
 					data?.map((d) => {
 						return {
 							label: language !== "ar" ? d.nameArabic : d.nameEnglish,
-							value: d.id,
+							value: d.id
 						};
 					})
 				);
@@ -102,7 +100,7 @@ const ProjectForm: FC<Props> = ({
 					data?.map((d) => {
 						return {
 							label: language !== "ar" ? d.name : d.nameEnglish,
-							value: d.id,
+							value: d.id
 						};
 					})
 				);
@@ -115,17 +113,17 @@ const ProjectForm: FC<Props> = ({
 	useEffect(() => {
 		// Project Name
 		register("name", {
-			required: "Name is required.",
+			required: "Name is required."
 		});
 
 		// Employee Name
 		register("nameEnglish", {
-			required: "Name [English] is required.",
+			required: "Name [English] is required."
 		});
 
 		// Project Group
 		register("projectGroup", {
-			required: "Project group is required.",
+			required: "Project group is required."
 		});
 
 		if (data) {
@@ -139,7 +137,7 @@ const ProjectForm: FC<Props> = ({
 				withAcademy,
 				hasWorkflow,
 				pathLink,
-				isExternalPath,
+				isExternalPath
 			} = data;
 
 			setHideUploadButton(true);
@@ -175,7 +173,7 @@ const ProjectForm: FC<Props> = ({
 		data,
 		projectsGroupOptions,
 		projectsOptions,
-		departmentCategoriesOptions,
+		departmentCategoriesOptions
 	]);
 
 	const imageChangeHandler = (evnt: ChangeEvent<HTMLInputElement>) => {
