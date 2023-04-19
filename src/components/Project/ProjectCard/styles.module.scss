@@ -13,7 +13,7 @@
 	background-color: rgba(188, 148, 72, 0.8);
 	text-align: center;
 
-	box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.25);
+	box-shadow: -10px 10px 5px rgba(0, 0, 0, 0.25);
 
 	&:hover {
 		cursor: pointer;
@@ -79,4 +79,8 @@
 		cursor: not-allowed !important;
 		background-color: rgba(217, 221, 221, 1);
 	}
+}
+
+.cardLTR {
+	box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.25);
 }

@@ -4,6 +4,7 @@ import clsx from "clsx";
 import styles from "./styles.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock, faCircle } from "@fortawesome/free-solid-svg-icons";
+import { useStore } from "../../../utils/store";
 
 export interface Props {
 	name: string;
@@ -12,8 +13,16 @@ export interface Props {
 }
 
 const ProjectCard: FC<Props> = ({ name, icon, isLocked = true }) => {
+	const language = useStore((state) => state.language);
+
 	return (
-		<div className={clsx(styles.card, isLocked && styles.locked)}>
+		<div
+			className={clsx(
+				styles.card,
+				isLocked && styles.locked,
+				language === "ar" && styles.cardLTR
+			)}
+		>
 			<div style={{ float: "right" }}>
 				<div className={styles.icon}>
 					{!isLocked ? (

@@ -1,6 +1,10 @@
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { ShadowedContainer } from "../../../../../components";
+import {
+	Hr,
+	InfoChangeDetails,
+	ShadowedContainer
+} from "../../../../../components";
 import styles from "./styles.module.scss";
 
 interface Props {
@@ -9,6 +13,10 @@ interface Props {
 	nameEnglish: string;
 	groupName: string;
 	groupNameEnglish: string;
+	createdBy: string;
+	createdOn: string;
+	updatedBy: string;
+	updatedOn: string;
 }
 
 const ProjectDetail: FC<Props> = ({
@@ -17,6 +25,10 @@ const ProjectDetail: FC<Props> = ({
 	nameEnglish,
 	groupName,
 	groupNameEnglish,
+	createdBy,
+	createdOn,
+	updatedBy,
+	updatedOn
 }) => {
 	const [t] = useTranslation("common");
 
@@ -57,6 +69,14 @@ const ProjectDetail: FC<Props> = ({
 					</div>
 				</div>
 			</div>
+
+			<hr />
+			<InfoChangeDetails
+				createdBy={createdBy}
+				createdOn={createdOn}
+				updatedBy={updatedBy}
+				updatedOn={updatedOn}
+			/>
 		</ShadowedContainer>
 	);
 };

@@ -8,13 +8,13 @@ import {
 	ProjectTree,
 	RedirectButton,
 	ShadowedContainer,
-	Status,
+	Status
 } from "../../../components";
 import ProjectDetail from "./containers/ProjectDetail";
 
 import {
 	APIProjectDetail,
-	APIUpdateProjectStatus,
+	APIUpdateProjectStatus
 } from "../../../api/projects/types";
 import { getProjectDetail } from "../../../api/projects/get/getProjectDetail";
 import { useStore } from "../../../utils/store";
@@ -71,7 +71,7 @@ const ProjectDetailPage = () => {
 
 		const params: APIUpdateProjectStatus = {
 			id: id!,
-			activeStatusId: statusCode,
+			activeStatusId: statusCode
 		};
 
 		const { data } = await updateProjectStatus(params);
@@ -94,7 +94,7 @@ const ProjectDetailPage = () => {
 
 		const params: APIUpdateProjectStatus = {
 			id: id!,
-			activeStatusId: statusCode,
+			activeStatusId: statusCode
 		};
 
 		const { data } = await updateProjectStatus(params);
@@ -157,6 +157,10 @@ const ProjectDetailPage = () => {
 						nameEnglish={project?.nameEnglish!}
 						groupName={project?.group?.nameArabic!}
 						groupNameEnglish={project?.group?.nameEnglish!}
+						createdBy={project?.createdBy!}
+						createdOn={project?.createdOn!}
+						updatedBy={project?.updatedBy!}
+						updatedOn={project?.updatedOn!}
 					/>
 					<AllocatedUsers projectId={id!} />
 
