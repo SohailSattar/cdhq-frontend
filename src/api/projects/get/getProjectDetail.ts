@@ -1,6 +1,6 @@
-import { APIResponse, getConfig } from '../..';
-import { instance } from '../../../network';
-import { APIProjectDetail } from '../types';
+import { APIResponse, getConfig } from "../..";
+import { instance } from "../../../network";
+import { APIProjectDetail } from "../types";
 
 export async function getProjectDetail(
 	id: string
@@ -11,6 +11,7 @@ export async function getProjectDetail(
 		const url = `/projects/${id}`;
 
 		const response = await instance.get<APIProjectDetail>(url, config);
+
 		const data = response.data;
 		return { data };
 	} catch (err: any) {

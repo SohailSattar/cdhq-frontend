@@ -1,4 +1,10 @@
 {
+	"common": {
+		"createdBy": "Created by",
+		"createdOn": "Created on",
+		"updatedBy": "Updated by",
+		"updatedOn": "Updated on"
+	},
 	"header": {
 		"title": "وزارة الداخلية",
 		"menu": {

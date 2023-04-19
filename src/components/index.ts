@@ -20,6 +20,7 @@ export { default as HeaderMenuList } from "./HeaderMenu/MenuList";
 export { default as Hr } from "./Hr";
 export { default as ImageSelector } from "./ImageSelector";
 export { default as ImageUploader } from "./ImageUploader";
+export { default as InfoChangeDetails } from "./InfoChangeDetails";
 export { default as Layout } from "./Layout";
 export { default as Logout } from "./Logout";
 export { default as Loader } from "./Loader";
