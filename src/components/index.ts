@@ -34,6 +34,8 @@ export { default as NewsBar } from "./NewsBar";
 export { default as NewsFlashItem } from "./NewsFlashItem";
 export { default as NewsFlashMarquee } from "./NewsFlashMarquee";
 export { default as NotAuthorized } from "./NotAuthorized";
+export { default as NewsFlashItem } from "./NewsFlashItem";
+export { default as NewsFlashMarquee } from "./NewsFlashMarquee";
 export { default as PageContainer } from "./PageContainer";
 export { default as PasswordExpiryMessage } from "./PasswordExpiryMessage";
 export { default as PhotoThumbnailImage } from "./PhotoThumbnailImage";

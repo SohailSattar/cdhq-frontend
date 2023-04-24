@@ -10,6 +10,9 @@
 			"userAccount": "المستعمل",
 			"departmentHierarchy": "الهللإدارة",
 			"department": "إِدَارَة"
+		},
+		"menuMenu": {
+			"strategy": "Strategy"
 		}
 	},
 	"account": {

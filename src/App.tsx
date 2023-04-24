@@ -28,7 +28,7 @@ import {
 	HonorsHomePage,
 	HonorNewPage,
 	HonorEditPage,
-	LandingPage,
+	LandingPage
 } from "./pages";
 
 import * as RoutePath from "./RouteConfig";
@@ -51,9 +51,12 @@ function App() {
 				<Routes>
 					<Route
 						path={RoutePath.ROOT}
-						element={<Layout>{/* <LandingPage /> */}</Layout>}
+						element={<LandingPage />}
 					/>
-					<Route path="/login" element={<LoginPage />} />
+					<Route
+						path={RoutePath.LOGIN}
+						element={<LoginPage />}
+					/>
 					<Route element={<ProtectedRoute />}>
 						<Route
 							path={RoutePath.USER}
@@ -74,7 +77,7 @@ function App() {
 						/>
 					<Route element={<ProtectedRoute />}>
 						<Route
-							path='/home'
+							path={RoutePath.HOME}
 							element={
 								<Layout>
 									<HomePage />
@@ -192,7 +195,6 @@ function App() {
 							}
 						/>
 					</Route>
-
 					<Route element={<ProtectedRoute />}>
 						<Route
 							path={`${RoutePath.PROJECT}/:id/edit`}
@@ -233,7 +235,6 @@ function App() {
 							}
 						/>
 					</Route> */}
-
 					{/* Department */}
 					{/* <Route element={<ProtectedRoute />}>
 						<Route
@@ -286,7 +287,6 @@ function App() {
 							}
 						/>
 					</Route> */}
-
 					{/* Honors */}
 					<Route element={<ProtectedRoute />}>
 						<Route
@@ -318,13 +318,14 @@ function App() {
 							}
 						/>
 					</Route>
-
 					{/* News */}
 					<Route element={<ProtectedRoute />}>
 						<Route
 							path={`${RoutePath.NEWS}`}
 							element={
-								<Layout projectId={Project.News} privilegeType={"Read"}>
+								<Layout
+									projectId={Project.News}
+									privilegeType={"Read"}>
 									<NewsHomePage />
 								</Layout>
 							}
@@ -334,7 +335,9 @@ function App() {
 						<Route
 							path={`${RoutePath.NEWS}/new`}
 							element={
-								<Layout projectId={Project.News} privilegeType="Write">
+								<Layout
+									projectId={Project.News}
+									privilegeType="Write">
 									<NewsCreatePage />
 								</Layout>
 							}
@@ -352,25 +355,27 @@ function App() {
 						<Route
 							path={RoutePath.NEWS_EDIT}
 							element={
-								<Layout projectId={Project.News} privilegeType="Update">
+								<Layout
+									projectId={Project.News}
+									privilegeType="Update">
 									<NewsEditPage />
 								</Layout>
 							}
 						/>
 					</Route>
-
 					{/* Phone Directory */}
 					<Route element={<ProtectedRoute />}>
 						<Route
 							path={`${RoutePath.PHONE_DIRECTORY}`}
 							element={
-								<Layout projectId={Project.PhoneDirectory} privilegeType="Read">
+								<Layout
+									projectId={Project.PhoneDirectory}
+									privilegeType="Read">
 									<PhoneDirectory />
 								</Layout>
 							}
 						/>
 					</Route>
-
 					{/*  Not Found Page */}
 					<Route
 						path="*"
