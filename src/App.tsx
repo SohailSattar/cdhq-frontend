@@ -28,6 +28,7 @@ import {
 	HonorsHomePage,
 	HonorNewPage,
 	HonorEditPage,
+	LandingPage,
 } from "./pages";
 
 import * as RoutePath from "./RouteConfig";
@@ -63,9 +64,17 @@ function App() {
 							}
 						/>
 					</Route>
+					<Route
+							path='/'
+							element={
+								
+									<LandingPage />
+								
+							}
+						/>
 					<Route element={<ProtectedRoute />}>
 						<Route
-							path={`${RoutePath.HOME}`}
+							path='/home'
 							element={
 								<Layout>
 									<HomePage />

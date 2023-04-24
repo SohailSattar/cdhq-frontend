@@ -32,6 +32,8 @@ export { default as MetaDataDetails } from "./MetaDataDetails";
 export { default as Modal } from "./Modal";
 export { default as NewsBar } from "./NewsBar";
 export { default as NotAuthorized } from "./NotAuthorized";
+export { default as NewsFlashItem } from "./NewsFlashItem";
+export { default as NewsFlashMarquee } from "./NewsFlashMarquee";
 export { default as PageContainer } from "./PageContainer";
 export { default as PaginatedTable } from "./PaginatedTable";
 export { default as Pagination } from "./Pagination";
