@@ -10,7 +10,8 @@
 			"userAccount": "User Account",
 			"departmentHierarchy": "Department Hierarchy",
 			"department": "Department"
-		}
+		},
+		"menuMenu": {}
 	},
 	"account": {
 		"login": "Login",
