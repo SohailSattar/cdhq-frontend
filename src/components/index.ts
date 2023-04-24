@@ -20,7 +20,6 @@ export { default as HeaderMenuList } from "./HeaderMenu/MenuList";
 export { default as Hr } from "./Hr";
 export { default as ImageSelector } from "./ImageSelector";
 export { default as ImageUploader } from "./ImageUploader";
-export { default as InfoChangeDetails } from "./InfoChangeDetails";
 export { default as Layout } from "./Layout";
 export { default as Logout } from "./Logout";
 export { default as Loader } from "./Loader";
@@ -29,6 +28,7 @@ export { default as LoadingButton } from "./LoadingButton";
 export { default as LoggedUser } from "./LoggedUser";
 export { default as MainHeader } from "./MainHeader";
 export { default as MessageBox } from "./MessageBox";
+export { default as MetaDataDetails } from "./MetaDataDetails";
 export { default as Modal } from "./Modal";
 export { default as NewsBar } from "./NewsBar";
 export { default as NotAuthorized } from "./NotAuthorized";
@@ -66,6 +66,9 @@ export { default as UserProjectForm } from "./Form/UserProjectForm";
 export { default as UserProjectTable } from "./UserProjectTable";
 export { default as UserTable } from "./UserTable";
 export { default as Welcome } from "./Welcome";
+
+// Details
+export * from "./Detail";
 
 // Forms
 export * from "./Form";

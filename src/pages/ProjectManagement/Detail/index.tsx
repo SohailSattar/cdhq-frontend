@@ -4,13 +4,14 @@ import {
 	AllocatedUsers,
 	Button,
 	DeleteConfirmation,
+	MetaDataDetails,
 	PageContainer,
+	ProjectDetail,
 	ProjectTree,
 	RedirectButton,
 	ShadowedContainer,
 	Status
 } from "../../../components";
-import ProjectDetail from "./containers/ProjectDetail";
 
 import {
 	APIProjectDetail,
@@ -117,7 +118,9 @@ const ProjectDetailPage = () => {
 	};
 
 	return (
-		<PageContainer showBackButton btnBackUrlLink={RoutePath.PROJECT}>
+		<PageContainer
+			showBackButton
+			btnBackUrlLink={RoutePath.PROJECT}>
 			<div className={styles.project}>
 				<div>
 					<ProjectTree onNodeClick={projectTreeNodeClickHandler} />
@@ -136,7 +139,9 @@ const ProjectDetailPage = () => {
 							</div>
 							<div className={language !== "ar" ? styles.btn : styles.btnLTR}>
 								{status?.id === 1 ? (
-									<Button onClick={deleteButtonClickHandler} isCritical>
+									<Button
+										onClick={deleteButtonClickHandler}
+										isCritical>
 										{t("button.deactivate", { framework: "React" })}
 									</Button>
 								) : (
@@ -157,12 +162,15 @@ const ProjectDetailPage = () => {
 						nameEnglish={project?.nameEnglish!}
 						groupName={project?.group?.nameArabic!}
 						groupNameEnglish={project?.group?.nameEnglish!}
+					/>
+					<AllocatedUsers projectId={id!} />
+					<hr />
+					<MetaDataDetails
 						createdBy={project?.createdBy!}
 						createdOn={project?.createdOn!}
 						updatedBy={project?.updatedBy!}
 						updatedOn={project?.updatedOn!}
 					/>
-					<AllocatedUsers projectId={id!} />
 
 					<DeleteConfirmation
 						isOpen={showModal}

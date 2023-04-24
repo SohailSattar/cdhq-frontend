@@ -13,7 +13,8 @@ import { updateProjectThumbnail } from "../../../api/projects/update/updateProje
 import {
 	PageContainer,
 	ProjectForm,
-	IProjectFormInputs
+	IProjectFormInputs,
+	MetaDataDetails
 } from "../../../components";
 
 import * as RoutePath from "../../../RouteConfig";
@@ -44,9 +45,9 @@ const ProjectEditPage = () => {
 		const { data } = await updateProjectThumbnail(params);
 		console.log(data);
 		if (data) {
-			// toast.success(
-			// 	t("message.projectUpdated", { framework: "React" }).toString()
-			// );
+			toast.success(
+				t("message.imageUpdated", { framework: "React" }).toString()
+			);
 		}
 	};
 
@@ -88,13 +89,19 @@ const ProjectEditPage = () => {
 		<PageContainer
 			showBackButton
 			btnBackLabel={t("button.backToDetail", { framework: "React" }).toString()}
-			btnBackUrlLink={RoutePath.PROJECT_DETAIL.replace(RoutePath.ID, id!)}
-		>
+			btnBackUrlLink={RoutePath.PROJECT_DETAIL.replace(RoutePath.ID, id!)}>
 			<ProjectForm
 				data={project}
 				onSubmit={submitHandler}
 				onImageUpload={imageUploadHandler}
 				actionButtonText={t("button.update", { framework: "React" }).toString()}
+			/>
+			<hr />
+			<MetaDataDetails
+				createdBy={project?.createdBy!}
+				createdOn={project?.createdOn!}
+				updatedBy={project?.updatedBy}
+				updatedOn={project?.updatedOn}
 			/>
 		</PageContainer>
 	);

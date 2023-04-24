@@ -8,6 +8,7 @@ import { updatePassword } from "../../../api/users/update/updatePassword";
 import { updateRole } from "../../../api/users/update/updateRole";
 import {
 	AuthorizedContainer,
+	MetaDataDetails,
 	RedirectButton,
 	ShadowedContainer,
 	// UserForm,
@@ -53,7 +54,7 @@ const UserEditPage = () => {
 
 	const [isExistingEmployee, setIsExistingEmployee] = useState(true);
 
-	const [useDetail, setUserDetail] = useState<APIUserDetail>();
+	const [userDetail, setUserDetail] = useState<APIUserDetail>();
 
 	// User Roles
 	const [roles, setRoles] = useState<APIRole[]>([]);
@@ -236,7 +237,7 @@ const UserEditPage = () => {
 						<UserForm
 							isExistingEmployee={isExistingEmployee}
 							hideActionButton={isExistingEmployee}
-							data={useDetail}
+							data={userDetail}
 							actionButtonText={t("button.update", { framework: "React" })}
 							onSubmit={updateDetailsClickHandler}
 						/>
@@ -278,6 +279,13 @@ const UserEditPage = () => {
 					</>
 				)}
 			</Tabs>
+			<hr />
+			<MetaDataDetails
+				createdBy={userDetail?.createdBy!}
+				createdOn={userDetail?.createdOn!}
+				updatedBy={userDetail?.updatedBy}
+				updatedOn={userDetail?.updatedOn}
+			/>
 		</AuthorizedContainer>
 	);
 };

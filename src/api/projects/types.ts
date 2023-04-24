@@ -45,9 +45,9 @@ export interface APIProjectDetail {
 	group: APIProjectGroup;
 	departmentCategory: APIDepartmentCategory;
 	withAcademy?: boolean;
-	iconName?: string;
+	iconName: string;
 	pathLink: string;
-	isExternalPath: boolean;
+	isExternalPath?: boolean;
 	activeStatus: APIActiveStatus;
 	createdBy: string;
 	createdOn: string;

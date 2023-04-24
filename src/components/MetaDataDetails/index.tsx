@@ -5,6 +5,7 @@ import { enGB, ar } from "date-fns/locale";
 
 import styles from "./styles.module.scss";
 import { useStore } from "../../utils/store";
+import ShadowedContainer from "../ShadowedContainer";
 
 interface Props {
 	createdBy: string;
@@ -13,7 +14,7 @@ interface Props {
 	updatedOn?: string;
 }
 
-const InfoChangeDetails: FC<Props> = ({
+const MetaDataDetails: FC<Props> = ({
 	createdBy,
 	createdOn,
 	updatedBy,
@@ -35,20 +36,16 @@ const InfoChangeDetails: FC<Props> = ({
 		: "";
 
 	return (
-		<div className={styles.infoContainer}>
+		<ShadowedContainer className={styles.infoContainer}>
 			{createdBy && (
 				<div className={styles.section}>
 					<div className={styles.content}>
 						<div className={styles.title}>
-							{t("common.createdBy", { framework: "React" })}
+							{t("common.created", { framework: "React" })}
 						</div>
-						<div>{createdBy}</div>
-					</div>
-					<div className={styles.content}>
-						<div className={styles.title}>
-							{t("common.createdOn", { framework: "React" })}
+						<div>
+							{createdBy} {formattedCreatedDate}
 						</div>
-						<div>{formattedCreatedDate}</div>
 					</div>
 				</div>
 			)}
@@ -56,20 +53,16 @@ const InfoChangeDetails: FC<Props> = ({
 				<div className={styles.section}>
 					<div className={styles.content}>
 						<div className={styles.title}>
-							{t("common.updatedBy", { framework: "React" })}
+							{t("common.updated", { framework: "React" })}
 						</div>
-						<div>{updatedBy}</div>
-					</div>
-					<div className={styles.content}>
-						<div className={styles.title}>
-							{t("common.updatedOn", { framework: "React" })}
+						<div>
+							{updatedBy} {formattedUpdatedDate}
 						</div>
-						<div>{formattedUpdatedDate}</div>
 					</div>
 				</div>
 			)}
-		</div>
+		</ShadowedContainer>
 	);
 };
 
-export default InfoChangeDetails;
+export default MetaDataDetails;

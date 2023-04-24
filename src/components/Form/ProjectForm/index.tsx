@@ -135,7 +135,9 @@ const ProjectForm: FC<Props> = ({
 				isExternalPath
 			} = data;
 
-			setHideUploadButton(true);
+			console.log(iconName);
+
+			setHideUploadButton(false);
 
 			setValue("iconName", iconName);
 
@@ -159,8 +161,8 @@ const ProjectForm: FC<Props> = ({
 
 			setValue("withAcademy", withAcademy!);
 			setValue("hasWorkflow", hasWorkflow!);
-			setValue("pathLink", pathLink);
-			setValue("isExternalPath", isExternalPath!);
+			setValue("pathLink", pathLink! || "");
+			setValue("isExternalPath", isExternalPath! || false);
 		}
 	}, [
 		register,
@@ -189,6 +191,8 @@ const ProjectForm: FC<Props> = ({
 		onImageUpload(image!)!;
 	};
 
+	console.log(hideUploadButton);
+
 	return (
 		<ShadowedContainer className={styles.container}>
 			<form onSubmit={handleSubmit(submitHandler)}>
@@ -199,11 +203,14 @@ const ProjectForm: FC<Props> = ({
 								language !== "ar"
 									? styles.imageContainer
 									: styles.imageContainerRTL
-							}
-						>
+							}>
 							<Controller
 								render={({ field: { value, onChange } }) => (
-									<img src={value} alt="" className={styles.image} />
+									<img
+										src={value}
+										alt=""
+										className={styles.image}
+									/>
 								)}
 								name="iconName"
 								control={control}
@@ -219,9 +226,11 @@ const ProjectForm: FC<Props> = ({
 									accept="image/*"
 								/>
 							</div>
-							{!hideUploadButton && (
+							{hideUploadButton === false && (
 								<div>
-									<Button type="button" onClick={imageUpdateHandler}>
+									<Button
+										type="button"
+										onClick={imageUpdateHandler}>
 										{t("button.update", { framework: "React" })}
 									</Button>
 								</div>
@@ -380,7 +389,9 @@ const ProjectForm: FC<Props> = ({
 								render={({ messages }) => {
 									return messages
 										? _.entries(messages).map(([type, message]) => (
-												<p key={type} className="error">
+												<p
+													key={type}
+													className="error">
 													{message}
 												</p>
 										  ))
@@ -395,7 +406,9 @@ const ProjectForm: FC<Props> = ({
 								render={({ messages }) => {
 									return messages
 										? _.entries(messages).map(([type, message]) => (
-												<p key={type} className="error">
+												<p
+													key={type}
+													className="error">
 													{message}
 												</p>
 										  ))
@@ -410,7 +423,9 @@ const ProjectForm: FC<Props> = ({
 								render={({ messages }) => {
 									return messages
 										? _.entries(messages).map(([type, message]) => (
-												<p key={type} className="error">
+												<p
+													key={type}
+													className="error">
 													{message}
 												</p>
 										  ))

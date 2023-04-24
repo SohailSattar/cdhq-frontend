@@ -1,11 +1,7 @@
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import {
-	Hr,
-	InfoChangeDetails,
-	ShadowedContainer
-} from "../../../../../components";
 import styles from "./styles.module.scss";
+import { ShadowedContainer } from "../..";
 
 interface Props {
 	imageSrc?: string;
@@ -13,10 +9,6 @@ interface Props {
 	nameEnglish: string;
 	groupName: string;
 	groupNameEnglish: string;
-	createdBy: string;
-	createdOn: string;
-	updatedBy: string;
-	updatedOn: string;
 }
 
 const ProjectDetail: FC<Props> = ({
@@ -24,11 +16,7 @@ const ProjectDetail: FC<Props> = ({
 	name,
 	nameEnglish,
 	groupName,
-	groupNameEnglish,
-	createdBy,
-	createdOn,
-	updatedBy,
-	updatedOn
+	groupNameEnglish
 }) => {
 	const [t] = useTranslation("common");
 
@@ -37,7 +25,11 @@ const ProjectDetail: FC<Props> = ({
 			<div className={styles.projectDetail}>
 				{imageSrc && (
 					<div className={styles.section}>
-						<img src={imageSrc} alt="logo" className={styles.image} />
+						<img
+							src={imageSrc}
+							alt="logo"
+							className={styles.image}
+						/>
 					</div>
 				)}
 				<div className={styles.section}>
@@ -69,14 +61,6 @@ const ProjectDetail: FC<Props> = ({
 					</div>
 				</div>
 			</div>
-
-			<hr />
-			<InfoChangeDetails
-				createdBy={createdBy}
-				createdOn={createdOn}
-				updatedBy={updatedBy}
-				updatedOn={updatedOn}
-			/>
 		</ShadowedContainer>
 	);
 };
