@@ -54,7 +54,7 @@ function App() {
 						element={<LandingPage />}
 					/>
 					<Route
-						path="/login"
+						path={RoutePath.LOGIN}
 						element={<LoginPage />}
 					/>
 					<Route element={<ProtectedRoute />}>
@@ -69,7 +69,7 @@ function App() {
 					</Route>
 					<Route element={<ProtectedRoute />}>
 						<Route
-							path="/home"
+							path={RoutePath.HOME}
 							element={
 								<Layout>
 									<HomePage />
