@@ -1,7 +1,7 @@
-import clsx from 'clsx';
-import { FC } from 'react';
+import clsx from "clsx";
+import { FC } from "react";
 
-import styles from './styles.module.scss';
+import styles from "./styles.module.scss";
 
 interface Props {
 	className?: any;

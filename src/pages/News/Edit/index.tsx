@@ -10,7 +10,7 @@ import {
 } from "../../../api/news/types";
 import { updateNews } from "../../../api/news/update/updateNews";
 import { updateNewsImage } from "../../../api/news/update/updateNewsImage";
-import { PageContainer } from "../../../components";
+import { MetaDataDetails, PageContainer } from "../../../components";
 import { NewsForm, INewsFormInputs } from "../../../components";
 import * as RoutePath from "../../../RouteConfig";
 
@@ -75,13 +75,19 @@ const NewsEditPage = () => {
 			title="Edit News"
 			showBackButton
 			btnBackLabel={t("button.backToDetail", { framework: "React" })}
-			btnBackUrlLink={RoutePath.NEWS_DETAIL.replace(":id", id!)}
-		>
+			btnBackUrlLink={RoutePath.NEWS_DETAIL.replace(":id", id!)}>
 			<NewsForm
 				data={news}
 				actionButtonText={t("button.update", { framework: "React" })}
 				onSubmit={editNewsHandler}
 				onImageUpload={imageUploadHandler}
+			/>
+			<hr />
+			<MetaDataDetails
+				createdBy={news?.createdBy!}
+				createdOn={news?.createdOn!}
+				updatedBy={news?.updatedBy!}
+				updatedOn={news?.updatedOn!}
 			/>
 		</PageContainer>
 	);

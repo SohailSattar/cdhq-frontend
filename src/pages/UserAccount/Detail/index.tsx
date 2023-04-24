@@ -4,12 +4,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
 	DeleteConfirmation,
+	MetaDataDetails,
 	Loading,
 	PageContainer,
 	RedirectButton,
 	ShadowedContainer,
 	Status,
-	UserProjectTable,
+	UserProjectTable
 } from "../../../components";
 import Details from "./containers/Details";
 
@@ -70,7 +71,7 @@ const UserDetailPage = () => {
 
 		const params: APIUpdateUserStatus = {
 			userId: id!,
-			activeStatusId: statusCode,
+			activeStatusId: statusCode
 		};
 
 		const { data } = await updateUserStatus(params);
@@ -93,7 +94,7 @@ const UserDetailPage = () => {
 
 		const params: APIUpdateUserStatus = {
 			userId: id!,
-			activeStatusId: statusCode,
+			activeStatusId: statusCode
 		};
 
 		const { data } = await updateUserStatus(params);
@@ -130,15 +131,13 @@ const UserDetailPage = () => {
 					}
 					currentStatus={status?.id === 7 ? "ACTIVE" : "DEACTIVE"}
 					onActivate={activateButtonClickHandler}
-					onDectivate={deleteButtonClickHandler}
-				>
+					onDectivate={deleteButtonClickHandler}>
 					<div>
 						{(role === ROLE.ADMIN || role === ROLE.SUPERADMIN) && (
 							<ShadowedContainer className={styles.btnSection}>
 								{
 									<div
-										className={language !== "ar" ? styles.btn : styles.btnLTR}
-									>
+										className={language !== "ar" ? styles.btn : styles.btnLTR}>
 										<RedirectButton
 											label={t("button.assignProject", { framework: "React" })}
 											redirectTo={`${RoutePath.USER}/${id}/project/assign`}
@@ -154,7 +153,13 @@ const UserDetailPage = () => {
 						</ShadowedContainer>
 
 						<UserProjectTable id={id!} />
-
+						<hr />
+						<MetaDataDetails
+							createdBy={user?.createdBy!}
+							createdOn={user?.createdOn!}
+							updatedBy={user?.updatedBy}
+							updatedOn={user?.updatedOn}
+						/>
 						<DeleteConfirmation
 							isOpen={showModal}
 							onYesClick={deleteConfirmationClickHandler}

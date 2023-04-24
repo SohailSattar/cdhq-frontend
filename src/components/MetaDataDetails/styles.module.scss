@@ -1,4 +1,8 @@
 .infoContainer {
+	display: flex;
+	color: gray;
+	font-size: 12px;
+	flex-direction: column;
 	.section {
 		display: flex;
 		flex-direction: row;
@@ -6,13 +10,14 @@
 		padding: 0 15px;
 
 		.content {
-			margin-bottom: 15px;
-			justify-content: space-between;
+			display: flex;
+			flex: 1;
 		}
 
 		.title {
-			font-size: 14px;
+			// font-size: 14px;
 			font-weight: 600;
+			margin-right: 5px;
 		}
 	}
 }

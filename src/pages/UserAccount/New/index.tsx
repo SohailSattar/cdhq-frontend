@@ -71,7 +71,11 @@ const UserNewPage = () => {
 						email: email!,
 						department: department!,
 						class: classDetail!,
-						rank: rank!
+						rank: rank!,
+						createdBy: "",
+						createdOn: "",
+						updatedBy: "",
+						updatedOn: ""
 					});
 				}
 			} else {
@@ -106,7 +110,9 @@ const UserNewPage = () => {
 	};
 
 	return canView ? (
-		<PageContainer showBackButton btnBackUrlLink={RoutePath.USER}>
+		<PageContainer
+			showBackButton
+			btnBackUrlLink={RoutePath.USER}>
 			<UserForm
 				data={employee}
 				isExistingEmployee={employeeExists}
