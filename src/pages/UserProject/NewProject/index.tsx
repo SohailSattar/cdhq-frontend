@@ -5,8 +5,11 @@ import { toast } from "react-toastify";
 import { APIProjectToUser } from "../../../api/userProjects/types";
 import { assignNewProjectToUser } from "../../../api/userProjects/add/assignNewProjectToUser";
 import { getRole } from "../../../api/users/get/getRole";
-import { PageContainer, UserProjectForm } from "../../../components";
-import { IUserProjectFormInputs } from "../../../components/Form/types";
+import {
+	IUserProjectFormInputs,
+	PageContainer,
+	UserProjectForm
+} from "../../../components";
 
 import * as RoutePath from "../../../RouteConfig";
 import { Id, ROLE } from "../../../utils";
@@ -59,7 +62,7 @@ const AssignProjectToUserPage = () => {
 			WorkflowEndToId: workflowEndId!,
 			departmentId: deptId!,
 			departmentStructureType: structType,
-			canGrant: canGrant,
+			canGrant: canGrant
 		};
 
 		const { data: userProjectId } = await assignNewProjectToUser(params);

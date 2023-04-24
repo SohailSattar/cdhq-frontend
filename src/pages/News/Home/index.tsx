@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Column } from "react-table";
@@ -9,10 +9,8 @@ import { APIPrivileges } from "../../../api/privileges/type";
 import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPrivilege";
 import {
 	PaginatedTable,
-	RedirectButton,
-	ShadowedContainer,
 	ActionButtons,
-	PageContainer,
+	PageContainer
 } from "../../../components";
 import { DropdownOption } from "../../../components/Dropdown";
 import { NewsColumns } from "../../../components/PaginatedTable/types";
@@ -34,9 +32,10 @@ const NewsHomePage = () => {
 	const [privileges, setPrivileges] = useState<APIPrivileges>();
 
 	const [news, setNews] = useState<APINews[]>([]);
+	const [keyword, setKeyword] = useState("");
 
 	const fetchData = useMemo(
-		() => async (currentPage: number) => {
+		() => async (currentPage: number, keyword?: string) => {
 			const { data: privilege } = await getProjectPrivilege(Project.News);
 
 			if (privilege) {
@@ -44,17 +43,17 @@ const NewsHomePage = () => {
 					readPrivilege,
 					insertPrivilege,
 					updatePrivilege,
-					deletePrivilege,
+					deletePrivilege
 				} = privilege;
 
 				setPrivileges({
 					readPrivilege,
 					insertPrivilege,
 					updatePrivilege,
-					deletePrivilege,
+					deletePrivilege
 				});
 
-				const { data } = await getNews(currentPage, pageSize);
+				const { data } = await getNews(currentPage, pageSize, keyword);
 
 				if (data) {
 					setNews(data.news);
@@ -64,16 +63,16 @@ const NewsHomePage = () => {
 				}
 			}
 		},
-		[pageSize]
+		[pageSize, keyword]
 	);
 
 	useEffect(() => {
-		fetchData(currentPage);
-	}, [fetchData, currentPage, pageSize]);
+		fetchData(currentPage, keyword);
+	}, [fetchData, currentPage, pageSize, keyword]);
 
 	const pageChangeHandler = (currentpage: number) => {
 		setCurrentPage(currentPage);
-		fetchData(currentpage);
+		fetchData(currentpage, keyword);
 	};
 
 	const pageViewSelectionHandler = (option: DropdownOption) => {
@@ -94,12 +93,35 @@ const NewsHomePage = () => {
 		[navigate]
 	);
 
-	const deleteClickHandler = useCallback(
+	// const deleteClickHandler = useCallback(
+	// 	() => async (id: Id) => {
+	// 		const { data } = await deleteNews(id);
+
+	// 		console.log(data);
+
+	// 		if (data) {
+	// 			fetchData(currentPage);
+	// 		}
+	// 	},
+	// 	[currentPage, fetchData]
+	// );
+
+	// const deleteClickHandler = async (id: Id) => {
+	// 	const { data } = await deleteNews(id);
+
+	// 	console.log(data);
+
+	// 	if (data) {
+	// 		fetchData(currentPage);
+	// 	}
+	// };
+
+	const deleteClickHandler = useMemo(
 		() => async (id: Id) => {
 			const { data } = await deleteNews(id);
 
 			if (data) {
-				fetchData(currentPage);
+				fetchData(currentPage, keyword);
 			}
 		},
 		[currentPage, fetchData]
@@ -116,12 +138,12 @@ const NewsHomePage = () => {
 			{
 				Header: txtId,
 				id: "id",
-				accessor: (p) => p.id,
+				accessor: (p) => p.id
 			},
 			{
 				Header: title,
 				id: "title",
-				accessor: (p) => p.title,
+				accessor: (p) => p.title
 			},
 			{
 				Header: actions,
@@ -136,14 +158,19 @@ const NewsHomePage = () => {
 						onDelete={deleteClickHandler}
 						onEdit={() => editClickHandler(value.id)}
 					/>
-				),
-			},
+				)
+			}
 		],
 		[privileges, actions, editClickHandler, deleteClickHandler, title, txtId]
 	);
 
+	const newsSearchClickHandler = (keyword: string) => {
+		setKeyword(keyword);
+	};
+
 	return (
 		<PageContainer
+			title="News"
 			showAddButton={privileges?.insertPrivilege}
 			btnAddUrlLink={RoutePath.NEWS_NEW}
 			btnAddLabel={t("button.add", { framework: "React" })}
@@ -155,7 +182,7 @@ const NewsHomePage = () => {
 				pageSize={pageSize}
 				data={news}
 				columns={columns}
-				onSearch={() => {}}
+				onSearch={newsSearchClickHandler}
 				onTableSort={() => {}}
 				onPageChange={pageChangeHandler}
 				onPageViewSelectionChange={pageViewSelectionHandler}

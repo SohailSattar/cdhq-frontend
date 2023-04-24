@@ -10,7 +10,7 @@ export interface APIProjectItem {
 	name: string;
 	nameEnglish: string;
 	hasWorkflow?: boolean;
-	isAvailable?: boolean;
+	isAvailable: boolean;
 	iconName?: string;
 	pathLink?: string;
 	isExternalPath?: boolean;
@@ -45,10 +45,14 @@ export interface APIProjectDetail {
 	group: APIProjectGroup;
 	departmentCategory: APIDepartmentCategory;
 	withAcademy?: boolean;
-	iconName?: string;
+	iconName: string;
 	pathLink: string;
-	isExternalPath: boolean;
+	isExternalPath?: boolean;
 	activeStatus: APIActiveStatus;
+	createdBy: string;
+	createdOn: string;
+	updatedBy: string;
+	updatedOn: string;
 }
 
 export interface APIProjectHierarchy {

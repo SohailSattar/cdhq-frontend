@@ -1,17 +1,16 @@
 import { APIResponse, getConfig } from "../..";
 import { instance } from "../../../network";
-import { APIProjectDetail } from "../types";
+import { APIProjectItem } from "../../projects/types";
 
-export async function getProjectDetail(
-	id: string
-): Promise<APIResponse<APIProjectDetail>> {
+export async function getAccessibleProjects(): Promise<
+	APIResponse<APIProjectItem[]>
+> {
 	try {
 		const config = getConfig();
 
-		const url = `/projects/${id}`;
+		const url = "/user-projects/accessed";
 
-		const response = await instance.get<APIProjectDetail>(url, config);
-
+		const response = await instance.get<APIProjectItem[]>(url, config);
 		const data = response.data;
 		return { data };
 	} catch (err: any) {

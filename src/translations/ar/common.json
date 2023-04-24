@@ -1,4 +1,8 @@
 {
+	"common": {
+		"created": "Created",
+		"updated": "Updated"
+	},
 	"header": {
 		"title": "وزارة الداخلية",
 		"menu": {

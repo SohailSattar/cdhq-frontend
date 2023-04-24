@@ -2,7 +2,7 @@ import { Id } from "../../utils";
 import { APIClass } from "../classes/types";
 import {
 	APIDepartmentItem,
-	APICategorizedDepartment,
+	APICategorizedDepartment
 } from "../departments/types";
 import { APIGender } from "../genders/type";
 import { APIRank } from "../ranks/types";

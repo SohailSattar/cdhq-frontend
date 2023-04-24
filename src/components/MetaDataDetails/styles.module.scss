@@ -1,0 +1,23 @@
+.infoContainer {
+	display: flex;
+	color: gray;
+	font-size: 12px;
+	flex-direction: column;
+	.section {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-around;
+		padding: 0 15px;
+
+		.content {
+			display: flex;
+			flex: 1;
+		}
+
+		.title {
+			// font-size: 14px;
+			font-weight: 600;
+			margin-right: 5px;
+		}
+	}
+}

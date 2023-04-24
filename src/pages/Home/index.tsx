@@ -4,7 +4,7 @@ import {
 	Loading,
 	PasswordExpiryMessage,
 	ProjectBoxList,
-	Welcome,
+	Welcome
 } from "../../components";
 import { useStore } from "../../utils/store";
 
@@ -14,6 +14,8 @@ import { getAllProjectsList } from "../../api/projects/get/getAllProjectsList";
 import * as RoutePath from "../../RouteConfig";
 
 import styles from "./styles.module.scss";
+import { getAccessibleProjects } from "../../api/userProjects/get/getAccessibleProjects";
+import { ROLE } from "../../utils";
 
 const HomePage = () => {
 	const language = useStore((state) => state.language);
@@ -37,6 +39,8 @@ const HomePage = () => {
 			const { data } = await getAllProjectsList();
 
 			if (data) {
+				const { data: accessibleProjects } = await getAccessibleProjects();
+
 				// const x: APIProjectItem[] = data?.map((x: APIProjectItem) => {
 				// 	// const isA = userProjects?.includes()
 
@@ -48,8 +52,32 @@ const HomePage = () => {
 				// 		iconName: x.iconName,
 				// 	};
 				// });
+				if (loggedInUser.role !== ROLE.SUPERADMIN) {
+					const x = accessibleProjects?.find((x) => x.id === 0);
+					console.log(x);
 
-				setProjects(data);
+					const projectsList = data
+						.map((project) => {
+							project.isAvailable = accessibleProjects?.find(
+								(x) => x.id === project.id
+							)
+								? true
+								: false;
+							return project;
+						})
+						.sort((a, b) => +b.isAvailable! - +a.isAvailable!);
+
+					setProjects(projectsList);
+				} else {
+					const projectsList = data
+						.map((project) => {
+							project.isAvailable = true;
+							return project;
+						})
+						.sort((a, b) => +b.isAvailable! - +a.isAvailable!);
+
+					setProjects(projectsList);
+				}
 				setIsLoading(false);
 
 				// const { data } = await getUserProjectsList(loggedInUser.id!);

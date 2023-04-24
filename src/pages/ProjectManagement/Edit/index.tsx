@@ -6,12 +6,16 @@ import { getProjectDetail } from "../../../api/projects/get/getProjectDetail";
 import {
 	APIProjectDetail,
 	APIUpdateProject,
-	APIUpdateProjectThumbnail,
+	APIUpdateProjectThumbnail
 } from "../../../api/projects/types";
 import { updateProject } from "../../../api/projects/update/updateProject";
 import { updateProjectThumbnail } from "../../../api/projects/update/updateProjectThumbnail";
-import { PageContainer, ProjectForm } from "../../../components";
-import { IProjectFormInputs } from "../../../components/Form/types";
+import {
+	PageContainer,
+	ProjectForm,
+	IProjectFormInputs,
+	MetaDataDetails
+} from "../../../components";
 
 import * as RoutePath from "../../../RouteConfig";
 
@@ -35,15 +39,15 @@ const ProjectEditPage = () => {
 	const imageUploadHandler = async (image: File) => {
 		const params: APIUpdateProjectThumbnail = {
 			id: id!,
-			thumbnail: image,
+			thumbnail: image
 		};
 
 		const { data } = await updateProjectThumbnail(params);
 		console.log(data);
 		if (data) {
-			// toast.success(
-			// 	t("message.projectUpdated", { framework: "React" }).toString()
-			// );
+			toast.success(
+				t("message.imageUpdated", { framework: "React" }).toString()
+			);
 		}
 	};
 
@@ -57,7 +61,7 @@ const ProjectEditPage = () => {
 			withAcademy,
 			hasWorkflow,
 			pathLink,
-			isExternalPath,
+			isExternalPath
 		} = values;
 
 		const params: APIUpdateProject = {
@@ -70,7 +74,7 @@ const ProjectEditPage = () => {
 			withAcademy: withAcademy,
 			hasWorkflow: hasWorkflow,
 			pathLink: pathLink,
-			isExternalPath: isExternalPath,
+			isExternalPath: isExternalPath
 		};
 
 		const { data } = await updateProject(params);
@@ -85,13 +89,19 @@ const ProjectEditPage = () => {
 		<PageContainer
 			showBackButton
 			btnBackLabel={t("button.backToDetail", { framework: "React" }).toString()}
-			btnBackUrlLink={RoutePath.PROJECT_DETAIL.replace(RoutePath.ID, id!)}
-		>
+			btnBackUrlLink={RoutePath.PROJECT_DETAIL.replace(RoutePath.ID, id!)}>
 			<ProjectForm
 				data={project}
 				onSubmit={submitHandler}
 				onImageUpload={imageUploadHandler}
 				actionButtonText={t("button.update", { framework: "React" }).toString()}
+			/>
+			<hr />
+			<MetaDataDetails
+				createdBy={project?.createdBy!}
+				createdOn={project?.createdOn!}
+				updatedBy={project?.updatedBy}
+				updatedOn={project?.updatedOn}
 			/>
 		</PageContainer>
 	);

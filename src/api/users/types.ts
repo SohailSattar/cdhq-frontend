@@ -1,15 +1,15 @@
-import { APIActiveStatus } from '../activeStatus/types';
-import { APIClass } from '../classes/types';
+import { APIActiveStatus } from "../activeStatus/types";
+import { APIClass } from "../classes/types";
 import {
 	APICategorizedDepartment,
-	APIDepartmentItem,
-} from '../departments/types';
-import { APIGender } from '../genders/type';
-import { APIPrivilegeItem, APIPrivileges } from '../privileges/type';
-import { APIProjectItem, APIProjectWithParentIdItem } from '../projects/types';
-import { APIRank } from '../ranks/types';
-import { APIRole } from '../roles/types';
-import { APIPaginate } from '../types';
+	APIDepartmentItem
+} from "../departments/types";
+import { APIGender } from "../genders/type";
+import { APIPrivilegeItem, APIPrivileges } from "../privileges/type";
+import { APIProjectItem, APIProjectWithParentIdItem } from "../projects/types";
+import { APIRank } from "../ranks/types";
+import { APIRole } from "../roles/types";
+import { APIPaginate } from "../types";
 
 export interface APIPasswordValidity {
 	passwordSetOn: Date;
@@ -58,6 +58,10 @@ export interface APIUserDetail extends APIUser {
 	phone: string;
 	email: string;
 	activeStatus?: APIActiveStatus;
+	createdBy: string;
+	createdOn: string;
+	updatedBy: string;
+	updatedOn: string;
 }
 
 export interface APIExistingUser extends APIUser {
@@ -119,4 +123,3 @@ export interface APIUpdateUserStatus {
 	userId: string;
 	activeStatusId: number;
 }
-

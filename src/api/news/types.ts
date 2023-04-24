@@ -19,6 +19,10 @@ export interface APINewsDetail {
 	department: APIDepartmentItem;
 	fullNews: string;
 	newsDate: Date;
+	createdBy: string;
+	createdOn: string;
+	updatedBy: string;
+	updatedOn: string;
 }
 
 export interface APINewNews {

@@ -1,0 +1,36 @@
+.projectDetail {
+	display: block;
+
+	.section {
+		display: flex;
+		// flex-direction: row;
+		// justify-content: space-between;
+
+		.imageContainer {
+			display: flex;
+			width: 100%;
+			justify-content: center;
+			.image {
+				height: 200px;
+				// justify-content: center;
+				// display: flex;
+
+				color: white;
+				background-color: rgb(97, 239, 97);
+				// width: 100%;
+				border: 2px black solid;
+				margin-bottom: 15px;
+			}
+		}
+
+		.content {
+			margin-bottom: 15px;
+			flex: 1;
+		}
+
+		.title {
+			font-size: 14px;
+			font-weight: 600;
+		}
+	}
+}

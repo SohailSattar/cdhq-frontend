@@ -7,6 +7,7 @@ import { StatusType } from "../types";
 import styles from "./styles.module.scss";
 
 interface Props {
+	title?: string;
 	// Back to Project Home
 	showBackButton?: boolean;
 	btnBackUrlLink?: string;
@@ -32,6 +33,7 @@ interface Props {
 	children: any;
 }
 const PageContainer: FC<Props> = ({
+	title,
 	showBackButton = false,
 	btnBackUrlLink,
 	btnBackLabel,
@@ -45,13 +47,18 @@ const PageContainer: FC<Props> = ({
 	onActivate,
 	onDectivate,
 	className,
-	children,
+	children
 }) => {
 	const [t] = useTranslation("common");
 	const language = useStore((state) => state.language);
 
 	return (
 		<div className={styles.container}>
+			{title && (
+				<div className={styles.heading}>
+					<span className={styles.title}>{title}</span>
+				</div>
+			)}
 			{showBackButton && (
 				<ShadowedContainer className={styles.btnSection}>
 					<div className={language !== "ar" ? styles.btn : styles.btnLTR}>

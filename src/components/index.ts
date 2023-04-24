@@ -28,6 +28,7 @@ export { default as LoadingButton } from "./LoadingButton";
 export { default as LoggedUser } from "./LoggedUser";
 export { default as MainHeader } from "./MainHeader";
 export { default as MessageBox } from "./MessageBox";
+export { default as MetaDataDetails } from "./MetaDataDetails";
 export { default as Modal } from "./Modal";
 export { default as NewsBar } from "./NewsBar";
 export { default as NewsFlashItem } from "./NewsFlashItem";
@@ -61,3 +62,9 @@ export { default as UserProjectForm } from "./Form/UserProjectForm";
 export { default as UserProjectTable } from "./UserProjectTable";
 export { default as UserTable } from "./UserTable";
 export { default as Welcome } from "./Welcome";
+
+// Details
+export * from "./Detail";
+
+// Forms
+export * from "./Form";

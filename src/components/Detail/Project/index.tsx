@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { ShadowedContainer } from "../../../../../components";
 import styles from "./styles.module.scss";
+import { ShadowedContainer } from "../..";
 
 interface Props {
 	imageSrc?: string;
@@ -16,7 +16,7 @@ const ProjectDetail: FC<Props> = ({
 	name,
 	nameEnglish,
 	groupName,
-	groupNameEnglish,
+	groupNameEnglish
 }) => {
 	const [t] = useTranslation("common");
 
@@ -25,7 +25,11 @@ const ProjectDetail: FC<Props> = ({
 			<div className={styles.projectDetail}>
 				{imageSrc && (
 					<div className={styles.section}>
-						<img src={imageSrc} alt="logo" className={styles.image} />
+						<img
+							src={imageSrc}
+							alt="logo"
+							className={styles.image}
+						/>
 					</div>
 				)}
 				<div className={styles.section}>

@@ -3,8 +3,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import { addNews } from "../../../api/news/add/addNews";
 import { APINewNews } from "../../../api/news/types";
-import NewsForm from "../../../components/Form/NewsForm";
-import { INewsFormInputs } from "../../../components/Form/types";
+import { NewsForm, INewsFormInputs } from "../../../components";
 import { PageContainer } from "../../../components";
 
 import * as RoutePath from "../..//../RouteConfig";
@@ -20,7 +19,7 @@ const NewsCreatePage = () => {
 			shortSummary: values.shortSummary,
 			thumbnail: values.thumbnail,
 			newsTypeId: +values.newsType.value!,
-			fullNews: values.fullNews,
+			fullNews: values.fullNews
 		};
 
 		const { data } = await addNews(params);
@@ -31,7 +30,11 @@ const NewsCreatePage = () => {
 	};
 
 	return (
-		<PageContainer showBackButton btnBackUrlLink={RoutePath.NEWS}>
+		<PageContainer
+			title="Create News"
+			showBackButton
+			btnBackUrlLink={RoutePath.NEWS}
+		>
 			<NewsForm
 				actionButtonText={t("button.save", { framework: "React" })}
 				onSubmit={addNewsHandler}
