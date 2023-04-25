@@ -28,7 +28,6 @@
 		"newsEdit": "Edit News",
 		"newsCreate": "Create News"
 	},
-
 	"account": {
 		"login": "Login",
 		"logout": "Logout"
@@ -133,9 +132,6 @@
 		"single": "Single Department",
 		"withChild": "Department with children",
 		"headquarter": "Headquarter",
-		"gd": "General Department",
-		"dp": "Department Name",
-		"sc": "Section",
 		"parent": "Parent Deparment",
 		"centers": "Centers",
 		"center": "Center"
@@ -151,7 +147,7 @@
 			"heading": "Page Not Found",
 			"text": "This page doesn't not exist."
 		},
-		"form": {
+	"form": {
 			"required": {
 				"employeeNo": "Employee No is required.",
 				"nameArabic": "Name is required",
