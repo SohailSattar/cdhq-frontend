@@ -124,6 +124,9 @@ const UserDetailPage = () => {
 				/>
 			) : (
 				<PageContainer
+					title={t("page.userDetail", { framework: "React" })}
+					showBackButton
+					btnBackUrlLink={RoutePath.USER}
 					showEditButton={role === ROLE.SUPERADMIN}
 					btnEditUrlLink={`${RoutePath.USER_EDIT.replace(RoutePath.ID, id!)}`}
 					showChangeStatusButton={

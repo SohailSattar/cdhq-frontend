@@ -9,7 +9,7 @@ import {
 	NotAuthorized,
 	PageContainer,
 	PaginatedTable,
-	ShadowedContainer,
+	ShadowedContainer
 } from "../../../components";
 import { getUsersByKeyword } from "../../../api/users/get/getUsersByKeyword";
 import { DropdownOption } from "../../../components/Dropdown";
@@ -65,17 +65,17 @@ const UserAccountPage = () => {
 			{
 				Header: id,
 				id: "id",
-				accessor: (p) => p.id,
+				accessor: (p) => p.id
 			},
 			{
 				Header: employeeNo,
 				id: "employeeNo",
-				accessor: (p) => p.employeeNo,
+				accessor: (p) => p.employeeNo
 			},
 			{
 				Header: logName,
 				id: "logName",
-				accessor: (p) => p.logName,
+				accessor: (p) => p.logName
 			},
 			{
 				Header: fullName,
@@ -86,7 +86,7 @@ const UserAccountPage = () => {
 						<div className={styles.arabic}>{value.name}</div>
 						<div className={styles.english}>{value.nameEnglish}</div>
 					</div>
-				),
+				)
 			},
 			{
 				Header: actions,
@@ -99,64 +99,65 @@ const UserAccountPage = () => {
 						detailPageLink={`${RoutePath.USER}/${value.id}`}
 						editPageLink={`${RoutePath.USER}/${value.id}/edit`}
 					/>
-				),
-			},
+				)
+			}
 		],
 		[actions, employeeNo, fullName, id, logName, role]
 	);
 
 	const fetchData = useMemo(
-		() => async (currentPage: number, parameter?: string, filterBy?: string) => {
-			if (departmentIds.length > 0) {
-				const { data } = await getUsersByDepartments(
-					currentPage,
-					pageSize,
-					departmentIds,
-					keyword
-				);
-
-				if (data) {
-					// setCanView(true)
-					setUsers(data?.users);
-					setTotalCount(data?.totalItems);
-				}
-			} else {
-				if (keyword === "") {
-					// Get all the users if no keyword is mentioned
-					const { data, error } = await getUsers(
+		() =>
+			async (currentPage: number, parameter?: string, filterBy?: string) => {
+				if (departmentIds.length > 0) {
+					const { data } = await getUsersByDepartments(
 						currentPage,
 						pageSize,
-						parameter
-					);
-
-					if (error?.response!.status! === 401) {
-						navigate(RoutePath.LOGIN);
-					} else if (error?.response!.status! === 403) {
-						setCanView(false);
-						return;
-					}
-
-					if (data) {
-						setUsers(data.users);
-						setTotalCount(data.totalItems);
-					}
-
-					// });
-				} else {
-					const { data } = await getUsersByKeyword(
-						keyword,
-						currentPage,
-						pageSize,
-						parameter
+						departmentIds,
+						keyword
 					);
 
 					if (data) {
+						// setCanView(true)
 						setUsers(data?.users);
 						setTotalCount(data?.totalItems);
 					}
+				} else {
+					if (keyword === "") {
+						// Get all the users if no keyword is mentioned
+						const { data, error } = await getUsers(
+							currentPage,
+							pageSize,
+							parameter
+						);
+
+						if (error?.response!.status! === 401) {
+							navigate(RoutePath.LOGIN);
+						} else if (error?.response!.status! === 403) {
+							setCanView(false);
+							return;
+						}
+
+						if (data) {
+							setUsers(data.users);
+							setTotalCount(data.totalItems);
+						}
+
+						// });
+					} else {
+						const { data } = await getUsersByKeyword(
+							keyword,
+							currentPage,
+							pageSize,
+							parameter
+						);
+
+						if (data) {
+							setUsers(data?.users);
+							setTotalCount(data?.totalItems);
+						}
+					}
 				}
-			}
-		},
+			},
 		[departmentIds, keyword, navigate, pageSize]
 	);
 
@@ -228,16 +229,17 @@ const UserAccountPage = () => {
 				<NotAuthorized />
 			) : (
 				<PageContainer
+					title={t("page.userHome", { framework: "React" })}
 					className={styles.userList}
 					showAddButton
 					btnAddLabel={t("button.addNewUser", { framework: "React" })}
-					btnAddUrlLink={RoutePath.USER_SEARCH}
-				>
+					btnAddUrlLink={RoutePath.USER_SEARCH}>
 					<div className={styles.content}>
 						<div>
 							<ShadowedContainer
-								className={language === "ar" ? styles.filterLTR : styles.filter}
-							>
+								className={
+									language === "ar" ? styles.filterLTR : styles.filter
+								}>
 								<Button onClick={filterByDepartmentClickHandler}>
 									{t("filter.byDepartment", { framework: "React" })}
 								</Button>
@@ -245,15 +247,14 @@ const UserAccountPage = () => {
 							<ShadowedContainer
 								className={
 									language === "ar" ? styles.hierarchyLTR : styles.hierarchy
-								}
-							>
+								}>
 								<DepartmentTree onNodeCheck={departmentNodeCheckHandler} />
 							</ShadowedContainer>
 						</div>
 						<div className={styles.table}>
 							<PaginatedTable
 								totalCountText={t("pagination.usersPerPage", {
-									framework: "React",
+									framework: "React"
 								})}
 								totalCount={totalCount}
 								pageSize={pageSize}

@@ -9,6 +9,7 @@ import { updateRole } from "../../../api/users/update/updateRole";
 import {
 	AuthorizedContainer,
 	MetaDataDetails,
+	PageContainer,
 	RedirectButton,
 	ShadowedContainer,
 	// UserForm,
@@ -214,13 +215,11 @@ const UserEditPage = () => {
 	};
 
 	return (
-		<AuthorizedContainer isAuthorized={canView}>
-			<ShadowedContainer>
-				<RedirectButton
-					label={t("button.backToDetail", { framework: "React" })}
-					redirectTo={`${RoutePath.USER}/${id}`}
-				/>
-			</ShadowedContainer>
+		<PageContainer
+			title={t("page.userEdit", { framework: "React" })}
+			showBackButton
+			btnBackLabel={t("button.backToDetail", { framework: "React" })}
+			btnBackUrlLink={`${RoutePath.USER}/${id}`}>
 			<Tabs>
 				<TabList>
 					<Tab>{t("user.basicDetails", { framework: "React" })} </Tab>
@@ -286,7 +285,7 @@ const UserEditPage = () => {
 				updatedBy={userDetail?.updatedBy}
 				updatedOn={userDetail?.updatedOn}
 			/>
-		</AuthorizedContainer>
+		</PageContainer>
 	);
 };
 

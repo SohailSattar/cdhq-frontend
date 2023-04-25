@@ -19,7 +19,7 @@ const NewsCreatePage = () => {
 			shortSummary: values.shortSummary,
 			thumbnail: values.thumbnail,
 			newsTypeId: +values.newsType.value!,
-			fullNews: values.fullNews
+			fullNews: values.fullNews,
 		};
 
 		const { data } = await addNews(params);
@@ -31,10 +31,9 @@ const NewsCreatePage = () => {
 
 	return (
 		<PageContainer
-			title="Create News"
+			title={t("page.newsCreate", { framework: "React" })}
 			showBackButton
-			btnBackUrlLink={RoutePath.NEWS}
-		>
+			btnBackUrlLink={RoutePath.NEWS}>
 			<NewsForm
 				actionButtonText={t("button.save", { framework: "React" })}
 				onSubmit={addNewsHandler}

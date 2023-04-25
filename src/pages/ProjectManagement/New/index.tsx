@@ -4,7 +4,7 @@ import {
 	PageContainer,
 	ProjectForm,
 	IProjectFormInputs,
-	Modal
+	Modal,
 } from "../../../components";
 import { addProject } from "../../../api/projects/add/addProject";
 import { APINewProject } from "../../../api/projects/types";
@@ -80,7 +80,7 @@ const ProjectNewPage = () => {
 			hasWorkflow,
 			pathLink,
 			isExternalPath,
-			thumbnail
+			thumbnail,
 		} = details!;
 
 		const params: APINewProject = {
@@ -93,7 +93,7 @@ const ProjectNewPage = () => {
 			hasWorkflow: hasWorkflow,
 			pathLink: pathLink,
 			isExternalPath: isExternalPath,
-			thumbnail: thumbnail
+			thumbnail: thumbnail,
 		};
 
 		const { data } = await addProject(params);
@@ -112,6 +112,7 @@ const ProjectNewPage = () => {
 
 	return (
 		<PageContainer
+			title={t("page.projectNew", { framework: "React" })}
 			showBackButton
 			btnBackUrlLink={RoutePath.PROJECT}>
 			<ProjectForm
