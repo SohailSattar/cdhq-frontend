@@ -7,19 +7,26 @@
 		"title": "وزارة الداخلية",
 		"menu": {
 			"projectManagement": "ادارة مشروع",
-			"userAccount": "المستعمل",
+			"userAccount": "المستخدم",
 			"departmentHierarchy": "الهللإدارة",
 			"department": "إِدَارَة"
 		},
 		"mainMenu": {
-			"strategy": "Strategy"
+			"strategy": "الاستراتيجية"
 		}
 	},
 	"page": {
-		"userHome": "User Account",
-		"userDetail": "User Details",
-		"userEdit": "Edit User",
-		"userCreate": "Create User"
+		"userHome": "حسابات المستخدمين",
+		"userDetail": "تفاصيل حساب المستخدم",
+		"userEdit": "تعديل حساب المستخدم",
+		"userCreate": "انشاء حساب مستخدم",
+		"projectHome": "الأنظمة و البرامج",
+		"projectDetail": "تفاصيل النظام",
+		"projectEdit": "تعديل بيانات النظام",
+		"projectNew": "انشاء نظام جديد",
+		"newsHome": "الأخبار",
+		"newsEdit": "تعديل خبر",
+		"newsCreate": "انشاء خبر"
 	},
 	"account": {
 		"login": "تسجيل الدخول",
@@ -36,9 +43,9 @@
 	"button": {
 		"view": "عرض",
 		"backToDetail": "العودة إلى التفاصيل",
-		"backToHome": "Back to home",
+		"backToHome": "العودة ",
 		"add": "يضيف",
-		"clear": "صاف",
+		"clear": "افراغ الحقول",
 		"select": "تحديد",
 		"save": "حفظ",
 		"update": "تحديث",
@@ -46,16 +53,16 @@
 		"detail": "التفاصيل",
 		"delete": "حذف",
 		"activate": "تفعيل",
-		"deactivate": "تعطيل",
-		"addNewDepartment": "إدارة جديد",
-		"addNewUser": "مستخدم جديد",
-		"addNewProject": "مشروع جديد",
-		"hierarchy": "التسلسل الهرمي",
+		"deactivate": "الغاء",
+		"addNewDepartment": "اضافة ادارة تنظيمية",
+		"addNewUser": "انشاء حساب مستخدم",
+		"addNewProject": "انشاء نظام جديد ",
+		"hierarchy": "الهيكل التنظيمي",
 		"assign": "تعيين",
-		"assignProject": "تعيين المشروع",
-		"editPrivilege": "تحرير الامتياز",
+		"assignProject": "منح صلاحية",
+		"editPrivilege": "تعديل الصلاحية",
 		"yes": "نعم",
-		"cancel": "الغي",
+		"cancel": "الغاء",
 		"assignToUser": "التعيين للمستخدم"
 	},
 	"home": {
@@ -100,13 +107,13 @@
 		"canGrant": "يمكن منح المشروع للآخرين.",
 		"canNotGrant": "لا يمكن منح المشروع للآخرين.",
 		"withChild": "مع القسم الفرعي",
-		"withoutChild": "بدون قسم فرعي",
+		"withoutChild": "بدون الأقسام و الأفرع ",
 		"count": "عدد المشاريع",
 		"noProject": "لم يتم تخصيص أي مشروع.",
 		"deptCat": "فئة القسم",
 		"withAcademy": "هل يجب أن تكون الأكاديمية أيضًا في قائمة الأقسام؟",
 		"hasWorkflow": "لديه سير عمل؟",
-		"urlLink": "URL",
+		"urlLink": "الرابط",
 		"isExternal": "Is the link external?"
 	},
 	"userProject": {
@@ -123,9 +130,9 @@
 		"fullName": "الاسم الكامل [عربي]",
 		"fullNameEnglish": "الاسم الكامل [إنجليزي]",
 		"single": "قسم واحد",
-		"withChild": "قسم مع ",
+		"withChild": "مع الأقسام و الأفرع  ",
 		"parent": "القسم الرئيسي",
-		"centers": "Centers",
+		"centers": "المراكز",
 		"center": "مركز"
 	},
 	"rank": {
@@ -138,6 +145,14 @@
 		"pageNotFound": {
 			"heading": "الصفحة غير موجودة",
 			"text": ".هذه الصفحة غير موجودة"
+		},
+	"form": {
+			"required": {
+				"employeeNo": "Employee No is required.",
+				"nameArabic": "Name is required",
+				"nameEnglish": "NameEnglish is required",
+				"title": "Title is required"
+			}
 		}
 	},
 	"privilege": {
