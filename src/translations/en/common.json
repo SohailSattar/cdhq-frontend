@@ -11,7 +11,9 @@
 			"departmentHierarchy": "Department Hierarchy",
 			"department": "Department"
 		},
-		"menuMenu": {}
+		"mainMenu": {
+			"strategy": "Strategy"
+		}
 	},
 	"account": {
 		"login": "Login",
