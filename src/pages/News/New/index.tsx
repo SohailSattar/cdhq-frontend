@@ -3,30 +3,52 @@ import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import { addNews } from "../../../api/news/add/addNews";
 import { APINewNews } from "../../../api/news/types";
-import { NewsForm, INewsFormInputs } from "../../../components";
+import {
+	NewsForm,
+	INewsFormInputs,
+	Modal,
+	ProjectPreview,
+	NewsPreview,
+} from "../../../components";
 import { PageContainer } from "../../../components";
 
 import * as RoutePath from "../..//../RouteConfig";
+import { useState } from "react";
 
 const NewsCreatePage = () => {
 	const [t] = useTranslation("common");
 	const navigate = useNavigate();
 
-	const addNewsHandler = async (values: INewsFormInputs) => {
+	const [details, setDetails] = useState<INewsFormInputs>();
+	const [isOpen, setIsOpen] = useState<boolean>(false);
+
+	const previewHandler = async (values: INewsFormInputs) => {
+		setDetails(values);
+		setIsOpen(true);
+	};
+
+	const addNewsHandler = async () => {
+		setIsOpen(false);
+
+		const { department, newsType, thumbnail, title, shortSummary, fullNews } =
+			details!;
+
 		const params: APINewNews = {
-			departmentId: values.department.value!,
-			title: values.title!,
-			shortSummary: values.shortSummary,
-			thumbnail: values.thumbnail,
-			newsTypeId: +values.newsType.value!,
-			fullNews: values.fullNews,
+			departmentId: department.value!,
+			title: title!,
+			shortSummary: shortSummary,
+			thumbnail: thumbnail,
+			newsTypeId: +newsType.value!,
+			fullNews: fullNews,
 		};
 
-		const { data } = await addNews(params);
+		const { data, error } = await addNews(params);
 		if (data) {
 			toast.success(t("message.newsAdded", { framework: "React" }).toString());
 			navigate(`${RoutePath.NEWS}/${data.id}`);
 		}
+
+		console.log(error);
 	};
 
 	return (
@@ -36,8 +58,17 @@ const NewsCreatePage = () => {
 			btnBackUrlLink={RoutePath.NEWS}>
 			<NewsForm
 				actionButtonText={t("button.save", { framework: "React" })}
-				onSubmit={addNewsHandler}
+				onSubmit={previewHandler}
 			/>
+
+			<Modal
+				isOpen={isOpen}
+				onClose={() => setIsOpen(false)}>
+				<NewsPreview
+					data={details!}
+					onClick={addNewsHandler}
+				/>
+			</Modal>
 		</PageContainer>
 	);
 };

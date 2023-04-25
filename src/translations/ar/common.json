@@ -146,7 +146,7 @@
 			"heading": "الصفحة غير موجودة",
 			"text": ".هذه الصفحة غير موجودة"
 		},
-	"form": {
+		"form": {
 			"required": {
 				"employeeNo": "Employee No is required.",
 				"nameArabic": "Name is required",
@@ -207,7 +207,9 @@
 		"userProjectEdit": "تحرير المشروع من أجل ",
 		"imageUpdated": "تم تحديث الصورة",
 		"newsAdded": "تمت إضافة الأخبار",
-		"newsUpdated": "تم تحديث الخبر"
+		"newsUpdated": "تم تحديث الخبر",
+		"savingConfirmationTitle": "Aving Approvement",
+		"savingConfirmation": "Above details will be saved. Are you sure to save?"
 	},
 	"dropdown": {
 		"select": "يختار..."

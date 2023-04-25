@@ -11,7 +11,11 @@ const NewsContent: FC<Props> = ({ imagePath, data }) => {
 	return (
 		<>
 			<div className={styles.thumbnail}>
-				<img src={imagePath} alt="thumbnail" />
+				<img
+					src={imagePath}
+					alt="thumbnail"
+					className={styles.image}
+				/>
 			</div>
 			<div className={styles.fullNews}>
 				{data?.split(/\r?\n/).map((para, index) => (

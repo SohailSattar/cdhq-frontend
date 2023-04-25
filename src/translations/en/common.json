@@ -1,7 +1,7 @@
 {
 	"common": {
-		"created": "Created",
-		"updated": "Updated"
+		"created": "Created by",
+		"updated": "Updated by"
 	},
 	"header": {
 		"title": "Ministry of Interior",
@@ -147,7 +147,7 @@
 			"heading": "Page Not Found",
 			"text": "This page doesn't not exist."
 		},
-	"form": {
+		"form": {
 			"required": {
 				"employeeNo": "Employee No is required.",
 				"nameArabic": "Name is required",
@@ -207,7 +207,9 @@
 		"userProjectEdit": "Edit project for ",
 		"imageUpdated": "Image has been updated",
 		"newsAdded": "News has been added",
-		"newsUpdated": "News has been updated"
+		"newsUpdated": "News has been updated",
+		"savingConfirmationTitle": "Saving Approvement",
+		"savingConfirmation": "Above details will be saved. Are you sure to save?"
 	},
 	"dropdown": {
 		"select": "Select..."
