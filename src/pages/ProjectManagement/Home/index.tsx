@@ -4,7 +4,7 @@ import {
 	NotAuthorized,
 	PageContainer,
 	PaginatedTable,
-	RedirectButton,
+	RedirectButton
 } from "../../../components";
 import { DropdownOption } from "../../../components/Dropdown";
 
@@ -45,27 +45,27 @@ const ProjectManagementPage = () => {
 	const columns: Column<ProjectColumns>[] = [
 		{
 			Header: id,
-			accessor: (p) => p.id,
+			accessor: (p) => p.id
 		},
 		{
 			Header: projectName,
-			accessor: (p) => p.name,
+			accessor: (p) => p.name
 		},
 		{
 			Header: projectNameAr,
-			accessor: (p) => p.nameArabic,
+			accessor: (p) => p.nameArabic
 		},
 		{
 			Header: projectNameEng,
-			accessor: (p) => p.nameEnglish,
+			accessor: (p) => p.nameEnglish
 		},
 		{
 			Header: "Group",
-			accessor: (p) => p.group?.nameArabic,
+			accessor: (p) => p.group?.nameArabic
 		},
 		{
 			Header: "Group [English]",
-			accessor: (p) => p.group?.nameEnglish,
+			accessor: (p) => p.group?.nameEnglish
 		},
 		{
 			Header: actions,
@@ -80,8 +80,8 @@ const ProjectManagementPage = () => {
 						/>
 					</div>
 				</div>
-			),
-		},
+			)
+		}
 	];
 
 	const fetchProjects = useMemo(
@@ -143,11 +143,12 @@ const ProjectManagementPage = () => {
 
 	return canView ? (
 		<PageContainer
+			title={t("page.projectHome", { framework: "React" })}
+			showBackButton
 			showAddButton={role === ROLE.SUPERADMIN}
 			btnAddLabel={t("button.addNewProject", { framework: "React" })}
 			btnAddUrlLink={RoutePath.PROJECT_NEW}
-			className={styles.projectsList}
-		>
+			className={styles.projectsList}>
 			<PaginatedTable
 				totalCountText={t("project.count", { framework: "React" })}
 				totalCount={totalCount}

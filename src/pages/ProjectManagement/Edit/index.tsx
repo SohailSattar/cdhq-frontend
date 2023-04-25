@@ -6,7 +6,7 @@ import { getProjectDetail } from "../../../api/projects/get/getProjectDetail";
 import {
 	APIProjectDetail,
 	APIUpdateProject,
-	APIUpdateProjectThumbnail
+	APIUpdateProjectThumbnail,
 } from "../../../api/projects/types";
 import { updateProject } from "../../../api/projects/update/updateProject";
 import { updateProjectThumbnail } from "../../../api/projects/update/updateProjectThumbnail";
@@ -14,7 +14,7 @@ import {
 	PageContainer,
 	ProjectForm,
 	IProjectFormInputs,
-	MetaDataDetails
+	MetaDataDetails,
 } from "../../../components";
 
 import * as RoutePath from "../../../RouteConfig";
@@ -39,7 +39,7 @@ const ProjectEditPage = () => {
 	const imageUploadHandler = async (image: File) => {
 		const params: APIUpdateProjectThumbnail = {
 			id: id!,
-			thumbnail: image
+			thumbnail: image,
 		};
 
 		const { data } = await updateProjectThumbnail(params);
@@ -61,7 +61,7 @@ const ProjectEditPage = () => {
 			withAcademy,
 			hasWorkflow,
 			pathLink,
-			isExternalPath
+			isExternalPath,
 		} = values;
 
 		const params: APIUpdateProject = {
@@ -74,7 +74,7 @@ const ProjectEditPage = () => {
 			withAcademy: withAcademy,
 			hasWorkflow: hasWorkflow,
 			pathLink: pathLink,
-			isExternalPath: isExternalPath
+			isExternalPath: isExternalPath,
 		};
 
 		const { data } = await updateProject(params);
@@ -87,6 +87,7 @@ const ProjectEditPage = () => {
 
 	return (
 		<PageContainer
+			title={t("page.projectEdit", { framework: "React" })}
 			showBackButton
 			btnBackLabel={t("button.backToDetail", { framework: "React" }).toString()}
 			btnBackUrlLink={RoutePath.PROJECT_DETAIL.replace(RoutePath.ID, id!)}>

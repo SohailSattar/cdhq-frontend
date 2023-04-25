@@ -15,6 +15,12 @@
 			"strategy": "Strategy"
 		}
 	},
+	"page": {
+		"userHome": "User Account",
+		"userDetail": "User Details",
+		"userEdit": "Edit User",
+		"userCreate": "Create User"
+	},
 	"account": {
 		"login": "تسجيل الدخول",
 		"logout": "تسجيل خروج"

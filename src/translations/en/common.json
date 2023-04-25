@@ -15,6 +15,20 @@
 			"strategy": "Strategy"
 		}
 	},
+	"page": {
+		"userHome": "User Account",
+		"userDetail": "User Details",
+		"userEdit": "Edit User",
+		"userCreate": "Create User",
+		"projectHome": "Project Management",
+		"projectDetail": "Project Details",
+		"projectEdit": "Edit Project",
+		"projectNew": "New Project",
+		"newsHome": "News List",
+		"newsEdit": "Edit News",
+		"newsCreate": "Create News"
+	},
+
 	"account": {
 		"login": "Login",
 		"logout": "Logout"

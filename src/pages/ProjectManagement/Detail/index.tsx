@@ -10,12 +10,12 @@ import {
 	ProjectTree,
 	RedirectButton,
 	ShadowedContainer,
-	Status
+	Status,
 } from "../../../components";
 
 import {
 	APIProjectDetail,
-	APIUpdateProjectStatus
+	APIUpdateProjectStatus,
 } from "../../../api/projects/types";
 import { getProjectDetail } from "../../../api/projects/get/getProjectDetail";
 import { useStore } from "../../../utils/store";
@@ -72,7 +72,7 @@ const ProjectDetailPage = () => {
 
 		const params: APIUpdateProjectStatus = {
 			id: id!,
-			activeStatusId: statusCode
+			activeStatusId: statusCode,
 		};
 
 		const { data } = await updateProjectStatus(params);
@@ -95,7 +95,7 @@ const ProjectDetailPage = () => {
 
 		const params: APIUpdateProjectStatus = {
 			id: id!,
-			activeStatusId: statusCode
+			activeStatusId: statusCode,
 		};
 
 		const { data } = await updateProjectStatus(params);
@@ -119,6 +119,7 @@ const ProjectDetailPage = () => {
 
 	return (
 		<PageContainer
+			title={t("page.projectDetail", { framework: "React" })}
 			showBackButton
 			btnBackUrlLink={RoutePath.PROJECT}>
 			<div className={styles.project}>
