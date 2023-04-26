@@ -3,13 +3,13 @@ import { APINews } from "../../api/news/types";
 import { NewsBar } from "..";
 
 import styles from "./styles.module.scss";
-import { useInterval } from "../../hooks/useInterval";
 
 export interface Props {
 	list: APINews[];
+	intervalInMiliseconds?: number;
 }
 
-const NewsCaorousal: FC<Props> = ({ list }) => {
+const NewsCaorousal: FC<Props> = ({ list, intervalInMiliseconds = 5000 }) => {
 	const [newsList, setNewsList] = useState<APINews[]>([]);
 
 	console.log(list.length);
@@ -19,19 +19,11 @@ const NewsCaorousal: FC<Props> = ({ list }) => {
 		console.log(list.length);
 	}, [list]);
 
-	// const intervalRef = useInterval(() => {
-	// 	newsList.push(newsList?.shift()!); // results in [1, 2, 3, 4, 5, 6, 7, 8]
-	// 	setNewsList(newsList);
-	// 	console.log(newsList);
-	// }, 5000);
-
-	const shiftCard = () => {};
-
 	useEffect(() => {
 		const interval = setInterval(() => {
-			newsList.push(newsList?.shift()!); // results in [1, 2, 3, 4, 5, 6, 7, 8]
+			newsList.push(newsList?.shift()!);
 			setNewsList((prevState) => [...prevState]);
-		}, 5000);
+		}, intervalInMiliseconds);
 
 		return () => clearInterval(interval);
 	}, [newsList, setNewsList]);

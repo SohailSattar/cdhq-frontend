@@ -90,7 +90,10 @@ const LandingPage = () => {
 							body={n.shortSummary}
 						/>
 					))} */}
-					<NewsCaorousal list={news} />{" "}
+					<NewsCaorousal
+						list={news}
+						intervalInMiliseconds={3000}
+					/>
 				</div>
 
 				<div
