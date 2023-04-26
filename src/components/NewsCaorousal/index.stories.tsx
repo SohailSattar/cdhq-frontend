@@ -34,7 +34,7 @@ const list: APINews[] = [
 	},
 	{
 		id: 4,
-		title: "News 5",
+		title: "News 4",
 		imageName: "",
 		shortSummary: "ad asdsada",
 		newsDate: new Date("2021-10-27T13:19:23"),

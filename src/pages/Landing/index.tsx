@@ -16,38 +16,40 @@ import { Id } from "../../utils";
 import NewsCaorousal from "../../components/NewsCaorousal";
 
 const LandingPage = () => {
-	const [news, setNews] = useState<APINews[]>();
+	const [news, setNews] = useState<APINews[]>([]);
 
 	const texts = ["A", "B"];
 
 	const [currentText, setCurrentText] = useState<string>(texts[0]);
 
-	useEffect(() => {
-		setInterval(() => {
-			let text = "";
-			if (currentText === texts[0]) {
-				text = texts[1];
-				setCurrentText(texts[1]);
-				return;
-			} else {
-			}
+	// useEffect(() => {
+	// 	setInterval(() => {
+	// 		let text = "";
+	// 		if (currentText === texts[0]) {
+	// 			text = texts[1];
+	// 			setCurrentText(texts[1]);
+	// 			return;
+	// 		} else {
+	// 		}
 
-			setCurrentText(text);
-			console.log(currentText);
-			return;
-		}, 8000);
-	}, [currentText, setCurrentText]);
+	// 		setCurrentText(text);
+	// 		console.log(currentText);
+	// 		return;
+	// 	}, 8000);
+	// }, [currentText, setCurrentText]);
 
 	useEffect(() => {
 		const fetch = async () => {
 			const { data } = await getLatest20News();
 
-			if (data) {
-				setNews(data!);
-				console.log(data);
-			} else {
-				// navigate(RoutePath.ROOT);
-			}
+			setNews(data!);
+
+			console.log(data);
+			// if (data) {
+			// 	setNews(data!);
+			// } else {
+			// 	// navigate(RoutePath.ROOT);
+			// }
 		};
 
 		fetch();
@@ -56,6 +58,8 @@ const LandingPage = () => {
 	const marqueeItemClickHandler = (id: Id) => {
 		console.log(id);
 	};
+
+	console.log(news);
 
 	return (
 		<>
@@ -77,7 +81,7 @@ const LandingPage = () => {
 				<div
 					style={{ border: "1px solid black" }}
 					className="col-8">
-					{news?.map((n) => (
+					{/* {news?.map((n) => (
 						<NewsModal
 							key={n.id}
 							id={n.id}
@@ -85,7 +89,8 @@ const LandingPage = () => {
 							title={n.title}
 							body={n.shortSummary}
 						/>
-					))}
+					))} */}
+					<NewsCaorousal list={news} />{" "}
 				</div>
 
 				<div
@@ -99,8 +104,8 @@ const LandingPage = () => {
 							backgroundColor: "#B58934",
 							color: "white",
 						}}>
-						{/* <h4> الموهوبين و المتميزين</h4> */}
-						<h4>{currentText}</h4>
+						<h4> الموهوبين و المتميزين</h4>
+						{/* <h4>{currentText}</h4> */}
 					</div>
 					<br />
 

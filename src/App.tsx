@@ -342,9 +342,9 @@ function App() {
 					<Route
 						path={RoutePath.NEWS_DETAIL}
 						element={
-							<MainLayout>
+							<Layout>
 								<NewsDetailPage />
-							</MainLayout>
+							</Layout>
 						}
 					/>
 					<Route element={<ProtectedRoute />}>

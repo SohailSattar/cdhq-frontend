@@ -32,7 +32,6 @@ export { default as Menu } from "./Menu";
 export { default as MessageBox } from "./MessageBox";
 export { default as MetaDataDetails } from "./MetaDataDetails";
 export { default as Modal } from "./Modal";
-export { default as NewsBar } from "./NewsBar";
 export { default as NotAuthorized } from "./NotAuthorized";
 export { default as NewsFlashItem } from "./NewsFlashItem";
 export { default as NewsFlashMarquee } from "./NewsFlashMarquee";
@@ -70,6 +69,9 @@ export { default as UserProjectForm } from "./Form/UserProjectForm";
 export { default as UserProjectTable } from "./UserProjectTable";
 export { default as UserTable } from "./UserTable";
 export { default as Welcome } from "./Welcome";
+
+// Bars
+export * from "./Bars";
 
 // Details
 export * from "./Detail";
