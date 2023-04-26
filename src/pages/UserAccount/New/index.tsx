@@ -7,7 +7,9 @@ import {
 	UserForm,
 	IUserFormInputs,
 	NotAuthorized,
-	PageContainer
+	PageContainer,
+	Modal,
+	UserPreview,
 } from "../../../components";
 
 import { APINewUser, APIUserDetail } from "../../../api/users/types";
@@ -31,6 +33,14 @@ const UserNewPage = () => {
 	const [employeeExists, setEmployeeExists] = useState(true);
 
 	const [employee, setEmployee] = useState<APIUserDetail>();
+
+	const [details, setDetails] = useState<IUserFormInputs>();
+	const [isOpen, setIsOpen] = useState<boolean>(false);
+
+	const previewHandler = async (values: IUserFormInputs) => {
+		setDetails(values);
+		setIsOpen(true);
+	};
 
 	useEffect(() => {
 		if (role === ROLE.SUPERADMIN) {
@@ -56,7 +66,7 @@ const UserNewPage = () => {
 						email,
 						department,
 						class: classDetail,
-						rank
+						rank,
 					} = data;
 
 					setEmployeeExists(true);
@@ -75,7 +85,7 @@ const UserNewPage = () => {
 						createdBy: "",
 						createdOn: "",
 						updatedBy: "",
-						updatedOn: ""
+						updatedOn: "",
 					});
 				}
 			} else {
@@ -86,14 +96,33 @@ const UserNewPage = () => {
 		fetchData();
 	}, [id, language, navigate, role]);
 
-	const addNewUserHandler = async (details: IUserFormInputs) => {
+	const submitHandler = async () => {
+		const {
+			employeeNo,
+			logName,
+			name,
+			nameEnglish,
+			phone,
+			email,
+			department,
+			userClass,
+			rank,
+			password,
+		} = details!;
+
 		const params: APINewUser = {
 			...details,
 			id: id!,
-			departmentId: +details.department?.value!,
-			classId: +details.userClass?.value!,
-			rankId: +details.rank?.value!,
-			password: details.password
+			employeeNo: employeeNo,
+			logName: logName,
+			name: name,
+			nameEnglish: nameEnglish,
+			phone: phone,
+			email: email,
+			departmentId: +department?.value!,
+			classId: +userClass?.value!,
+			rankId: +rank?.value!,
+			password: password,
 		};
 
 		const { data } = await addUser(params);
@@ -109,7 +138,7 @@ const UserNewPage = () => {
 		}
 	};
 
-	return canView ? (
+	return (
 		<PageContainer
 			showBackButton
 			btnBackUrlLink={RoutePath.USER}>
@@ -118,11 +147,18 @@ const UserNewPage = () => {
 				isExistingEmployee={employeeExists}
 				isNewUser={true}
 				actionButtonText={t("button.save", { framework: "React" })}
-				onSubmit={addNewUserHandler}
+				onSubmit={previewHandler}
 			/>
+
+			<Modal
+				isOpen={isOpen}
+				onClose={() => setIsOpen(false)}>
+				<UserPreview
+					data={details!}
+					onClick={submitHandler}
+				/>
+			</Modal>
 		</PageContainer>
-	) : (
-		<NotAuthorized />
 	);
 };
 

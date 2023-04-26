@@ -1,5 +1,6 @@
-.projectPreview {
+.newsPreview {
 	display: block;
+	width: 500px;
 
 	.section {
 		display: flex;
@@ -31,6 +32,11 @@
 		.title {
 			font-size: 14px;
 			font-weight: 600;
+		}
+
+		.text {
+			padding-right: 15px;
+			color: blue;
 		}
 	}
 }

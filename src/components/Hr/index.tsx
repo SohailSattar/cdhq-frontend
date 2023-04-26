@@ -1,10 +1,10 @@
-import React from 'react';
-import { Divider, makeStyles } from '@material-ui/core';
+import React from "react";
+import { Divider, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
 	divider: {
-		background: 'linear-gradient(90.08deg, #0DCD93 17.21%, #06A899 129.73%);',
-		marginBottom: '15px',
+		background: "linear-gradient(90.08deg, #bc9448 17.21%, #bc9448 129.73%);",
+		marginBottom: "15px",
 	},
 }));
 
@@ -16,7 +16,12 @@ const useStyles = makeStyles((theme) => ({
 
 const Hr = (props: any) => {
 	const { divider } = useStyles();
-	return <Divider classes={{ root: divider }} {...props} />;
+	return (
+		<Divider
+			classes={{ root: divider }}
+			{...props}
+		/>
+	);
 };
 
 export default Hr;

@@ -10,7 +10,7 @@ import styles from "./styles.module.scss";
 interface Props {
 	data?: APIPhoneDirectory;
 	actionButtonText: string;
-	onSubmit: (data: IPhoneFormInputs) => void;
+	onSubmit: (inputs: IPhoneFormInputs) => void;
 }
 
 const PhoneForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
@@ -19,6 +19,8 @@ const PhoneForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 	const { handleSubmit, setValue, control } = useForm<IPhoneFormInputs>({
 		criteriaMode: "all",
 	});
+
+	console.log({ data });
 
 	useEffect(() => {
 		if (data) {
@@ -37,6 +39,9 @@ const PhoneForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 	return (
 		<div className={styles.phoneForm}>
 			<form onSubmit={handleSubmit(submitHandler)}>
+				<ShadowedContainer className={styles.section}>
+					{data?.nameEnglish}
+				</ShadowedContainer>
 				<ShadowedContainer className={styles.section}>
 					<div className={styles.field}>
 						<Controller

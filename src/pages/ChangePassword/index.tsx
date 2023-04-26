@@ -14,13 +14,16 @@ const ChangePasswordPage = () => {
 			userId: id!.toString(),
 			password: password,
 		};
-		const { data } = await updatePassword(params);
+		const { data, error } = await updatePassword(params);
+		console.log(error);
 
 		if (data) {
 			toast.success(
 				t("message.passwordUpdated", { framework: "React" }).toString()
 			);
 		}
+
+		console.log(error);
 	};
 
 	return (

@@ -26,47 +26,6 @@ const ProjectNewPage = () => {
 		setIsOpen(true);
 	};
 
-	// const submitHandler = async (values: IProjectFormInputs) => {
-	// 	const {
-	// 		name,
-	// 		nameEnglish,
-	// 		parentProject,
-	// 		projectGroup,
-	// 		departmentCategory,
-	// 		withAcademy,
-	// 		hasWorkflow,
-	// 		pathLink,
-	// 		isExternalPath,
-	// 		thumbnail
-	// 	} = values;
-
-	// 	const params: APINewProject = {
-	// 		name: name,
-	// 		nameEnglish: nameEnglish,
-	// 		parentId: +parentProject?.value!,
-	// 		projectGroupId: +projectGroup?.value!,
-	// 		departmentCategoryId: +departmentCategory?.value!,
-	// 		withAcademy: withAcademy,
-	// 		hasWorkflow: hasWorkflow,
-	// 		pathLink: pathLink,
-	// 		isExternalPath: isExternalPath,
-	// 		thumbnail: thumbnail
-	// 	};
-
-	// 	const { data } = await addProject(params);
-	// 	if (data) {
-	// 		toast.success(
-	// 			t("message.projectAdded", { framework: "React" }).toString()
-	// 		);
-	// 		navigate(
-	// 			`${RoutePath.PROJECT_DETAIL.replace(
-	// 				RoutePath.ID,
-	// 				data.id?.toString()!
-	// 			)}/${data.id}`
-	// 		);
-	// 	}
-	// };
-
 	const submitHandler = async () => {
 		setIsOpen(false);
 

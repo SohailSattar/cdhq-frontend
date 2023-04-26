@@ -180,7 +180,6 @@ const NewsForm: FC<Props> = ({
 								)}
 								name="newsType"
 								control={control}
-								defaultValue={{ label: "", value: "" }}
 							/>
 						</div>
 						<div className={styles.field}>
@@ -195,7 +194,6 @@ const NewsForm: FC<Props> = ({
 								)}
 								name="department"
 								control={control}
-								defaultValue={{ label: "", value: "" }}
 							/>
 						</div>
 						<div className={styles.field}>
@@ -261,8 +259,7 @@ const NewsForm: FC<Props> = ({
 							language !== "ar"
 								? styles.thumbnailContainer
 								: styles.thumbnailContainerLTR
-						}
-					>
+						}>
 						{/* <ImageUploader/> */}
 						<div className={styles.browse}>
 							<input
@@ -276,7 +273,11 @@ const NewsForm: FC<Props> = ({
 							<Controller
 								render={({ field: { value, onChange } }) => (
 									<ShadowedContainer>
-										<img src={value} alt="" className={styles.image} />
+										<img
+											src={value}
+											alt=""
+											className={styles.image}
+										/>
 									</ShadowedContainer>
 								)}
 								name="imageName"
@@ -286,7 +287,9 @@ const NewsForm: FC<Props> = ({
 						</div>
 						{!hideUploadButton && (
 							<div className={styles.uploadSection}>
-								<Button type="button" onClick={imageUpdateHandler}>
+								<Button
+									type="button"
+									onClick={imageUpdateHandler}>
 									{t("button.update", { framework: "React" })}
 								</Button>
 							</div>
@@ -303,7 +306,9 @@ const NewsForm: FC<Props> = ({
 								render={({ messages }) => {
 									return messages
 										? _.entries(messages).map(([type, message]) => (
-												<p key={type} className="error">
+												<p
+													key={type}
+													className="error">
 													{message}
 												</p>
 										  ))
@@ -316,7 +321,9 @@ const NewsForm: FC<Props> = ({
 								render={({ messages }) => {
 									return messages
 										? _.entries(messages).map(([type, message]) => (
-												<p key={type} className="error">
+												<p
+													key={type}
+													className="error">
 													{message}
 												</p>
 										  ))
@@ -324,14 +331,16 @@ const NewsForm: FC<Props> = ({
 								}}
 							/>
 
-							{/* Name English */}
+							{/* Short Summary */}
 							<ErrorMessage
 								errors={errors}
 								name="shortSummary"
 								render={({ messages }) => {
 									return messages
 										? _.entries(messages).map(([type, message]) => (
-												<p key={type} className="error">
+												<p
+													key={type}
+													className="error">
 													{message}
 												</p>
 										  ))
@@ -346,7 +355,9 @@ const NewsForm: FC<Props> = ({
 								render={({ messages }) => {
 									return messages
 										? _.entries(messages).map(([type, message]) => (
-												<p key={type} className="error">
+												<p
+													key={type}
+													className="error">
 													{message}
 												</p>
 										  ))
@@ -361,7 +372,9 @@ const NewsForm: FC<Props> = ({
 								render={({ messages }) => {
 									return messages
 										? _.entries(messages).map(([type, message]) => (
-												<p key={type} className="error">
+												<p
+													key={type}
+													className="error">
 													{message}
 												</p>
 										  ))
