@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import { Layout, ProtectedRoute } from "./components";
+import { Layout, MainLayout, ProtectedRoute } from "./components";
 
 import {
 	UserNewPage,
@@ -28,7 +28,7 @@ import {
 	HonorsHomePage,
 	HonorNewPage,
 	HonorEditPage,
-	LandingPage
+	LandingPage,
 } from "./pages";
 
 import * as RoutePath from "./RouteConfig";
@@ -51,7 +51,11 @@ function App() {
 				<Routes>
 					<Route
 						path={RoutePath.ROOT}
-						element={<LandingPage />}
+						element={
+							<MainLayout>
+								<LandingPage />
+							</MainLayout>
+						}
 					/>
 					<Route
 						path={RoutePath.LOGIN}

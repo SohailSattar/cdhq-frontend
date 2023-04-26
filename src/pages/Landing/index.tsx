@@ -13,20 +13,43 @@ import Card from "react-bootstrap/Card";
 import { getLatest20News } from "../../api/news/get/getLatest20News";
 import NewsModal from "../../components/Cards/NewsModal";
 import { Id } from "../../utils";
+import NewsCaorousal from "../../components/NewsCaorousal";
 
 const LandingPage = () => {
-	const [news, setNews] = useState<APINews[]>();
+	const [news, setNews] = useState<APINews[]>([]);
+
+	const texts = ["A", "B"];
+
+	const [currentText, setCurrentText] = useState<string>(texts[0]);
+
+	// useEffect(() => {
+	// 	setInterval(() => {
+	// 		let text = "";
+	// 		if (currentText === texts[0]) {
+	// 			text = texts[1];
+	// 			setCurrentText(texts[1]);
+	// 			return;
+	// 		} else {
+	// 		}
+
+	// 		setCurrentText(text);
+	// 		console.log(currentText);
+	// 		return;
+	// 	}, 8000);
+	// }, [currentText, setCurrentText]);
 
 	useEffect(() => {
 		const fetch = async () => {
 			const { data } = await getLatest20News();
 
-			if (data) {
-				setNews(data!);
-				console.log(data);
-			} else {
-				// navigate(RoutePath.ROOT);
-			}
+			setNews(data!);
+
+			console.log(data);
+			// if (data) {
+			// 	setNews(data!);
+			// } else {
+			// 	// navigate(RoutePath.ROOT);
+			// }
 		};
 
 		fetch();
@@ -36,9 +59,10 @@ const LandingPage = () => {
 		console.log(id);
 	};
 
+	console.log(news);
+
 	return (
 		<>
-			<Menu title={"tess"} />
 			<NewsFlashMarquee
 				news={news!}
 				onClick={(id: Id) => marqueeItemClickHandler(id)}
@@ -47,14 +71,17 @@ const LandingPage = () => {
 
 			{/* { news?.map(n => <NewsModal title={n.title} body={n.shortSummary}/>)} */}
 
-			<div style={{ margin: "auto", width: "95%" }} className="row">
+			<div
+				style={{ margin: "auto", width: "95%" }}
+				className="row">
 				<div
 					style={{ textAlign: "center", border: "1px solid black" }}
-					className="col-2"
-				></div>
+					className="col-2"></div>
 
-				<div style={{ border: "1px solid black" }} className="col-8">
-					{news?.map((n) => (
+				<div
+					style={{ border: "1px solid black" }}
+					className="col-8">
+					{/* {news?.map((n) => (
 						<NewsModal
 							key={n.id}
 							id={n.id}
@@ -62,13 +89,13 @@ const LandingPage = () => {
 							title={n.title}
 							body={n.shortSummary}
 						/>
-					))}
+					))} */}
+					<NewsCaorousal list={news} />{" "}
 				</div>
 
 				<div
 					style={{ textAlign: "center", border: "1px solid black" }}
-					className="col-2"
-				>
+					className="col-2">
 					<div
 						style={{
 							borderRadius: "5px",
@@ -76,11 +103,13 @@ const LandingPage = () => {
 							height: "40px",
 							backgroundColor: "#B58934",
 							color: "white",
-						}}
-					>
+						}}>
 						<h4> الموهوبين و المتميزين</h4>
+						{/* <h4>{currentText}</h4> */}
 					</div>
 					<br />
+
+					{/* <NewsCaorousal list={news!} /> */}
 
 					<Carousel style={{ color: "black" }}>
 						{news?.map((p, index) => (
@@ -107,8 +136,6 @@ const LandingPage = () => {
 			</div>
 
 			<div style={{ height: "30px" }}></div>
-
-			<Footer />
 		</>
 	);
 };

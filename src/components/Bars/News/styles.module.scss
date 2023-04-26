@@ -1,0 +1,16 @@
+.newsBar {
+	direction: rtl;
+	border: 1px solid #b58934;
+	background-image: url("../../../assets/images/modalBg.png");
+
+	.image {
+		border: 2px solid #b58934;
+		border-radius: 5px;
+		width: 200px;
+	}
+
+	.urlLink {
+		text-decoration: none;
+		color: #b58934;
+	}
+}

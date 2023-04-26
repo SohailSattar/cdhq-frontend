@@ -24,13 +24,13 @@ const ProjectPreview: FC<Props> = ({ data, onClick }) => {
 		withAcademy,
 		hasWorkflow,
 		pathLink,
-		isExternalPath
+		isExternalPath,
 	} = data;
 
 	return (
 		<div>
 			<ShadowedContainer>
-				<div className={styles.projectDetail}>
+				<div className={styles.projectPreview}>
 					{iconName && (
 						<div className={clsx(styles.section)}>
 							<div className={styles.imageContainer}>
