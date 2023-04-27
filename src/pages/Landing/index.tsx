@@ -11,45 +11,19 @@ import Carousel from "react-bootstrap/Carousel";
 import Card from "react-bootstrap/Card";
 
 import { getLatest20News } from "../../api/news/get/getLatest20News";
-import NewsModal from "../../components/Cards/NewsModal";
 import { Id } from "../../utils";
 import NewsCaorousal from "../../components/NewsCaorousal";
+import clsx from "clsx";
+
+import styles from "./styles.module.scss";
 
 const LandingPage = () => {
 	const [news, setNews] = useState<APINews[]>([]);
 
-	const texts = ["A", "B"];
-
-	const [currentText, setCurrentText] = useState<string>(texts[0]);
-
-	// useEffect(() => {
-	// 	setInterval(() => {
-	// 		let text = "";
-	// 		if (currentText === texts[0]) {
-	// 			text = texts[1];
-	// 			setCurrentText(texts[1]);
-	// 			return;
-	// 		} else {
-	// 		}
-
-	// 		setCurrentText(text);
-	// 		console.log(currentText);
-	// 		return;
-	// 	}, 8000);
-	// }, [currentText, setCurrentText]);
-
 	useEffect(() => {
 		const fetch = async () => {
 			const { data } = await getLatest20News();
-
 			setNews(data!);
-
-			console.log(data);
-			// if (data) {
-			// 	setNews(data!);
-			// } else {
-			// 	// navigate(RoutePath.ROOT);
-			// }
 		};
 
 		fetch();
@@ -59,17 +33,13 @@ const LandingPage = () => {
 		console.log(id);
 	};
 
-	console.log(news);
-
 	return (
-		<>
+		<div className={styles.landingPage}>
 			<NewsFlashMarquee
 				news={news!}
 				onClick={(id: Id) => marqueeItemClickHandler(id)}
 			/>
 			<div style={{ height: "30px" }}></div>
-
-			{/* { news?.map(n => <NewsModal title={n.title} body={n.shortSummary}/>)} */}
 
 			<div
 				style={{ margin: "auto", width: "95%" }}
@@ -79,18 +49,12 @@ const LandingPage = () => {
 					className="col-2"></div>
 
 				<div
-					style={{ border: "1px solid black" }}
-					className="col-8">
-					{/* {news?.map((n) => (
-						<NewsModal
-							key={n.id}
-							id={n.id}
-							src={n.imageName}
-							title={n.title}
-							body={n.shortSummary}
-						/>
-					))} */}
-					<NewsCaorousal list={news} />{" "}
+					// style={{ border: "1px solid black" }}
+					className={clsx("col-8", styles.centerContainer)}>
+					<NewsCaorousal
+						list={news}
+						intervalInMiliseconds={5000}
+					/>
 				</div>
 
 				<div
@@ -136,7 +100,7 @@ const LandingPage = () => {
 			</div>
 
 			<div style={{ height: "30px" }}></div>
-		</>
+		</div>
 	);
 };
 

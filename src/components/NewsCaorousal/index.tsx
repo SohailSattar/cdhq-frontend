@@ -1,9 +1,9 @@
 import { FC, useEffect, useState } from "react";
 import { APINews } from "../../api/news/types";
-import { NewsBar } from "..";
+import { NewsBar, UpDownArrow } from "..";
 
 import styles from "./styles.module.scss";
-import { useInterval } from "../../hooks/useInterval";
+import { rotateRight } from "../../utils";
 
 export interface Props {
 	list: APINews[];
@@ -12,11 +12,8 @@ export interface Props {
 const NewsCaorousal: FC<Props> = ({ list }) => {
 	const [newsList, setNewsList] = useState<APINews[]>([]);
 
-	console.log(list.length);
-
 	useEffect(() => {
 		setNewsList(list);
-		console.log(list.length);
 	}, [list]);
 
 	// const intervalRef = useInterval(() => {
@@ -29,15 +26,32 @@ const NewsCaorousal: FC<Props> = ({ list }) => {
 
 	useEffect(() => {
 		const interval = setInterval(() => {
-			newsList.push(newsList?.shift()!); // results in [1, 2, 3, 4, 5, 6, 7, 8]
+			rotateRight(newsList);
 			setNewsList((prevState) => [...prevState]);
 		}, 5000);
 
 		return () => clearInterval(interval);
 	}, [newsList, setNewsList]);
 
+	const upArrowClickHandler = () => {
+		newsList.push(newsList?.shift()!);
+		setNewsList((prevState) => [...prevState]);
+	};
+
+	const downArrowClickHandler = () => {
+		rotateRight(newsList);
+
+		setNewsList((prevState) => [...prevState]);
+	};
+
 	return (
 		<div className={styles.newsCaorousal}>
+			<div className={styles.arrowContainer}>
+				<UpDownArrow
+					onUpClick={upArrowClickHandler}
+					onDownClick={downArrowClickHandler}
+				/>
+			</div>
 			{newsList.map((item: APINews, index) => (
 				<div
 					className={styles.item}

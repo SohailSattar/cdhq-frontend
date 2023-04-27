@@ -1,3 +1,18 @@
+// Arrows
+export * from "./Arrow";
+
+// Bars
+export * from "./Bars";
+
+// Details
+export * from "./Detail";
+
+// Forms
+export * from "./Form";
+
+// Previews
+export * from "./Preview";
+
 export { default as Accordian } from "./Accordian";
 export { default as ActionButtons } from "./ActionButtons";
 export { default as AllocatedUsers } from "./AllocatedUsers";
@@ -69,15 +84,3 @@ export { default as UserProjectForm } from "./Form/UserProjectForm";
 export { default as UserProjectTable } from "./UserProjectTable";
 export { default as UserTable } from "./UserTable";
 export { default as Welcome } from "./Welcome";
-
-// Bars
-export * from "./Bars";
-
-// Details
-export * from "./Detail";
-
-// Forms
-export * from "./Form";
-
-// Previews
-export * from "./Preview";
