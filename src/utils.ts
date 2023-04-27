@@ -74,3 +74,9 @@ export const cookieExpiry = addMinutes(new Date(), 15);
 export const getFullPath = (obj: Blob | MediaSource) => {
 	return (window.URL || window.webkitURL).createObjectURL(obj);
 };
+
+export const rotateRight = (arr: any) => {
+	let last = arr.pop();
+	arr.unshift(last);
+	return arr;
+};

@@ -4,6 +4,7 @@ import { ChangeEvent, FC, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import {
 	Button,
@@ -21,7 +22,6 @@ import { DropdownOption } from "../../Dropdown";
 import { IHonorFormInputs } from "../types";
 
 import styles from "./styles.module.scss";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface Props {
 	data?: APIHonorDetail;
@@ -230,8 +230,7 @@ const HonorForm: FC<Props> = ({
 							language !== "ar"
 								? styles.thumbnailContainer
 								: styles.thumbnailContainerLTR
-						}
-					>
+						}>
 						<div className={styles.browse}>
 							<input
 								type="file"
@@ -257,7 +256,9 @@ const HonorForm: FC<Props> = ({
 						</div>
 						{!hideUploadButton && (
 							<div className={styles.uploadSection}>
-								<Button type="button" onClick={imageUpdateHandler}>
+								<Button
+									type="button"
+									onClick={imageUpdateHandler}>
 									{t("button.update", { framework: "React" })}
 								</Button>
 							</div>
@@ -274,7 +275,9 @@ const HonorForm: FC<Props> = ({
 								render={({ messages }) => {
 									return messages
 										? _.entries(messages).map(([type, message]) => (
-												<p key={type} className="error">
+												<p
+													key={type}
+													className="error">
 													{message}
 												</p>
 										  ))
@@ -289,7 +292,9 @@ const HonorForm: FC<Props> = ({
 								render={({ messages }) => {
 									return messages
 										? _.entries(messages).map(([type, message]) => (
-												<p key={type} className="error">
+												<p
+													key={type}
+													className="error">
 													{message}
 												</p>
 										  ))
