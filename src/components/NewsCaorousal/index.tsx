@@ -33,7 +33,6 @@ const NewsCaorousal: FC<Props> = ({ list, intervalInMiliseconds = 5000 }) => {
 
 	const downArrowClickHandler = () => {
 		rotateRight(newsList);
-
 		setNewsList((prevState) => [...prevState]);
 	};
 
