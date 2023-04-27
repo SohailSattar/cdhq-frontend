@@ -1,13 +1,14 @@
 .newsCaorousal {
 	.arrowContainer {
 		z-index: 9;
-		margin: 20px; /* for demo purpose  */
+		margin: 40px 20px 20px 20px;
 		position: absolute;
 		display: block;
 		float: right;
 	}
 
 	.item {
+		transition: 0.3s;
 		margin: 5px 0;
 	}
 }

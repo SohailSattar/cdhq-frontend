@@ -38,12 +38,14 @@ const NewsCaorousal: FC<Props> = ({ list, intervalInMiliseconds = 5000 }) => {
 
 	return (
 		<div className={styles.newsCaorousal}>
-			<div className={styles.arrowContainer}>
-				<UpDownArrow
-					onUpClick={upArrowClickHandler}
-					onDownClick={downArrowClickHandler}
-				/>
-			</div>
+			{newsList.length > 0 && (
+				<div className={styles.arrowContainer}>
+					<UpDownArrow
+						onUpClick={upArrowClickHandler}
+						onDownClick={downArrowClickHandler}
+					/>
+				</div>
+			)}
 			{newsList.map((item: APINews, index) => (
 				<div
 					className={styles.item}

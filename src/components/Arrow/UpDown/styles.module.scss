@@ -1,7 +1,9 @@
+@import "../../../assets/css/colors.scss";
+
 .updownArrow {
 	.icon {
 		cursor: pointer;
-		color: black;
+		color: $PRIMARY;
 		font-size: 55px;
 	}
 }
