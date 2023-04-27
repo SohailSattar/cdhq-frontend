@@ -3,7 +3,6 @@ import { APINews } from "../../api/news/types";
 import { NewsBar, UpDownArrow } from "..";
 
 import styles from "./styles.module.scss";
-
 import { rotateRight } from "../../utils";
 
 export interface Props {
