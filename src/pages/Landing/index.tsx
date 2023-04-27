@@ -49,11 +49,21 @@ const LandingPage = () => {
 					className="col-2"></div>
 
 				<div
-					// style={{ border: "1px solid black" }}
-					className={clsx("col-8", styles.centerContainer)}>
+
+					style={{ border: "1px solid black" }}
+					className="col-8">
+					{/* {news?.map((n) => (
+						<NewsModal
+							key={n.id}
+							id={n.id}
+							src={n.imageName}
+							title={n.title}
+							body={n.shortSummary}
+						/>
+					))} */}
 					<NewsCaorousal
 						list={news}
-						intervalInMiliseconds={5000}
+						intervalInMiliseconds={3000}
 					/>
 				</div>
 

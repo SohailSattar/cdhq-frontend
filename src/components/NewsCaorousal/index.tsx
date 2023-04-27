@@ -3,32 +3,26 @@ import { APINews } from "../../api/news/types";
 import { NewsBar, UpDownArrow } from "..";
 
 import styles from "./styles.module.scss";
+
 import { rotateRight } from "../../utils";
 
 export interface Props {
 	list: APINews[];
+	intervalInMiliseconds?: number;
 }
 
-const NewsCaorousal: FC<Props> = ({ list }) => {
+const NewsCaorousal: FC<Props> = ({ list, intervalInMiliseconds = 5000 }) => {
 	const [newsList, setNewsList] = useState<APINews[]>([]);
 
 	useEffect(() => {
 		setNewsList(list);
 	}, [list]);
 
-	// const intervalRef = useInterval(() => {
-	// 	newsList.push(newsList?.shift()!); // results in [1, 2, 3, 4, 5, 6, 7, 8]
-	// 	setNewsList(newsList);
-	// 	console.log(newsList);
-	// }, 5000);
-
-	const shiftCard = () => {};
-
 	useEffect(() => {
 		const interval = setInterval(() => {
 			rotateRight(newsList);
 			setNewsList((prevState) => [...prevState]);
-		}, 5000);
+		}, intervalInMiliseconds);
 
 		return () => clearInterval(interval);
 	}, [newsList, setNewsList]);
@@ -40,7 +34,6 @@ const NewsCaorousal: FC<Props> = ({ list }) => {
 
 	const downArrowClickHandler = () => {
 		rotateRight(newsList);
-
 		setNewsList((prevState) => [...prevState]);
 	};
 
