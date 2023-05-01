@@ -10,7 +10,7 @@ import {
 	RedirectButton,
 	ShadowedContainer,
 	Status,
-	UserProjectTable
+	UserProjectTable,
 } from "../../../components";
 import Details from "./containers/Details";
 
@@ -67,11 +67,11 @@ const UserDetailPage = () => {
 	};
 
 	const activateButtonClickHandler = async () => {
-		const statusCode = 7;
+		const statusCode = 1;
 
 		const params: APIUpdateUserStatus = {
 			userId: id!,
-			activeStatusId: statusCode
+			activeStatusId: statusCode,
 		};
 
 		const { data } = await updateUserStatus(params);
@@ -90,11 +90,11 @@ const UserDetailPage = () => {
 	};
 
 	const deleteConfirmationClickHandler = async () => {
-		const statusCode = 8;
+		const statusCode = 9;
 
 		const params: APIUpdateUserStatus = {
 			userId: id!,
-			activeStatusId: statusCode
+			activeStatusId: statusCode,
 		};
 
 		const { data } = await updateUserStatus(params);
@@ -132,7 +132,7 @@ const UserDetailPage = () => {
 					showChangeStatusButton={
 						role === ROLE.SUPERADMIN && loggedUserId !== user?.id
 					}
-					currentStatus={status?.id === 7 ? "ACTIVE" : "DEACTIVE"}
+					currentStatus={status?.id === 1 ? "ACTIVE" : "DEACTIVE"}
 					onActivate={activateButtonClickHandler}
 					onDectivate={deleteButtonClickHandler}>
 					<div>
