@@ -1,11 +1,11 @@
 import { FC } from "react";
+import clsx from "clsx";
 import { Button } from "@material-ui/core";
 import { useCookies } from "react-cookie";
 import localStorageService from "../../network/localStorageService";
 
-import styles from "./styles.module.scss";
-import clsx from "clsx";
 import { useStore } from "../../utils/store";
+import styles from "./styles.module.scss";
 
 interface Props {
 	label: string;
@@ -55,8 +55,7 @@ const Logout: FC<Props> = ({ label, onClick = () => {}, className }) => {
 	return (
 		<Button
 			onClick={logoutClickHandler}
-			className={clsx(className, styles.logoutButton)}
-		>
+			className={clsx(className, styles.logoutButton)}>
 			{/* className */}
 			{label}
 		</Button>
