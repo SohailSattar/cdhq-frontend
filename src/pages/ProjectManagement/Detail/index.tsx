@@ -138,7 +138,7 @@ const ProjectDetailPage = () => {
 									)}`}
 								/>
 							</div>
-							<div className={language !== "ar" ? styles.btn : styles.btnLTR}>
+							{/* <div className={language !== "ar" ? styles.btn : styles.btnLTR}>
 								{status?.id === 1 ? (
 									<Button
 										onClick={deleteButtonClickHandler}
@@ -150,7 +150,7 @@ const ProjectDetailPage = () => {
 										{t("button.activate", { framework: "React" })}
 									</Button>
 								)}
-							</div>
+							</div> */}
 						</ShadowedContainer>
 					)}
 

@@ -8,10 +8,12 @@ import { updatePassword } from "../../../api/users/update/updatePassword";
 import { updateRole } from "../../../api/users/update/updateRole";
 import {
 	AuthorizedContainer,
+	DeleteConfirmation,
 	MetaDataDetails,
 	PageContainer,
 	RedirectButton,
 	ShadowedContainer,
+	Status,
 	// UserForm,
 	UserProjectTable,
 } from "../../../components";
@@ -22,7 +24,11 @@ import ChangePassword from "./containers/ChangePassword";
 import RoleAssignment from "./containers/RoleAssignment";
 
 import { updateUser } from "../../../api/users/update/updateUser";
-import { APIUpdateUser, APIUserDetail } from "../../../api/users/types";
+import {
+	APIUpdateUser,
+	APIUpdateUserStatus,
+	APIUserDetail,
+} from "../../../api/users/types";
 
 import { APIRole } from "../../../api/roles/types";
 import { checkIfEmployeeExists } from "../../../api/employees/get/checkIfEmployeeExists";
@@ -40,6 +46,9 @@ import { updateUserProjectStatus } from "../../../api/userProjects/update/update
 import { APIProjectStatus } from "../../../api/userProjects/types";
 
 import styles from "./styles.module.scss";
+import { updateUserStatus } from "../../../api/users/update/updateUserStatus";
+import { getActiveStatus } from "../../../api/activeStatus/get/getActiveStatus";
+import { APIActiveStatus } from "../../../api/activeStatus/types";
 
 const UserEditPage = () => {
 	const { id } = useParams<{ id: string }>();
@@ -51,11 +60,15 @@ const UserEditPage = () => {
 
 	const { id: loggedUserId, role } = useStore((state) => state.loggedInUser);
 
+	const [showModal, setShowModal] = useState(false);
+
 	const [canView, setCanView] = useState<boolean>();
 
 	const [isExistingEmployee, setIsExistingEmployee] = useState(true);
 
 	const [userDetail, setUserDetail] = useState<APIUserDetail>();
+
+	const [status, setStatus] = useState<APIActiveStatus>();
 
 	// User Roles
 	const [roles, setRoles] = useState<APIRole[]>([]);
@@ -86,6 +99,7 @@ const UserEditPage = () => {
 
 			if (data) {
 				setUserDetail(data);
+				setStatus(data.activeStatus);
 
 				const { data: isExist } = await checkIfEmployeeExists(data?.id!);
 
@@ -160,6 +174,62 @@ const UserEditPage = () => {
 		}
 	};
 
+	const activateButtonClickHandler = async () => {
+		const statusCode = 1;
+
+		const params: APIUpdateUserStatus = {
+			userId: id!,
+			activeStatusId: statusCode,
+		};
+
+		const { data } = await updateUserStatus(params);
+		if (data) {
+			const { data: status } = await getActiveStatus(statusCode);
+
+			console.log(status);
+
+			if (status) {
+				setStatus(status);
+			}
+		}
+
+		toast.success(
+			t("message.userActivated", { framework: "React" }).toString()
+		);
+		setShowModal(false);
+	};
+
+	const deleteButtonClickHandler = () => {
+		setShowModal(true);
+	};
+
+	const deleteConfirmationClickHandler = async () => {
+		const statusCode = 9;
+
+		const params: APIUpdateUserStatus = {
+			userId: id!,
+			activeStatusId: statusCode,
+		};
+
+		const { data } = await updateUserStatus(params);
+
+		if (data) {
+			const { data: status } = await getActiveStatus(statusCode);
+			if (status) {
+				setStatus(status);
+			}
+		}
+
+		toast.error(
+			t("message.userDeactivated", { framework: "React" }).toString()
+		);
+		setShowModal(false);
+	};
+
+	const deleteCancelHandler = () => {
+		setShowModal(false);
+	};
+
 	// Update Password Tab
 
 	const updatePasswordClickHandler = async (values: IPasswordFormInputs) => {
@@ -219,7 +289,12 @@ const UserEditPage = () => {
 			title={t("page.userEdit", { framework: "React" })}
 			showBackButton
 			btnBackLabel={t("button.backToDetail", { framework: "React" })}
-			btnBackUrlLink={`${RoutePath.USER}/${id}`}>
+			btnBackUrlLink={`${RoutePath.USER}/${id}`}
+			showChangeStatusButton={role === ROLE.SUPERADMIN}
+			currentStatus={status?.id === 1 ? "ACTIVE" : "DEACTIVE"}
+			onActivate={activateButtonClickHandler}
+			onDectivate={deleteButtonClickHandler}>
+			<Status status={status!} />
 			<Tabs>
 				<TabList>
 					<Tab>{t("user.basicDetails", { framework: "React" })} </Tab>
@@ -284,6 +359,11 @@ const UserEditPage = () => {
 				createdOn={userDetail?.createdOn!}
 				updatedBy={userDetail?.updatedBy}
 				updatedOn={userDetail?.updatedOn}
+			/>
+			<DeleteConfirmation
+				isOpen={showModal}
+				onYesClick={deleteConfirmationClickHandler}
+				onCancelClick={deleteCancelHandler}
 			/>
 		</PageContainer>
 	);

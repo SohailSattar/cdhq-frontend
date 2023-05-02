@@ -93,8 +93,7 @@ const Header: FC<Props> = ({ hideLoginButton = false }) => {
 							to: url,
 							component: RouterLink,
 							className: clsx(styles.menuItem, menuButton),
-						}}
-					>
+						}}>
 						{t(`header.menu.${short}`, { framework: "React" })}
 					</Button>
 				);

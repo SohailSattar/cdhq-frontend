@@ -4,12 +4,14 @@ import { useTranslation } from "react-i18next";
 import { getUsers } from "../../../api/users/get/getUsers";
 import {
 	ActionButtons,
+	ActiveStatus,
 	Button,
 	DepartmentTree,
 	NotAuthorized,
 	PageContainer,
 	PaginatedTable,
-	ShadowedContainer
+	ShadowedContainer,
+	StatusIcon,
 } from "../../../components";
 import { getUsersByKeyword } from "../../../api/users/get/getUsersByKeyword";
 import { DropdownOption } from "../../../components/Dropdown";
@@ -55,27 +57,27 @@ const UserAccountPage = () => {
 	const logName = t("user.logName", { framework: "React" });
 	const fullName = t("user.fullName", { framework: "React" });
 
+	const status = t("global.status", { framework: "React" });
+
 	//Actions
 	const actions = t("global.actions", { framework: "React" });
-	// const activate = t("button.activate", { framework: "React" });
-	// const deactivate = t("button.deactivate", { framework: "React" });
 
 	const columns: Column<UserColumns>[] = useMemo(
 		() => [
 			{
 				Header: id,
 				id: "id",
-				accessor: (p) => p.id
+				accessor: (p) => p.id,
 			},
 			{
 				Header: employeeNo,
 				id: "employeeNo",
-				accessor: (p) => p.employeeNo
+				accessor: (p) => p.employeeNo,
 			},
 			{
 				Header: logName,
 				id: "logName",
-				accessor: (p) => p.logName
+				accessor: (p) => p.logName,
 			},
 			{
 				Header: fullName,
@@ -86,7 +88,22 @@ const UserAccountPage = () => {
 						<div className={styles.arabic}>{value.name}</div>
 						<div className={styles.english}>{value.nameEnglish}</div>
 					</div>
-				)
+				),
+			},
+			{
+				Header: status,
+				id: "activeStatus",
+				accessor: (p) => p,
+				Cell: ({ value }: any) => (
+					<ActiveStatus
+						code={value.activeStatus.id}
+						text={
+							language !== "ar"
+								? value.activeStatus.nameArabic
+								: value.activeStatus.nameEnglish
+						}
+					/>
+				),
 			},
 			{
 				Header: actions,
@@ -99,8 +116,8 @@ const UserAccountPage = () => {
 						detailPageLink={`${RoutePath.USER}/${value.id}`}
 						editPageLink={`${RoutePath.USER}/${value.id}/edit`}
 					/>
-				)
-			}
+				),
+			},
 		],
 		[actions, employeeNo, fullName, id, logName, role]
 	);
@@ -254,7 +271,7 @@ const UserAccountPage = () => {
 						<div className={styles.table}>
 							<PaginatedTable
 								totalCountText={t("pagination.usersPerPage", {
-									framework: "React"
+									framework: "React",
 								})}
 								totalCount={totalCount}
 								pageSize={pageSize}

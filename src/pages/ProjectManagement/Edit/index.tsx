@@ -6,6 +6,7 @@ import { getProjectDetail } from "../../../api/projects/get/getProjectDetail";
 import {
 	APIProjectDetail,
 	APIUpdateProject,
+	APIUpdateProjectStatus,
 	APIUpdateProjectThumbnail,
 } from "../../../api/projects/types";
 import { updateProject } from "../../../api/projects/update/updateProject";
@@ -15,20 +16,30 @@ import {
 	ProjectForm,
 	IProjectFormInputs,
 	MetaDataDetails,
+	DeleteConfirmation,
+	Status,
 } from "../../../components";
 
 import * as RoutePath from "../../../RouteConfig";
+import { updateProjectStatus } from "../../../api/projects/update/updateProjectStatus";
+import { getActiveStatus } from "../../../api/activeStatus/get/getActiveStatus";
+import { APIActiveStatus } from "../../../api/activeStatus/types";
 
 const ProjectEditPage = () => {
 	const { id } = useParams<{ id: string }>();
 	const [t] = useTranslation("common");
 
+	const [showModal, setShowModal] = useState(false);
+
 	const [project, setProject] = useState<APIProjectDetail>();
+	const [status, setStatus] = useState<APIActiveStatus>();
 
 	useEffect(() => {
 		const fetch = async () => {
 			const { data } = await getProjectDetail(id!);
 			setProject(data);
+
+			setStatus(data?.activeStatus);
 		};
 
 		if (id) {
@@ -49,6 +60,60 @@ const ProjectEditPage = () => {
 				t("message.imageUpdated", { framework: "React" }).toString()
 			);
 		}
+	};
+
+	const deleteButtonClickHandler = () => {
+		setShowModal(true);
+	};
+
+	const activateButtonClickHandler = async () => {
+		const statusCode = 1;
+
+		const params: APIUpdateProjectStatus = {
+			id: id!,
+			activeStatusId: statusCode,
+		};
+
+		const { data } = await updateProjectStatus(params);
+		if (data) {
+			const { data: status } = await getActiveStatus(statusCode);
+
+			if (status) {
+				setStatus(status);
+			}
+		}
+
+		toast.success(
+			t("message.projectActivated", { framework: "React" }).toString()
+		);
+		setShowModal(false);
+	};
+
+	const deleteConfirmationClickHandler = async () => {
+		const statusCode = 8;
+
+		const params: APIUpdateProjectStatus = {
+			id: id!,
+			activeStatusId: statusCode,
+		};
+
+		const { data } = await updateProjectStatus(params);
+
+		if (data) {
+			const { data: status } = await getActiveStatus(statusCode);
+			if (status) {
+				setStatus(status);
+			}
+		}
+
+		toast.error(
+			t("message.projectDeactivated", { framework: "React" }).toString()
+		);
+		setShowModal(false);
+	};
+
+	const deleteCancelHandler = () => {
+		setShowModal(false);
 	};
 
 	const submitHandler = async (values: IProjectFormInputs) => {
@@ -90,7 +155,12 @@ const ProjectEditPage = () => {
 			title={t("page.projectEdit", { framework: "React" })}
 			showBackButton
 			btnBackLabel={t("button.backToDetail", { framework: "React" }).toString()}
-			btnBackUrlLink={RoutePath.PROJECT_DETAIL.replace(RoutePath.ID, id!)}>
+			btnBackUrlLink={RoutePath.PROJECT_DETAIL.replace(RoutePath.ID, id!)}
+			showChangeStatusButton
+			currentStatus={status?.id === 1 ? "ACTIVE" : "DEACTIVE"}
+			onActivate={activateButtonClickHandler}
+			onDectivate={deleteButtonClickHandler}>
+			<Status status={status!} />
 			<ProjectForm
 				data={project}
 				onSubmit={submitHandler}
@@ -103,6 +173,11 @@ const ProjectEditPage = () => {
 				createdOn={project?.createdOn!}
 				updatedBy={project?.updatedBy}
 				updatedOn={project?.updatedOn}
+			/>
+			<DeleteConfirmation
+				isOpen={showModal}
+				onYesClick={deleteConfirmationClickHandler}
+				onCancelClick={deleteCancelHandler}
 			/>
 		</PageContainer>
 	);

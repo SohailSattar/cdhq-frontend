@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
+	ActiveStatus,
 	NotAuthorized,
 	PageContainer,
 	PaginatedTable,
-	RedirectButton
+	RedirectButton,
 } from "../../../components";
 import { DropdownOption } from "../../../components/Dropdown";
 
@@ -23,6 +24,7 @@ import styles from "./styles.module.scss";
 
 const ProjectManagementPage = () => {
 	const [t] = useTranslation("common");
+	const language = useStore((state) => state.language);
 
 	const role = useStore((state) => state.loggedInUser.role);
 	const [canView, setCanView] = useState(false);
@@ -38,6 +40,8 @@ const ProjectManagementPage = () => {
 	const projectNameAr = t("project.nameArabic", { framework: "React" });
 	const projectNameEng = t("project.nameEnglish", { framework: "React" });
 
+	const status = t("global.status", { framework: "React" });
+
 	//Actions
 	const actions = t("global.actions", { framework: "React" });
 	const detail = t("button.detail", { framework: "React" });
@@ -45,27 +49,42 @@ const ProjectManagementPage = () => {
 	const columns: Column<ProjectColumns>[] = [
 		{
 			Header: id,
-			accessor: (p) => p.id
+			accessor: (p) => p.id,
 		},
 		{
 			Header: projectName,
-			accessor: (p) => p.name
+			accessor: (p) => p.name,
 		},
 		{
 			Header: projectNameAr,
-			accessor: (p) => p.nameArabic
+			accessor: (p) => p.nameArabic,
 		},
 		{
 			Header: projectNameEng,
-			accessor: (p) => p.nameEnglish
+			accessor: (p) => p.nameEnglish,
 		},
 		{
 			Header: "Group",
-			accessor: (p) => p.group?.nameArabic
+			accessor: (p) => p.group?.nameArabic,
 		},
 		{
 			Header: "Group [English]",
-			accessor: (p) => p.group?.nameEnglish
+			accessor: (p) => p.group?.nameEnglish,
+		},
+		{
+			Header: status,
+			id: "activeStatus",
+			accessor: (p) => p,
+			Cell: ({ value }: any) => (
+				<ActiveStatus
+					code={value.activeStatus.id}
+					text={
+						language !== "ar"
+							? value.activeStatus.nameArabic
+							: value.activeStatus.nameEnglish
+					}
+				/>
+			),
 		},
 		{
 			Header: actions,
@@ -80,8 +99,8 @@ const ProjectManagementPage = () => {
 						/>
 					</div>
 				</div>
-			)
-		}
+			),
+		},
 	];
 
 	const fetchProjects = useMemo(

@@ -1,3 +1,4 @@
+import { APIActiveStatus } from "../../api/activeStatus/types";
 import { APIProjectGroup } from "../../api/projects/types";
 import { APIRank } from "../../api/ranks/types";
 
@@ -18,6 +19,7 @@ export interface UserColumns {
 	logName: string;
 	name: string;
 	nameEnglish: string;
+	activeStatus: APIActiveStatus;
 }
 
 export interface HonorColumn {
@@ -42,4 +44,5 @@ export interface ProjectColumns {
 	nameEnglish: string;
 	nameArabic: string;
 	group: APIProjectGroup;
+	activeStatus: string;
 }
