@@ -13,7 +13,7 @@ import { APIProject } from "../../../api/projects/types";
 import { getProjects } from "../../../api/projects/get/getProjects";
 import { getProjectsByKeyword } from "../../../api/projects/get/getProjectsByKeyword";
 
-import { ROLE } from "../../../utils";
+import { Id, ROLE } from "../../../utils";
 import { useStore } from "../../../utils/store";
 import { Column } from "react-table";
 import { ProjectColumns } from "../../../components/PaginatedTable/types";
@@ -34,6 +34,9 @@ const ProjectManagementPage = () => {
 	const [projects, setProjects] = useState<APIProject[]>([]);
 	const [totalCount, setTotalCount] = useState<number>(0);
 	const [pageSize, setPageSize] = useState<number>(10);
+
+	// This variable is to set the status code which we can pass to the API
+	const [selectedStatusCode, setSelectedStatusCode] = useState<Id>();
 
 	const id = t("project.id", { framework: "React" });
 	const projectName = t("project.name", { framework: "React" });
@@ -77,7 +80,7 @@ const ProjectManagementPage = () => {
 			accessor: (p) => p,
 			Cell: ({ value }: any) => (
 				<ActiveStatus
-					code={value.activeStatus.id}
+					code={value.activeStatus?.id!}
 					text={
 						language !== "ar"
 							? value.activeStatus.nameArabic
@@ -107,7 +110,11 @@ const ProjectManagementPage = () => {
 		() => async (currentPage: number) => {
 			if (keyword === "") {
 				// Get all the projects if no keyword is mentioned
-				const { data, error } = await getProjects(currentPage, pageSize);
+				const { data, error } = await getProjects(
+					currentPage,
+					pageSize,
+					selectedStatusCode
+				);
 				if (error) {
 					if (error?.response!.status! === 403) {
 						setCanView(false);
@@ -126,6 +133,8 @@ const ProjectManagementPage = () => {
 					pageSize
 				);
 
+				console.log(data);
+
 				if (data) {
 					setProjects(data?.projects);
 					setTotalCount(data?.totalItems);
@@ -133,7 +142,7 @@ const ProjectManagementPage = () => {
 				}
 			}
 		},
-		[keyword, pageSize]
+		[keyword, pageSize, selectedStatusCode]
 	);
 
 	useEffect(() => {
@@ -156,8 +165,17 @@ const ProjectManagementPage = () => {
 
 	const pageViewSelectionHandler = (option: DropdownOption) => {
 		const size = +option.value;
-
 		setPageSize(size);
+	};
+
+	const statusSelectHandler = (option: DropdownOption) => {
+		console.log(option);
+
+		if (option) {
+			setSelectedStatusCode(option?.value!);
+		} else {
+			setSelectedStatusCode("");
+		}
 	};
 
 	return canView ? (
@@ -181,6 +199,7 @@ const ProjectManagementPage = () => {
 				onPageChange={pageChangeHandler}
 				onPageViewSelectionChange={pageViewSelectionHandler}
 				noRecordText={t("table.noProject", { framework: "React" })}
+				onActiveStatusOptionSelectionChange={statusSelectHandler}
 			/>
 		</PageContainer>
 	) : (

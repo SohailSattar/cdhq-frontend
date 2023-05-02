@@ -97,6 +97,8 @@ const Layout: FC<Props> = ({ projectId, privilegeType = "All", children }) => {
 						setLoggedUser(data);
 					}
 				}
+			} else {
+				navigate(RoutePath.ROOT);
 			}
 		};
 
@@ -123,8 +125,7 @@ const Layout: FC<Props> = ({ projectId, privilegeType = "All", children }) => {
 					FallbackComponent={ErrorFallback}
 					onReset={() => {
 						// reset the state of your app so the error doesn't happen again
-					}}
-				>
+					}}>
 					<Header />
 					<div className={styles.layout}>
 						{!canView ? <NotAuthorized /> : children}

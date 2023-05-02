@@ -282,6 +282,11 @@ const UserAccountPage = () => {
 								onPageChange={pageChangeHandler}
 								onPageViewSelectionChange={pageViewSelectionHandler}
 								noRecordText={t("table.noUser", { framework: "React" })}
+								onActiveStatusOptionSelectionChange={function (
+									option: DropdownOption
+								): void {
+									throw new Error("Function not implemented.");
+								}}
 							/>
 						</div>
 					</div>

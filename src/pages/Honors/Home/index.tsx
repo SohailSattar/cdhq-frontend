@@ -145,9 +145,11 @@ const HonorsHomePage = () => {
 						showView={false}
 						showEdit={privileges?.updatePrivilege}
 						showDelete={privileges?.deletePrivilege}
-						onEdit={() => editClickHandler(value.id)} onDelete={function (id: Id): void {
+						onEdit={() => editClickHandler(value.id)}
+						onDelete={function (id: Id): void {
 							throw new Error("Function not implemented.");
-						} }					/>
+						}}
+					/>
 				),
 			},
 		],
@@ -186,6 +188,7 @@ const HonorsHomePage = () => {
 					onPageChange={pageChangeHandler}
 					onPageViewSelectionChange={pageViewSelectionHandler}
 					noRecordText={t("table.noNews", { framework: "React" })}
+					onActiveStatusOptionSelectionChange={() => {}}
 				/>
 			</div>
 		</div>
