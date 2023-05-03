@@ -13,13 +13,24 @@ import { Footer, Header } from "../../components";
 import * as RoutePath from "../../RouteConfig";
 
 import styles from "./styles.module.scss";
+import { useEffect } from "react";
 
 const LoginPage = () => {
 	const navigate = useNavigate();
 
+	const loggedInUser = useStore((state) => state.loggedInUser);
+
 	const setLoggedInUser = useStore((state) => state.setLoggedInUser);
 	const setUserRole = useStore((state) => state.setUserRole);
 	const setPasswordValidity = useStore((state) => state.setPasswordValidity);
+
+	useEffect(() => {
+		if (loggedInUser.id !== 0) {
+			navigate(RoutePath.HOME);
+		}
+	}, []);
+
+	console.log(loggedInUser);
 
 	const submitHandler = async (values: ILoginFormInputs) => {
 		const { data, error } = await loginUser(values);
@@ -28,7 +39,7 @@ const LoginPage = () => {
 			toast.error(error.ErrorMessage, {
 				// autoClose: false,
 				autoClose: 2500,
-				transition: Flip
+				transition: Flip,
 			});
 		}
 
@@ -54,7 +65,7 @@ const LoginPage = () => {
 				userName: data.userName,
 				name: data.name,
 				nameEnglish: data.nameEnglish,
-				role: data.role
+				role: data.role,
 			});
 
 			// localStorageService?.setUserInfo({
@@ -89,7 +100,9 @@ const LoginPage = () => {
 			<Header hideLoginButton={true} />
 			<div className={styles.layout}>
 				<div className="container">
-					<main role="main" className="pb-3">
+					<main
+						role="main"
+						className="pb-3">
 						<div className="container container-custom-width">
 							<ImageLogo imagePath={logo} />
 							<LoginForm onSubmit={submitHandler} />

@@ -4,7 +4,7 @@ import {
 	Loading,
 	PasswordExpiryMessage,
 	ProjectBoxList,
-	Welcome
+	Welcome,
 } from "../../components";
 import { useStore } from "../../utils/store";
 
@@ -52,9 +52,9 @@ const HomePage = () => {
 				// 		iconName: x.iconName,
 				// 	};
 				// });
+
 				if (loggedInUser.role !== ROLE.SUPERADMIN) {
 					const x = accessibleProjects?.find((x) => x.id === 0);
-					console.log(x);
 
 					const projectsList = data
 						.map((project) => {

@@ -47,7 +47,7 @@ const PageContainer: FC<Props> = ({
 	onActivate,
 	onDectivate,
 	className,
-	children
+	children,
 }) => {
 	const [t] = useTranslation("common");
 	const language = useStore((state) => state.language);
@@ -100,7 +100,9 @@ const PageContainer: FC<Props> = ({
 					{showChangeStatusButton && (
 						<div className={language !== "ar" ? styles.btn : styles.btnLTR}>
 							{currentStatus === "ACTIVE" ? (
-								<Button onClick={onDectivate} isCritical>
+								<Button
+									onClick={onDectivate}
+									isCritical>
 									{t("button.deactivate", { framework: "React" })}
 								</Button>
 							) : (

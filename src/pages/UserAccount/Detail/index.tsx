@@ -129,14 +129,15 @@ const UserDetailPage = () => {
 					btnBackUrlLink={RoutePath.USER}
 					showEditButton={role === ROLE.SUPERADMIN}
 					btnEditUrlLink={`${RoutePath.USER_EDIT.replace(RoutePath.ID, id!)}`}
-					showChangeStatusButton={
-						role === ROLE.SUPERADMIN && loggedUserId !== user?.id
-					}
+					// showChangeStatusButton={
+					// 	role === ROLE.SUPERADMIN && loggedUserId !== user?.id
+					// }
 					currentStatus={status?.id === 1 ? "ACTIVE" : "DEACTIVE"}
-					onActivate={activateButtonClickHandler}
-					onDectivate={deleteButtonClickHandler}>
+					// onActivate={activateButtonClickHandler}
+					// 	onDectivate={deleteButtonClickHandler}
+				>
 					<div>
-						{(role === ROLE.ADMIN || role === ROLE.SUPERADMIN) && (
+						{/* {(role === ROLE.ADMIN || role === ROLE.SUPERADMIN) && (
 							<ShadowedContainer className={styles.btnSection}>
 								{
 									<div
@@ -148,7 +149,7 @@ const UserDetailPage = () => {
 									</div>
 								}
 							</ShadowedContainer>
-						)}
+						)} */}
 
 						<Status status={status!} />
 						<ShadowedContainer>

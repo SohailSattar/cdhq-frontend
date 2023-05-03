@@ -1,4 +1,4 @@
-import { FC, useRef, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Column } from "react-table";
 import {
@@ -13,6 +13,8 @@ import { useStore } from "../../utils/store";
 import { DropdownOption } from "../Dropdown";
 
 import styles from "./styles.module.scss";
+import { getActiveStatus } from "../../api/activeStatus/get/getActiveStatus";
+import { getAllActiveStatus } from "../../api/activeStatus/get/getAllActiveStatus";
 
 interface Props {
 	totalCountText: string;
@@ -25,6 +27,7 @@ interface Props {
 	onTableSort: (columneId: string, isSortedDesc: boolean) => void;
 	onPageChange: (pageNo: number) => void;
 	onPageViewSelectionChange: (option: DropdownOption) => void;
+	onActiveStatusOptionSelectionChange: (option: DropdownOption) => void;
 }
 
 const PaginatedTable: FC<Props> = ({
@@ -38,6 +41,7 @@ const PaginatedTable: FC<Props> = ({
 	onTableSort,
 	onPageChange,
 	onPageViewSelectionChange,
+	onActiveStatusOptionSelectionChange,
 }) => {
 	const [t] = useTranslation("common");
 
@@ -46,6 +50,10 @@ const PaginatedTable: FC<Props> = ({
 	const tableRef = useRef(null);
 
 	const [currentPage, setCurrentPage] = useState(1);
+
+	const [statusOptions, setStatusOptions] = useState<DropdownOption[]>([
+		{ label: "", value: "" },
+	]);
 
 	const pageViewOptions: DropdownOption[] = [
 		{ label: "10", value: 10 },
@@ -59,6 +67,26 @@ const PaginatedTable: FC<Props> = ({
 		{ label: "50", value: 50 },
 	];
 
+	useEffect(() => {
+		const fetchData = async () => {
+			const { data } = await getAllActiveStatus();
+			if (data) {
+				setStatusOptions(
+					data?.map((d) => {
+						return {
+							label: language !== "ar" ? d.nameArabic : d.nameEnglish,
+							value: d.id,
+						};
+					})
+				);
+			}
+		};
+
+		console.log("xx");
+
+		fetchData();
+	}, [setStatusOptions]);
+
 	const pageViewSelectionChangeHandler = (option: DropdownOption) => {
 		onPageViewSelectionChange(option);
 	};
@@ -68,6 +96,10 @@ const PaginatedTable: FC<Props> = ({
 		onPageChange(page);
 	};
 
+	const statusOptionChangeHandler = (option: DropdownOption) => {
+		onActiveStatusOptionSelectionChange(option);
+	};
+
 	return (
 		<div className={styles.paginatedTable}>
 			<div style={{ marginTop: 0 }}>
@@ -75,11 +107,15 @@ const PaginatedTable: FC<Props> = ({
 			</div>
 			<div className={styles.detailBar}>
 				<div className={language !== "ar" ? styles.info : styles.infoLTR}>
-					<TotalCount label={totalCountText} count={totalCount} />
+					<TotalCount
+						label={totalCountText}
+						count={totalCount}
+					/>
 				</div>
 				<div
-					className={language !== "ar" ? styles.selection : styles.selectionLTR}
-				>
+					className={
+						language !== "ar" ? styles.selection : styles.selectionLTR
+					}>
 					<ShadowedContainer className={styles.box}>
 						<Dropdown
 							options={pageViewOptions}
@@ -90,6 +126,17 @@ const PaginatedTable: FC<Props> = ({
 						/>
 					</ShadowedContainer>
 				</div>
+			</div>
+			<div>
+				<ShadowedContainer>
+					<Dropdown
+						options={statusOptions}
+						onSelect={statusOptionChangeHandler}
+						placeholder={t("pagination.recordPerPage", {
+							framework: "React",
+						})}
+					/>{" "}
+				</ShadowedContainer>
 			</div>
 			<Table
 				reference={tableRef}

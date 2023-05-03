@@ -2,7 +2,7 @@ import { APIActiveStatus } from "../activeStatus/types";
 import { APIClass } from "../classes/types";
 import {
 	APICategorizedDepartment,
-	APIDepartmentItem
+	APIDepartmentItem,
 } from "../departments/types";
 import { APIGender } from "../genders/type";
 import { APIPrivilegeItem, APIPrivileges } from "../privileges/type";
@@ -23,6 +23,7 @@ export interface APIUserName {
 	name: string;
 	nameEnglish: string;
 	employeeNo: string;
+	activeStatus: APIActiveStatus;
 }
 
 export interface APIUser {

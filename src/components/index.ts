@@ -15,6 +15,7 @@ export * from "./Preview";
 
 export { default as Accordian } from "./Accordian";
 export { default as ActionButtons } from "./ActionButtons";
+export { default as ActiveStatus } from "./ActiveStatus";
 export { default as AllocatedUsers } from "./AllocatedUsers";
 export { default as AuthorizedContainer } from "./AuthorizedContainer";
 export { default as Button } from "./Button";
