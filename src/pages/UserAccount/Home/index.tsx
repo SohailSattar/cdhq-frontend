@@ -270,7 +270,7 @@ const UserAccountPage = () => {
 						</div>
 						<div className={styles.table}>
 							<PaginatedTable
-								totalCountText={t("pagination.usersPerPage", {
+								totalCountText={t("user.count", {
 									framework: "React",
 								})}
 								totalCount={totalCount}
