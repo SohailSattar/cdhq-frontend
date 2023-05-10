@@ -1,46 +1,61 @@
 .userList {
-    .section {
-        margin-top: 0px;
-    }
+	.section {
+		margin-top: 0px;
+	}
 
-    .content {
-        display: flex;
-    }
+	.content {
+		display: flex;
+	}
 
-    .filter {
-        margin-left: 15px;
-    }
+	.filter {
+		margin-left: 15px;
+	}
 
-    .filterLTR {
-        margin-right: 15px;
-    }
+	.filterLTR {
+		margin-right: 15px;
+	}
 
-    .hierarchy {
-        height: 610px;
-        margin-left: 15px;
-        overflow: auto;
-    }
+	.hierarchy {
+		height: 610px;
+		margin-left: 15px;
+		overflow: auto;
+	}
 
-    .hierarchyLTR {
-        height: 610px;
-        margin-right: 15px;
-        overflow: auto;
-    }
+	.hierarchyLTR {
+		height: 610px;
+		margin-right: 15px;
+		overflow: auto;
+	}
 
-    .table {
-        width: 80%;
-    }
+	.table {
+		width: 80%;
+	}
 
-    .action {
-        display: flex;
-        justify-content: flex-end;
-    }
+	.action {
+		display: flex;
+		justify-content: flex-end;
+	}
 
-    .btnDiv {
-        margin-left: 5px;
-    }
+	.btnDiv {
+		margin-left: 5px;
+	}
 
-    .btnDivLTR {
-        margin-right: 5px;
-    }
+	.btnDivLTR {
+		margin-right: 5px;
+	}
+
+	.name {
+		display: flex;
+		flex-direction: column;
+
+		.arabic {
+			display: flex;
+			justify-content: right;
+		}
+
+		.english {
+			display: flex;
+			justify-content: left;
+		}
+	}
 }

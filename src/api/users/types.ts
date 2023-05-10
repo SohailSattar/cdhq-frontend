@@ -23,6 +23,7 @@ export interface APIUserName {
 	name: string;
 	nameEnglish: string;
 	employeeNo: string;
+	department: APIDepartmentItem;
 	activeStatus: APIActiveStatus;
 }
 

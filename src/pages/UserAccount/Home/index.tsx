@@ -11,7 +11,6 @@ import {
 	PageContainer,
 	PaginatedTable,
 	ShadowedContainer,
-	StatusIcon,
 } from "../../../components";
 import { getUsersByKeyword } from "../../../api/users/get/getUsersByKeyword";
 import { DropdownOption } from "../../../components/Dropdown";
@@ -23,7 +22,7 @@ import { APIUserName } from "../../../api/users/types";
 
 import * as RoutePath from "../../../RouteConfig";
 
-import { ROLE } from "../../../utils";
+import { Id, ROLE } from "../../../utils";
 
 import { Column } from "react-table";
 import { UserColumns } from "../../../components/PaginatedTable/types";
@@ -49,6 +48,9 @@ const UserAccountPage = () => {
 
 	const [toggleSort, setToggleSort] = useState(false);
 
+	// This variable is to set the status code which we can pass to the API
+	const [selectedStatusCode, setSelectedStatusCode] = useState<Id>();
+
 	const [departmentIdsTemp, setDepartmentIdsTemp] = useState<string[]>([]);
 	const [departmentIds, setDepartmentIds] = useState<string[]>([]);
 
@@ -56,6 +58,8 @@ const UserAccountPage = () => {
 	const employeeNo = t("user.employeeNumber", { framework: "React" });
 	const logName = t("user.logName", { framework: "React" });
 	const fullName = t("user.fullName", { framework: "React" });
+
+	const department = t("department.name", { framework: "React" });
 
 	const status = t("global.status", { framework: "React" });
 
@@ -87,6 +91,17 @@ const UserAccountPage = () => {
 					<div className={styles.name}>
 						<div className={styles.arabic}>{value.name}</div>
 						<div className={styles.english}>{value.nameEnglish}</div>
+					</div>
+				),
+			},
+			{
+				Header: department,
+				id: "department",
+				accessor: (p) => p,
+				Cell: ({ value }: any) => (
+					<div className={styles.name}>
+						<div className={styles.arabic}>{value.department.name}</div>
+						<div className={styles.english}>{value.department.nameEnglish}</div>
 					</div>
 				),
 			},
@@ -240,6 +255,18 @@ const UserAccountPage = () => {
 		}
 	};
 
+	const statusSelectHandler = (option: DropdownOption) => {
+		console.log(option);
+
+		if (option) {
+			setSelectedStatusCode(option?.value!);
+		} else {
+			setSelectedStatusCode("");
+		}
+
+		fetchData(1, `&statusCode=${option?.value!}`);
+	};
+
 	return (
 		<>
 			{!canView ? (
@@ -248,7 +275,7 @@ const UserAccountPage = () => {
 				<PageContainer
 					title={t("page.userHome", { framework: "React" })}
 					className={styles.userList}
-					showAddButton
+					showAddButton={role === ROLE.SUPERADMIN}
 					btnAddLabel={t("button.addNewUser", { framework: "React" })}
 					btnAddUrlLink={RoutePath.USER_SEARCH}>
 					<div className={styles.content}>
@@ -282,11 +309,7 @@ const UserAccountPage = () => {
 								onPageChange={pageChangeHandler}
 								onPageViewSelectionChange={pageViewSelectionHandler}
 								noRecordText={t("table.noUser", { framework: "React" })}
-								onActiveStatusOptionSelectionChange={function (
-									option: DropdownOption
-								): void {
-									throw new Error("Function not implemented.");
-								}}
+								onActiveStatusOptionSelectionChange={statusSelectHandler}
 							/>
 						</div>
 					</div>

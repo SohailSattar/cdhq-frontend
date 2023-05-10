@@ -18,20 +18,20 @@ const MetaDataDetails: FC<Props> = ({
 	createdBy,
 	createdOn,
 	updatedBy,
-	updatedOn
+	updatedOn,
 }) => {
 	const [t] = useTranslation("common");
 	const language = useStore((state) => state.language);
 
 	const formattedCreatedDate = createdBy
 		? format(new Date(createdOn), "dd MMMM yyyy", {
-				locale: language !== "ar" ? ar : enGB
+				locale: language !== "ar" ? ar : enGB,
 		  })
 		: "";
 
 	const formattedUpdatedDate = updatedBy
 		? format(new Date(updatedOn!), "dd MMMM yyyy", {
-				locale: language !== "ar" ? ar : enGB
+				locale: language !== "ar" ? ar : enGB,
 		  })
 		: "";
 
@@ -40,11 +40,11 @@ const MetaDataDetails: FC<Props> = ({
 			{createdBy && (
 				<div className={styles.section}>
 					<div className={styles.content}>
-						<div className={styles.title}>
-							{t("common.created", { framework: "React" })}
+						<div className={language !== "ar" ? styles.title : styles.titleLTR}>
+							{t("common.created", { framework: "React" })}:
 						</div>
 						<div>
-							{createdBy} {formattedCreatedDate}
+							<span>[{createdBy}]</span> {formattedCreatedDate}
 						</div>
 					</div>
 				</div>
@@ -52,11 +52,11 @@ const MetaDataDetails: FC<Props> = ({
 			{updatedBy && (
 				<div className={styles.section}>
 					<div className={styles.content}>
-						<div className={styles.title}>
-							{t("common.updated", { framework: "React" })}
+						<div className={language !== "ar" ? styles.title : styles.titleLTR}>
+							{t("common.updated", { framework: "React" })}:
 						</div>
 						<div>
-							{updatedBy} {formattedUpdatedDate}
+							[{updatedBy}] {formattedUpdatedDate}
 						</div>
 					</div>
 				</div>

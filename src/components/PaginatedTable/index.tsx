@@ -132,7 +132,7 @@ const PaginatedTable: FC<Props> = ({
 					<Dropdown
 						options={statusOptions}
 						onSelect={statusOptionChangeHandler}
-						placeholder={t("pagination.recordPerPage", {
+						placeholder={t("global.status", {
 							framework: "React",
 						})}
 					/>{" "}

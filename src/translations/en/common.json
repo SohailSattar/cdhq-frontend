@@ -122,7 +122,7 @@
 		"canGrant": "Can grant?",
 		"assignNewProject": "Assign new project to _USER_",
 		"assignNewUser": "",
-		"editUser": "Edit project for _USER_",
+		"editUser": "Edit project: [_PROJECT_] for _USER_",
 		"withOrWithoutSubSection": "With sub-sections or without sub-sections?"
 	},
 	"department": {

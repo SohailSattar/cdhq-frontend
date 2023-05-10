@@ -5,7 +5,7 @@ import {
 	Button,
 	IProjectUserFormInputs,
 	ProjectUserForm,
-	ShadowedContainer
+	ShadowedContainer,
 } from "../../../components";
 import { useStore } from "../../../utils/store";
 
@@ -15,12 +15,14 @@ import { getUserProject } from "../../../api/userProjects/get/getUserProject";
 import { updateUserProject } from "../../../api/userProjects/update/updateUserProject";
 import {
 	APIUpdateUserProjectDetail,
-	APIUserProjectDetail
+	APIUserProjectDetail,
 } from "../../../api/userProjects/types";
 
 const ProjectUserEditPage = () => {
-	const { id, userProjectId } =
-		useParams<{ id: string; userProjectId: string }>();
+	const { id, userProjectId } = useParams<{
+		id: string;
+		userProjectId: string;
+	}>();
 	const [t] = useTranslation("common");
 
 	const navigate = useNavigate();
@@ -74,7 +76,7 @@ const ProjectUserEditPage = () => {
 			workflowStart,
 			workflowEnd,
 			structureType,
-			canGrant
+			canGrant,
 		} = values;
 
 		const params: APIUpdateUserProjectDetail = {
@@ -84,7 +86,7 @@ const ProjectUserEditPage = () => {
 			workflowStartFromId: workflowStart.value,
 			workflowEndToId: workflowEnd.value,
 			departmentStructureType: structureType.value,
-			canGrant: canGrant
+			canGrant: canGrant,
 		};
 
 		const { data } = await updateUserProject(params);
@@ -98,6 +100,8 @@ const ProjectUserEditPage = () => {
 		navigate(`${RoutePath.PROJECT}/${id}`);
 	};
 
+	console.log(userProject);
+
 	return (
 		<>
 			{" "}
@@ -110,12 +114,19 @@ const ProjectUserEditPage = () => {
 				mode={"EDIT"}
 				data={userProject}
 				id={id!}
-				heading={t("userProject.editUser", { framework: "React" }).replace(
-					"_USER_",
-					language !== "ar"
-						? userProject?.user.name!
-						: userProject?.user.nameEnglish!
-				)}
+				heading={t("userProject.editUser", { framework: "React" })
+					.replace(
+						"_USER_",
+						language !== "ar"
+							? userProject?.user.name!
+							: userProject?.user.nameEnglish!
+					)
+					.replace(
+						"_PROJECT_",
+						language !== "ar"
+							? userProject?.project?.name!
+							: userProject?.project?.nameEnglish!
+					)}
 				isNormalUser={isNormalUser}
 				actionButtonText={t("button.update", { framework: "React" })}
 				onActionButtonClick={updateUserProjectClickHandler}

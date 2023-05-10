@@ -80,3 +80,5 @@ export const rotateRight = (arr: any) => {
 	arr.unshift(last);
 	return arr;
 };
+
+export const emptyFunction = () => {};

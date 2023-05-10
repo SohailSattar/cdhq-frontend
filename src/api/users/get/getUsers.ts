@@ -1,7 +1,7 @@
-import { getConfig } from '../..';
-import { instance } from '../../../network';
-import { APIResponse } from '../../types';
-import { APIPaginatedUser } from '../types';
+import { getConfig } from "../..";
+import { instance } from "../../../network";
+import { APIResponse } from "../../types";
+import { APIPaginatedUser } from "../types";
 
 export async function getUsers(
 	currentPage: number,
@@ -12,11 +12,13 @@ export async function getUsers(
 		const config = getConfig();
 
 		if (parameter === undefined) {
-			parameter = '';
+			parameter = "";
 		}
 
 		const url =
 			`/users?page=${currentPage}&postsperpage=${pageSize}` + parameter!;
+
+		console.log(url);
 
 		const response = await instance.get<APIPaginatedUser>(url, config);
 		const data = response.data;
