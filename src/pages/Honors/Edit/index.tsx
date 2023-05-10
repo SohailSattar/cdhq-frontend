@@ -1,7 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { HonorForm, IHonorFormInputs } from "../../../components";
+import {
+	HonorForm,
+	IHonorFormInputs,
+	PageContainer,
+} from "../../../components";
 import { getHonorDetail } from "../../../api/honors/get/getHonorDetail";
 import { APIHonorDetail } from "../../../api/honors/types";
 
@@ -30,13 +34,13 @@ const HonorEditPage = () => {
 	};
 
 	return (
-		<div>
+		<PageContainer title="Edit">
 			<HonorForm
 				data={honor}
 				actionButtonText={t("button.update", { framework: "React" })}
 				onSubmit={honorupdateClickHandler}
 			/>
-		</div>
+		</PageContainer>
 	);
 };
 

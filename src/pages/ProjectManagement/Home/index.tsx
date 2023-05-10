@@ -35,6 +35,8 @@ const ProjectManagementPage = () => {
 	const [totalCount, setTotalCount] = useState<number>(0);
 	const [pageSize, setPageSize] = useState<number>(10);
 
+	const [toggleSort, setToggleSort] = useState(false);
+
 	// This variable is to set the status code which we can pass to the API
 	const [selectedStatusCode, setSelectedStatusCode] = useState<Id>();
 
@@ -168,6 +170,17 @@ const ProjectManagementPage = () => {
 		setPageSize(size);
 	};
 
+	const tableSortHandler = (columnId: string, isSortedDesc: boolean) => {
+		let orderByParam = "";
+		setToggleSort(!toggleSort);
+		if (toggleSort) {
+			orderByParam = `&OrderBy=${columnId}`;
+		} else {
+			orderByParam = `&OrderByDesc=${columnId}`;
+		}
+		// fetchProjects(currentPage, orderByParam);
+	};
+
 	const statusSelectHandler = (option: DropdownOption) => {
 		console.log(option);
 
@@ -181,7 +194,6 @@ const ProjectManagementPage = () => {
 	return canView ? (
 		<PageContainer
 			title={t("page.projectHome", { framework: "React" })}
-			showBackButton
 			showAddButton={role === ROLE.SUPERADMIN}
 			btnAddLabel={t("button.addNewProject", { framework: "React" })}
 			btnAddUrlLink={RoutePath.PROJECT_NEW}
