@@ -13,5 +13,5 @@ export interface APILeaveItem {
 }
 
 export interface APIPaginatedLeaves extends APIPaginate {
-	projects: APILeaveItem[];
+	leaves: APILeaveItem[];
 }
