@@ -1,14 +1,14 @@
 import { APIResponse, getConfig } from "../..";
 import { instance } from "../../../network";
-import { APIPaginatedLeaves } from "../types";
+import { APICountryItem } from "../types";
 
-export async function getAllLeaves(): Promise<APIResponse<APIPaginatedLeaves>> {
+export async function getCountries(): Promise<APIResponse<APICountryItem[]>> {
 	try {
 		const config = getConfig();
 
-		const url = "/leaves";
+		const url = "/countries";
 
-		const response = await instance.get<APIPaginatedLeaves>(url, config);
+		const response = await instance.get<APICountryItem[]>(url, config);
 		const data = response.data;
 		return { data };
 	} catch (err: any) {
