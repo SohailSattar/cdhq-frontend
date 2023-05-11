@@ -1,15 +1,19 @@
 import { APIPaginate } from "..";
-import { APIActiveStatus } from "../activeStatus/types";
-import { APIEmployeeItem } from "../employees/types";
+import { Id } from "../../utils";
 
 export interface APILeaveItem {
-	id: number;
-	employee: APIEmployeeItem;
-	leaveDays: number;
+	id: Id;
+	employeeId: Id;
+	fullName: string;
+	employeeNo: number;
+	rank: string;
+	departmentName: string;
 	startDate: Date;
 	endDate: Date;
-	appDate: Date;
-	activeStatus: APIActiveStatus;
+	leaveTypeArabic: string;
+	leaveTypeEnglish: string;
+	applicationStatus: string;
+	leaveDays: number;
 }
 
 export interface APIPaginatedLeaves extends APIPaginate {
