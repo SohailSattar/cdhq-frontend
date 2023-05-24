@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getProjectDetail } from "../../../api/projects/get/getProjectDetail";
 import {
@@ -24,10 +24,16 @@ import * as RoutePath from "../../../RouteConfig";
 import { updateProjectStatus } from "../../../api/projects/update/updateProjectStatus";
 import { getActiveStatus } from "../../../api/activeStatus/get/getActiveStatus";
 import { APIActiveStatus } from "../../../api/activeStatus/types";
+import { useStore } from "../../../utils/store";
+import { ROLE } from "../../../utils";
 
 const ProjectEditPage = () => {
 	const { id } = useParams<{ id: string }>();
 	const [t] = useTranslation("common");
+
+	const navigate = useNavigate();
+
+	const loggedInUser = useStore((state) => state.loggedInUser);
 
 	const [showModal, setShowModal] = useState(false);
 
@@ -43,6 +49,10 @@ const ProjectEditPage = () => {
 		};
 
 		if (id) {
+			if (loggedInUser.role !== ROLE.SUPERADMIN) {
+				navigate(RoutePath.PROJECT_DETAIL.replace(RoutePath.ID, id));
+			}
+
 			fetch();
 		}
 	}, [id]);
@@ -54,7 +64,7 @@ const ProjectEditPage = () => {
 		};
 
 		const { data } = await updateProjectThumbnail(params);
-		console.log(data);
+
 		if (data) {
 			toast.success(
 				t("message.imageUpdated", { framework: "React" }).toString()
@@ -152,6 +162,7 @@ const ProjectEditPage = () => {
 
 	return (
 		<PageContainer
+			lockFor={[ROLE.ADMIN, ROLE.USER]}
 			title={t("page.projectEdit", { framework: "React" })}
 			showBackButton
 			btnBackLabel={t("button.backToDetail", { framework: "React" }).toString()}

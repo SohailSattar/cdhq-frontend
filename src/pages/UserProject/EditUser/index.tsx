@@ -100,8 +100,6 @@ const ProjectUserEditPage = () => {
 		navigate(`${RoutePath.PROJECT}/${id}`);
 	};
 
-	console.log(userProject);
-
 	return (
 		<>
 			{" "}

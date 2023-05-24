@@ -1,6 +1,6 @@
-import { APIResponse, getConfig } from '../..';
-import { instance } from '../../../network';
-import { APIActiveStatus } from '../types';
+import { APIResponse, getConfig } from "../..";
+import { instance } from "../../../network";
+import { APIActiveStatus } from "../types";
 
 export async function getActiveStatusWithoutInactive(): Promise<
 	APIResponse<APIActiveStatus[]>
@@ -13,6 +13,7 @@ export async function getActiveStatusWithoutInactive(): Promise<
 			config
 		);
 		const data = response.data;
+
 		return { data };
 	} catch (err: any) {
 		const error = err.response.data;

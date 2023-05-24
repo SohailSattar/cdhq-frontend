@@ -69,7 +69,6 @@ const HonorForm: FC<Props> = ({
 		register("name", {
 			required: "Name is required.",
 		});
-		console.log(data);
 
 		if (data) {
 			const { name, rank, department, imageName } = data;
@@ -86,7 +85,6 @@ const HonorForm: FC<Props> = ({
 
 	const employeeNumberSearchHandler = async (value: string) => {
 		const { data } = await getExistingEmployees(value);
-		console.log(data);
 
 		if (data) {
 			setEmployeesOptions(
@@ -127,7 +125,6 @@ const HonorForm: FC<Props> = ({
 	};
 
 	const employeeSelectHandler = (option: DropdownOption) => {
-		console.log(option);
 		const { id, name, rank, dept } = option.meta;
 
 		setValue("employeeId", id);
@@ -149,8 +146,6 @@ const HonorForm: FC<Props> = ({
 		const image = getValues("thumbnail");
 		// onImageUpload(image!)!;
 	};
-
-	console.log(getValues("thumbnail"));
 
 	const submitHandler = (values: IHonorFormInputs) => {
 		onSubmit(values);

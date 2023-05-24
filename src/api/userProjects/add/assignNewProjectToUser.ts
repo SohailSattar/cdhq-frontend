@@ -1,6 +1,6 @@
-import { getConfig } from '../..';
-import { instance } from '../../../network';
-import { APIProjectToUser } from '../types';
+import { getConfig } from "../..";
+import { instance } from "../../../network";
+import { APIProjectToUser } from "../types";
 
 export async function assignNewProjectToUser(
 	newProjectToUserParams: APIProjectToUser
@@ -8,7 +8,7 @@ export async function assignNewProjectToUser(
 	try {
 		const config = getConfig();
 
-		const url = '/users/project';
+		const url = "/users/project";
 
 		const response = await instance.post<APIProjectToUser>(
 			url,

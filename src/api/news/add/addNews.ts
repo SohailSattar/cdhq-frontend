@@ -8,8 +8,6 @@ export async function addNews(
 	try {
 		const config = getConfig("multipart/form-data");
 
-		console.log(newsParams);
-
 		const response = await instance.post<APIResponseStatus>(
 			"/news/",
 			newsParams,

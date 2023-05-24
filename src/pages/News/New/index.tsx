@@ -13,7 +13,10 @@ import {
 import { PageContainer } from "../../../components";
 
 import * as RoutePath from "../..//../RouteConfig";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { APIPrivileges } from "../../../api/privileges/type";
+import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPrivilege";
+import { Project } from "../../../data/projects";
 
 const NewsCreatePage = () => {
 	const [t] = useTranslation("common");
@@ -21,6 +24,36 @@ const NewsCreatePage = () => {
 
 	const [details, setDetails] = useState<INewsFormInputs>();
 	const [isOpen, setIsOpen] = useState<boolean>(false);
+	const [privileges, setPrivileges] = useState<APIPrivileges>();
+
+	useEffect(() => {
+		const fetch = async () => {
+			const { data: privilege } = await getProjectPrivilege(Project.News);
+			if (privilege) {
+				const {
+					readPrivilege,
+					insertPrivilege,
+					updatePrivilege,
+					deletePrivilege,
+				} = privilege;
+
+				setPrivileges({
+					readPrivilege,
+					insertPrivilege,
+					updatePrivilege,
+					deletePrivilege,
+				});
+
+				if (privilege?.insertPrivilege! !== false) {
+				} else {
+					const url = RoutePath.NEWS;
+					navigate(url);
+				}
+			}
+		};
+
+		fetch();
+	}, [setPrivileges]);
 
 	const previewHandler = async (values: INewsFormInputs) => {
 		setDetails(values);
@@ -43,12 +76,14 @@ const NewsCreatePage = () => {
 		};
 
 		const { data, error } = await addNews(params);
+		if (error) {
+			toast.error(error.ErrorMessage);
+		}
+
 		if (data) {
 			toast.success(t("message.newsAdded", { framework: "React" }).toString());
 			navigate(`${RoutePath.NEWS}/${data.id}`);
 		}
-
-		console.log(error);
 	};
 
 	return (

@@ -1,6 +1,15 @@
-.phoneForm{
-    .section{
-        display: flex;
-        margin-bottom: 15px;
-    }
+.phoneForm {
+	.section {
+		display: flex;
+		margin-bottom: 15px;
+	}
+	.headingContainer {
+		display: flex;
+		justify-content: center;
+		width: 100%;
+
+		.heading {
+			font-size: 16px;
+		}
+	}
 }

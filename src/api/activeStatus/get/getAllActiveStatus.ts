@@ -13,6 +13,7 @@ export async function getAllActiveStatus(): Promise<
 			config
 		);
 		const data = response.data;
+
 		return { data };
 	} catch (err: any) {
 		const error = err.response.data;

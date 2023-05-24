@@ -28,6 +28,7 @@ interface Props {
 	onPageChange: (pageNo: number) => void;
 	onPageViewSelectionChange: (option: DropdownOption) => void;
 	onActiveStatusOptionSelectionChange: (option: DropdownOption) => void;
+	hideStatusDropdown?: boolean;
 }
 
 const PaginatedTable: FC<Props> = ({
@@ -42,6 +43,7 @@ const PaginatedTable: FC<Props> = ({
 	onPageChange,
 	onPageViewSelectionChange,
 	onActiveStatusOptionSelectionChange,
+	hideStatusDropdown = false,
 }) => {
 	const [t] = useTranslation("common");
 
@@ -81,8 +83,6 @@ const PaginatedTable: FC<Props> = ({
 				);
 			}
 		};
-
-		console.log("xx");
 
 		fetchData();
 	}, [setStatusOptions]);
@@ -127,17 +127,19 @@ const PaginatedTable: FC<Props> = ({
 					</ShadowedContainer>
 				</div>
 			</div>
-			<div>
-				<ShadowedContainer>
-					<Dropdown
-						options={statusOptions}
-						onSelect={statusOptionChangeHandler}
-						placeholder={t("global.status", {
-							framework: "React",
-						})}
-					/>{" "}
-				</ShadowedContainer>
-			</div>
+			{!hideStatusDropdown && (
+				<div>
+					<ShadowedContainer>
+						<Dropdown
+							options={statusOptions}
+							onSelect={statusOptionChangeHandler}
+							placeholder={t("global.status", {
+								framework: "React",
+							})}
+						/>{" "}
+					</ShadowedContainer>
+				</div>
+			)}
 			<Table
 				reference={tableRef}
 				columns={columns}

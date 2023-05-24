@@ -30,7 +30,7 @@ export interface APIProjectToUser {
 	WorkflowStartFromId: string;
 	WorkflowEndToId: string;
 	departmentStructureType: string;
-	canGrant: boolean;
+	canGrant?: boolean;
 }
 
 export interface APIUserProject extends APIPrivileges {

@@ -22,7 +22,6 @@ import { toast } from "react-toastify";
 interface Props {
 	id: string;
 	displayActionsColumn?: boolean;
-	onActivateButtonClick?: (id: string) => void;
 	onEditButtonClick?: (id: string) => void;
 	onDeleteButtonClick?: (id: string) => void;
 }
@@ -30,7 +29,6 @@ interface Props {
 const UserProjectTable: FC<Props> = ({
 	id,
 	displayActionsColumn = false,
-	onActivateButtonClick = () => {},
 	onEditButtonClick = () => {},
 	onDeleteButtonClick = () => {},
 }) => {
@@ -83,10 +81,6 @@ const UserProjectTable: FC<Props> = ({
 		fetchData(id);
 	}, [currentPage, id, language, pageSize]);
 
-	const activateClickHandler = (id: string) => {
-		onActivateButtonClick(id);
-	};
-
 	const editClickHandler = (id: string) => {
 		onEditButtonClick(id);
 	};
@@ -118,8 +112,7 @@ const UserProjectTable: FC<Props> = ({
 								? styles.childProject
 								: styles.childProjectLTR
 							: ""
-					}
-				>
+					}>
 					{value.projectName}
 				</div>
 			),
@@ -137,29 +130,17 @@ const UserProjectTable: FC<Props> = ({
 			accessor: (p) => p,
 			Cell: ({ value }: any) => (
 				<div className={language !== "ar" ? styles.action : styles.actionLTR}>
-					{value.details.status.id! !== 1 && (
-						<div className={styles.btnDiv}>
-							<Button
-								style={{ height: "20px", fontSize: "12px" }}
-								onClick={() => activateClickHandler(value.id)}
-							>
-								{activate}
-							</Button>
-						</div>
-					)}
 					<div className={styles.btnDiv}>
 						<Button
 							style={{ height: "20px", fontSize: "12px" }}
-							onClick={(id) => editClickHandler(value.id)}
-						>
+							onClick={(id) => editClickHandler(value.id)}>
 							{edit}
 						</Button>
 					</div>
 					<div>
 						<Button
 							style={{ height: "20px", fontSize: "12px" }}
-							onClick={(id) => deleteClickHandler(value.id)}
-						>
+							onClick={(id) => deleteClickHandler(value.id)}>
 							{deleteBtn}
 						</Button>
 					</div>
@@ -170,7 +151,11 @@ const UserProjectTable: FC<Props> = ({
 
 	const deleteConfirmationClickHandler = async () => {
 		if (selectedProjectId !== "") {
-			const { data } = await deleteProject(selectedProjectId);
+			const { data, error } = await deleteProject(selectedProjectId);
+
+			if (error) {
+				toast.error(error.ErrorMessage);
+			}
 
 			if (data) {
 				setProjects(projects.filter((p) => p.id !== +selectedProjectId));
@@ -220,9 +205,6 @@ const UserProjectTable: FC<Props> = ({
 							canGrant={row.details.canGrant}
 							departmentStructureType={row.details.departmentChild}
 							department={row.department}
-							onUpdateStatusClick={projectStatusUpdateClickHandler}
-							status={row.details.status.id}
-							displayActionButton={displayActionsColumn}
 						/>
 					</>
 				)}

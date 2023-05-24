@@ -28,7 +28,7 @@ const UserNewPage = () => {
 	const language = useStore((state) => state.language);
 
 	const { role } = useStore((state) => state.loggedInUser);
-	const [canView, setCanView] = useState(false);
+	// const [canView, setCanView] = useState(false);
 
 	const [employeeExists, setEmployeeExists] = useState(true);
 
@@ -43,9 +43,9 @@ const UserNewPage = () => {
 	};
 
 	useEffect(() => {
-		if (role === ROLE.SUPERADMIN) {
-			setCanView(true);
-		}
+		// if (role === ROLE.SUPERADMIN) {
+		// 	setCanView(true);
+		// }
 
 		const fetchData = async () => {
 			if (id) {
@@ -93,7 +93,9 @@ const UserNewPage = () => {
 			}
 		};
 
-		fetchData();
+		if (role === ROLE.SUPERADMIN || role === ROLE.ADMIN) {
+			fetchData();
+		}
 	}, [id, language, navigate, role]);
 
 	const submitHandler = async () => {
@@ -140,6 +142,7 @@ const UserNewPage = () => {
 
 	return (
 		<PageContainer
+			lockFor={[ROLE.USER]}
 			showBackButton
 			btnBackUrlLink={RoutePath.USER}>
 			<UserForm

@@ -8,7 +8,7 @@ import { getRole } from "../../../api/users/get/getRole";
 import {
 	IUserProjectFormInputs,
 	PageContainer,
-	UserProjectForm
+	UserProjectForm,
 } from "../../../components";
 
 import * as RoutePath from "../../../RouteConfig";
@@ -40,9 +40,10 @@ const AssignProjectToUserPage = () => {
 		formInputs: IUserProjectFormInputs
 	) => {
 		let departId: Id = 0;
+
 		departId = formInputs.department?.value!;
 
-		if (formInputs.center) {
+		if (formInputs.center.value !== "") {
 			departId = formInputs.center.value;
 		}
 
@@ -62,7 +63,7 @@ const AssignProjectToUserPage = () => {
 			WorkflowEndToId: workflowEndId!,
 			departmentId: deptId!,
 			departmentStructureType: structType,
-			canGrant: canGrant
+			canGrant: canGrant,
 		};
 
 		const { data: userProjectId } = await assignNewProjectToUser(params);
@@ -83,8 +84,7 @@ const AssignProjectToUserPage = () => {
 		<PageContainer
 			showBackButton
 			btnBackUrlLink={`${RoutePath.USER_DETAIL.replace(":id", id!)}`}
-			btnBackLabel={t("button.backToDetail", { framework: "React" })}
-		>
+			btnBackLabel={t("button.backToDetail", { framework: "React" })}>
 			<UserProjectForm
 				isNormalUser={isNormalUser}
 				title={t("message.userProjectAdd", { framework: "React" })}

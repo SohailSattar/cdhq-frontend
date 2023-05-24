@@ -13,6 +13,7 @@ import { useTranslation } from "react-i18next";
 import * as RoutePath from "../..//../RouteConfig";
 import { ProjectPreview } from "../../../components/Preview";
 import { useState } from "react";
+import { ROLE } from "../../../utils";
 
 const ProjectNewPage = () => {
 	const [t] = useTranslation("common");
@@ -73,7 +74,8 @@ const ProjectNewPage = () => {
 		<PageContainer
 			title={t("page.projectNew", { framework: "React" })}
 			showBackButton
-			btnBackUrlLink={RoutePath.PROJECT}>
+			btnBackUrlLink={RoutePath.PROJECT}
+			lockFor={[ROLE.ADMIN, ROLE.USER]}>
 			<ProjectForm
 				onSubmit={previewHandler}
 				actionButtonText={t("button.add", { framework: "React" })}

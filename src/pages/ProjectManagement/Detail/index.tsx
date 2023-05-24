@@ -55,12 +55,18 @@ const ProjectDetailPage = () => {
 			setStatus(data?.activeStatus);
 		};
 
+		if (role === ROLE.USER) {
+			navigate(RoutePath.HOME);
+		}
+
 		fetchData();
 	}, [id, navigate]);
 
 	const projectTreeNodeClickHandler = (e: any) => {
 		const { id } = e;
-		navigate(`${RoutePath.PROJECT}/${id}`);
+		if (id !== 0) {
+			navigate(`${RoutePath.PROJECT}/${id}`);
+		}
 	};
 
 	const deleteButtonClickHandler = () => {
@@ -121,7 +127,8 @@ const ProjectDetailPage = () => {
 		<PageContainer
 			title={t("page.projectDetail", { framework: "React" })}
 			showBackButton
-			btnBackUrlLink={RoutePath.PROJECT}>
+			btnBackUrlLink={RoutePath.PROJECT}
+			lockFor={[ROLE.USER, ROLE.ADMIN]}>
 			<div className={styles.project}>
 				<div>
 					<ProjectTree onNodeClick={projectTreeNodeClickHandler} />
@@ -164,7 +171,7 @@ const ProjectDetailPage = () => {
 						groupName={project?.group?.nameArabic!}
 						groupNameEnglish={project?.group?.nameEnglish!}
 					/>
-					<AllocatedUsers projectId={id!} />
+					{/* <AllocatedUsers projectId={id!} /> */}
 					<hr />
 					<MetaDataDetails
 						createdBy={project?.createdBy!}

@@ -6,6 +6,7 @@ export interface APIDepartmentItem {
 	name: string;
 	nameEnglish: string;
 	longFullName: string;
+	longFullNameEnglish: string;
 }
 
 export interface APIDepartmentDetail extends APIDepartmentItem {
@@ -13,7 +14,6 @@ export interface APIDepartmentDetail extends APIDepartmentItem {
 	fullNameEnglish: string;
 	parent: APICategorizedDepartment;
 	longShortName: string;
-	longFullName: string;
 	level: APIDepartmentLevel;
 	emirate: APIEmirate;
 }
@@ -28,6 +28,7 @@ export interface APIDepartmentHierarchy {
 export interface APICategorizedDepartment {
 	id: number;
 	longFullName: string;
+	longFullNameEnglish: string;
 }
 
 interface IDepartment {

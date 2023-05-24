@@ -20,6 +20,7 @@ import * as RoutePath from "../../../RouteConfig";
 import { Id } from "../../../utils";
 
 import styles from "./styles.module.scss";
+import { toast } from "react-toastify";
 
 const NewsHomePage = () => {
 	const [t] = useTranslation("common");
@@ -83,10 +84,6 @@ const NewsHomePage = () => {
 
 	const editClickHandler = useMemo(
 		() => (id: string) => {
-			console.log(
-				RoutePath.NEWS_EDIT,
-				RoutePath.NEWS_EDIT.replace(RoutePath.ID, id)
-			);
 			const editPath = RoutePath.NEWS_EDIT.replace(RoutePath.ID, id);
 			navigate(editPath);
 		},
@@ -118,7 +115,11 @@ const NewsHomePage = () => {
 
 	const deleteClickHandler = useMemo(
 		() => async (id: Id) => {
-			const { data } = await deleteNews(id);
+			const { data, error } = await deleteNews(id);
+
+			if (error) {
+				toast.error(error.ErrorMessage);
+			}
 
 			if (data) {
 				fetchData(currentPage, keyword);
@@ -170,6 +171,7 @@ const NewsHomePage = () => {
 
 	return (
 		<PageContainer
+			displayContent={privileges?.readPrivilege}
 			title="News"
 			showAddButton={privileges?.insertPrivilege}
 			btnAddUrlLink={RoutePath.NEWS_NEW}

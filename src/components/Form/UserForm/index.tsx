@@ -173,6 +173,20 @@ const UserForm: FC<Props> = ({
 						value: x.id,
 					}))
 				);
+
+				const selectedOption = getValues("department");
+
+				if (selectedOption) {
+					const selected = data.find((x) => x.id === selectedOption.value!)!;
+
+					const label =
+						language !== "ar" ? selected?.name! : selected?.nameEnglish!;
+
+					setValue("department", {
+						label: label,
+						value: selected?.id,
+					});
+				}
 			}
 		};
 
@@ -191,6 +205,20 @@ const UserForm: FC<Props> = ({
 						meta: x.logPre,
 					}))
 				);
+
+				const selectedOption = getValues("userClass");
+
+				if (selectedOption) {
+					const selected = data.find((x) => x.id === selectedOption.value!)!;
+
+					const label =
+						language !== "ar" ? selected?.name! : selected?.nameEnglish!;
+
+					setValue("userClass", {
+						label: label,
+						value: selected?.id,
+					});
+				}
 			}
 		};
 
@@ -208,6 +236,20 @@ const UserForm: FC<Props> = ({
 						value: x.id,
 					}))
 				);
+
+				const selectedOption = getValues("rank");
+
+				if (selectedOption) {
+					const selected = data.find((x) => x.id === selectedOption.value!)!;
+
+					const label =
+						language !== "ar" ? selected?.name! : selected?.nameEnglish!;
+
+					setValue("rank", {
+						label: label,
+						value: selected?.id,
+					});
+				}
 			}
 		};
 
@@ -446,7 +488,9 @@ const UserForm: FC<Props> = ({
 							render={({ messages }) => {
 								return messages
 									? _.entries(messages).map(([type, message]) => (
-											<p key={type} className="error">
+											<p
+												key={type}
+												className="error">
 												{message}
 											</p>
 									  ))
@@ -459,7 +503,9 @@ const UserForm: FC<Props> = ({
 							render={({ messages }) => {
 								return messages
 									? _.entries(messages).map(([type, message]) => (
-											<p key={type} className="error">
+											<p
+												key={type}
+												className="error">
 												{message}
 											</p>
 									  ))
@@ -472,7 +518,9 @@ const UserForm: FC<Props> = ({
 							render={({ messages }) => {
 								return messages
 									? _.entries(messages).map(([type, message]) => (
-											<p key={type} className="error">
+											<p
+												key={type}
+												className="error">
 												{message}
 											</p>
 									  ))
@@ -485,7 +533,9 @@ const UserForm: FC<Props> = ({
 							render={({ messages }) => {
 								return messages
 									? _.entries(messages).map(([type, message]) => (
-											<p key={type} className="error">
+											<p
+												key={type}
+												className="error">
 												{message}
 											</p>
 									  ))
@@ -499,7 +549,9 @@ const UserForm: FC<Props> = ({
 							render={({ messages }) => {
 								return messages
 									? _.entries(messages).map(([type, message]) => (
-											<p key={type} className="error">
+											<p
+												key={type}
+												className="error">
 												{message}
 											</p>
 									  ))
@@ -513,7 +565,9 @@ const UserForm: FC<Props> = ({
 							render={({ messages }) => {
 								return messages
 									? _.entries(messages).map(([type, message]) => (
-											<p key={type} className="error">
+											<p
+												key={type}
+												className="error">
 												{message}
 											</p>
 									  ))
@@ -527,7 +581,9 @@ const UserForm: FC<Props> = ({
 							render={({ messages }) => {
 								return messages
 									? _.entries(messages).map(([type, message]) => (
-											<p key={type} className="error">
+											<p
+												key={type}
+												className="error">
 												{message}
 											</p>
 									  ))
@@ -541,7 +597,9 @@ const UserForm: FC<Props> = ({
 							render={({ messages }) => {
 								return messages
 									? _.entries(messages).map(([type, message]) => (
-											<p key={type} className="error">
+											<p
+												key={type}
+												className="error">
 												{message}
 											</p>
 									  ))
@@ -550,16 +608,15 @@ const UserForm: FC<Props> = ({
 						/>
 					</ShadowedContainer>
 				)}
-				{!hideActionButton && (
-					<ShadowedContainer className={styles.buttonSection}>
-						<Button
-							type="submit"
-							className={language !== "ar" ? styles.btn : styles.btnLTR}
-						>
-							{actionButtonText}
-						</Button>
-					</ShadowedContainer>
-				)}
+				{/* {!hideActionButton && ( */}
+				<ShadowedContainer className={styles.buttonSection}>
+					<Button
+						type="submit"
+						className={language !== "ar" ? styles.btn : styles.btnLTR}>
+						{actionButtonText}
+					</Button>
+				</ShadowedContainer>
+				{/* )} */}
 			</form>
 		</div>
 	);

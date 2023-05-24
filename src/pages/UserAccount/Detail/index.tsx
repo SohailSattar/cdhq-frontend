@@ -26,6 +26,10 @@ import { updateUserStatus } from "../../../api/users/update/updateUserStatus";
 import * as RoutePath from "../../../RouteConfig";
 
 import styles from "./styles.module.scss";
+import { APIPrivileges } from "../../../api/privileges/type";
+import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPrivilege";
+import { Project } from "../../../data/projects";
+import { checkPrivilegeForProjectUser } from "../../../api/userProjects/get/checkPrivilegeForProjectUser";
 
 const UserDetailPage = () => {
 	const { id } = useParams<{ id: string }>();
@@ -43,6 +47,8 @@ const UserDetailPage = () => {
 	const [user, setUser] = useState<APIUserDetail>();
 
 	const [status, setStatus] = useState<APIActiveStatus>();
+
+	const [privileges, setPrivileges] = useState<APIPrivileges>();
 
 	useEffect(() => {
 		setIsLoading(true);
@@ -127,12 +133,12 @@ const UserDetailPage = () => {
 					title={t("page.userDetail", { framework: "React" })}
 					showBackButton
 					btnBackUrlLink={RoutePath.USER}
-					showEditButton={role === ROLE.SUPERADMIN}
+					showEditButton
 					btnEditUrlLink={`${RoutePath.USER_EDIT.replace(RoutePath.ID, id!)}`}
 					// showChangeStatusButton={
 					// 	role === ROLE.SUPERADMIN && loggedUserId !== user?.id
 					// }
-					currentStatus={status?.id === 1 ? "ACTIVE" : "DEACTIVE"}
+					// currentStatus={status?.id === 1 ? "ACTIVE" : "DEACTIVE"}
 					// onActivate={activateButtonClickHandler}
 					// 	onDectivate={deleteButtonClickHandler}
 				>

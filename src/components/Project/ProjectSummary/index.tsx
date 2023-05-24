@@ -14,9 +14,6 @@ interface Props {
 	canGrant: boolean;
 	department: string;
 	departmentStructureType: number;
-	onUpdateStatusClick: (id: number) => void;
-	status: number;
-	displayActionButton?: boolean;
 }
 
 const ProjectSummary: FC<Props> = ({
@@ -28,19 +25,8 @@ const ProjectSummary: FC<Props> = ({
 	canGrant,
 	department,
 	departmentStructureType,
-	onUpdateStatusClick,
-	status,
-	displayActionButton = false,
 }) => {
 	const [t] = useTranslation("common");
-	const [buttonName, setButtonName] = useState("");
-	const updateStatusClickHandler = () => {
-		onUpdateStatusClick(id);
-	};
-
-	useEffect(() => {
-		setButtonName(GetNextWorkflowStatus(status)!);
-	}, [status]);
 
 	return (
 		<>
@@ -59,11 +45,6 @@ const ProjectSummary: FC<Props> = ({
 					</div>
 					<div>{department}</div>
 				</div>
-				{displayActionButton && status !== 1 && buttonName && (
-					<div className={styles.btn}>
-						<Button onClick={updateStatusClickHandler}>{buttonName}</Button>
-					</div>
-				)}
 			</div>
 			<div style={{ marginTop: "15px" }}>
 				<PrivilegeDetail

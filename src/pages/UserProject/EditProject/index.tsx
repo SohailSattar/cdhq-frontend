@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import {
 	IUserProjectFormInputs,
 	PageContainer,
-	UserProjectForm
+	UserProjectForm,
 } from "../../../components";
 import { useStore } from "../../../utils/store";
 
@@ -15,18 +15,22 @@ import { updateUserProject } from "../../../api/userProjects/update/updateUserPr
 import * as RoutePath from "../../../RouteConfig";
 import {
 	APIUpdateUserProjectDetail,
-	APIUserProjectDetail
+	APIUserProjectDetail,
 } from "../../../api/userProjects/types";
-import { Id } from "../../../utils";
+import { Id, ROLE } from "../../../utils";
+import { Project } from "../../../data/projects";
 
 const UserProjectEditPage = () => {
-	const { userId, userProjectId } =
-		useParams<{ userId: string; userProjectId: string }>();
+	const { userId, userProjectId } = useParams<{
+		userId: string;
+		userProjectId: string;
+	}>();
 
 	const [t] = useTranslation("common");
 
 	const navigate = useNavigate();
 
+	const { role } = useStore((state) => state.loggedInUser);
 	const language = useStore((state) => state.language);
 
 	const [heading, setHeading] = useState("");
@@ -49,12 +53,15 @@ const UserProjectEditPage = () => {
 					t("message.userProjectEdit", { framework: "React" }) + "" + userName
 				);
 
-				// Can Grant
-				if (data?.user.roleId === 0 || data?.user.roleId === 3) {
-					setIsNormalUser(true);
-				} else {
-					setIsNormalUser(false);
-				}
+				// // Can Grant
+				// if (
+				// 	data?.project.id === Project.UserManagement &&
+				// 	role !== ROLE.SUPERADMIN
+				// ) {
+				// 	setIsNormalUser(true);
+				// } else {
+				// 	setIsNormalUser(false);
+				// }
 			}
 		};
 
@@ -67,7 +74,7 @@ const UserProjectEditPage = () => {
 		let departId: Id = 0;
 		departId = formInput.department?.value!;
 
-		if (formInput.center) {
+		if (formInput.center && formInput.center?.value! !== "") {
 			departId = formInput.center.value;
 		}
 
@@ -78,10 +85,14 @@ const UserProjectEditPage = () => {
 			workflowStartFromId: formInput.workflowStart?.value!.toString()!,
 			workflowEndToId: formInput.workflowEnd?.value!.toString()!,
 			departmentStructureType: formInput.structureType?.value!.toString(),
-			canGrant: formInput.canGrant
+			canGrant: formInput.canGrant,
 		};
 
-		const { data } = await updateUserProject(params);
+		const { data, error } = await updateUserProject(params);
+
+		if (error) {
+			toast.error(error.ErrorMessage);
+		}
 
 		if (data) {
 			toast.success("Updated successfully");
@@ -92,10 +103,9 @@ const UserProjectEditPage = () => {
 		<PageContainer
 			showBackButton
 			btnBackLabel={t("button.backToDetail", { framework: "React" })}
-			btnBackUrlLink={`${RoutePath.USER}/${userId}`}
-		>
+			btnBackUrlLink={`${RoutePath.USER}/${userId}`}>
 			<UserProjectForm
-				isNormalUser={isNormalUser}
+				// isNormalUser={isNormalUser}
 				title={heading}
 				data={userProject}
 				disableProject={true}

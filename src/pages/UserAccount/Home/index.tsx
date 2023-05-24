@@ -7,7 +7,6 @@ import {
 	ActiveStatus,
 	Button,
 	DepartmentTree,
-	NotAuthorized,
 	PageContainer,
 	PaginatedTable,
 	ShadowedContainer,
@@ -28,6 +27,9 @@ import { Column } from "react-table";
 import { UserColumns } from "../../../components/PaginatedTable/types";
 
 import styles from "./styles.module.scss";
+import { APIPrivileges } from "../../../api/privileges/type";
+import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPrivilege";
+import { Project } from "../../../data/projects";
 
 const UserAccountPage = () => {
 	const [t] = useTranslation("common");
@@ -35,8 +37,6 @@ const UserAccountPage = () => {
 	const language = useStore((state) => state.language);
 
 	const { role } = useStore((state) => state.loggedInUser);
-
-	const [canView, setCanView] = useState(false);
 
 	const [keyword, setKeyword] = useState("");
 
@@ -50,6 +50,8 @@ const UserAccountPage = () => {
 
 	// This variable is to set the status code which we can pass to the API
 	const [selectedStatusCode, setSelectedStatusCode] = useState<Id>();
+
+	const [privileges, setPrivileges] = useState<APIPrivileges>();
 
 	const [departmentIdsTemp, setDepartmentIdsTemp] = useState<string[]>([]);
 	const [departmentIds, setDepartmentIds] = useState<string[]>([]);
@@ -140,6 +142,28 @@ const UserAccountPage = () => {
 	const fetchData = useMemo(
 		() =>
 			async (currentPage: number, parameter?: string, filterBy?: string) => {
+				if (role === ROLE.SUPERADMIN) {
+					const { data: privilege } = await getProjectPrivilege(
+						Project.UserManagement
+					);
+
+					if (privilege) {
+						const {
+							readPrivilege,
+							insertPrivilege,
+							updatePrivilege,
+							deletePrivilege,
+						} = privilege;
+
+						setPrivileges({
+							readPrivilege,
+							insertPrivilege,
+							updatePrivilege,
+							deletePrivilege,
+						});
+					}
+				}
+
 				if (departmentIds.length > 0) {
 					const { data } = await getUsersByDepartments(
 						currentPage,
@@ -165,7 +189,6 @@ const UserAccountPage = () => {
 						if (error?.response!.status! === 401) {
 							navigate(RoutePath.LOGIN);
 						} else if (error?.response!.status! === 403) {
-							setCanView(false);
 							return;
 						}
 
@@ -194,15 +217,8 @@ const UserAccountPage = () => {
 	);
 
 	useEffect(() => {
-		if (role === ROLE.USER) {
-			setCanView(false);
-			return;
-		} else {
-			setCanView(true);
-		}
-
 		fetchData(1);
-	}, [fetchData, role]);
+	}, [fetchData]);
 
 	const userSearchClickHandler = (keyword: string) => {
 		setKeyword(keyword);
@@ -256,8 +272,6 @@ const UserAccountPage = () => {
 	};
 
 	const statusSelectHandler = (option: DropdownOption) => {
-		console.log(option);
-
 		if (option) {
 			setSelectedStatusCode(option?.value!);
 		} else {
@@ -268,54 +282,46 @@ const UserAccountPage = () => {
 	};
 
 	return (
-		<>
-			{!canView ? (
-				<NotAuthorized />
-			) : (
-				<PageContainer
-					title={t("page.userHome", { framework: "React" })}
-					className={styles.userList}
-					showAddButton={role === ROLE.SUPERADMIN}
-					btnAddLabel={t("button.addNewUser", { framework: "React" })}
-					btnAddUrlLink={RoutePath.USER_SEARCH}>
-					<div className={styles.content}>
-						<div>
-							<ShadowedContainer
-								className={
-									language === "ar" ? styles.filterLTR : styles.filter
-								}>
-								<Button onClick={filterByDepartmentClickHandler}>
-									{t("filter.byDepartment", { framework: "React" })}
-								</Button>
-							</ShadowedContainer>
-							<ShadowedContainer
-								className={
-									language === "ar" ? styles.hierarchyLTR : styles.hierarchy
-								}>
-								<DepartmentTree onNodeCheck={departmentNodeCheckHandler} />
-							</ShadowedContainer>
-						</div>
-						<div className={styles.table}>
-							<PaginatedTable
-								totalCountText={t("user.count", {
-									framework: "React",
-								})}
-								totalCount={totalCount}
-								pageSize={pageSize}
-								data={users}
-								columns={columns}
-								onSearch={userSearchClickHandler}
-								onTableSort={tableSortHandler}
-								onPageChange={pageChangeHandler}
-								onPageViewSelectionChange={pageViewSelectionHandler}
-								noRecordText={t("table.noUser", { framework: "React" })}
-								onActiveStatusOptionSelectionChange={statusSelectHandler}
-							/>
-						</div>
-					</div>
-				</PageContainer>
-			)}
-		</>
+		<PageContainer
+			title={t("page.userHome", { framework: "React" })}
+			className={styles.userList}
+			showAddButton={role === ROLE.SUPERADMIN}
+			btnAddLabel={t("button.addNewUser", { framework: "React" })}
+			btnAddUrlLink={RoutePath.USER_SEARCH}>
+			<div className={styles.content}>
+				<div>
+					<ShadowedContainer
+						className={language === "ar" ? styles.filterLTR : styles.filter}>
+						<Button onClick={filterByDepartmentClickHandler}>
+							{t("filter.byDepartment", { framework: "React" })}
+						</Button>
+					</ShadowedContainer>
+					<ShadowedContainer
+						className={
+							language === "ar" ? styles.hierarchyLTR : styles.hierarchy
+						}>
+						<DepartmentTree onNodeCheck={departmentNodeCheckHandler} />
+					</ShadowedContainer>
+				</div>
+				<div className={styles.table}>
+					<PaginatedTable
+						totalCountText={t("user.count", {
+							framework: "React",
+						})}
+						totalCount={totalCount}
+						pageSize={pageSize}
+						data={users}
+						columns={columns}
+						onSearch={userSearchClickHandler}
+						onTableSort={tableSortHandler}
+						onPageChange={pageChangeHandler}
+						onPageViewSelectionChange={pageViewSelectionHandler}
+						noRecordText={t("table.noUser", { framework: "React" })}
+						onActiveStatusOptionSelectionChange={statusSelectHandler}
+					/>
+				</div>
+			</div>
+		</PageContainer>
 	);
 };
 

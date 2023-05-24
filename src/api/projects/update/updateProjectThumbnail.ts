@@ -10,8 +10,6 @@ export async function updateProjectThumbnail(
 
 		const url = "/projects/thumbnail";
 
-		console.log(url);
-
 		const response = await instance.put<APIResponseStatus>(
 			url,
 			updateThumbnailParams,

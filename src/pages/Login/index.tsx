@@ -30,8 +30,6 @@ const LoginPage = () => {
 		}
 	}, []);
 
-	console.log(loggedInUser);
-
 	const submitHandler = async (values: ILoginFormInputs) => {
 		const { data, error } = await loginUser(values);
 

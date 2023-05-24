@@ -7,7 +7,6 @@ import { getUserDetail } from "../../../api/users/get/getUserDetail";
 import { updatePassword } from "../../../api/users/update/updatePassword";
 import { updateRole } from "../../../api/users/update/updateRole";
 import {
-	AuthorizedContainer,
 	DeleteConfirmation,
 	MetaDataDetails,
 	PageContainer,
@@ -42,9 +41,6 @@ import {
 	IUserFormInputs,
 } from "../../../components";
 
-import { updateUserProjectStatus } from "../../../api/userProjects/update/updateUserProjectStatus";
-import { APIProjectStatus } from "../../../api/userProjects/types";
-
 import styles from "./styles.module.scss";
 import { updateUserStatus } from "../../../api/users/update/updateUserStatus";
 import { getActiveStatus } from "../../../api/activeStatus/get/getActiveStatus";
@@ -61,8 +57,6 @@ const UserEditPage = () => {
 	const { id: loggedUserId, role } = useStore((state) => state.loggedInUser);
 
 	const [showModal, setShowModal] = useState(false);
-
-	const [canView, setCanView] = useState<boolean>();
 
 	const [isExistingEmployee, setIsExistingEmployee] = useState(true);
 
@@ -186,8 +180,6 @@ const UserEditPage = () => {
 		if (data) {
 			const { data: status } = await getActiveStatus(statusCode);
 
-			console.log(status);
-
 			if (status) {
 				setStatus(status);
 			}
@@ -238,7 +230,11 @@ const UserEditPage = () => {
 			password: values.password,
 		};
 
-		const { data } = await updatePassword(params);
+		const { data, error } = await updatePassword(params);
+
+		if (error) {
+			toast.error(error.ErrorMessage);
+		}
 
 		if (data) {
 			toast.success(
@@ -262,19 +258,19 @@ const UserEditPage = () => {
 		toast.success(t("message.roleUpdated", { framework: "React" }).toString());
 	};
 
-	const activateUserProjectClickHandler = async (userProjectId: string) => {
-		const params: APIProjectStatus = {
-			id: userProjectId,
-			statusId: 1,
-		};
+	// const activateUserProjectClickHandler = async (userProjectId: string) => {
+	// 	const params: APIProjectStatus = {
+	// 		id: userProjectId,
+	// 		statusId: 1,
+	// 	};
 
-		const { data } = await updateUserProjectStatus(params);
-		if (data) {
-			toast.success(
-				t("message.projectActivated", { framework: "React" }).toString()
-			);
-		}
-	};
+	// 	const { data } = await updateUserProjectStatus(params);
+	// 	if (data) {
+	// 		toast.success(
+	// 			t("message.projectActivated", { framework: "React" }).toString()
+	// 		);
+	// 	}
+	// };
 
 	const editUserProjectClickHandler = (projectId: string) => {
 		navigate(`${RoutePath.USER}/${id}/project/${projectId}/edit`);
@@ -299,9 +295,9 @@ const UserEditPage = () => {
 				<TabList>
 					<Tab>{t("user.basicDetails", { framework: "React" })} </Tab>
 					<Tab>{t("project.projects", { framework: "React" })}</Tab>
+					<Tab>{t("form.changePassword", { framework: "React" })}</Tab>
 					{role === ROLE.SUPERADMIN && (
 						<>
-							<Tab>{t("form.changePassword", { framework: "React" })}</Tab>
 							<Tab>{t("user.assignRole", { framework: "React" })}</Tab>
 						</>
 					)}
@@ -309,7 +305,7 @@ const UserEditPage = () => {
 				<TabPanel>
 					<ShadowedContainer>
 						<UserForm
-							isExistingEmployee={isExistingEmployee}
+							isExistingEmployee={false}
 							hideActionButton={isExistingEmployee}
 							data={userDetail}
 							actionButtonText={t("button.update", { framework: "React" })}
@@ -329,19 +325,18 @@ const UserEditPage = () => {
 					<UserProjectTable
 						id={id!}
 						displayActionsColumn={true}
-						onActivateButtonClick={activateUserProjectClickHandler}
 						onEditButtonClick={editUserProjectClickHandler}
 						onDeleteButtonClick={deleteUserProjectClickHandler}
 					/>
 				</TabPanel>
+				<TabPanel>
+					<ShadowedContainer>
+						<ChangePassword onClick={updatePasswordClickHandler} />
+					</ShadowedContainer>
+				</TabPanel>
+
 				{role === ROLE.SUPERADMIN && (
 					<>
-						<TabPanel>
-							<ShadowedContainer>
-								<ChangePassword onClick={updatePasswordClickHandler} />
-							</ShadowedContainer>
-						</TabPanel>
-
 						<TabPanel>
 							<RoleAssignment
 								selectedRoleOption={selectedRoleOption}

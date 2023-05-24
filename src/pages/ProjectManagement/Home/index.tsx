@@ -135,8 +135,6 @@ const ProjectManagementPage = () => {
 					pageSize
 				);
 
-				console.log(data);
-
 				if (data) {
 					setProjects(data?.projects);
 					setTotalCount(data?.totalItems);
@@ -148,7 +146,7 @@ const ProjectManagementPage = () => {
 	);
 
 	useEffect(() => {
-		if (role === ROLE.USER) {
+		if (role === ROLE.USER || role === "") {
 			setCanView(false);
 			return;
 		} else {
@@ -182,8 +180,6 @@ const ProjectManagementPage = () => {
 	};
 
 	const statusSelectHandler = (option: DropdownOption) => {
-		console.log(option);
-
 		if (option) {
 			setSelectedStatusCode(option?.value!);
 		} else {
@@ -193,6 +189,7 @@ const ProjectManagementPage = () => {
 
 	return canView ? (
 		<PageContainer
+			lockFor={[ROLE.ADMIN, ROLE.USER]}
 			title={t("page.projectHome", { framework: "React" })}
 			showAddButton={role === ROLE.SUPERADMIN}
 			btnAddLabel={t("button.addNewProject", { framework: "React" })}
@@ -205,9 +202,7 @@ const ProjectManagementPage = () => {
 				data={projects}
 				columns={columns}
 				onSearch={projectSearchClickHandler}
-				onTableSort={function (columneId: string, isSortedDesc: boolean): void {
-					throw new Error("Function not implemented.");
-				}}
+				onTableSort={() => {}}
 				onPageChange={pageChangeHandler}
 				onPageViewSelectionChange={pageViewSelectionHandler}
 				noRecordText={t("table.noProject", { framework: "React" })}

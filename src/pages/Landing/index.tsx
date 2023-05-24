@@ -30,7 +30,7 @@ const LandingPage = () => {
 	}, []);
 
 	const marqueeItemClickHandler = (id: Id) => {
-		console.log(id);
+		// console.log(id);
 	};
 
 	return (

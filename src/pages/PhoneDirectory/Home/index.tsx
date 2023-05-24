@@ -112,7 +112,7 @@ const PhoneDirectoryPage = () => {
 							{privileges?.updatePrivilege! === true && (
 								<Button
 									onClick={() => {
-										editClickHandler(row.values);
+										editClickHandler(row.values.name!);
 									}}
 									style={{ height: "20px", fontSize: "12px" }}>
 									{edit}
@@ -145,9 +145,15 @@ const PhoneDirectoryPage = () => {
 	const fetchData = useMemo(
 		() => async (currentPage: number) => {
 			// Check Privilege
-			const { data: privilege } = await getProjectPrivilege(
+			const { data: privilege, error } = await getProjectPrivilege(
 				Project.PhoneDirectory
 			);
+
+			if (error) {
+				// toast.success(
+				// 	t("message.projectUpdated", { framework: "React" }).toString()
+				// );
+			}
 
 			if (privilege) {
 				const {
@@ -204,7 +210,6 @@ const PhoneDirectoryPage = () => {
 
 	const editClickHandler = (selectedItem: APIPhoneDirectory) => {
 		setIsPopupOpen(true);
-		console.log(selectedItem);
 		setSelectedRow(selectedItem);
 	};
 
@@ -271,6 +276,7 @@ const PhoneDirectoryPage = () => {
 						// displayActionsColumn={privileges?.updatePrivilege!}
 						noRecordText={t("table.noEmployee", { framework: "React" })}
 						onActiveStatusOptionSelectionChange={() => {}}
+						hideStatusDropdown
 					/>
 				</div>
 				<div></div>

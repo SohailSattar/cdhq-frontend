@@ -1,33 +1,62 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getNewsDetail } from "../../../api/news/get/getNewsDetail";
 import {
 	APINewsDetail,
 	APIUpdateNews,
-	APIUpdateNewsImage
+	APIUpdateNewsImage,
 } from "../../../api/news/types";
 import { updateNews } from "../../../api/news/update/updateNews";
 import { updateNewsImage } from "../../../api/news/update/updateNewsImage";
 import { MetaDataDetails, PageContainer } from "../../../components";
 import { NewsForm, INewsFormInputs } from "../../../components";
 import * as RoutePath from "../../../RouteConfig";
+import { APIPrivileges } from "../../../api/privileges/type";
+import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPrivilege";
+import { Project } from "../../../data/projects";
 
 const NewsEditPage = () => {
 	const { id } = useParams<{ id: string }>();
 	const [t] = useTranslation("common");
+	const navigate = useNavigate();
 
 	const [news, setNews] = useState<APINewsDetail>();
+	const [privileges, setPrivileges] = useState<APIPrivileges>();
 
 	const fetch = useMemo(
 		() => async () => {
-			const { data } = await getNewsDetail(id!);
-			setNews(data);
+			const { data: privilege } = await getProjectPrivilege(Project.News);
+			if (privilege) {
+				const {
+					readPrivilege,
+					insertPrivilege,
+					updatePrivilege,
+					deletePrivilege,
+				} = privilege;
+
+				setPrivileges({
+					readPrivilege,
+					insertPrivilege,
+					updatePrivilege,
+					deletePrivilege,
+				});
+
+				if (privilege?.updatePrivilege! !== false) {
+					const { data } = await getNewsDetail(id!);
+					setNews(data);
+				} else {
+					const url = RoutePath.NEWS_DETAIL.replace(
+						RoutePath.ID,
+						id?.toString()!
+					);
+					navigate(url);
+				}
+			}
 		},
 		[id]
 	);
-
 	useEffect(() => {
 		if (id) {
 			fetch();
@@ -42,7 +71,7 @@ const NewsEditPage = () => {
 			shortSummary: values.shortSummary,
 			newsTypeId: +values.newsType!.value,
 			// thumbnail: values.thumbnail,
-			fullNews: values.fullNews
+			fullNews: values.fullNews,
 		};
 
 		const { data, error } = await updateNews(params);
@@ -59,7 +88,7 @@ const NewsEditPage = () => {
 	const imageUploadHandler = async (image: File) => {
 		const params: APIUpdateNewsImage = {
 			id: id!,
-			thumbnail: image
+			thumbnail: image,
 		};
 
 		const { data } = await updateNewsImage(params);

@@ -1,7 +1,7 @@
-import { FC } from 'react';
-import { useTranslation } from 'react-i18next';
+import { FC } from "react";
+import { useTranslation } from "react-i18next";
 
-import styles from './styles.module.scss';
+import styles from "./styles.module.scss";
 
 interface Props {
 	name: string;
@@ -9,11 +9,11 @@ interface Props {
 }
 
 const Welcome: FC<Props> = ({ name, role }) => {
-	const [t] = useTranslation('common');
+	const [t] = useTranslation("common");
 
 	return (
 		<div className={styles.welcome}>
-			{t('home.welcome', { framework: 'React' })}, {name} [{role}]
+			{t("home.welcome", { framework: "React" })}, {name}
 		</div>
 	);
 };

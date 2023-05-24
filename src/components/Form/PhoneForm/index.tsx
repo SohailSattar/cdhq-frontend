@@ -6,6 +6,8 @@ import { APIPhoneDirectory } from "../../../api/phoneDirectory/types";
 import { IPhoneFormInputs } from "../types";
 
 import styles from "./styles.module.scss";
+import { useStore } from "../../../utils/store";
+import clsx from "clsx";
 
 interface Props {
 	data?: APIPhoneDirectory;
@@ -15,12 +17,11 @@ interface Props {
 
 const PhoneForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 	const [t] = useTranslation("common");
+	const language = useStore((state) => state.language);
 
 	const { handleSubmit, setValue, control } = useForm<IPhoneFormInputs>({
 		criteriaMode: "all",
 	});
-
-	console.log({ data });
 
 	useEffect(() => {
 		if (data) {
@@ -39,8 +40,11 @@ const PhoneForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 	return (
 		<div className={styles.phoneForm}>
 			<form onSubmit={handleSubmit(submitHandler)}>
-				<ShadowedContainer className={styles.section}>
-					{data?.nameEnglish}
+				<ShadowedContainer
+					className={clsx(styles.section, styles.headingContainer)}>
+					<div className={styles.heading}>
+						{language !== "ar" ? data?.fullName : data?.nameEnglish}
+					</div>
 				</ShadowedContainer>
 				<ShadowedContainer className={styles.section}>
 					<div className={styles.field}>

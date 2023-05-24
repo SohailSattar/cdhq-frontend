@@ -9,8 +9,6 @@ export const updateNewsImage = async (
 	try {
 		const config = getConfig("multipart/form-data");
 
-		console.log(updateNewsImageParams);
-
 		const url = "/news/image";
 
 		const response = await instance.put<APIResponseStatus>(

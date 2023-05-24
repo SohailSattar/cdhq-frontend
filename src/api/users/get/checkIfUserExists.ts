@@ -1,5 +1,5 @@
-import { APIResponse, getConfig } from '../..';
-import { instance } from '../../../network';
+import { APIResponse, getConfig } from "../..";
+import { instance } from "../../../network";
 
 export async function checkIfUserExists(
 	id: string
@@ -14,6 +14,6 @@ export async function checkIfUserExists(
 		return { data };
 	} catch (err: any) {
 		const error = err.response.data;
-		return { error: error.errors.Id };
+		return { error: error };
 	}
 }
