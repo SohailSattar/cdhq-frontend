@@ -227,9 +227,11 @@ const UserProjectForm: FC<Props> = ({
 			);
 			setValue("project", selectedProject!);
 
+			console.log(data);
+
 			// Privilege
 			const selectedPrivilege = privilegeOptions.find(
-				(x) => x.value === privilege.sequenceNumber
+				(x) => x.value === privilege?.sequenceNumber!
 			);
 			setValue("privilege", selectedPrivilege!);
 
@@ -276,14 +278,14 @@ const UserProjectForm: FC<Props> = ({
 		// }
 	}, [
 		data,
-		departmentTypeOptions,
-		departmentsOptions,
-		disableWorkflow,
-		privilegeOptions,
-		projectOptions,
-		register,
-		setValue,
-		workflowRangeOptions,
+		// departmentTypeOptions,
+		// departmentsOptions,
+		// disableWorkflow,
+		// privilegeOptions,
+		// projectOptions,
+		// register,
+		// setValue,
+		// workflowRangeOptions,
 		language,
 	]);
 
@@ -585,7 +587,9 @@ const UserProjectForm: FC<Props> = ({
 								render={({ messages }) => {
 									return messages
 										? _.entries(messages).map(([type, message]) => (
-												<p key={type} className="error">
+												<p
+													key={type}
+													className="error">
 													{message}
 												</p>
 										  ))
@@ -598,7 +602,9 @@ const UserProjectForm: FC<Props> = ({
 								render={({ messages }) => {
 									return messages
 										? _.entries(messages).map(([type, message]) => (
-												<p key={type} className="error">
+												<p
+													key={type}
+													className="error">
 													{message}
 												</p>
 										  ))
@@ -611,7 +617,9 @@ const UserProjectForm: FC<Props> = ({
 								render={({ messages }) => {
 									return messages
 										? _.entries(messages).map(([type, message]) => (
-												<p key={type} className="error">
+												<p
+													key={type}
+													className="error">
 													{message}
 												</p>
 										  ))
@@ -624,7 +632,9 @@ const UserProjectForm: FC<Props> = ({
 								render={({ messages }) => {
 									return messages
 										? _.entries(messages).map(([type, message]) => (
-												<p key={type} className="error">
+												<p
+													key={type}
+													className="error">
 													{message}
 												</p>
 										  ))
@@ -637,7 +647,9 @@ const UserProjectForm: FC<Props> = ({
 								render={({ messages }) => {
 									return messages
 										? _.entries(messages).map(([type, message]) => (
-												<p key={type} className="error">
+												<p
+													key={type}
+													className="error">
 													{message}
 												</p>
 										  ))
@@ -650,7 +662,9 @@ const UserProjectForm: FC<Props> = ({
 								render={({ messages }) => {
 									return messages
 										? _.entries(messages).map(([type, message]) => (
-												<p key={type} className="error">
+												<p
+													key={type}
+													className="error">
 													{message}
 												</p>
 										  ))
@@ -664,7 +678,9 @@ const UserProjectForm: FC<Props> = ({
 								render={({ messages }) => {
 									return messages
 										? _.entries(messages).map(([type, message]) => (
-												<p key={type} className="error">
+												<p
+													key={type}
+													className="error">
 													{message}
 												</p>
 										  ))

@@ -166,6 +166,7 @@
 		"loading": "جار التحميل",
 		"actions": "أفعال",
 		"status": "حالة",
+		"activeStatus": "Active Status",
 		"name": "الاسم [عربي]",
 		"nameEnglish": "الاسم [إنجليزي]"
 	},

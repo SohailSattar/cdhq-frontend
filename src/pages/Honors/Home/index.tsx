@@ -189,6 +189,7 @@ const HonorsHomePage = () => {
 					onPageViewSelectionChange={pageViewSelectionHandler}
 					noRecordText={t("table.noNews", { framework: "React" })}
 					onActiveStatusOptionSelectionChange={() => {}}
+					onWorkflowStatusOptionSelectionChange={() => {}}
 				/>
 			</div>
 		</div>

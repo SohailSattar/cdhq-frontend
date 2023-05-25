@@ -10,6 +10,7 @@ export interface APIProjectTable {
 	deletePrivilege: boolean;
 	updatePrivilege: boolean;
 	readPrivilege: boolean;
+	activeStatus: string;
 	details: ProjectDetailTable; // ProjectDetailTable[];
 }
 

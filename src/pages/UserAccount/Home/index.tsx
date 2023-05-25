@@ -46,15 +46,41 @@ const UserAccountPage = () => {
 
 	const [users, setUsers] = useState<APIUserName[]>([]);
 
+	//Parameters
 	const [toggleSort, setToggleSort] = useState(false);
-
 	// This variable is to set the status code which we can pass to the API
 	const [selectedStatusCode, setSelectedStatusCode] = useState<Id>();
+	const [orderBy, setOrderBy] = useState<string>("");
 
 	const [privileges, setPrivileges] = useState<APIPrivileges>();
 
-	const [departmentIdsTemp, setDepartmentIdsTemp] = useState<string[]>([]);
+	// const [departmentIdsTemp, setDepartmentIdsTemp] = useState<string[]>([]);
 	const [departmentIds, setDepartmentIds] = useState<string[]>([]);
+
+	// check if authorized to access
+	useEffect(() => {
+		const fetch = async () => {
+			if (role !== ROLE.SUPERADMIN) {
+				const { data: privilege } = await getProjectPrivilege(
+					Project.UserManagement
+				);
+				if (privilege) {
+					const {
+						readPrivilege,
+						insertPrivilege,
+						updatePrivilege,
+						deletePrivilege,
+					} = privilege;
+					setPrivileges({
+						readPrivilege,
+						insertPrivilege,
+						updatePrivilege,
+						deletePrivilege,
+					});
+				}
+			}
+		};
+	}, [privileges]);
 
 	const id = t("user.id", { framework: "React" });
 	const employeeNo = t("user.employeeNumber", { framework: "React" });
@@ -142,83 +168,124 @@ const UserAccountPage = () => {
 	const fetchData = useMemo(
 		() =>
 			async (currentPage: number, parameter?: string, filterBy?: string) => {
-				if (role === ROLE.SUPERADMIN) {
-					const { data: privilege } = await getProjectPrivilege(
-						Project.UserManagement
-					);
-
-					if (privilege) {
-						const {
-							readPrivilege,
-							insertPrivilege,
-							updatePrivilege,
-							deletePrivilege,
-						} = privilege;
-
-						setPrivileges({
-							readPrivilege,
-							insertPrivilege,
-							updatePrivilege,
-							deletePrivilege,
-						});
-					}
-				}
-
-				if (departmentIds.length > 0) {
-					const { data } = await getUsersByDepartments(
-						currentPage,
-						pageSize,
-						departmentIds,
-						keyword
-					);
-
-					if (data) {
-						// setCanView(true)
-						setUsers(data?.users);
-						setTotalCount(data?.totalItems);
-					}
-				} else {
-					if (keyword === "") {
-						// Get all the users if no keyword is mentioned
-						const { data, error } = await getUsers(
-							currentPage,
-							pageSize,
-							parameter
-						);
-
-						if (error?.response!.status! === 401) {
-							navigate(RoutePath.LOGIN);
-						} else if (error?.response!.status! === 403) {
-							return;
-						}
-
-						if (data) {
-							setUsers(data.users);
-							setTotalCount(data.totalItems);
-						}
-
-						// });
-					} else {
-						const { data } = await getUsersByKeyword(
-							keyword,
-							currentPage,
-							pageSize,
-							parameter
-						);
-
-						if (data) {
-							setUsers(data?.users);
-							setTotalCount(data?.totalItems);
-						}
-					}
-				}
+				// if (role !== ROLE.SUPERADMIN) {
+				// 	const { data: privilege } = await getProjectPrivilege(
+				// 		Project.UserManagement
+				// 	);
+				// 	if (privilege) {
+				// 		const {
+				// 			readPrivilege,
+				// 			insertPrivilege,
+				// 			updatePrivilege,
+				// 			deletePrivilege,
+				// 		} = privilege;
+				// 		setPrivileges({
+				// 			readPrivilege,
+				// 			insertPrivilege,
+				// 			updatePrivilege,
+				// 			deletePrivilege,
+				// 		});
+				// 	}
+				// }
+				// if (departmentIds.length > 0) {
+				// 	const { data } = await getUsersByDepartments(
+				// 		currentPage,
+				// 		pageSize,
+				// 		departmentIds,
+				// 		keyword
+				// 	);
+				// 	if (data) {
+				// 		// setCanView(true)
+				// 		setUsers(data?.users);
+				// 		setTotalCount(data?.totalItems);
+				// 	}
+				// } else {
+				// 	// join params
+				// 	let params = "";
+				// 	// status code
+				// 	console.log(selectedStatusCode);
+				// 	if (selectedStatusCode) {
+				// 		console.log(selectedStatusCode);
+				// 		// orderByParam;
+				// 	}
+				// 	if (keyword === "") {
+				// 		// Get all the users if no keyword is mentioned
+				// 		const { data, error } = await getUsers(
+				// 			currentPage,
+				// 			pageSize,
+				// 			parameter
+				// 		);
+				// 		if (error?.response!.status! === 401) {
+				// 			navigate(RoutePath.LOGIN);
+				// 		} else if (error?.response!.status! === 403) {
+				// 			return;
+				// 		}
+				// 		if (data) {
+				// 			setUsers(data.users);
+				// 			setTotalCount(data.totalItems);
+				// 		}
+				// 		// });
+				// 	} else {
+				// 		const { data } = await getUsersByKeyword(
+				// 			keyword,
+				// 			currentPage,
+				// 			pageSize,
+				// 			parameter
+				// 		);
+				// 		if (data) {
+				// 			setUsers(data?.users);
+				// 			setTotalCount(data?.totalItems);
+				// 		}
+				// 	}
+				// }
 			},
 		[departmentIds, keyword, navigate, pageSize]
 	);
 
+	// New maybe
+	const fetch = useMemo(
+		() => async () => {
+			const { data, error } = await getUsers(
+				currentPage,
+				pageSize,
+				keyword,
+				selectedStatusCode,
+				orderBy
+			);
+			if (data) {
+				setUsers(data.users);
+				setTotalCount(data.totalItems);
+			}
+		},
+		[currentPage, pageSize, keyword, selectedStatusCode, orderBy]
+	);
+
+	const fetchByDepartment = useMemo(
+		() => async () => {
+			const { data } = await getUsersByDepartments(
+				1,
+				10,
+				departmentIds,
+				keyword,
+				selectedStatusCode,
+				orderBy
+			);
+
+			if (data) {
+				setUsers(data?.users);
+				setTotalCount(data?.totalItems);
+			}
+		},
+		[departmentIds, keyword, selectedStatusCode, orderBy]
+	);
+
 	useEffect(() => {
-		fetchData(1);
-	}, [fetchData]);
+		if (departmentIds.length == 0) {
+			fetch();
+		} else {
+			fetchByDepartment();
+		}
+	}, [fetch]);
 
 	const userSearchClickHandler = (keyword: string) => {
 		setKeyword(keyword);
@@ -232,57 +299,63 @@ const UserAccountPage = () => {
 		} else {
 			orderByParam = `&OrderByDesc=${columnId}`;
 		}
-		fetchData(currentPage, orderByParam);
+		setOrderBy(orderByParam);
+		// fetchData(currentPage, orderByParam);
 	};
 
 	const pageChangeHandler = (currentpage: number) => {
-		setCurrentPage(currentPage);
-		fetchData(currentpage);
+		setCurrentPage(currentpage);
+		// fetchData(currentpage);
 	};
 
+	const departmentNodeCheckHandler = (ids: any) => {
+		setDepartmentIds(ids);
+	};
+
+	// const fetchUsersByDepartment = useMemo(
+	// 	() => async () => {
+	// 		const { data } = await getUsersByDepartments(1, 10, departmentIds);
+
+	// 		if (data) {
+	// 			setUsers(data?.users);
+	// 			setTotalCount(data?.totalItems);
+	// 		}
+	// 	},
+	// 	[departmentIds]
+	// );
+
+	const filterByDepartmentClickHandler = () => {
+		if (departmentIds.length > 0) {
+			fetchByDepartment();
+		} else {
+			fetch();
+		}
+	};
+
+	// Dropdown selection handlers
 	const pageViewSelectionHandler = (option: DropdownOption) => {
 		const size = +option.value;
 
 		setPageSize(size);
 	};
 
-	const departmentNodeCheckHandler = (ids: any) => {
-		setDepartmentIdsTemp(ids);
-	};
-
-	const fetchUsersByDepartment = useMemo(
-		() => async () => {
-			const { data } = await getUsersByDepartments(1, 10, departmentIds);
-
-			if (data) {
-				setUsers(data?.users);
-				setTotalCount(data?.totalItems);
+	const statusSelectHandler = useMemo(
+		() => (option: DropdownOption) => {
+			if (option) {
+				setSelectedStatusCode((prevState) => (prevState = option?.value!));
+				fetchData(1, `&statusCode=${option?.value!}`);
+			} else {
+				setSelectedStatusCode("");
+				fetchData(1);
 			}
 		},
-		[departmentIds]
+		[]
 	);
-
-	const filterByDepartmentClickHandler = () => {
-		setDepartmentIds(departmentIdsTemp);
-		if (departmentIdsTemp.length > 0) {
-			fetchUsersByDepartment();
-		} else {
-			fetchData(1);
-		}
-	};
-
-	const statusSelectHandler = (option: DropdownOption) => {
-		if (option) {
-			setSelectedStatusCode(option?.value!);
-		} else {
-			setSelectedStatusCode("");
-		}
-
-		fetchData(1, `&statusCode=${option?.value!}`);
-	};
 
 	return (
 		<PageContainer
+			lockFor={[ROLE.USER]}
+			displayContent={privileges?.readPrivilege}
 			title={t("page.userHome", { framework: "React" })}
 			className={styles.userList}
 			showAddButton={role === ROLE.SUPERADMIN}
@@ -317,7 +390,9 @@ const UserAccountPage = () => {
 						onPageChange={pageChangeHandler}
 						onPageViewSelectionChange={pageViewSelectionHandler}
 						noRecordText={t("table.noUser", { framework: "React" })}
+						hideWorkflowStatusDropdown
 						onActiveStatusOptionSelectionChange={statusSelectHandler}
+						onWorkflowStatusOptionSelectionChange={() => {}}
 					/>
 				</div>
 			</div>

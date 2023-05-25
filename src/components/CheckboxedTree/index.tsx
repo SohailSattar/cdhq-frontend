@@ -40,7 +40,7 @@ const CheckboxedTree: FC<Props> = ({
 	};
 
 	const clearButtonHandler = () => {
-		setChecked([]);
+		setChecked((prevState) => []);
 	};
 
 	return (

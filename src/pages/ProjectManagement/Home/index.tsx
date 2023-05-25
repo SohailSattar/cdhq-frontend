@@ -207,6 +207,7 @@ const ProjectManagementPage = () => {
 				onPageViewSelectionChange={pageViewSelectionHandler}
 				noRecordText={t("table.noProject", { framework: "React" })}
 				onActiveStatusOptionSelectionChange={statusSelectHandler}
+				onWorkflowStatusOptionSelectionChange={() => {}}
 			/>
 		</PageContainer>
 	) : (

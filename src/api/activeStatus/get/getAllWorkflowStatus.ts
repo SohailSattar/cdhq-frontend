@@ -2,7 +2,7 @@ import { APIResponse, getConfig } from "../..";
 import { instance } from "../../../network";
 import { APIActiveStatus } from "../types";
 
-export async function getAllActiveStatus(): Promise<
+export async function getAllWorkflowStatus(): Promise<
 	APIResponse<APIActiveStatus[]>
 > {
 	try {

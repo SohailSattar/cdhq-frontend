@@ -167,6 +167,7 @@
 		"loading": "Loading",
 		"actions": "Actions",
 		"status": "Status",
+		"activeStatus": "Active Status",
 		"name": "Name [Arabic]",
 		"nameEnglish": "Name [English]"
 	},

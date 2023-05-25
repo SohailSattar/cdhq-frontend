@@ -189,6 +189,8 @@ const NewsHomePage = () => {
 				onPageViewSelectionChange={pageViewSelectionHandler}
 				noRecordText={t("table.noNews", { framework: "React" })}
 				onActiveStatusOptionSelectionChange={() => {}}
+				onWorkflowStatusOptionSelectionChange={() => {}}
+				hideWorkflowStatusDropdown
 			/>
 		</PageContainer>
 	);

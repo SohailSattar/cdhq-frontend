@@ -46,13 +46,17 @@ const SearchBox: FC<Props> = ({ label, onClick }) => {
 
 	const clearButtonClickHandler = () => {
 		setValue("");
+		onClick("");
 	};
 
 	return (
 		<ShadowedContainer className={styles.container}>
 			<div className={styles.searchBox}>
 				<div className={styles.searchIcon}>
-					<Button withIcon onClick={searchButtonClickHandler} type="button">
+					<Button
+						withIcon
+						onClick={searchButtonClickHandler}
+						type="button">
 						<FontAwesomeIcon icon={faMagnifyingGlass} />
 					</Button>
 				</div>
@@ -65,7 +69,9 @@ const SearchBox: FC<Props> = ({ label, onClick }) => {
 				/>
 				{!hideClearButton && (
 					<div className={styles.clearIcon}>
-						<Button withIconTransparent onClick={clearButtonClickHandler}>
+						<Button
+							withIconTransparent
+							onClick={clearButtonClickHandler}>
 							<FontAwesomeIcon icon={faRemove} />
 						</Button>
 					</div>

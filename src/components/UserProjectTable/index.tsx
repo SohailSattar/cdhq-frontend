@@ -10,6 +10,7 @@ import { updateUserProjectStatus } from "../../api/userProjects/update/updateUse
 
 import styles from "./styles.module.scss";
 import {
+	ActiveStatus,
 	DeleteConfirmation,
 	Pagination,
 	ProjectSummary,
@@ -72,6 +73,10 @@ const UserProjectTable: FC<Props> = ({
 								canGrant: p.canGrant!,
 								status: p.activeStatus,
 							},
+							activeStatus:
+								language !== "ar"
+									? p.activeStatus.nameArabic
+									: p.activeStatus.nameEnglish,
 						};
 					})
 				);
@@ -124,6 +129,10 @@ const UserProjectTable: FC<Props> = ({
 		{
 			Header: department,
 			accessor: (p) => p.department,
+		},
+		{
+			Header: "Status",
+			accessor: (p) => p.activeStatus,
 		},
 		{
 			Header: actions,

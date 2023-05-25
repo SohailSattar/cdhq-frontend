@@ -14,7 +14,7 @@ import { DropdownOption } from "../Dropdown";
 
 import styles from "./styles.module.scss";
 import { getActiveStatus } from "../../api/activeStatus/get/getActiveStatus";
-import { getAllActiveStatus } from "../../api/activeStatus/get/getAllActiveStatus";
+import { getAllWorkflowStatus } from "../../api/activeStatus/get/getAllWorkflowStatus";
 
 interface Props {
 	totalCountText: string;
@@ -27,8 +27,10 @@ interface Props {
 	onTableSort: (columneId: string, isSortedDesc: boolean) => void;
 	onPageChange: (pageNo: number) => void;
 	onPageViewSelectionChange: (option: DropdownOption) => void;
+	hideWorkflowStatusDropdown?: boolean;
+	hideActiveStatusDropdown?: boolean;
 	onActiveStatusOptionSelectionChange: (option: DropdownOption) => void;
-	hideStatusDropdown?: boolean;
+	onWorkflowStatusOptionSelectionChange: (option: DropdownOption) => void;
 }
 
 const PaginatedTable: FC<Props> = ({
@@ -42,8 +44,10 @@ const PaginatedTable: FC<Props> = ({
 	onTableSort,
 	onPageChange,
 	onPageViewSelectionChange,
+	hideActiveStatusDropdown = false,
+	hideWorkflowStatusDropdown = false,
 	onActiveStatusOptionSelectionChange,
-	hideStatusDropdown = false,
+	onWorkflowStatusOptionSelectionChange,
 }) => {
 	const [t] = useTranslation("common");
 
@@ -56,6 +60,11 @@ const PaginatedTable: FC<Props> = ({
 	const [statusOptions, setStatusOptions] = useState<DropdownOption[]>([
 		{ label: "", value: "" },
 	]);
+
+	const activeStatusOptions: DropdownOption[] = [
+		{ label: "Active", value: 1 },
+		{ label: "Deactive", value: 9 },
+	];
 
 	const pageViewOptions: DropdownOption[] = [
 		{ label: "10", value: 10 },
@@ -71,7 +80,7 @@ const PaginatedTable: FC<Props> = ({
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const { data } = await getAllActiveStatus();
+			const { data } = await getAllWorkflowStatus();
 			if (data) {
 				setStatusOptions(
 					data?.map((d) => {
@@ -96,7 +105,11 @@ const PaginatedTable: FC<Props> = ({
 		onPageChange(page);
 	};
 
-	const statusOptionChangeHandler = (option: DropdownOption) => {
+	const workflowStatusOptionChangeHandler = (option: DropdownOption) => {
+		onWorkflowStatusOptionSelectionChange(option);
+	};
+
+	const activeStatusOptionChangeHandler = (option: DropdownOption) => {
 		onActiveStatusOptionSelectionChange(option);
 	};
 
@@ -127,19 +140,40 @@ const PaginatedTable: FC<Props> = ({
 					</ShadowedContainer>
 				</div>
 			</div>
-			{!hideStatusDropdown && (
-				<div>
-					<ShadowedContainer>
-						<Dropdown
-							options={statusOptions}
-							onSelect={statusOptionChangeHandler}
-							placeholder={t("global.status", {
-								framework: "React",
-							})}
-						/>{" "}
-					</ShadowedContainer>
-				</div>
-			)}
+			<div className={styles.detailBar}>
+				{!hideWorkflowStatusDropdown && (
+					<div
+						className={
+							language !== "ar" ? styles.selection : styles.selectionLTR
+						}>
+						<ShadowedContainer>
+							<Dropdown
+								options={statusOptions}
+								onSelect={workflowStatusOptionChangeHandler}
+								placeholder={t("global.status", {
+									framework: "React",
+								})}
+							/>{" "}
+						</ShadowedContainer>
+					</div>
+				)}{" "}
+				{!hideActiveStatusDropdown && (
+					<div
+						className={
+							language !== "ar" ? styles.selection : styles.selectionLTR
+						}>
+						<ShadowedContainer>
+							<Dropdown
+								options={activeStatusOptions}
+								onSelect={activeStatusOptionChangeHandler}
+								placeholder={t("global.activeStatus", {
+									framework: "React",
+								})}
+							/>{" "}
+						</ShadowedContainer>
+					</div>
+				)}
+			</div>
 			<Table
 				reference={tableRef}
 				columns={columns}

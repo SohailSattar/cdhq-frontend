@@ -276,7 +276,9 @@ const PhoneDirectoryPage = () => {
 						// displayActionsColumn={privileges?.updatePrivilege!}
 						noRecordText={t("table.noEmployee", { framework: "React" })}
 						onActiveStatusOptionSelectionChange={() => {}}
-						hideStatusDropdown
+						hideActiveStatusDropdown
+						hideWorkflowStatusDropdown
+						onWorkflowStatusOptionSelectionChange={() => {}}
 					/>
 				</div>
 				<div></div>
