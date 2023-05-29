@@ -54,6 +54,11 @@ const radius = (base: any) =>
 		minHeight: "32px",
 	});
 
+const arabicStyle = (base: any) =>
+	mergeProps(base, {
+		direction: "rtl",
+	});
+
 const radiusBordered = (base: any) =>
 	mergeProps(base, {
 		borderRadius: "0",
@@ -120,6 +125,13 @@ export const Dropdown: FC<Props> = ({
 		[backgroundColor]
 	);
 
+	const styles = useMemo(
+		() => ({
+			// control: compose(arabicStyle),
+		}),
+		[]
+	);
+
 	return (
 		<>
 			{label !== "" && <label className={style.label}>{label}</label>}
@@ -138,7 +150,7 @@ export const Dropdown: FC<Props> = ({
 				isSearchable={isSearchable}
 				value={value}
 				components={customDropdownIcon}
-				// styles={styles}
+				styles={styles}
 				isDisabled={disabled}
 			/>
 		</>

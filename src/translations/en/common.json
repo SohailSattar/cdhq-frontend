@@ -32,6 +32,7 @@
 		"login": "Login",
 		"logout": "Logout"
 	},
+	"role": { "name": "Role" },
 	"form": {
 		"signin": "Sign In",
 		"password": "Password",

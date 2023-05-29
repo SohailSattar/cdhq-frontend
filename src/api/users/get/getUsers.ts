@@ -9,6 +9,7 @@ export async function getUsers(
 	pageSize: number,
 	keyword?: string,
 	statusCode?: Id,
+	roleId?: Id,
 	orderBy?: string
 ): Promise<APIResponse<APIPaginatedUser>> {
 	try {
@@ -24,9 +25,15 @@ export async function getUsers(
 			queryParam += `&statusCode=${statusCode}`;
 		}
 
+		if (roleId) {
+			queryParam += `&type=${roleId}`;
+		}
+
 		if (orderBy) {
 			queryParam += `${orderBy}`;
 		}
+
+		console.log(queryParam);
 
 		const url =
 			`/users?page=${currentPage}&postsperpage=${pageSize}` + queryParam!;

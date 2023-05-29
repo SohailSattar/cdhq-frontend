@@ -4,8 +4,9 @@ import CheckboxTree from "react-checkbox-tree";
 import "react-checkbox-tree/lib/react-checkbox-tree.css";
 import { Button } from "..";
 
-import "./styles.scss";
 import { useTranslation } from "react-i18next";
+
+import "./styles.scss";
 
 export interface Node {
 	value: string;
