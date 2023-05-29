@@ -12,10 +12,15 @@ import {
 import { useStore } from "../../utils/store";
 import { DropdownOption } from "../Dropdown";
 
-import styles from "./styles.module.scss";
-import { getActiveStatus } from "../../api/activeStatus/get/getActiveStatus";
+import { getAccessRoles } from "../../api/roles/get/getAccessRoles";
+import { getMyRole } from "../../api/users/get/getMyRole";
+import { APIUserRole } from "../../api/users/types";
+
+import { ROLE } from "../../utils";
+
 import { getAllWorkflowStatus } from "../../api/activeStatus/get/getAllWorkflowStatus";
 
+import styles from "./styles.module.scss";
 interface Props {
 	totalCountText: string;
 	totalCount: number;
@@ -27,8 +32,10 @@ interface Props {
 	onTableSort: (columneId: string, isSortedDesc: boolean) => void;
 	onPageChange: (pageNo: number) => void;
 	onPageViewSelectionChange: (option: DropdownOption) => void;
+	showRoleOption?: boolean;
 	hideWorkflowStatusDropdown?: boolean;
 	hideActiveStatusDropdown?: boolean;
+	onRoleOptonSelectionHandler?: (option: DropdownOption) => void;
 	onActiveStatusOptionSelectionChange: (option: DropdownOption) => void;
 	onWorkflowStatusOptionSelectionChange: (option: DropdownOption) => void;
 }
@@ -44,18 +51,22 @@ const PaginatedTable: FC<Props> = ({
 	onTableSort,
 	onPageChange,
 	onPageViewSelectionChange,
+	showRoleOption = false,
 	hideActiveStatusDropdown = false,
 	hideWorkflowStatusDropdown = false,
+	onRoleOptonSelectionHandler = () => {},
 	onActiveStatusOptionSelectionChange,
 	onWorkflowStatusOptionSelectionChange,
 }) => {
 	const [t] = useTranslation("common");
 
 	const language = useStore((state) => state.language);
-
 	const tableRef = useRef(null);
+	const [myRole, setMyRole] = useState<APIUserRole>();
 
 	const [currentPage, setCurrentPage] = useState(1);
+
+	const [roleOptions, setRoleOptions] = useState<DropdownOption[]>([]);
 
 	const [statusOptions, setStatusOptions] = useState<DropdownOption[]>([
 		{ label: "", value: "" },
@@ -77,6 +88,28 @@ const PaginatedTable: FC<Props> = ({
 		{ label: "45", value: 45 },
 		{ label: "50", value: 50 },
 	];
+
+	useEffect(() => {
+		const fetch = async () => {
+			const { data } = await getMyRole();
+			if (data) {
+				setMyRole(data);
+
+				if (data?.role?.name === ROLE.SUPERADMIN) {
+					const { data: roles } = await getAccessRoles();
+					if (roles) {
+						setRoleOptions(
+							roles?.map((x) => {
+								return { label: x.name, value: x.id };
+							})
+						);
+					}
+				}
+			}
+		};
+
+		fetch();
+	}, [setRoleOptions]);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -103,6 +136,10 @@ const PaginatedTable: FC<Props> = ({
 	const pageChangeHandler = (page: number) => {
 		setCurrentPage(page);
 		onPageChange(page);
+	};
+
+	const roleSelectHandler = (option: DropdownOption) => {
+		onRoleOptonSelectionHandler(option);
 	};
 
 	const workflowStatusOptionChangeHandler = (option: DropdownOption) => {
@@ -140,6 +177,24 @@ const PaginatedTable: FC<Props> = ({
 					</ShadowedContainer>
 				</div>
 			</div>
+			{myRole?.role.name === ROLE.SUPERADMIN && showRoleOption && (
+				<div className={styles.detailBar}>
+					<div
+						className={
+							language !== "ar" ? styles.selection : styles.selectionLTR
+						}>
+						<ShadowedContainer>
+							<Dropdown
+								options={roleOptions}
+								onSelect={roleSelectHandler}
+								placeholder={t("role.name", {
+									framework: "React",
+								})}
+							/>{" "}
+						</ShadowedContainer>
+					</div>
+				</div>
+			)}
 			<div className={styles.detailBar}>
 				{!hideWorkflowStatusDropdown && (
 					<div

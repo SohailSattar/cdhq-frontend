@@ -1,11 +1,16 @@
 .checkTree {
-  .rct-title {
-    white-space: nowrap;
-  }
+	.rct-title {
+		white-space: nowrap;
+	}
 
-  .btnSection {
-    margin-bottom: 15px;
-    display: flex;
-    justify-content: space-between;
-  }
+	.btnSection {
+		margin-bottom: 15px;
+		display: flex;
+		justify-content: space-between;
+	}
+}
+
+.react-checkbox-tree label {
+	flex-wrap: nowrap;
+	display: flex;
 }

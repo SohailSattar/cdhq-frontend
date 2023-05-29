@@ -21,8 +21,9 @@ import { DepartmentCategory } from "../../../data/departmentCategory";
 
 import styles from "./styles.module.scss";
 import { getDepartmentsByProject } from "../../../api/departments/get/getDepartmentsByProject";
-import { Id } from "../../../utils";
+import { Id, ROLE } from "../../../utils";
 import { getCentersByDepartment } from "../../../api/departments/get/getCentersByDepartment";
+import { Project } from "../../../data/projects";
 
 interface Props {
 	isNormalUser?: boolean;
@@ -43,16 +44,19 @@ const UserProjectForm: FC<Props> = ({
 }) => {
 	const [t] = useTranslation("common");
 	const language = useStore((state) => state.language);
+	const { role } = useStore((state) => state.loggedInUser);
 
 	const {
 		register,
 		formState: { errors },
 		handleSubmit,
 		setValue,
+		getValues,
 		control,
 	} = useForm<IUserProjectFormInputs>({ criteriaMode: "all" });
 
 	const [projectOptions, setProjectOptions] = useState<DropdownOption[]>([]);
+	const [deptCode, setDeptCode] = useState<string>("");
 
 	const [privilegeOptions, setPrivilegeOptions] = useState<DropdownOption[]>(
 		[]
@@ -68,6 +72,8 @@ const UserProjectForm: FC<Props> = ({
 
 	const [showCenterOptions, setShowCenterOptions] = useState<boolean>(false);
 	const [centersOptions, setCentersOptions] = useState<DropdownOption[]>([]);
+
+	const [hideCanGrant, setHideCanGrant] = useState<boolean>(false);
 
 	// Project
 	useEffect(() => {
@@ -85,11 +91,32 @@ const UserProjectForm: FC<Props> = ({
 								value: project.id,
 								meta: {
 									hasWorkflow: project.hasWorkflow!,
-									departmentSelectionType: project.departmentCategory?.code!,
+									departmentSelectionType:
+										project.departmentCategory?.code! || "W",
 								},
 							};
 						}))
 				);
+
+				const selectedOption = getValues("project");
+
+				if (selectedOption) {
+					const selected = list.find((x) => x.id === selectedOption.value!)!;
+
+					const label =
+						language !== "ar" ? selected?.name! : selected?.nameEnglish!;
+
+					setValue("project", {
+						label: label,
+						value: selected?.id,
+						meta: {
+							hasWorkflow: selected.hasWorkflow!,
+							departmentSelectionType: selected.departmentCategory?.code!,
+						},
+					});
+
+					fetchDepartments(selected?.id, selected.departmentCategory?.code!);
+				}
 			}
 		};
 
@@ -112,6 +139,22 @@ const UserProjectForm: FC<Props> = ({
 						};
 					})
 				);
+
+				const selectedOption = getValues("privilege");
+
+				if (selectedOption) {
+					const selected = data.find(
+						(x) => x.sequenceNumber === selectedOption.value!
+					)!;
+
+					const label =
+						language !== "ar" ? selected?.name! : selected?.nameEnglish!;
+
+					setValue("privilege", {
+						label: label,
+						value: selected?.sequenceNumber,
+					});
+				}
 			}
 		};
 
@@ -134,44 +177,86 @@ const UserProjectForm: FC<Props> = ({
 						};
 					})
 				);
+
+				// Workflow Start
+				let selectedOption = getValues("workflowStart");
+
+				if (selectedOption) {
+					const selected = data.find((x) => x.id === selectedOption.value!)!;
+
+					const label =
+						language !== "ar" ? selected?.nameArabic! : selected?.nameEnglish!;
+
+					setValue("workflowStart", {
+						label: label,
+						value: selected?.id,
+					});
+				}
+
+				// Workflow End
+				selectedOption = getValues("workflowEnd");
+
+				if (selectedOption) {
+					const selected = data.find((x) => x.id === selectedOption.value!)!;
+
+					const label =
+						language !== "ar" ? selected?.nameArabic! : selected?.nameEnglish!;
+
+					setValue("workflowEnd", {
+						label: label,
+						value: selected?.id,
+					});
+				}
 			}
 		};
 
 		fetchData();
-	}, [language]);
+	}, [setWorkflowRangeOptions, language]);
 
 	//Department
-	const fetchMainDepartments = useMemo(
-		() => async (id: Id) => {
+	const fetchDepartments = useMemo(
+		() => async (id: Id, deptCode: string) => {
 			const { data } = await getDepartmentsByProject(id);
 
 			if (data) {
 				setDepartmentsOptions(
 					data.map((dept: APIDepartmentItem) => {
 						return {
-							label: language !== "ar" ? dept.name : dept.nameEnglish,
+							label:
+								deptCode === "W"
+									? language !== "ar"
+										? dept.longFullName
+										: dept.longFullNameEnglish
+									: language !== "ar"
+									? dept.name
+									: dept.nameEnglish,
 							value: dept.id,
 						};
 					})
 				);
+
+				const selectedOption = getValues("department");
+				if (selectedOption?.value! != "" && selectedOption) {
+					const selected = data.find((x) => x.id === selectedOption?.value!)!;
+
+					const label =
+						deptCode === "W"
+							? language !== "ar"
+								? selected.longFullName
+								: selected.longFullNameEnglish
+							: language !== "ar"
+							? selected.name
+							: selected.nameEnglish;
+					const value = selected?.id;
+
+					setValue("department", {
+						label: label,
+						value: value,
+					});
+				}
 			}
 		},
-		[setDepartmentsOptions, language]
-	);
-
-	const fetchCategorizedDepartments = useMemo(
-		() => async () => {
-			const { data } = await getCategorizedDepartments();
-
-			if (data) {
-				setDepartmentsOptions(
-					data.map((dept: APIDepartmentItem) => {
-						return { label: dept.longFullName, value: dept.id };
-					})
-				);
-			}
-		},
-		[setDepartmentsOptions]
+		[setDepartmentsOptions, language, deptCode]
 	);
 
 	// Structure Type
@@ -181,6 +266,21 @@ const UserProjectForm: FC<Props> = ({
 			{ value: "1", label: t("project.withoutChild", { framework: "React" }) },
 		];
 	}, [t]);
+
+	useEffect(() => {
+		const selectedOption = getValues("structureType");
+
+		if (selectedOption) {
+			const selected = departmentTypeOptions.find(
+				(x) => x.value === selectedOption.value!
+			)!;
+
+			setValue("structureType", {
+				label: selected?.label,
+				value: selected?.value,
+			});
+		}
+	}, [language]);
 
 	useEffect(() => {
 		// Project
@@ -212,22 +312,33 @@ const UserProjectForm: FC<Props> = ({
 			required: "Structure type is required.",
 		});
 
+		setValue("structureType", departmentTypeOptions[0]);
 		if (data) {
 			const {
 				project,
 				privilege,
 				workflowStartFrom,
 				workflowEndTo,
+				department,
 				departmentStructureType,
+				canGrant,
 			} = data;
 
 			// Project
 			const selectedProject = projectOptions.find(
 				(x) => x.value === project.id
 			);
-			setValue("project", selectedProject!);
 
-			console.log(data);
+			fetchDepartments(project.id, project.departmentCategory?.code);
+
+			setValue("project", selectedProject!);
+			if (role == ROLE.ADMIN) {
+				if (selectedProject?.value! === Project.UserManagement) {
+					setHideCanGrant(true);
+				} else {
+					setHideCanGrant(false);
+				}
+			}
 
 			// Privilege
 			const selectedPrivilege = privilegeOptions.find(
@@ -245,24 +356,21 @@ const UserProjectForm: FC<Props> = ({
 			}
 
 			const selectedWorkflowStart = workflowRangeOptions.find(
-				(x) => x.value === workflowStartFrom.id
+				(x) => x.value === workflowStartFrom?.id!
 			);
 			setValue("workflowStart", selectedWorkflowStart!);
 
 			const selectedWorkflowEnd = workflowRangeOptions.find(
-				(x) => x.value === workflowEndTo.id
+				(x) => x.value === workflowEndTo?.id!
 			);
 			setValue("workflowEnd", selectedWorkflowEnd!);
-
-			// const selectedDepartment = departmentsOptions.find(
-			// 	(x) => x.value === department.id
-			// );
-			// setValue("department", selectedDepartment!);
 
 			const selectedStructureType = departmentTypeOptions.find(
 				(x) => x.value === departmentStructureType.toString()
 			);
 			setValue("structureType", selectedStructureType!);
+
+			setValue("canGrant", canGrant);
 		}
 
 		// if (selectedProjectOption) {
@@ -290,6 +398,56 @@ const UserProjectForm: FC<Props> = ({
 	]);
 
 	useEffect(() => {
+		const fetch = async () => {
+			if (data) {
+				const { project, department } = data;
+
+				//
+
+				if (project.departmentCategory.code === DepartmentCategory.Center) {
+					setShowCenterOptions(true);
+					const centerPrefix = data.department.id.toString().substring(0, 3);
+
+					const mainDepartment = departmentsOptions.find((x) =>
+						x.value.toString().startsWith(centerPrefix)
+					);
+
+					setValue("department", mainDepartment!);
+
+					//////////////////////////////////////////////////////
+
+					const { data: centersList } = await getCentersByDepartment(
+						data.department.id
+					);
+
+					setCentersOptions(
+						centersList!.map((dept: APIDepartmentItem) => {
+							return {
+								label: language !== "ar" ? dept.name : dept.nameEnglish,
+								value: dept.id,
+							};
+						})
+					);
+
+					const currentCenter = centersOptions.find(
+						(x) => x.value === data.department.id
+					);
+
+					setValue("center", currentCenter!);
+				} else {
+					const selectedDepartment = departmentsOptions.find(
+						(x) => x.value === department.id
+					);
+
+					setValue("department", selectedDepartment!);
+				}
+			}
+		};
+
+		fetch();
+	}, [data, departmentsOptions]);
+
+	useEffect(() => {
 		if (showCenterOptions) {
 			// Department Structure Type
 			register("center", {
@@ -303,60 +461,54 @@ const UserProjectForm: FC<Props> = ({
 			if (data) {
 				const { project } = data!;
 
-				if (
-					project.departmentCategory &&
-					project.departmentCategory.code !== DepartmentCategory.WorkLocation
-				) {
-					fetchMainDepartments(project.id);
+				// fetchDepartments(project.id);
 
-					if (project.departmentCategory.code === DepartmentCategory.Center) {
-						setShowCenterOptions(true);
+				if (project.departmentCategory.code === DepartmentCategory.Center) {
+					setShowCenterOptions(true);
 
-						const centerPrefix = data.department.id.toString().substring(0, 3);
+					const centerPrefix = data.department.id.toString().substring(0, 3);
 
-						const mainDepartment = departmentsOptions.find((x) =>
-							x.value.toString().startsWith(centerPrefix)
-						);
+					const mainDepartment = departmentsOptions.find((x) =>
+						x.value.toString().startsWith(centerPrefix)
+					);
 
-						setValue("department", mainDepartment!);
+					setValue("department", mainDepartment!);
 
-						const { data: centersList } = await getCentersByDepartment(
-							mainDepartment?.value!
-						);
+					const { data: centersList } = await getCentersByDepartment(
+						data.department.id
+					);
 
-						setCentersOptions(
-							centersList!.map((dept: APIDepartmentItem) => {
-								return {
-									label: language !== "ar" ? dept.name : dept.nameEnglish,
-									value: dept.id,
-								};
-							})
-						);
+					setCentersOptions(
+						centersList!.map((dept: APIDepartmentItem) => {
+							return {
+								label: language !== "ar" ? dept.name : dept.nameEnglish,
+								value: dept.id,
+							};
+						})
+					);
 
-						const currentCenter = centersOptions.find(
-							(x) => x.value === data.department.id
-						);
+					const currentCenter = centersOptions.find(
+						(x) => x.value === data.department.id
+					);
 
-						setValue("center", currentCenter!);
-					}
-				} else {
-					fetchCategorizedDepartments();
+					setValue("center", currentCenter!);
 				}
 			}
 		};
 
-		fetch();
+		// fetch();
 	}, [
 		data,
-		centersOptions,
-		departmentsOptions,
-		fetchCategorizedDepartments,
-		fetchMainDepartments,
+		setCentersOptions,
+		setDepartmentsOptions,
+		// centersOptions,
+		// departmentsOptions,
 	]);
 
 	const projectSelectHandler = (option: DropdownOption) => {
 		setShowCenterOptions(false);
-		if (option.meta.hasWorkflow === false) {
+		setDepartmentsOptions([]);
+		if (option?.meta!.hasWorkflow! === false) {
 			setDisableWorkflow(true);
 			setValue(
 				"workflowStart",
@@ -369,25 +521,28 @@ const UserProjectForm: FC<Props> = ({
 			}
 		}
 
+		if (role === ROLE.SUPERADMIN) {
+			if (option?.value! === Project.UserManagement) {
+				setHideCanGrant(true);
+			} else {
+				setHideCanGrant(false);
+			}
+		}
+
 		setValue("project", option);
 
 		setValue("department", { label: "", value: "", meta: null });
 
-		if (!option.meta.departmentSelectionType) {
-			fetchCategorizedDepartments();
-		} else if (
-			option.meta.departmentSelectionType !== DepartmentCategory.WorkLocation
-		) {
-			fetchMainDepartments(option.value);
+		if (option?.value) {
+			fetchDepartments(option?.value, option?.meta.departmentSelectionType);
+		}
 
-			if (option.meta.departmentSelectionType === DepartmentCategory.Center) {
-				setShowCenterOptions(true);
-				setCentersOptions([]);
-			} else {
-				setShowCenterOptions(false);
-			}
+		setCentersOptions([]);
+
+		if (option?.meta.departmentSelectionType === DepartmentCategory.Center) {
+			setShowCenterOptions(true);
 		} else {
-			fetchCategorizedDepartments();
+			setShowCenterOptions(false);
 		}
 	};
 
@@ -552,7 +707,7 @@ const UserProjectForm: FC<Props> = ({
 								// rules={{ required: true }}
 							/>
 						</div>
-						{!isNormalUser && (
+						{!isNormalUser && !hideCanGrant && (
 							<div className={styles.rowItem}>
 								<ShadowedContainer>
 									<Controller

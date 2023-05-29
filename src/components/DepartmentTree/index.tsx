@@ -1,26 +1,29 @@
-import { FC, useEffect, useState } from 'react';
-import { Tree } from '..';
+import { FC, useEffect, useState } from "react";
+import { Tree } from "..";
 
 // import { Node } from '../';
 
-import { getDepartmentHierarchy } from '../../api/departments/get/getDepartmentHierarchy';
-import { getDepartmentsHierarchy } from '../../api/departments/get/getDepartmentsHierarchy';
-import { useStore } from '../../utils/store';
-import CheckboxedTree, { Node } from '../CheckboxedTree';
+import { getDepartmentHierarchy } from "../../api/departments/get/getDepartmentHierarchy";
+import { getDepartmentsHierarchy } from "../../api/departments/get/getDepartmentsHierarchy";
+import { useStore } from "../../utils/store";
+import CheckboxedTree, { Node } from "../CheckboxedTree";
 
-import './styles.scss';
+import "./styles.scss";
+import { getDepartmentHierarchyByProject } from "../../api/departments/get/getDepartmentHierarchyByProject";
 
 export interface Props {
 	id?: number;
 	showCheckbox?: boolean;
 	// node: Node;
 	onNodeCheck: (ids: string[] | string) => void;
+	forProject?: boolean;
 }
 
 const DepartmentTree: FC<Props> = ({
 	id,
 	showCheckbox = true,
 	onNodeCheck,
+	forProject = true,
 }) => {
 	const [hierarchies, setHierarchies] = useState<Node[]>([]);
 
@@ -34,9 +37,16 @@ const DepartmentTree: FC<Props> = ({
 					setHierarchies([data]);
 				}
 			} else {
-				const { data } = await getDepartmentHierarchy(id);
-				if (data) {
-					setHierarchies([data]);
+				if (forProject) {
+					const { data } = await getDepartmentHierarchyByProject(id);
+					if (data) {
+						setHierarchies([data]);
+					}
+				} else {
+					const { data } = await getDepartmentHierarchy(id);
+					if (data) {
+						setHierarchies([data]);
+					}
 				}
 			}
 		};
@@ -47,13 +57,13 @@ const DepartmentTree: FC<Props> = ({
 	return showCheckbox ? (
 		<CheckboxedTree
 			nodes={hierarchies!}
-			direction={language !== 'ar' ? 'rtl' : 'ltr'}
+			direction={language !== "ar" ? "rtl" : "ltr"}
 			onNodeCheck={onNodeCheck}
 		/>
 	) : (
 		<Tree
 			nodes={hierarchies!}
-			direction={language !== 'ar' ? 'rtl' : 'ltr'}
+			direction={language !== "ar" ? "rtl" : "ltr"}
 			onNodeCheck={onNodeCheck}
 		/>
 	);

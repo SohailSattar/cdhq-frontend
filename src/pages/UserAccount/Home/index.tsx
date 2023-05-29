@@ -48,6 +48,8 @@ const UserAccountPage = () => {
 
 	//Parameters
 	const [toggleSort, setToggleSort] = useState(false);
+
+	const [selectedRole, setSelectedRole] = useState<Id>();
 	// This variable is to set the status code which we can pass to the API
 	const [selectedStatusCode, setSelectedStatusCode] = useState<Id>();
 	const [orderBy, setOrderBy] = useState<string>("");
@@ -165,83 +167,6 @@ const UserAccountPage = () => {
 		[actions, employeeNo, fullName, id, logName, role]
 	);
 
-	const fetchData = useMemo(
-		() =>
-			async (currentPage: number, parameter?: string, filterBy?: string) => {
-				// if (role !== ROLE.SUPERADMIN) {
-				// 	const { data: privilege } = await getProjectPrivilege(
-				// 		Project.UserManagement
-				// 	);
-				// 	if (privilege) {
-				// 		const {
-				// 			readPrivilege,
-				// 			insertPrivilege,
-				// 			updatePrivilege,
-				// 			deletePrivilege,
-				// 		} = privilege;
-				// 		setPrivileges({
-				// 			readPrivilege,
-				// 			insertPrivilege,
-				// 			updatePrivilege,
-				// 			deletePrivilege,
-				// 		});
-				// 	}
-				// }
-				// if (departmentIds.length > 0) {
-				// 	const { data } = await getUsersByDepartments(
-				// 		currentPage,
-				// 		pageSize,
-				// 		departmentIds,
-				// 		keyword
-				// 	);
-				// 	if (data) {
-				// 		// setCanView(true)
-				// 		setUsers(data?.users);
-				// 		setTotalCount(data?.totalItems);
-				// 	}
-				// } else {
-				// 	// join params
-				// 	let params = "";
-				// 	// status code
-				// 	console.log(selectedStatusCode);
-				// 	if (selectedStatusCode) {
-				// 		console.log(selectedStatusCode);
-				// 		// orderByParam;
-				// 	}
-				// 	if (keyword === "") {
-				// 		// Get all the users if no keyword is mentioned
-				// 		const { data, error } = await getUsers(
-				// 			currentPage,
-				// 			pageSize,
-				// 			parameter
-				// 		);
-				// 		if (error?.response!.status! === 401) {
-				// 			navigate(RoutePath.LOGIN);
-				// 		} else if (error?.response!.status! === 403) {
-				// 			return;
-				// 		}
-				// 		if (data) {
-				// 			setUsers(data.users);
-				// 			setTotalCount(data.totalItems);
-				// 		}
-				// 		// });
-				// 	} else {
-				// 		const { data } = await getUsersByKeyword(
-				// 			keyword,
-				// 			currentPage,
-				// 			pageSize,
-				// 			parameter
-				// 		);
-				// 		if (data) {
-				// 			setUsers(data?.users);
-				// 			setTotalCount(data?.totalItems);
-				// 		}
-				// 	}
-				// }
-			},
-		[departmentIds, keyword, navigate, pageSize]
-	);
-
 	// New maybe
 	const fetch = useMemo(
 		() => async () => {
@@ -250,14 +175,32 @@ const UserAccountPage = () => {
 				pageSize,
 				keyword,
 				selectedStatusCode,
+				selectedRole,
 				orderBy
 			);
+
+			console.log("sadad");
+
+			if (error?.response!.status! === 401) {
+				navigate(RoutePath.LOGIN);
+			} else if (error?.response!.status! === 403) {
+				return;
+			}
+
 			if (data) {
 				setUsers(data.users);
 				setTotalCount(data.totalItems);
 			}
 		},
-		[currentPage, pageSize, keyword, selectedStatusCode, orderBy]
+		[
+			navigate,
+			currentPage,
+			pageSize,
+			keyword,
+			selectedRole,
+			selectedStatusCode,
+			orderBy,
+		]
 	);
 
 	const fetchByDepartment = useMemo(
@@ -280,7 +223,7 @@ const UserAccountPage = () => {
 	);
 
 	useEffect(() => {
-		if (departmentIds.length == 0) {
+		if (departmentIds.length === 0) {
 			fetch();
 		} else {
 			fetchByDepartment();
@@ -339,14 +282,19 @@ const UserAccountPage = () => {
 		setPageSize(size);
 	};
 
+	const roleSelectHandler = useMemo(
+		() => (option: DropdownOption) => {
+			setSelectedRole(option?.value!);
+		},
+		[]
+	);
+
 	const statusSelectHandler = useMemo(
 		() => (option: DropdownOption) => {
 			if (option) {
 				setSelectedStatusCode((prevState) => (prevState = option?.value!));
-				fetchData(1, `&statusCode=${option?.value!}`);
 			} else {
 				setSelectedStatusCode("");
-				fetchData(1);
 			}
 		},
 		[]
@@ -373,7 +321,10 @@ const UserAccountPage = () => {
 						className={
 							language === "ar" ? styles.hierarchyLTR : styles.hierarchy
 						}>
-						<DepartmentTree onNodeCheck={departmentNodeCheckHandler} />
+						<DepartmentTree
+							onNodeCheck={departmentNodeCheckHandler}
+							id={Project.UserManagement}
+						/>
 					</ShadowedContainer>
 				</div>
 				<div className={styles.table}>
@@ -393,6 +344,8 @@ const UserAccountPage = () => {
 						hideWorkflowStatusDropdown
 						onActiveStatusOptionSelectionChange={statusSelectHandler}
 						onWorkflowStatusOptionSelectionChange={() => {}}
+						showRoleOption
+						onRoleOptonSelectionHandler={roleSelectHandler}
 					/>
 				</div>
 			</div>
