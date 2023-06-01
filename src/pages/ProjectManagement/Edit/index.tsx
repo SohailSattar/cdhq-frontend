@@ -137,6 +137,7 @@ const ProjectEditPage = () => {
 			hasWorkflow,
 			pathLink,
 			isExternalPath,
+			displayOnDashboard,
 		} = values;
 
 		const params: APIUpdateProject = {
@@ -150,6 +151,7 @@ const ProjectEditPage = () => {
 			hasWorkflow: hasWorkflow,
 			pathLink: pathLink,
 			isExternalPath: isExternalPath,
+			isActive: displayOnDashboard,
 		};
 
 		const { data } = await updateProject(params);

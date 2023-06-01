@@ -1,7 +1,9 @@
 @import "../../assets/css/mixins.scss";
+@import "../../assets/css/colors.scss";
 
 .header {
 	display: flex;
+	background-color: $BACKGROUNDPRIMARY;
 
 	.hamburger {
 		display: none;

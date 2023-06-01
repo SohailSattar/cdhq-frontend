@@ -8,14 +8,21 @@ export async function addProject(
 	try {
 		const config = getConfig("multipart/form-data");
 
+		const url = "/projects/";
+		console.log(projectParams);
+
 		const response = await instance.post<APIResponseStatus>(
-			"/projects/",
+			url,
 			projectParams,
 			config
 		);
+
+		console.log(projectParams);
+
 		const data = response.data;
 		return { data };
 	} catch (error) {
+		console.log(error);
 		return { error };
 	}
 }

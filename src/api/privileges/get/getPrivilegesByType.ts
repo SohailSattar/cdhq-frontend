@@ -1,17 +1,17 @@
 import { APIResponse, getConfig } from "../..";
 import { instance } from "../../../network";
 import { Id } from "../../../utils";
-import { APIUserProjectDetail } from "../types";
+import { APIPrivilege } from "../type";
 
-export async function getUserProject(
+export async function getPrivilegesByType(
 	id: Id
-): Promise<APIResponse<APIUserProjectDetail>> {
+): Promise<APIResponse<APIPrivilege[]>> {
 	try {
 		const config = getConfig();
 
-		const url = `/user-projects/${id}`;
+		const url = `/privileges/${id}/list`;
 
-		const response = await instance.get<APIUserProjectDetail>(url, config);
+		const response = await instance.get<APIPrivilege[]>(url, config);
 		const data = response.data;
 		return { data };
 	} catch (err: any) {

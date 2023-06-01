@@ -41,11 +41,13 @@ import "./assets/fonts/index.css";
 import { useStore } from "./utils/store";
 import { Project } from "./data/projects";
 
+import styles from "./styles.module.scss";
+
 function App() {
 	const language = useStore((state) => state.language);
 
 	return (
-		<>
+		<div className={styles.app}>
 			{/* <WebSession /> */}
 			<Router basename="/portal">
 				<Routes>
@@ -392,7 +394,7 @@ function App() {
 				pauseOnFocusLoss={false}
 				pauseOnHover={false}
 			/>
-		</>
+		</div>
 	);
 }
 

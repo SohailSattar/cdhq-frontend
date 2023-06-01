@@ -12,6 +12,7 @@ import { StatusType } from "../types";
 
 import styles from "./styles.module.scss";
 import { ROLE } from "../../utils";
+import { getMyRole } from "../../api/users/get/getMyRole";
 
 interface Props {
 	lockFor?: ROLE[];
@@ -63,15 +64,21 @@ const PageContainer: FC<Props> = ({
 	const [t] = useTranslation("common");
 	const language = useStore((state) => state.language);
 
-	const { role } = useStore((state) => state.loggedInUser);
 	const [canView, setCanView] = useState<boolean>();
 
 	useEffect(() => {
-		if (lockFor?.find((x) => x === role)) {
-			setCanView(false);
-		} else {
-			setCanView(true);
-		}
+		const process = async () => {
+			const { data } = await getMyRole();
+			if (data) {
+				if (lockFor?.find((x) => x === data.role.name)) {
+					setCanView(false);
+				} else {
+					setCanView(true);
+				}
+			}
+		};
+
+		process();
 	}, [lockFor]);
 
 	return (

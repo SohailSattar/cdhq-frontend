@@ -41,12 +41,15 @@ const ProjectNewPage = () => {
 			pathLink,
 			isExternalPath,
 			thumbnail,
+			displayOnDashboard,
 		} = details!;
+
+		console.log(details);
 
 		const params: APINewProject = {
 			name: name,
 			nameEnglish: nameEnglish,
-			parentId: +parentProject?.value!,
+			parentId: parentProject?.value!,
 			projectGroupId: +projectGroup?.value!,
 			departmentCategoryId: +departmentCategory?.value!,
 			withAcademy: withAcademy,
@@ -54,6 +57,7 @@ const ProjectNewPage = () => {
 			pathLink: pathLink,
 			isExternalPath: isExternalPath,
 			thumbnail: thumbnail,
+			isActive: displayOnDashboard,
 		};
 
 		const { data } = await addProject(params);

@@ -204,6 +204,7 @@ const ProjectManagementPage = () => {
 				onSearch={projectSearchClickHandler}
 				onTableSort={() => {}}
 				onPageChange={pageChangeHandler}
+				hideWorkflowStatusDropdown
 				onPageViewSelectionChange={pageViewSelectionHandler}
 				noRecordText={t("table.noProject", { framework: "React" })}
 				onActiveStatusOptionSelectionChange={statusSelectHandler}

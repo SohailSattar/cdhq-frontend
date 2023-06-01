@@ -115,7 +115,8 @@
 		"withAcademy": "هل يجب أن تكون الأكاديمية أيضًا في قائمة الأقسام؟",
 		"hasWorkflow": "لديه سير عمل؟",
 		"urlLink": "الرابط",
-		"isExternal": "Is the link external?"
+		"isExternal": "Is the link external?",
+		"displayOnDashboard": "Display on Dashboard"
 	},
 	"userProject": {
 		"workflowStart": "بداية التمرير",

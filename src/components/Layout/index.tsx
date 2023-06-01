@@ -26,7 +26,8 @@ interface Props {
 const Layout: FC<Props> = ({ projectId, privilegeType = "All", children }) => {
 	const navigate = useNavigate();
 
-	const [canView, setCanView] = useState<boolean>(true);
+	const [content, setContent] = useState<any>();
+	const [canView, setCanView] = useState<boolean>();
 
 	const fetch = useMemo(
 		() => async () => {
@@ -130,7 +131,11 @@ const Layout: FC<Props> = ({ projectId, privilegeType = "All", children }) => {
 					<div className={styles.layout}>
 						{!canView ? <NotAuthorized /> : children}
 					</div>
-					<Footer />{" "}
+					<div>
+						<br />
+						<br />
+					</div>
+					<Footer />
 				</ErrorBoundary>
 			)}
 		</>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -45,6 +45,10 @@ import styles from "./styles.module.scss";
 import { updateUserStatus } from "../../../api/users/update/updateUserStatus";
 import { getActiveStatus } from "../../../api/activeStatus/get/getActiveStatus";
 import { APIActiveStatus } from "../../../api/activeStatus/types";
+import { APIPrivilege, APIPrivileges } from "../../../api/privileges/type";
+import { checkPrivilegeForProjectUser } from "../../../api/userProjects/get/checkPrivilegeForProjectUser";
+import { Project } from "../../../data/projects";
+import { APIUserProjectPrivilege } from "../../../api/userProjects/types";
 
 const UserEditPage = () => {
 	const { id } = useParams<{ id: string }>();
@@ -63,6 +67,8 @@ const UserEditPage = () => {
 	const [userDetail, setUserDetail] = useState<APIUserDetail>();
 
 	const [status, setStatus] = useState<APIActiveStatus>();
+
+	const [privilege, setPrivilege] = useState<APIPrivileges>();
 
 	// User Roles
 	const [roles, setRoles] = useState<APIRole[]>([]);
@@ -83,32 +89,57 @@ const UserEditPage = () => {
 		// }
 
 		const fetchData = async () => {
-			const { data, error } = await getUserDetail(id!);
+			const { data: privilege } = await checkPrivilegeForProjectUser(
+				id!,
+				Project.UserManagement
+			);
 
-			if (error) {
-				if (error.request.status === 401) {
-					navigate(RoutePath.LOGIN);
+			if (privilege) {
+				const {
+					readPrivilege,
+					insertPrivilege,
+					updatePrivilege,
+					deletePrivilege,
+				} = privilege;
+
+				setPrivilege({
+					readPrivilege,
+					insertPrivilege,
+					updatePrivilege,
+					deletePrivilege,
+				});
+
+				if (privilege?.readPrivilege) {
+					const { data, error } = await getUserDetail(id!);
+
+					if (error) {
+						if (error.request.status === 401) {
+							navigate(RoutePath.LOGIN);
+						}
+					}
+
+					if (data) {
+						setUserDetail(data);
+						setStatus(data.activeStatus);
+
+						const { data: isExist } = await checkIfEmployeeExists(data?.id!);
+
+						if (data.role) {
+							setSelectedRoleOption({
+								value: data.role?.id!,
+								label: data?.role?.name!,
+							});
+						}
+
+						setIsExistingEmployee(isExist!);
+					} else {
+						navigate(`${RoutePath.USER}/${loggedUserId}`);
+					}
 				}
-			}
-
-			if (data) {
-				setUserDetail(data);
-				setStatus(data.activeStatus);
-
-				const { data: isExist } = await checkIfEmployeeExists(data?.id!);
-
-				if (data.role) {
-					setSelectedRoleOption({
-						value: data.role?.id!,
-						label: data?.role?.name!,
-					});
-				}
-
-				setIsExistingEmployee(isExist!);
-			} else {
-				navigate(`${RoutePath.USER}/${loggedUserId}`);
 			}
 		};
+
+		console.log("whyyy?");
 
 		fetchData();
 	}, [language, id, navigate, role, loggedUserId]);
@@ -286,10 +317,11 @@ const UserEditPage = () => {
 			showBackButton
 			btnBackLabel={t("button.backToDetail", { framework: "React" })}
 			btnBackUrlLink={`${RoutePath.USER}/${id}`}
-			showChangeStatusButton={role === ROLE.SUPERADMIN}
+			showChangeStatusButton={privilege?.updatePrivilege}
 			currentStatus={status?.id === 1 ? "ACTIVE" : "DEACTIVE"}
 			onActivate={activateButtonClickHandler}
-			onDectivate={deleteButtonClickHandler}>
+			onDectivate={deleteButtonClickHandler}
+			displayContent={privilege?.readPrivilege || false}>
 			<Status status={status!} />
 			<Tabs>
 				<TabList>

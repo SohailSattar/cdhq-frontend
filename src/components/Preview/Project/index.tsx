@@ -61,7 +61,7 @@ const ProjectPreview: FC<Props> = ({ data, onClick }) => {
 							<div className={styles.title}>
 								{t("project.parentProject", { framework: "React" })}
 							</div>
-							<div>{parentProject.label}</div>
+							<div>{parentProject?.label}</div>
 						</div>
 						<div className={styles.content}>
 							<div className={styles.title}>

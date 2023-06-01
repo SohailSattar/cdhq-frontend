@@ -175,6 +175,7 @@ const ProjectForm: FC<Props> = ({
 				hasWorkflow,
 				pathLink,
 				isExternalPath,
+				isActive,
 			} = data;
 
 			setHideUploadButton(false);
@@ -203,6 +204,7 @@ const ProjectForm: FC<Props> = ({
 			setValue("hasWorkflow", hasWorkflow!);
 			setValue("pathLink", pathLink! || "");
 			setValue("isExternalPath", isExternalPath! || false);
+			setValue("displayOnDashboard", isActive || false);
 		}
 	}, [
 		register,
@@ -419,6 +421,26 @@ const ProjectForm: FC<Props> = ({
 							</div>
 						</div>
 					</div>
+					<ShadowedContainer className={styles.row}>
+						<div className={clsx(styles.field, styles.check)}>
+							<div>
+								<Controller
+									render={({ field: { onChange, value } }) => (
+										<Checkbox
+											label={t("project.displayOnDashboard", {
+												framework: "React",
+											})}
+											checked={value}
+											onChange={onChange}
+										/>
+									)}
+									name="displayOnDashboard"
+									control={control}
+									defaultValue={false}
+								/>
+							</div>
+						</div>
+					</ShadowedContainer>
 					{Object.keys(errors).length > 0 && (
 						<ShadowedContainer>
 							<ErrorMessage

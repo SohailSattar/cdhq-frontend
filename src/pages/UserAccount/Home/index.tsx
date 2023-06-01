@@ -30,13 +30,17 @@ import styles from "./styles.module.scss";
 import { APIPrivileges } from "../../../api/privileges/type";
 import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPrivilege";
 import { Project } from "../../../data/projects";
+import { APIRole } from "../../../api/roles/types";
+import { getRole } from "../../../api/users/get/getRole";
+import { getMyRole } from "../../../api/users/get/getMyRole";
 
 const UserAccountPage = () => {
 	const [t] = useTranslation("common");
 	const navigate = useNavigate();
 	const language = useStore((state) => state.language);
 
-	const { role } = useStore((state) => state.loggedInUser);
+	// const { role } = useStore((state) => state.loggedInUser);
+	const [role, setRole] = useState<APIRole>();
 
 	const [keyword, setKeyword] = useState("");
 
@@ -59,10 +63,21 @@ const UserAccountPage = () => {
 	// const [departmentIdsTemp, setDepartmentIdsTemp] = useState<string[]>([]);
 	const [departmentIds, setDepartmentIds] = useState<string[]>([]);
 
+	useEffect(() => {
+		const fetch = async () => {
+			const { data } = await getMyRole();
+			if (data) {
+				setRole(data.role!);
+			}
+		};
+
+		fetch();
+	}, []);
+
 	// check if authorized to access
 	useEffect(() => {
 		const fetch = async () => {
-			if (role !== ROLE.SUPERADMIN) {
+			if (role?.name !== ROLE.SUPERADMIN) {
 				const { data: privilege } = await getProjectPrivilege(
 					Project.UserManagement
 				);
@@ -82,7 +97,9 @@ const UserAccountPage = () => {
 				}
 			}
 		};
-	}, [privileges]);
+
+		fetch();
+	}, [setPrivileges]);
 
 	const id = t("user.id", { framework: "React" });
 	const employeeNo = t("user.employeeNumber", { framework: "React" });
@@ -156,7 +173,7 @@ const UserAccountPage = () => {
 				Cell: ({ value }: any) => (
 					<ActionButtons
 						id={""}
-						showEdit={role === ROLE.SUPERADMIN}
+						showEdit={role?.name === ROLE.SUPERADMIN}
 						showView={true}
 						detailPageLink={`${RoutePath.USER}/${value.id}`}
 						editPageLink={`${RoutePath.USER}/${value.id}/edit`}
@@ -210,6 +227,7 @@ const UserAccountPage = () => {
 				10,
 				departmentIds,
 				keyword,
+				selectedRole,
 				selectedStatusCode,
 				orderBy
 			);
@@ -219,16 +237,19 @@ const UserAccountPage = () => {
 				setTotalCount(data?.totalItems);
 			}
 		},
-		[departmentIds, keyword, selectedStatusCode, orderBy]
+		[departmentIds, keyword, selectedRole, selectedStatusCode, orderBy]
 	);
 
 	useEffect(() => {
-		if (departmentIds.length === 0) {
-			fetch();
-		} else {
-			fetchByDepartment();
+		if (role?.name !== ROLE.USER) {
+			if (departmentIds.length === 0) {
+				fetch();
+			} else {
+				fetchByDepartment();
+			}
 		}
-	}, [fetch]);
+		console.log("this?");
+	}, [fetch, fetchByDepartment]);
 
 	const userSearchClickHandler = (keyword: string) => {
 		setKeyword(keyword);
@@ -303,10 +324,10 @@ const UserAccountPage = () => {
 	return (
 		<PageContainer
 			lockFor={[ROLE.USER]}
-			displayContent={privileges?.readPrivilege}
+			displayContent={privileges?.readPrivilege!}
 			title={t("page.userHome", { framework: "React" })}
 			className={styles.userList}
-			showAddButton={role === ROLE.SUPERADMIN}
+			showAddButton={role?.name === ROLE.SUPERADMIN}
 			btnAddLabel={t("button.addNewUser", { framework: "React" })}
 			btnAddUrlLink={RoutePath.USER_SEARCH}>
 			<div className={styles.content}>

@@ -1,0 +1,30 @@
+.assignProject {
+	.row {
+		display: flex;
+		margin-bottom: 15px;
+	}
+
+	.rowItem {
+		flex: 1;
+		margin-left: 5px;
+		margin-right: 5px;
+	}
+
+	.label {
+		// margin-bottom: 5px;
+		font-size: 20px;
+	}
+
+	.value {
+		margin-bottom: 10px;
+		font-size: 15px;
+	}
+
+	.container {
+		padding: 0;
+	}
+
+	.rtlContainer {
+		direction: rtl;
+	}
+}

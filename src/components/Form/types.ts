@@ -17,7 +17,7 @@ export interface IProjectFormInputs {
 	iconName?: string;
 	name: string;
 	nameEnglish: string;
-	parentProject: DropdownOption;
+	parentProject?: DropdownOption;
 	projectGroup: DropdownOption;
 	departmentCategory?: DropdownOption;
 	withAcademy: boolean;
@@ -25,6 +25,7 @@ export interface IProjectFormInputs {
 	pathLink: string;
 	isExternalPath: boolean;
 	thumbnail: File;
+	displayOnDashboard: boolean;
 }
 
 export interface IUserFormInputs {
@@ -46,7 +47,7 @@ interface IUserProjectForm {
 	workflowStart: DropdownOption;
 	workflowEnd: DropdownOption;
 	department: DropdownOption;
-	center: DropdownOption;
+	// center: DropdownOption;
 	structureType: DropdownOption;
 	canGrant: boolean;
 }

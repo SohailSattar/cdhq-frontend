@@ -1,174 +1,169 @@
-@import '../../assets/css/variable.scss';
-@import '../../assets/css/mixins.scss';
+@import "../../assets/css/variable.scss";
+@import "../../assets/css/mixins.scss";
 
 $border-radius: 0px;
 
 .tableWrapper {
-  overflow: auto;
-  width: 100%;
-  border-radius: 0px;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); //5px 5px #888888;
+	overflow: auto;
+	width: 100%;
+	border-radius: 0px;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); //5px 5px #888888;
 
+	.table {
+		width: 100%;
+		border: none;
+		position: relative;
+		border-collapse: separate;
+		border-spacing: 0 2px;
 
-  .table {
-    width: 100%;
-    border: none;
-    position: relative;
-    border-collapse: separate;
-    border-spacing: 0 2px;
+		background-color: white;
 
+		.tableHead {
+			height: 50px;
 
-    .tableHead {
-      height: 50px;
+			.info {
+				display: flex;
+				white-space: nowrap;
+				align-items: center;
+			}
 
-      .info {
-        display: flex;
-        white-space: nowrap;
-        align-items: center;
-      }
+			th {
+				text-align: right;
+				// color: #000;
+				font-weight: 500;
+				font-size: 12px;
+				line-height: 15px;
+				letter-spacing: 2px;
+				text-transform: uppercase;
+				position: sticky;
+				top: 0;
+				cursor: pointer;
 
-      th {
-        text-align: right;
-        // color: #000;
-        font-weight: 500;
-        font-size: 12px;
-        line-height: 15px;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        position: sticky;
-        top: 0;
-        cursor: pointer;
+				&:first-child {
+					// border-radius: 0 $border-radius 0 0;
+					// border-radius: $border-radius 0 0 0;
+				}
 
-        &:first-child {
-          // border-radius: 0 $border-radius 0 0;
-          // border-radius: $border-radius 0 0 0;
-        }
+				&:last-child {
+					// border-radius: $border-radius 0 0 0;
+					// border-radius: 0 $border-radius 0 0;
+				}
 
-        &:last-child {
-          // border-radius: $border-radius 0 0 0;
-          // border-radius: 0 $border-radius 0 0;
-        }
+				@include respond-to("mobile") {
+					padding: 1px;
+					white-space: nowrap;
+				}
+			}
+		}
 
-        @include respond-to('mobile') {
-          padding: 1px;
-          white-space: nowrap;
-        }
-      }
-    }
+		.tableHeadLTR {
+			th {
+				text-align: left;
+			}
+		}
 
-    .tableHeadLTR {
-      th {
-        text-align: left;
-      }
-    }
+		.tableBody {
+			color: #000;
 
+			.tableRow {
+				// border-radius: 8px;
+				margin-bottom: 2px;
+				// vertical-align: top;
 
-    .tableBody {
-      color: #000;
+				&:hover {
+					// background: linear-gradient(to bottom, #06a899 -56.95%, rgba(20, 31, 51, 0) 186.3%) !important;
+					cursor: pointer;
+				}
 
-      .tableRow {
-        // border-radius: 8px;
-        margin-bottom: 2px;
-        // vertical-align: top;
+				&.subRow {
+					.nested {
+						width: 100%;
+						border-radius: $border-radius;
 
-        &:hover {
-          // background: linear-gradient(to bottom, #06a899 -56.95%, rgba(20, 31, 51, 0) 186.3%) !important;
-          cursor: pointer;
-        }
+						.table {
+							border-spacing: 0;
 
-        &.subRow {
-          .nested {
-            width: 100%;
-            border-radius: $border-radius;
+							.tableBody {
+								tr {
+									&:last-child {
+										td {
+											&:first-child {
+												border-radius: 0 0 0 $border-radius;
+											}
 
-            .table {
-              border-spacing: 0;
+											&:last-child {
+												border-radius: 0 0 $border-radius 0;
+											}
+										}
+									}
+								}
 
-              .tableBody {
-                tr {
-                  &:last-child {
-                    td {
-                      &:first-child {
-                        border-radius: 0 0 0 $border-radius;
-                      }
+								td {
+									border-radius: 0;
+									border-bottom: 0.5px solid rgba(255, 255, 255, 0.5);
 
-                      &:last-child {
-                        border-radius: 0 0 $border-radius 0;
-                      }
-                    }
-                  }
-                }
+									&:first-child {
+										border-left: 0.5px solid rgba(255, 255, 255, 0.5);
+									}
 
-                td {
-                  border-radius: 0;
-                  border-bottom: 0.5px solid rgba(255, 255, 255, 0.5);
+									&:last-child {
+										border-right: 0.5px solid rgba(255, 255, 255, 0.5);
+									}
+								}
+							}
+						}
 
-                  &:first-child {
-                    border-left: 0.5px solid rgba(255, 255, 255, 0.5);
-                  }
+						&:hover {
+							background-color: none;
+						}
+					}
 
-                  &:last-child {
-                    border-right: 0.5px solid rgba(255, 255, 255, 0.5);
-                  }
-                }
-              }
-            }
+					&:hover {
+						cursor: default;
+						background: none !important;
+					}
+				}
 
-            &:hover {
-              background-color: none;
-            }
-          }
+				td {
+					margin: 0;
+					padding: 6px 12px;
 
-          &:hover {
-            cursor: default;
-            background: none !important;
-          }
-        }
+					text-align: right;
+					font-style: normal;
+					// font-weight: bold;
+					line-height: 18px;
 
-        td {
-          margin: 0;
-          padding: 6px 12px;
+					@include respond-to("mobile") {
+						padding: 10px;
+						white-space: nowrap;
+					}
+				}
 
-          text-align: right;
-          font-style: normal;
-          // font-weight: bold;
-          line-height: 18px;
+				td.noRecordsRow {
+					text-align: center;
+					border-radius: 0 0 $border-radius $border-radius !important;
+				}
 
-          @include respond-to('mobile') {
-            padding: 10px;
-            white-space: nowrap;
-          }
-        }
+				td:first-child {
+					border-radius: $border-radius 0 0 $border-radius;
+				}
 
-        td.noRecordsRow {
-          text-align: center;
-          border-radius: 0 0 $border-radius $border-radius !important;
-        }
+				td:last-child {
+					border-radius: 0 $border-radius $border-radius 0;
+				}
 
-        td:first-child {
-          border-radius: $border-radius 0 0 $border-radius;
-        }
+				@include respond-to("mobile") {
+					height: auto !important;
+				}
+			}
 
-        td:last-child {
-          border-radius: 0 $border-radius $border-radius 0;
-        }
-
-
-        @include respond-to('mobile') {
-          height: auto !important;
-        }
-      }
-
-
-      .tableRowLTR {
-
-        td {
-          text-align: left;
-        }
-      }
-    }
-
-  }
+			.tableRowLTR {
+				td {
+					text-align: left;
+				}
+			}
+		}
+	}
 }

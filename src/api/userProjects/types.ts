@@ -68,6 +68,14 @@ export interface APIUserProjectDetail {
 	workflowEndTo: APIActiveStatus;
 	departmentStructureType: string;
 	canGrant: boolean;
+	createdBy?: string;
+	createdOn: string;
+}
+
+export interface APIUserProjectDetail2 {
+	privilege: APIPrivilegeItem;
+	workflowStartFrom: APIActiveStatus;
+	workflowEndTo: APIActiveStatus;
 }
 
 export interface APIUpdateUserProjectDetail {

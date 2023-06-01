@@ -1,3 +1,4 @@
+import { Id } from "../../utils";
 import { APIActiveStatus } from "../activeStatus/types";
 import { APIDepartmentCategory } from "../departmentCategories/types";
 import { APIDepartmentItem } from "../departments/types";
@@ -53,6 +54,7 @@ export interface APIProjectDetail {
 	createdOn: string;
 	updatedBy: string;
 	updatedOn: string;
+	isActive?: boolean;
 }
 
 export interface APIProjectHierarchy {
@@ -85,7 +87,7 @@ export interface APIProjectInfoStatus {
 export interface APINewProject {
 	name: string;
 	nameEnglish: string;
-	parentId: number;
+	parentId: Id;
 	projectGroupId: number;
 	departmentCategoryId?: number;
 	withAcademy: boolean;
@@ -93,6 +95,7 @@ export interface APINewProject {
 	pathLink?: string;
 	isExternalPath: boolean;
 	thumbnail: File;
+	isActive: boolean;
 }
 
 export interface APIUpdateProject {
@@ -106,6 +109,7 @@ export interface APIUpdateProject {
 	hasWorkflow: boolean;
 	pathLink?: string;
 	isExternalPath: boolean;
+	isActive: boolean;
 }
 
 export interface APIUpdateProjectStatus {

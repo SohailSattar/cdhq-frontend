@@ -48,19 +48,50 @@ const UserDetailPage = () => {
 
 	const [status, setStatus] = useState<APIActiveStatus>();
 
-	const [privileges, setPrivileges] = useState<APIPrivileges>();
+	const [canView, setCanView] = useState<boolean>(false);
+
+	useEffect(() => {
+		const fetch = async () => {
+			const { data: privilege } = await checkPrivilegeForProjectUser(
+				id!,
+				Project.UserManagement
+			);
+
+			if (privilege) {
+				const {
+					readPrivilege,
+					insertPrivilege,
+					updatePrivilege,
+					deletePrivilege,
+				} = privilege;
+
+				// setPrivileges({
+				// 	readPrivilege,
+				// 	insertPrivilege,
+				// 	updatePrivilege,
+				// 	deletePrivilege,
+				// });
+			}
+		};
+
+		// fetch();
+	}, []);
 
 	useEffect(() => {
 		setIsLoading(true);
 		const fetchData = async () => {
 			const { data } = await getUserDetail(id!);
-
+			console.log(data);
 			if (data) {
+				setCanView(true);
 				setUser(data);
 				setStatus(data.activeStatus);
 			} else {
-				navigate(RoutePath.USER);
+				setCanView(false);
 			}
+			// else {
+			// 	navigate(RoutePath.USER);
+			// }
 		};
 
 		fetchData();
@@ -131,6 +162,7 @@ const UserDetailPage = () => {
 			) : (
 				<PageContainer
 					title={t("page.userDetail", { framework: "React" })}
+					displayContent={canView}
 					showBackButton
 					btnBackUrlLink={RoutePath.USER}
 					showEditButton

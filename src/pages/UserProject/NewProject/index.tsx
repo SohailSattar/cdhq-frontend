@@ -43,9 +43,9 @@ const AssignProjectToUserPage = () => {
 
 		departId = formInputs.department?.value!;
 
-		if (formInputs.center.value !== "") {
-			departId = formInputs.center.value;
-		}
+		// if (formInputs.center.value !== "") {
+		// 	departId = formInputs.center.value;
+		// }
 
 		const projectId = formInputs.project.value!.toString();
 		const privilegeId = formInputs.privilege?.value!.toString();
@@ -82,6 +82,7 @@ const AssignProjectToUserPage = () => {
 
 	return (
 		<PageContainer
+			lockFor={[ROLE.USER]}
 			showBackButton
 			btnBackUrlLink={`${RoutePath.USER_DETAIL.replace(":id", id!)}`}
 			btnBackLabel={t("button.backToDetail", { framework: "React" })}>

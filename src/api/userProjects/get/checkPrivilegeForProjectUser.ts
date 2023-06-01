@@ -14,6 +14,7 @@ export async function checkPrivilegeForProjectUser(
 
 		const response = await instance.get<APIUserProjectPrivilege>(url, config);
 		const data = response.data;
+		console.log(data);
 		return { data };
 	} catch (err: any) {
 		const error = err.response.data;
