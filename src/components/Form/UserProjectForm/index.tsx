@@ -554,7 +554,8 @@ const UserProjectForm: FC<Props> = ({
 			fetchDepartments(project.id);
 
 			setValue("project", selectedProject!);
-			if (role == ROLE.ADMIN) {
+
+			if (role == ROLE.SUPERADMIN) {
 				if (selectedProject?.value! === Project.UserManagement) {
 					setHideCanGrant(true);
 				} else {
@@ -662,7 +663,6 @@ const UserProjectForm: FC<Props> = ({
 
 	// comment if not used
 	useEffect(() => {
-		console.log(data);
 		if (data) {
 			const selectedDepartment = departmentsOptions.find(
 				(x) => x.value === data.department.id

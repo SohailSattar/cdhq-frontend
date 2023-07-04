@@ -1,17 +1,17 @@
 .textbox {
-    display: flex;
-    width: 100%;
+	display: flex;
+	width: 100%;
+	font-size: 18px;
 
-    .input {
-        justify-content: left;
-    }
+	.input {
+		justify-content: left;
+	}
 
-    .error {
-        color: red;
-    }
+	.error {
+		color: red;
+	}
 
-    .test {
-        color: green;
-    }
-
+	.test {
+		color: green;
+	}
 }

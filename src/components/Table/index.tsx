@@ -57,7 +57,7 @@ Table.defaultProps = {
 	headerColor: "#fff",
 	rowColor: "rgba(0, 0, 0, 0.04)",
 	headerPadding: "6px 12px",
-	fontSize: "12px",
+	// fontSize: "12px",
 	columnsToHide: [],
 	// rowHeight: '16px',
 };
@@ -103,14 +103,12 @@ export function Table<T extends object>(props: Props<T>): ReactElement {
 				cellSpacing="0"
 				cellPadding="0"
 				style={{ borderSpacing: `0 ${props.rowSpacing}` }}
-				ref={props.reference}
-			>
+				ref={props.reference}>
 				<thead
 					className={clsx(
 						styles.tableHead,
 						language === "ar" && styles.tableHeadLTR
-					)}
-				>
+					)}>
 					<tr {...headerGroups[0].getHeaderGroupProps()}>
 						{headerGroups[0].headers.map((column: any) => {
 							const sortByToggleProps = column.getSortByToggleProps({
@@ -132,8 +130,7 @@ export function Table<T extends object>(props: Props<T>): ReactElement {
 										color: props.headerColor,
 										padding: props.headerPadding,
 										background: props.headerBackground,
-									}}
-								>
+									}}>
 									{!(column as any).tooltip && column.render("Header")}
 								</th>
 							);
@@ -142,16 +139,19 @@ export function Table<T extends object>(props: Props<T>): ReactElement {
 					</tr>
 				</thead>
 
-				<tbody {...getTableBodyProps()} className={styles.tableBody}>
+				<tbody
+					{...getTableBodyProps()}
+					className={styles.tableBody}>
 					{!rows.length && (
 						<tr
 							className={clsx(
 								styles.tableRow,
 								language === "ar" && styles.tableRowLTR
 							)}
-							style={{ background: props.rowColor }}
-						>
-							<td className={styles.noRecordsRow} colSpan={maxColCount}>
+							style={{ background: props.rowColor }}>
+							<td
+								className={styles.noRecordsRow}
+								colSpan={maxColCount}>
 								{props.noRecordsText}
 							</td>
 						</tr>
@@ -172,8 +172,7 @@ export function Table<T extends object>(props: Props<T>): ReactElement {
 									}}
 									onClick={() =>
 										props.onRowClick && props.onRowClick(row.original)
-									}
-								>
+									}>
 									{row.cells.map((cell, index) => {
 										return (
 											<td
@@ -187,8 +186,7 @@ export function Table<T extends object>(props: Props<T>): ReactElement {
 												onClick={(e) => {
 													if (index === row.cells.length - 1)
 														e.stopPropagation();
-												}}
-											>
+												}}>
 												<>{cell.render("Cell")}</>
 											</td>
 										);
@@ -201,13 +199,11 @@ export function Table<T extends object>(props: Props<T>): ReactElement {
 											styles.tableRow,
 											language === "ar" && styles.tableRowLTR,
 											styles.subRow
-										)}
-									>
+										)}>
 										<td
 											colSpan={visibleColumns.length}
 											style={{ background: props.rowColor }}
-											className={styles.nested}
-										>
+											className={styles.nested}>
 											{props.renderSubComponent(row.original)}
 										</td>
 									</tr>

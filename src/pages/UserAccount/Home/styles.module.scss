@@ -31,6 +31,16 @@
 		width: 80%;
 	}
 
+	.tableHeaderCell {
+		display: flex;
+		justify-content: center;
+	}
+
+	.cell {
+		display: flex;
+		justify-content: center;
+	}
+
 	.action {
 		display: flex;
 		justify-content: flex-end;
@@ -50,12 +60,14 @@
 
 		.arabic {
 			display: flex;
-			justify-content: right;
+			justify-content: center;
+			// justify-content: right;
 		}
 
 		.english {
 			display: flex;
-			justify-content: left;
+			justify-content: center;
+			// justify-content: left;
 		}
 	}
 }

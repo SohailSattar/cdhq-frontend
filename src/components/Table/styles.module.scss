@@ -33,7 +33,7 @@ $border-radius: 0px;
 				text-align: right;
 				// color: #000;
 				font-weight: 500;
-				font-size: 12px;
+				font-size: 16px;
 				line-height: 15px;
 				letter-spacing: 2px;
 				text-transform: uppercase;
@@ -70,10 +70,15 @@ $border-radius: 0px;
 			.tableRow {
 				// border-radius: 8px;
 				margin-bottom: 2px;
+				// font-size: 16px;
 				// vertical-align: top;
 
 				&:hover {
-					// background: linear-gradient(to bottom, #06a899 -56.95%, rgba(20, 31, 51, 0) 186.3%) !important;
+					background: linear-gradient(
+						to bottom,
+						#c8cfcf -56.95%,
+						rgba(20, 31, 51, 0) 186.3%
+					) !important;
 					cursor: pointer;
 				}
 

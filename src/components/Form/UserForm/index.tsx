@@ -169,7 +169,7 @@ const UserForm: FC<Props> = ({
 			if (data) {
 				setDepartmentOptions(
 					data.map((x) => ({
-						label: language !== "ar" ? x.name : x.nameEnglish,
+						label: language !== "ar" ? x.longFullName : x.longFullNameEnglish,
 						value: x.id,
 					}))
 				);
@@ -417,7 +417,7 @@ const UserForm: FC<Props> = ({
 						<Controller
 							render={({ field: { value } }) => (
 								<Dropdown
-									label="Class"
+									label={t("class.name", { framework: "React" })}
 									options={classOptions}
 									onSelect={classChangeHandler}
 									value={value}

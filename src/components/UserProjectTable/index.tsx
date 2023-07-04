@@ -14,7 +14,9 @@ import {
 	DeleteConfirmation,
 	Pagination,
 	ProjectSummary,
+	SearchBox,
 	ShadowedContainer,
+	StatusIcon,
 	TotalCount,
 } from "..";
 import { deleteProject } from "../../api/users/delete/deleteProject";
@@ -57,6 +59,7 @@ const UserProjectTable: FC<Props> = ({
 						return {
 							...p,
 							id: p.id,
+							projectId: p.project.id,
 							privilege:
 								language !== "ar"
 									? p.privilege?.name!
@@ -96,16 +99,21 @@ const UserProjectTable: FC<Props> = ({
 		onDeleteButtonClick(id);
 	};
 
+	const projectId = t("project.id", { framework: "React" });
 	const projectName = t("project.name", { framework: "React" });
 	const privilege = t("privilege.name", { framework: "React" });
 	const department = t("department.name", { framework: "React" });
+	const deptStructure = t("department.structureType", { framework: "React" });
+	const canGrant = t("userProject.canGrant", { framework: "React" });
+
+	const status = t("global.status", { framework: "React" });
 
 	const actions = t("global.actions", { framework: "React" });
-	const activate = t("button.activate", { framework: "React" });
 	const edit = t("button.edit", { framework: "React" });
 	const deleteBtn = t("button.delete", { framework: "React" });
 
 	const columns: Column<APIProjectTable>[] = [
+		{ Header: projectId, accessor: (p) => p.projectId! },
 		{
 			Header: projectName,
 			accessor: (p) => p,
@@ -131,7 +139,23 @@ const UserProjectTable: FC<Props> = ({
 			accessor: (p) => p.department,
 		},
 		{
-			Header: "Status",
+			Header: deptStructure,
+			accessor: (p) => p.details.departmentChild,
+			Cell: ({ value }: any) => (
+				<div>
+					{value === 9
+						? t("department.withChild", { framework: "React" })
+						: t("department.single", { framework: "React" })}
+				</div>
+			),
+		},
+		{
+			Header: canGrant,
+			accessor: (p) => p.details.canGrant,
+			Cell: ({ value }: any) => <StatusIcon status={value} />,
+		},
+		{
+			Header: status,
 			accessor: (p) => p.activeStatus,
 		},
 		{
@@ -140,16 +164,10 @@ const UserProjectTable: FC<Props> = ({
 			Cell: ({ value }: any) => (
 				<div className={language !== "ar" ? styles.action : styles.actionLTR}>
 					<div className={styles.btnDiv}>
-						<Button
-							style={{ height: "20px", fontSize: "12px" }}
-							onClick={(id) => editClickHandler(value.id)}>
-							{edit}
-						</Button>
+						<Button onClick={(id) => editClickHandler(value.id)}>{edit}</Button>
 					</div>
 					<div>
-						<Button
-							style={{ height: "20px", fontSize: "12px" }}
-							onClick={(id) => deleteClickHandler(value.id)}>
+						<Button onClick={(id) => deleteClickHandler(value.id)}>
 							{deleteBtn}
 						</Button>
 					</div>
@@ -157,6 +175,8 @@ const UserProjectTable: FC<Props> = ({
 			),
 		},
 	];
+
+	const searchClickHandler = (value: string) => {};
 
 	const deleteConfirmationClickHandler = async () => {
 		if (selectedProjectId !== "") {
@@ -181,21 +201,13 @@ const UserProjectTable: FC<Props> = ({
 		setIsModalOpen(false);
 	};
 
-	const projectStatusUpdateClickHandler = async (id: number) => {
-		const { data } = await updateUserProjectStatus({
-			id: id!.toString(),
-		});
-
-		if (data) {
-		}
-	};
-
 	const pageChangeHandler = (pageNumber: number) => {
 		setCurrentPage(pageNumber);
 	};
 
 	return totalCount > 0 ? (
 		<>
+			<SearchBox onClick={searchClickHandler} />
 			<TotalCount
 				label={t("project.count", { framework: "React" })}
 				count={totalCount}
@@ -203,20 +215,6 @@ const UserProjectTable: FC<Props> = ({
 			<Table
 				data={projects!}
 				columns={columns}
-				renderSubComponent={(row) => (
-					<>
-						<ProjectSummary
-							id={row.id}
-							readPrivilege={row.readPrivilege}
-							insertPrivilege={row.insertPrivilege}
-							updatePrivilege={row.updatePrivilege}
-							deletePrivilege={row.deletePrivilege}
-							canGrant={row.details.canGrant}
-							departmentStructureType={row.details.departmentChild}
-							department={row.department}
-						/>
-					</>
-				)}
 				columnsToHide={displayActionsColumn ? [] : [actions]}
 				noRecordsText={t("table.noProject", { framework: "React" })}
 			/>

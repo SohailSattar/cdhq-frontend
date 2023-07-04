@@ -323,6 +323,17 @@ const UserEditPage = () => {
 			onDectivate={deleteButtonClickHandler}
 			displayContent={privilege?.readPrivilege || false}>
 			<Status status={status!} />
+			<ShadowedContainer>
+				<div>
+					{userDetail?.employeeNo}{" "}
+					{language !== "ar"
+						? userDetail?.rank?.name!
+						: userDetail?.rank?.nameEnglish!}{" "}
+					{language !== "ar"
+						? userDetail?.name!
+						: userDetail?.nameEnglish!}
+				</div>
+			</ShadowedContainer>
 			<Tabs>
 				<TabList>
 					<Tab>{t("user.basicDetails", { framework: "React" })} </Tab>

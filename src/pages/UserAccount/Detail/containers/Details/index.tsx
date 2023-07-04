@@ -25,6 +25,25 @@ const Details: FC<Props> = ({ user }) => {
 				</div>
 				<div className={styles.detail}>
 					<div className={styles.heading}>
+						{t("user.employeeNumber", { framework: "React" })}
+					</div>
+					<div className={styles.text}>{user?.employeeNo}</div>
+				</div>
+				<div className={styles.detail}>
+					<div className={styles.heading}>
+						{t("rank.name", { framework: "React" })}
+					</div>
+					<div className={styles.text}>
+						{/* {user?.rank! !== null && <p>Hello</p>} */}
+						{user?.rank! !== null
+							? language !== "ar"
+								? user?.rank!.name!
+								: user?.rank!.nameEnglish!
+							: "---"}
+					</div>
+				</div>
+				<div className={styles.detail}>
+					<div className={styles.heading}>
 						{t("user.name", { framework: "React" })}
 					</div>
 					<div className={styles.text}>{user?.name}</div>
@@ -52,8 +71,8 @@ const Details: FC<Props> = ({ user }) => {
 					</div>
 					<div className={styles.text}>
 						{language !== "ar"
-							? user?.department.name
-							: user?.department.nameEnglish}
+							? user?.department.longFullName
+							: user?.department.longFullNameEnglish}
 					</div>
 				</div>
 				<div className={styles.detail}>
@@ -80,12 +99,6 @@ const Details: FC<Props> = ({ user }) => {
 								: user?.rank!.nameEnglish!
 							: "---"}
 					</div>
-				</div>
-				<div className={styles.detail}>
-					<div className={styles.heading}>
-						{t("user.phone", { framework: "React" })}
-					</div>
-					<div className={styles.text}>{user?.phone ? user?.phone! : "-"}</div>
 				</div>
 			</div>
 		</>

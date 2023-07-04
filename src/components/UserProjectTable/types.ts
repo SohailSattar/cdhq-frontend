@@ -1,7 +1,9 @@
 import { APIActiveStatus } from "../../api/activeStatus/types";
+import { Id } from "../../utils";
 
 export interface APIProjectTable {
 	id: number;
+	projectId?: Id;
 	projectName: string;
 	isChildProject: boolean;
 	privilege: string;

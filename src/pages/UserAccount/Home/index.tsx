@@ -119,16 +119,19 @@ const UserAccountPage = () => {
 				Header: id,
 				id: "id",
 				accessor: (p) => p.id,
+				Cell: ({ value }: any) => <div className={styles.cell}>{value}</div>,
 			},
 			{
 				Header: employeeNo,
 				id: "employeeNo",
 				accessor: (p) => p.employeeNo,
+				Cell: ({ value }: any) => <div className={styles.cell}>{value}</div>,
 			},
 			{
 				Header: logName,
 				id: "logName",
 				accessor: (p) => p.logName,
+				Cell: ({ value }: any) => <div className={styles.cell}>{value}</div>,
 			},
 			{
 				Header: fullName,
@@ -142,8 +145,8 @@ const UserAccountPage = () => {
 				),
 			},
 			{
-				Header: department,
-				id: "department",
+				Header: <div className={styles.tableHeaderCell}>{department}</div>,
+				id: "departmentId",
 				accessor: (p) => p,
 				Cell: ({ value }: any) => (
 					<div className={styles.name}>
@@ -168,7 +171,8 @@ const UserAccountPage = () => {
 				),
 			},
 			{
-				Header: actions,
+				Header: <div className={styles.tableHeaderCell}>{actions}</div>,
+				id: "actions",
 				accessor: (p) => p,
 				Cell: ({ value }: any) => (
 					<ActionButtons
@@ -195,8 +199,6 @@ const UserAccountPage = () => {
 				selectedRole,
 				orderBy
 			);
-
-			console.log("sadad");
 
 			if (error?.response!.status! === 401) {
 				navigate(RoutePath.LOGIN);

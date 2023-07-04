@@ -13,7 +13,7 @@ const headerLinks = [
 		short: "projectManagement",
 		url: "/project",
 		subLinks: [{}],
-		displayFor: [ROLE.SUPERADMIN.toString(), ROLE.ADMIN.toString()],
+		displayFor: [ROLE.SUPERADMIN.toString()],
 	},
 ];
 

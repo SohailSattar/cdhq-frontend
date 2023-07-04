@@ -21,6 +21,7 @@ import { ROLE } from "../../utils";
 import { getAllWorkflowStatus } from "../../api/activeStatus/get/getAllWorkflowStatus";
 
 import styles from "./styles.module.scss";
+import { getProjectsList } from "../../api/projects/get/getProjectsList";
 interface Props {
 	totalCountText: string;
 	totalCount: number;
@@ -33,6 +34,7 @@ interface Props {
 	onPageChange: (pageNo: number) => void;
 	onPageViewSelectionChange: (option: DropdownOption) => void;
 	showRoleOption?: boolean;
+	showProjectDropdown?: boolean;
 	hideWorkflowStatusDropdown?: boolean;
 	hideActiveStatusDropdown?: boolean;
 	onRoleOptonSelectionHandler?: (option: DropdownOption) => void;
@@ -52,6 +54,7 @@ const PaginatedTable: FC<Props> = ({
 	onPageChange,
 	onPageViewSelectionChange,
 	showRoleOption = false,
+	showProjectDropdown = false,
 	hideActiveStatusDropdown = false,
 	hideWorkflowStatusDropdown = false,
 	onRoleOptonSelectionHandler = () => {},
@@ -68,13 +71,24 @@ const PaginatedTable: FC<Props> = ({
 
 	const [roleOptions, setRoleOptions] = useState<DropdownOption[]>([]);
 
+	const [projectsOptions, setProjectOptions] = useState<DropdownOption[]>([]);
 	const [statusOptions, setStatusOptions] = useState<DropdownOption[]>([
 		{ label: "", value: "" },
 	]);
 
 	const activeStatusOptions: DropdownOption[] = [
-		{ label: "Active", value: 1 },
-		{ label: "Deactive", value: 9 },
+		{
+			label: t("status.active", {
+				framework: "React",
+			}),
+			value: 1,
+		},
+		{
+			label: t("status.deactive", {
+				framework: "React",
+			}),
+			value: 9,
+		},
 	];
 
 	const pageViewOptions: DropdownOption[] = [
@@ -88,6 +102,24 @@ const PaginatedTable: FC<Props> = ({
 		{ label: "45", value: 45 },
 		{ label: "50", value: 50 },
 	];
+
+	useEffect(() => {
+		const fetch = async () => {
+			const { data: list } = await getProjectsList();
+			if (list) {
+				setProjectOptions(
+					list?.map((x) => {
+						return {
+							label: language != "ar" ? x.name : x.nameEnglish,
+							value: x.id,
+						};
+					})
+				);
+			}
+		};
+
+		fetch();
+	}, [setRoleOptions]);
 
 	useEffect(() => {
 		const fetch = async () => {
@@ -195,6 +227,24 @@ const PaginatedTable: FC<Props> = ({
 					</div>
 				</div>
 			)}
+			<div className={styles.detailBar}>
+				{!showProjectDropdown && (
+					<div
+						className={
+							language !== "ar" ? styles.selection : styles.selectionLTR
+						}>
+						<ShadowedContainer>
+							<Dropdown
+								options={projectsOptions}
+								onSelect={workflowStatusOptionChangeHandler}
+								placeholder={t("project.name", {
+									framework: "React",
+								})}
+							/>{" "}
+						</ShadowedContainer>
+					</div>
+				)}
+			</div>
 			<div className={styles.detailBar}>
 				{!hideWorkflowStatusDropdown && (
 					<div

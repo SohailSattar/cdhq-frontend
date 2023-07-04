@@ -136,7 +136,8 @@
 		"headquarter": "Headquarter",
 		"parent": "Parent Deparment",
 		"centers": "Centers",
-		"center": "Center"
+		"center": "Center",
+		"structureType": "Structure Type"
 	},
 	"rank": {
 		"name": "Rank"

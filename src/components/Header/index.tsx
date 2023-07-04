@@ -35,6 +35,7 @@ const useStyles = makeStyles(() => ({
 	menuButton: {
 		fontFamily: "DINNextLTArabic",
 		marginLeft: "38px",
+		fontSize: "16px",
 	},
 	toolbar: {
 		display: "flex",
