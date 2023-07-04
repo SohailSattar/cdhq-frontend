@@ -71,7 +71,7 @@
 	},
 	"user": {
 		"id": "Employee Id",
-		"logName": "Log Name",
+		"logName": "Account Name",
 		"employeeNumber": "Employee Number",
 		"name": "Employee Name",
 		"nameEnglish": "Employee Name (English)",
@@ -83,7 +83,7 @@
 		"phoneOffice": "Office Phone",
 		"hireDate": "Hire Date",
 		"gender": "Gender",
-		"class": "Class",
+		"class": "Recruiter",
 		"department": "Department",
 		"basicDetails": "Basic Details",
 		"assignRole": "Assign Role",
@@ -144,6 +144,7 @@
 	"emirate": {
 		"name": "Emirate"
 	},
+	"class": { "name": "Recruiter" },
 	"error": {
 		"pageNotFound": {
 			"heading": "Page Not Found",
@@ -172,6 +173,10 @@
 		"activeStatus": "Active Status",
 		"name": "Name [Arabic]",
 		"nameEnglish": "Name [English]"
+	},
+	"status": {
+		"active": "Active",
+		"deactive": "Deactive"
 	},
 	"pagination": {
 		"recordPerPage": "Records Per Page",

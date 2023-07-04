@@ -1,14 +1,14 @@
 {
 	"common": {
-		"created": "Created",
-		"updated": "Updated"
+		"created": "تم الانشاء",
+		"updated": "تم التعديل"
 	},
 	"header": {
 		"title": "وزارة الداخلية",
 		"menu": {
-			"projectManagement": "ادارة مشروع",
-			"userAccount": "المستخدم",
-			"departmentHierarchy": "الهللإدارة",
+			"projectManagement": " الأنظمة و البرامج",
+			"userAccount": "حسابات المستخدمين",
+			"departmentHierarchy": "الهيكل التنظيمي",
 			"department": "إِدَارَة"
 		},
 		"mainMenu": {
@@ -32,22 +32,22 @@
 		"login": "تسجيل الدخول",
 		"logout": "تسجيل خروج"
 	},
-	"role": { "name": "Role" },
+	"role": { "name": "الدور" },
 	"form": {
 		"signin": "تسجيل الدخول",
 		"password": "كلمة المرور",
 		"retypePassword": "اعد كتابة كلمة المرور",
-		"changePassword": "غير كلمة السر",
+		"changePassword": "تغيير كلمة السر",
 		"signupText": "ليس لديك حساب؟ تواصل مع قسم الخدمات الإلكترونية.",
 		"userName": "اسم المستخدم"
 	},
 	"button": {
 		"view": "عرض",
 		"backToDetail": "العودة إلى التفاصيل",
-		"backToHome": "العودة ",
-		"add": "يضيف",
+		"backToHome": "العودة الى القائمة الرئيسية ",
+		"add": "حفظ",
 		"clear": "افراغ الحقول",
-		"select": "تحديد",
+		"select": "تعديل",
 		"save": "حفظ",
 		"update": "تحديث",
 		"edit": "تعديل",
@@ -55,9 +55,9 @@
 		"delete": "حذف",
 		"activate": "تفعيل",
 		"deactivate": "الغاء",
-		"addNewDepartment": "اضافة ادارة تنظيمية",
+		"addNewDepartment": "اضافة ادارة ",
 		"addNewUser": "انشاء حساب مستخدم",
-		"addNewProject": "انشاء نظام جديد ",
+		"addNewProject": "اضافة نظام جديد ",
 		"hierarchy": "الهيكل التنظيمي",
 		"assign": "تعيين",
 		"assignProject": "منح صلاحية",
@@ -70,8 +70,8 @@
 		"welcome": "مرحبا بك"
 	},
 	"user": {
-		"id": "هوية الموظف",
-		"logName": "اسم السجل",
+		"id": "رمز الموظف",
+		"logName": "اسم الحساب ",
 		"employeeNumber": "رقم الموظف",
 		"name": "اسم الموظف",
 		"nameEnglish": "اسم الموظف (انجليزي)",
@@ -83,7 +83,7 @@
 		"phoneOffice": "هاتف المكتب",
 		"hireDate": "موعد التوظيف",
 		"gender": "جنس",
-		"class": "class",
+		"class": "ملاك",
 		"department": "قسم",
 		"basicDetails": "تفاصيل أساسية",
 		"assignRole": "تعيين الدور",
@@ -93,42 +93,42 @@
 		"names": "الموظفين"
 	},
 	"project": {
-		"id": "معرف المشروع",
-		"name": "اسم المشروع",
-		"nameArabic": "اسم المشروع [عربي]",
-		"nameEnglish": "اسم المشروع [إنجليزي]",
-		"projectsList": "قائمة المشاريع",
-		"description": "وصف المشروع",
-		"list": "قائمة المشاريع",
+		"id": "رقم النظام",
+		"name": "اسم النظام",
+		"nameArabic": "اسم البرنامج [عربي]",
+		"nameEnglish": "اسم البرنامج [إنجليزي]",
+		"projectsList": "قائمة الأنظمة و البرامج",
+		"description": "وصف النظام",
+		"list": "قائمة الأنظمة و البرامج",
 		"parentProject": "المشروع الأم",
-		"projects": "المشاريع",
-		"group": "مجموعة المشروع",
+		"projects": " الأنظمة والبرامج",
+		"group": "مجموعة النظام",
 		"groupEnglish": "مجموعة المشروع [إنجليزي]",
-		"assign": "تعيين المشروع",
-		"canGrant": "يمكن منح المشروع للآخرين.",
-		"canNotGrant": "لا يمكن منح المشروع للآخرين.",
-		"withChild": "مع القسم الفرعي",
+		"assign": "تعيين النظام",
+		"canGrant": "يمكن منح صلاحية البرنامج للآخرين.",
+		"canNotGrant": "لا يمكن منح صلاحية البرنامج للآخرين.",
+		"withChild": "مع الأقسام و الأفرع  ",
 		"withoutChild": "بدون الأقسام و الأفرع ",
-		"count": "عدد المشاريع",
+		"count": "عدد البرامج",
 		"noProject": "لم يتم تخصيص أي مشروع.",
 		"deptCat": "فئة القسم",
 		"withAcademy": "هل يجب أن تكون الأكاديمية أيضًا في قائمة الأقسام؟",
 		"hasWorkflow": "لديه سير عمل؟",
 		"urlLink": "الرابط",
-		"isExternal": "Is the link external?",
-		"displayOnDashboard": "Display on Dashboard"
+		"isExternal": "الرابط خارجي ؟",
+		"displayOnDashboard": "اظهار في قائمة البرامج"
 	},
 	"userProject": {
 		"workflowStart": "بداية التمرير",
 		"workflowEnd": "نهاية التمرير",
 		"canGrant": "يمكن أن تمنح؟",
-		"assignNewProject": "Assign new project to _USER_",
-		"assignNewUser": "",
-		"editUser": "تحرير المشروع  _USER_",
-		"withOrWithoutSubSection": "مع أقسام فرعية أو بدون أقسام فرعية؟"
+		"assignNewProject": "تعيين برنامج ل _USER_",
+		"assignNewUser": "تعيين مستخدم جديد",
+		"editUser": "تعديل بيانات    _USER_",
+		"withOrWithoutSubSection": "مع أو بدون الأقسام و الأفرع ؟"
 	},
 	"department": {
-		"name": "إِدَارَة",
+		"name": "الادارة",
 		"fullName": "الاسم الكامل [عربي]",
 		"fullNameEnglish": "الاسم الكامل [إنجليزي]",
 		"single": "قسم واحد",
@@ -143,6 +143,7 @@
 	"emirate": {
 		"name": "الإمارة"
 	},
+	"class": { "name": "ملاك" },
 	"error": {
 		"pageNotFound": {
 			"heading": "الصفحة غير موجودة",
@@ -150,15 +151,15 @@
 		},
 		"form": {
 			"required": {
-				"employeeNo": "Employee No is required.",
-				"nameArabic": "Name is required",
-				"nameEnglish": "NameEnglish is required",
-				"title": "Title is required"
+				"employeeNo": " رقم الموظف حقل اجباري",
+				"nameArabic": "الاسم بالعربي حقل اجباري ",
+				"nameEnglish": " الاسم بالانجليزي حقل اجباري  ",
+				"title": "العنوان حقل اجباري"
 			}
 		}
 	},
 	"privilege": {
-		"name": "امتياز",
+		"name": "صلاحية",
 		"insert": "إدراج",
 		"delete": "حذف",
 		"update": "التحديث",
@@ -166,11 +167,15 @@
 	},
 	"global": {
 		"loading": "جار التحميل",
-		"actions": "أفعال",
+		"actions": " ",
 		"status": "حالة",
-		"activeStatus": "Active Status",
+		"activeStatus": "حالة البرامج",
 		"name": "الاسم [عربي]",
 		"nameEnglish": "الاسم [إنجليزي]"
+	},
+	"status": {
+		"active": "فعال",
+		"deactive": "غير فعال"
 	},
 	"pagination": {
 		"recordPerPage": "سجلات لكل صفحة",
@@ -178,49 +183,49 @@
 		"projectsPerPage": "المشاريع في الصفحة"
 	},
 	"filter": {
-		"byDepartment": "تصفية حسب الدائرة"
+		"byDepartment": "تصفية حسب الأقسام و الأفرع"
 	},
 	"message": {
 		"unauthorized": "ليس لديك صلاحية على الصفحة",
 		"noAccountContact": "ليس لديك حساب؟ اتصل بقسم الخدمات الألكترونية",
-		"employeeNotExists": "لا يوجد موظف برقم هذا الموظف! الرجاء الاتصال بوزارة الداخلية",
-		"employeeUserExists": "المستخدم موجود اصلا. لتحرير هذا المستخدم ، انقر فوق هذا الارتباط",
-		"noUserInList": "لست في القائمة؟ انقر فوق \"مستخدم جديد \"",
-		"userActivated": "المستخدم نشط الآن",
-		"userDeactivated": "تم إلغاء تنشيط المستخدم",
-		"userAdded": "تم إنشاء المستخدم",
-		"userDetailUpdated": "تم تحديث تفاصيل المستخدم",
+		"employeeNotExists": "لا يوجد موظف بهذا الرقم ! الرجاء الاتصال بوزارة الداخلية",
+		"employeeUserExists": "المستخدم موجود من قبل . لتعديل هذا المستخدم ، انقر فوق هذا الارتباط",
+		"noUserInList": "لست في القائمة أو مستخدم جديد ؟",
+		"userActivated": " تم تفعيل حساب المستخدم ",
+		"userDeactivated": "تم إلغاء تفعيل حساب المستخدم",
+		"userAdded": "تم إنشاء حساب المستخدم",
+		"userDetailUpdated": "تم تحديث تفاصيل حساب المستخدم",
 		"passwordUpdated": "تم تحديث كلمة السر",
 		"passwordNotMatched": "كلمات السر لا تتطابق",
 		"roleUpdated": "تم تحديث الدور",
 		"privilegeUpdated": "تم تحديث الامتياز",
-		"noProjectSelected": "لم يتم اختيار أي مشروع",
-		"userProjectAssigned": "تم تعيين المشروع بنجاح",
-		"userProjectNotAssigned": "فشل تعيين المشروع",
-		"noPrivilegeSelected": "لم يتم تحديد امتياز",
-		"userProjectDeleted": "تمت إزالة المشروع بنجاح",
+		"noProjectSelected": "لم يتم اختيار أي برنامج",
+		"userProjectAssigned": "تم تعيين البرنامج  بنجاح",
+		"userProjectNotAssigned": "لم يتم تعيين البرنامج",
+		"noPrivilegeSelected": "لم يتم تحديد الصلاحية",
+		"userProjectDeleted": "تمت إزالة البرنامج بنجاح",
 		"unvailable": "غير متاح",
-		"projectAdded": "تم إنشاء مشروع جديد",
-		"projectUpdated": "تم تحديث المشروع",
-		"projectActivated": "تم تفعيل المشروع",
-		"projectDeactivated": "المشروع معطل الآن",
-		"delete": "هل أنت متأكد أنك تريد حذف؟",
-		"deleteProject": "هل أنت متأكد أنك تريد حذف هذا المشروع؟",
-		"userProjectAdd": "تعيين مشروع جديد للمستخدم",
+		"projectAdded": "تم إنشاء برنامج جديد",
+		"projectUpdated": "تم تحديث البرنامج",
+		"projectActivated": "تم تفعيل البرنامج",
+		"projectDeactivated": "البرنامج غير فعال ",
+		"delete": "هل أنت متأكد أنك تريد الحذف؟",
+		"deleteProject": "هل أنت متأكد أنك تريد حذف هذا البرنامج ؟",
+		"userProjectAdd": "تعيين برنامج  جديد للمستخدم",
 		"userProjectEdit": "تحرير المشروع من أجل ",
 		"imageUpdated": "تم تحديث الصورة",
-		"newsAdded": "تمت إضافة الأخبار",
+		"newsAdded": "تمت إضافة الخبر",
 		"newsUpdated": "تم تحديث الخبر",
-		"savingConfirmationTitle": "Aving Approvement",
-		"savingConfirmation": "Above details will be saved. Are you sure to save?"
+		"savingConfirmationTitle": "سيتم الحفظ",
+		"savingConfirmation": "سيتم حفظ البيانات . هل أنت متأكد ؟ "
 	},
 	"dropdown": {
-		"select": "يختار..."
+		"select": "اختر"
 	},
 	"table": {
-		"noProject": "لم يتم العثور على مشروع",
+		"noProject": "لم يتم العثور على المشروع",
 		"noUser": "لم يتم العثور على المستخدم",
-		"noEmployee": "لم يتم العثور على موظف",
+		"noEmployee": "لم يتم العثور على الموظف",
 		"noNews": "لم يتم العثور على أخبار"
 	},
 	"footer": {
@@ -230,14 +235,14 @@
 		"user": "مستخدم البحث"
 	},
 	"honor": {
-		"count": "Total Honors Count",
+		"count": "مجموع سجلات المتميزين ",
 		"id": "السجل",
 		"honoredOn": "تكريم يوم",
 		"name": "اسم الموظف",
-		"type": "News Type"
+		"type": "الفئة"
 	},
 	"news": {
-		"count": "Total News Count",
+		"count": "مجموع سجلات الأخبار ",
 		"id": "رقم الخبر",
 		"title": "العنوان",
 		"shortSummary": "مقدمة",
