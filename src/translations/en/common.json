@@ -64,7 +64,9 @@
 		"editPrivilege": "Edit Privilege",
 		"yes": "Yes",
 		"cancel": "Cancel",
-		"assignToUser": "Assign to User"
+		"assignToUser": "Assign to User",
+		"selectChild":"select Child"
+
 	},
 	"home": {
 		"welcome": "Welcome"
@@ -174,10 +176,13 @@
 		"activeStatus": "Active Status",
 		"name": "Name [Arabic]",
 		"nameEnglish": "Name [English]"
+
 	},
 	"status": {
 		"active": "Active",
-		"deactive": "Deactive"
+		"deactive": "Deactive",
+		"On": "On",
+		"Off": "Off"
 	},
 	"pagination": {
 		"recordPerPage": "Records Per Page",

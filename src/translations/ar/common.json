@@ -64,7 +64,9 @@
 		"editPrivilege": "تعديل الصلاحية",
 		"yes": "نعم",
 		"cancel": "الغاء",
-		"assignToUser": "التعيين للمستخدم"
+		"assignToUser": "التعيين للمستخدم",
+		"selectChild":" مع الأقسام و الأفرع"
+		
 	},
 	"home": {
 		"welcome": "مرحبا بك"
@@ -94,7 +96,7 @@
 	},
 	"project": {
 		"id": "رقم النظام",
-		"name": "اسم النظام",
+		"name": "اسم البرنامج",
 		"nameArabic": "اسم البرنامج [عربي]",
 		"nameEnglish": "اسم البرنامج [إنجليزي]",
 		"projectsList": "قائمة الأنظمة و البرامج",
@@ -121,7 +123,7 @@
 	"userProject": {
 		"workflowStart": "بداية التمرير",
 		"workflowEnd": "نهاية التمرير",
-		"canGrant": "يمكن أن تمنح؟",
+		"canGrant": " منح الصلاحية",
 		"assignNewProject": "تعيين برنامج ل _USER_",
 		"assignNewUser": "تعيين مستخدم جديد",
 		"editUser": "تعديل بيانات    _USER_",
@@ -176,7 +178,9 @@
 	},
 	"status": {
 		"active": "فعال",
-		"deactive": "غير فعال"
+		"deactive": "غير فعال",
+		"On": "مع",
+		"Off":"بدون"
 	},
 	"pagination": {
 		"recordPerPage": "سجلات لكل صفحة",
