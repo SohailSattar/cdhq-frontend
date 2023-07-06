@@ -26,7 +26,7 @@ const ActionButtons: FC<Props> = ({
 	editPageLink,
 	onEdit = () => {},
 	showDelete = false,
-	onDelete = () => {}
+	onDelete = () => {},
 }) => {
 	const [t, i18n] = useTranslation("common");
 
@@ -64,6 +64,7 @@ const ActionButtons: FC<Props> = ({
 						<RedirectButton
 							label={t("button.view", { framework: "React" })}
 							redirectTo={detailPageLink}
+							openInNewTab
 						/>
 					</div>
 				)}
@@ -73,6 +74,7 @@ const ActionButtons: FC<Props> = ({
 							<RedirectButton
 								label={t("button.edit", { framework: "React" })}
 								redirectTo={editPageLink!}
+								openInNewTab
 							/>
 						) : (
 							<Button onClick={onEditClick}>
@@ -88,7 +90,9 @@ const ActionButtons: FC<Props> = ({
 				)}
 				{showDelete && (
 					<div className={styles.divBtn}>
-						<Button isCritical onClick={deleteClickHandler}>
+						<Button
+							isCritical
+							onClick={deleteClickHandler}>
 							{t("button.delete", { framework: "React" })}
 						</Button>
 					</div>

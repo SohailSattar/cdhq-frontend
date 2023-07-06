@@ -1,3 +1,5 @@
+export const BASE_NAME = "/portal";
+
 export const ID = ":id";
 
 export const ROOT = `/`;
