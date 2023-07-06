@@ -42,8 +42,9 @@ const ProjectManagementPage = () => {
 
 	const id = t("project.id", { framework: "React" });
 	const projectName = t("project.name", { framework: "React" });
-	const projectNameAr = t("project.nameArabic", { framework: "React" });
 	const projectNameEng = t("project.nameEnglish", { framework: "React" });
+	const projectGroup = t("project.group", { framework: "React" });
+	const projectGroupEnglish = t("project.groupEnglish", { framework: "React" });
 
 	const status = t("global.status", { framework: "React" });
 
@@ -61,19 +62,15 @@ const ProjectManagementPage = () => {
 			accessor: (p) => p.name,
 		},
 		{
-			Header: projectNameAr,
-			accessor: (p) => p.nameArabic,
-		},
-		{
 			Header: projectNameEng,
 			accessor: (p) => p.nameEnglish,
 		},
 		{
-			Header: "Group",
+			Header: projectGroup,
 			accessor: (p) => p.group?.nameArabic,
 		},
 		{
-			Header: "Group [English]",
+			Header: projectGroupEnglish,
 			accessor: (p) => p.group?.nameEnglish,
 		},
 		{
