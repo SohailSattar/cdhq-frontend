@@ -67,6 +67,10 @@ export interface APIUserProjectDetail {
 	workflowStartFrom: APIActiveStatus;
 	workflowEndTo: APIActiveStatus;
 	departmentStructureType: string;
+	insertPrivilege: boolean;
+	deletePrivilege: boolean;
+	updatePrivilege: boolean;
+	readPrivilege: boolean;
 	canGrant: boolean;
 	createdBy?: string;
 	createdOn: string;

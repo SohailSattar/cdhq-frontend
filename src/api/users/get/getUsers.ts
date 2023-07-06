@@ -8,6 +8,7 @@ export async function getUsers(
 	currentPage: number,
 	pageSize: number,
 	keyword?: string,
+	projectId?: Id,
 	statusCode?: Id,
 	roleId?: Id,
 	orderBy?: string
@@ -29,11 +30,13 @@ export async function getUsers(
 			queryParam += `&type=${roleId}`;
 		}
 
+		if (projectId) {
+			queryParam += `&projectId=${projectId}`;
+		}
+
 		if (orderBy) {
 			queryParam += `${orderBy}`;
 		}
-
-		console.log(queryParam);
 
 		const url =
 			`/users?page=${currentPage}&postsperpage=${pageSize}` + queryParam!;

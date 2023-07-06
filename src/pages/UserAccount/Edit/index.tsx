@@ -139,8 +139,6 @@ const UserEditPage = () => {
 			}
 		};
 
-		console.log("whyyy?");
-
 		fetchData();
 	}, [language, id, navigate, role, loggedUserId]);
 
@@ -329,9 +327,7 @@ const UserEditPage = () => {
 					{language !== "ar"
 						? userDetail?.rank?.name!
 						: userDetail?.rank?.nameEnglish!}{" "}
-					{language !== "ar"
-						? userDetail?.name!
-						: userDetail?.nameEnglish!}
+					{language !== "ar" ? userDetail?.name! : userDetail?.nameEnglish!}
 				</div>
 			</ShadowedContainer>
 			<Tabs>

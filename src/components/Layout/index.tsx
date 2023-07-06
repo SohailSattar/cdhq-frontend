@@ -84,9 +84,6 @@ const Layout: FC<Props> = ({ projectId, privilegeType = "All", children }) => {
 					setLoggedUser({ ...loggedUser, role: role });
 				}
 
-				// console.log(myRole);
-				// console.log(myRole, loggedUser);
-
 				if (loggedUser.userName === "") {
 					const { data, error } = await getMyDetail();
 					if (error) {

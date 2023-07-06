@@ -54,6 +54,7 @@ const UserAccountPage = () => {
 	const [toggleSort, setToggleSort] = useState(false);
 
 	const [selectedRole, setSelectedRole] = useState<Id>();
+	const [selectedProject, setSelectedProject] = useState<Id>();
 	// This variable is to set the status code which we can pass to the API
 	const [selectedStatusCode, setSelectedStatusCode] = useState<Id>();
 	const [orderBy, setOrderBy] = useState<string>("");
@@ -195,6 +196,7 @@ const UserAccountPage = () => {
 				currentPage,
 				pageSize,
 				keyword,
+				selectedProject,
 				selectedStatusCode,
 				selectedRole,
 				orderBy
@@ -217,6 +219,7 @@ const UserAccountPage = () => {
 			pageSize,
 			keyword,
 			selectedRole,
+			selectedProject,
 			selectedStatusCode,
 			orderBy,
 		]
@@ -230,6 +233,7 @@ const UserAccountPage = () => {
 				departmentIds,
 				keyword,
 				selectedRole,
+				selectedProject,
 				selectedStatusCode,
 				orderBy
 			);
@@ -239,7 +243,14 @@ const UserAccountPage = () => {
 				setTotalCount(data?.totalItems);
 			}
 		},
-		[departmentIds, keyword, selectedRole, selectedStatusCode, orderBy]
+		[
+			departmentIds,
+			keyword,
+			selectedRole,
+			selectedProject,
+			selectedStatusCode,
+			orderBy,
+		]
 	);
 
 	useEffect(() => {
@@ -250,7 +261,6 @@ const UserAccountPage = () => {
 				fetchByDepartment();
 			}
 		}
-		console.log("this?");
 	}, [fetch, fetchByDepartment]);
 
 	const userSearchClickHandler = (keyword: string) => {
@@ -312,6 +322,13 @@ const UserAccountPage = () => {
 		[]
 	);
 
+	const projectSelectionHandler = useMemo(
+		() => (option: DropdownOption) => {
+			setSelectedProject(option?.value!);
+		},
+		[]
+	);
+
 	const statusSelectHandler = useMemo(
 		() => (option: DropdownOption) => {
 			if (option) {
@@ -365,6 +382,8 @@ const UserAccountPage = () => {
 						onPageViewSelectionChange={pageViewSelectionHandler}
 						noRecordText={t("table.noUser", { framework: "React" })}
 						hideWorkflowStatusDropdown
+						showProjectDropdown
+						onProjectOptonSelectionHandler={projectSelectionHandler}
 						onActiveStatusOptionSelectionChange={statusSelectHandler}
 						onWorkflowStatusOptionSelectionChange={() => {}}
 						showRoleOption

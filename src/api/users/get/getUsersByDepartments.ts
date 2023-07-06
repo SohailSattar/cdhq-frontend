@@ -11,6 +11,7 @@ export async function getUsersByDepartments(
 	deptIds: string[],
 	keyword: string = "",
 	roleId?: Id,
+	projectId?: Id,
 	statusCode?: Id,
 	orderBy?: string
 ): Promise<APIResponse<APIPaginatedUser>> {
@@ -31,13 +32,15 @@ export async function getUsersByDepartments(
 			parameter += `&type=${roleId}`;
 		}
 
+		if (projectId) {
+			parameter += `&projectId=${projectId}`;
+		}
+
 		if (orderBy) {
 			parameter += `${orderBy}`;
 		}
 
 		let url = `/departments/users?page=${currentPage}&postsperpage=${pageSize}${parameter}`;
-
-		console.log(url);
 
 		const response = await instance.post<APIPaginatedUser>(
 			url,

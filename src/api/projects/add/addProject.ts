@@ -9,7 +9,6 @@ export async function addProject(
 		const config = getConfig("multipart/form-data");
 
 		const url = "/projects/";
-		console.log(projectParams);
 
 		const response = await instance.post<APIResponseStatus>(
 			url,
@@ -17,12 +16,9 @@ export async function addProject(
 			config
 		);
 
-		console.log(projectParams);
-
 		const data = response.data;
 		return { data };
 	} catch (error) {
-		console.log(error);
 		return { error };
 	}
 }

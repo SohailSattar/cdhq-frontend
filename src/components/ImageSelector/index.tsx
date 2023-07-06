@@ -35,7 +35,6 @@ const ImageSelector: FC<Props> = ({
 	const imageChangehandler = (evnt: ChangeEvent<HTMLInputElement>) => {
 		if (evnt.target.files) {
 			const file = evnt.target.files[0];
-			console.log(getFullPath(file));
 			const x = getFullPath(file);
 			// setValue("thumbnail", file);
 			// setValue("imageName", x);
@@ -51,8 +50,7 @@ const ImageSelector: FC<Props> = ({
 		<div
 			className={
 				language !== "ar" ? styles.imageSelector : styles.imageSelectorLTR
-			}
-		>
+			}>
 			<div className={styles.browse}>
 				<input
 					type="file"
@@ -69,7 +67,9 @@ const ImageSelector: FC<Props> = ({
 			</div>
 			{!hideUploadButton && (
 				<div className={styles.uploadSection}>
-					<Button type="button" onClick={onImageUpdate}>
+					<Button
+						type="button"
+						onClick={onImageUpdate}>
 						{t("button.update", { framework: "React" })}
 					</Button>
 				</div>

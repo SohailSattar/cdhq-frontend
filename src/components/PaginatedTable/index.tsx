@@ -38,6 +38,7 @@ interface Props {
 	hideWorkflowStatusDropdown?: boolean;
 	hideActiveStatusDropdown?: boolean;
 	onRoleOptonSelectionHandler?: (option: DropdownOption) => void;
+	onProjectOptonSelectionHandler?: (option: DropdownOption) => void;
 	onActiveStatusOptionSelectionChange: (option: DropdownOption) => void;
 	onWorkflowStatusOptionSelectionChange: (option: DropdownOption) => void;
 }
@@ -58,6 +59,7 @@ const PaginatedTable: FC<Props> = ({
 	hideActiveStatusDropdown = false,
 	hideWorkflowStatusDropdown = false,
 	onRoleOptonSelectionHandler = () => {},
+	onProjectOptonSelectionHandler = () => {},
 	onActiveStatusOptionSelectionChange,
 	onWorkflowStatusOptionSelectionChange,
 }) => {
@@ -174,6 +176,10 @@ const PaginatedTable: FC<Props> = ({
 		onRoleOptonSelectionHandler(option);
 	};
 
+	const projectSelectHandler = (option: DropdownOption) => {
+		onProjectOptonSelectionHandler(option);
+	};
+
 	const workflowStatusOptionChangeHandler = (option: DropdownOption) => {
 		onWorkflowStatusOptionSelectionChange(option);
 	};
@@ -228,7 +234,7 @@ const PaginatedTable: FC<Props> = ({
 				</div>
 			)}
 			<div className={styles.detailBar}>
-				{!showProjectDropdown && (
+				{showProjectDropdown && (
 					<div
 						className={
 							language !== "ar" ? styles.selection : styles.selectionLTR
@@ -236,7 +242,7 @@ const PaginatedTable: FC<Props> = ({
 						<ShadowedContainer>
 							<Dropdown
 								options={projectsOptions}
-								onSelect={workflowStatusOptionChangeHandler}
+								onSelect={projectSelectHandler}
 								placeholder={t("project.name", {
 									framework: "React",
 								})}

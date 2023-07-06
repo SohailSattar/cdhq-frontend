@@ -44,8 +44,6 @@ const ProjectNewPage = () => {
 			displayOnDashboard,
 		} = details!;
 
-		console.log(details);
-
 		const params: APINewProject = {
 			name: name,
 			nameEnglish: nameEnglish,

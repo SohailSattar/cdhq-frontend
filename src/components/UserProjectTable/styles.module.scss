@@ -1,42 +1,52 @@
 .info {
-    display: flex;
-    justify-content: center;
+	display: flex;
+	justify-content: center;
+}
+
+.tableHeaderCell {
+	display: flex;
+	justify-content: center;
+}
+
+.cell {
+	display: flex;
+	justify-content: center;
 }
 
 .childProject {
-    margin-right: 15px;
+	margin-right: 15px;
 }
 
 .childProjectLTR {
-    margin-left: 15px;
+	margin-left: 15px;
 }
 
 .action {
-    display: flex;
-    justify-content: flex-end;
+	display: flex;
+	justify-content: flex-end;
 
-    .btnDiv {
-        margin-left: 5px;
-    }
+	.btnDiv {
+		margin-left: 5px;
+	}
 }
 
 .actionLTR {
-    display: flex;
-    justify-content: flex-end;
+	display: flex;
+	justify-content: flex-end;
 
-    .btnDiv {
-        margin-right: 5px;
-    }
+	.btnDiv {
+		margin-right: 5px;
+	}
 }
 
 .message {
-    display: flex;
-    justify-content: center;
+	display: flex;
+	justify-content: center;
 }
 
 .paginationBar {
-    margin-top: 15px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
+	margin-top: 15px;
+	width: 100%;
+	display: flex;
+	justify-content: center;
 }

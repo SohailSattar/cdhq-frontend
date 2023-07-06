@@ -24,6 +24,7 @@ import { Project } from "../../../data/projects";
 import { getUserProjectByDepartment } from "../../../api/userProjects/get/getUserProjectByDepartment";
 import { getPrivilegesByType } from "../../../api/privileges/get/getPrivilegesByType";
 import { getUserProject } from "../../../api/userProjects/get/getUserProject";
+import { getPrivilegeId } from "../../../api/privileges/get/getPrivilegeId";
 
 interface Props {
 	id?: Id;
@@ -56,7 +57,6 @@ const UserProjectForm: FC<Props> = ({
 		const fetch = async () => {
 			if (id) {
 				const { data } = await getUserProject(id!);
-				console.log(data);
 				setData(data);
 			}
 		};
@@ -88,9 +88,6 @@ const UserProjectForm: FC<Props> = ({
 		DropdownOption[]
 	>([]);
 
-	// const [showCenterOptions, setShowCenterOptions] = useState<boolean>(false);
-	// const [centersOptions, setCentersOptions] = useState<DropdownOption[]>([]);
-
 	const [projectsList, setProjectsList] = useState<APIProjectItem[]>([]);
 	const [departmentsList, setDepartmentsList] = useState<APIDepartmentItem[]>(
 		[]
@@ -100,36 +97,12 @@ const UserProjectForm: FC<Props> = ({
 
 	const [hideCanGrant, setHideCanGrant] = useState<boolean>(false);
 
-	// useEffect(() => {
-	// 	console.log(details);
-	// 	if (details!) {
-	// 		setData((prevState) => (prevState = details));
-	// 	}
-	// }, [data, setData]);
-
 	const fetchProjects = useMemo(
 		() => async () => {
 			const { data: list } = await getProjectsList();
 
 			if (list) {
 				setProjectsList(list);
-				// setProjectOptions(
-				// 	(prevState) =>
-				// 		(prevState = list?.map((project: APIProjectItem) => {
-				// 			const name =
-				// 				language !== "ar" ? project.name : project.nameEnglish;
-
-				// 			return {
-				// 				label: `${project.id}`.concat(" - ", name),
-				// 				value: project.id,
-				// 				meta: {
-				// 					hasWorkflow: project.hasWorkflow!,
-				// 					departmentSelectionType:
-				// 						project.departmentCategory?.code! || "W",
-				// 				},
-				// 			};
-				// 		}))
-				// );
 
 				setProjectOptions(
 					list?.map((project: APIProjectItem) => {
@@ -175,27 +148,7 @@ const UserProjectForm: FC<Props> = ({
 		const fetchData = async () => {
 			const { data: list } = await getProjectsList();
 
-			// console.log(list);
-
 			if (list) {
-				// setProjectOptions(
-				// 	(prevState) =>
-				// 		(prevState = list?.map((project: APIProjectItem) => {
-				// 			const name =
-				// 				language !== "ar" ? project.name : project.nameEnglish;
-
-				// 			return {
-				// 				label: `${project.id}`.concat(" - ", name),
-				// 				value: project.id,
-				// 				meta: {
-				// 					hasWorkflow: project.hasWorkflow!,
-				// 					departmentSelectionType:
-				// 						project.departmentCategory?.code! || "W",
-				// 				},
-				// 			};
-				// 		}))
-				// );
-
 				setProjectOptions(
 					list?.map((project: APIProjectItem) => {
 						const name = language !== "ar" ? project.name : project.nameEnglish;
@@ -357,7 +310,6 @@ const UserProjectForm: FC<Props> = ({
 				);
 				const selectedOption = getValues("department");
 				if (selectedOption?.value! != "" && selectedOption) {
-					console.log(selectedOption);
 					const selected = data.find((x) => x.id === selectedOption?.value!)!;
 					const label =
 						language !== "ar"
@@ -399,11 +351,9 @@ const UserProjectForm: FC<Props> = ({
 	// 		);
 
 	// 		const selectedOption = getValues("center");
-	// 		console.log(selectedOption);
 	// 		if (selectedOption) {
 	// 			const selected = data?.find((x) => x.id === selectedOption?.value);
 
-	// 			console.log(selectedOption);
 	// 			if (selected) {
 	// 				const label = `${selected?.id} - ${
 	// 					language !== "ar" ? selected?.name : selected?.nameEnglish
@@ -424,7 +374,6 @@ const UserProjectForm: FC<Props> = ({
 	const fetchPrivileges = useMemo(
 		() => async (id: Id) => {
 			const { data } = await getPrivilegesByType(id);
-
 			if (data) {
 				setPrivilegeOptions(
 					data.map((x) => {
@@ -663,19 +612,43 @@ const UserProjectForm: FC<Props> = ({
 
 	// comment if not used
 	useEffect(() => {
-		if (data) {
-			const selectedDepartment = departmentsOptions.find(
-				(x) => x.value === data.department.id
-			)!;
+		const fetchData = async () => {
+			if (data) {
+				const selectedDepartment = departmentsOptions.find(
+					(x) => x.value === data.department.id
+				)!;
 
-			setValue("department", selectedDepartment!);
-			const start = data.workflowStartFrom.id!;
-			const end = data.workflowEndTo.id!;
+				setValue("department", selectedDepartment!);
+				const start = data.workflowStartFrom.id!;
+				const end = data.workflowEndTo.id!;
 
-			fetchWorkflow(+start, +end);
-			fetchPrivileges(data!.privilege.sequenceNumber);
-			// setValue("department", { label: "Test", value: "1" });
-		}
+				fetchWorkflow(+start, +end);
+
+				let privId;
+
+				if (!data!.privilege) {
+					const {
+						insertPrivilege,
+						readPrivilege,
+						deletePrivilege,
+						updatePrivilege,
+					} = data!;
+
+					const code = `${+insertPrivilege}${+deletePrivilege}${+updatePrivilege}${+readPrivilege}`;
+
+					const { data: pid } = await getPrivilegeId(code);
+					privId = pid;
+				} else {
+					privId = data!.privilege.sequenceNumber;
+				}
+
+				fetchPrivileges(privId!);
+
+				// setValue("department", { label: "Test", value: "1" });
+			}
+		};
+
+		fetchData();
 	}, [data, setData, departmentsOptions]);
 
 	// useEffect(() => {

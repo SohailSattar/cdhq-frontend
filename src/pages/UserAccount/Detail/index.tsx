@@ -81,7 +81,6 @@ const UserDetailPage = () => {
 		setIsLoading(true);
 		const fetchData = async () => {
 			const { data } = await getUserDetail(id!);
-			console.log(data);
 			if (data) {
 				setCanView(true);
 				setUser(data);

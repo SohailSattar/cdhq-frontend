@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Column } from "react-table";
 import { getUserProjects } from "../../api/userProjects/get/getUserProjects";
@@ -44,13 +44,20 @@ const UserProjectTable: FC<Props> = ({
 	const [selectedProjectId, setSelectedProjectId] = useState("");
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
+	const [keyword, setKeyword] = useState<string>("");
+
 	const [currentPage, setCurrentPage] = useState(1);
 	const [totalCount, setTotalCount] = useState(0);
 	const pageSize = 50;
 
-	useEffect(() => {
-		const fetchData = async (id: string) => {
-			const { data } = await getUserProjects(id!, currentPage);
+	const fetchProjects = useMemo(
+		() => async (id: string) => {
+			const { data } = await getUserProjects(
+				id!,
+				currentPage,
+				pageSize,
+				keyword
+			);
 
 			if (data) {
 				setTotalCount(data?.totalItems);
@@ -84,10 +91,50 @@ const UserProjectTable: FC<Props> = ({
 					})
 				);
 			}
-		};
+		},
+		[id, keyword]
+	);
 
-		fetchData(id);
-	}, [currentPage, id, language, pageSize]);
+	useEffect(() => {
+		// const fetchData = async (id: string) => {
+		// 	const { data } = await getUserProjects(id!, currentPage);
+
+		// 	if (data) {
+		// 		setTotalCount(data?.totalItems);
+		// 		setProjects(
+		// 			data?.projects.map((p) => {
+		// 				return {
+		// 					...p,
+		// 					id: p.id,
+		// 					projectId: p.project.id,
+		// 					privilege:
+		// 						language !== "ar"
+		// 							? p.privilege?.name!
+		// 							: p.privilege?.nameEnglish!,
+		// 					projectName:
+		// 						language !== "ar" ? p.project!.name : p.project!.nameEnglish,
+		// 					isChildProject: p.project.parentId !== p.project.id,
+		// 					department:
+		// 						language !== "ar"
+		// 							? p.department.name
+		// 							: p.department.nameEnglish,
+		// 					details: {
+		// 						departmentChild: p.departmentChild,
+		// 						canGrant: p.canGrant!,
+		// 						status: p.activeStatus,
+		// 					},
+		// 					activeStatus:
+		// 						language !== "ar"
+		// 							? p.activeStatus.nameArabic
+		// 							: p.activeStatus.nameEnglish,
+		// 				};
+		// 			})
+		// 		);
+		// 	}
+		// };
+
+		fetchProjects(id);
+	}, [currentPage, id, keyword, language, pageSize]);
 
 	const editClickHandler = (id: string) => {
 		onEditButtonClick(id);
@@ -152,14 +199,19 @@ const UserProjectTable: FC<Props> = ({
 		{
 			Header: canGrant,
 			accessor: (p) => p.details.canGrant,
-			Cell: ({ value }: any) => <StatusIcon status={value} />,
+			Cell: ({ value }: any) => (
+				<div className={styles.cell}>
+					<StatusIcon status={value} />
+				</div>
+			),
 		},
 		{
 			Header: status,
 			accessor: (p) => p.activeStatus,
 		},
 		{
-			Header: actions,
+			Header: <div className={styles.tableHeaderCell}>{actions}</div>,
+			id: "actions",
 			accessor: (p) => p,
 			Cell: ({ value }: any) => (
 				<div className={language !== "ar" ? styles.action : styles.actionLTR}>
@@ -176,7 +228,10 @@ const UserProjectTable: FC<Props> = ({
 		},
 	];
 
-	const searchClickHandler = (value: string) => {};
+	const searchClickHandler = (value: string) => {
+		// const {data} =
+		setKeyword(value);
+	};
 
 	const deleteConfirmationClickHandler = async () => {
 		if (selectedProjectId !== "") {
@@ -205,7 +260,7 @@ const UserProjectTable: FC<Props> = ({
 		setCurrentPage(pageNumber);
 	};
 
-	return totalCount > 0 ? (
+	return (
 		<>
 			<SearchBox onClick={searchClickHandler} />
 			<TotalCount
@@ -232,10 +287,6 @@ const UserProjectTable: FC<Props> = ({
 				onCancelClick={deleteProjectCancelHandler}
 			/>
 		</>
-	) : (
-		<ShadowedContainer className={styles.message}>
-			{t("project.noProject", { framework: "React" })}
-		</ShadowedContainer>
 	);
 };
 
