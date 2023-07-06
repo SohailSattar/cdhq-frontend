@@ -49,7 +49,7 @@ function App() {
 	return (
 		<div className={styles.app}>
 			{/* <WebSession /> */}
-			<Router basename="/portal">
+			<Router basename={RoutePath.BASE_NAME}>
 				<Routes>
 					<Route
 						path={RoutePath.ROOT}
