@@ -48,7 +48,10 @@ const CheckboxedTree: FC<Props> = ({
 		<div className="checkTree">
 			<div className="btnSection">
 				<Button onClick={cascadeButtonClickHandler}>
-					Select Child: {!noCascade ? "On" : "Off"}
+					{t("button.selectChild", { framework: "React" })}:{" "}
+					{!noCascade
+						? t("status.on", { framework: "React" })
+						: t("status.off", { framework: "React" })}
 				</Button>
 				<Button
 					isRound

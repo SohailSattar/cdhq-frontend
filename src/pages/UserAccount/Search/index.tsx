@@ -90,7 +90,10 @@ const UserSearchPage = () => {
 	};
 
 	return canView ? (
-		<PageContainer showBackButton className={styles.newUser}>
+		<PageContainer
+			showBackButton
+			btnBackUrlLink={RoutePath.USER}
+			className={styles.newUser}>
 			<div className={styles.field}>
 				<SearchBox
 					label={t("user.employeeNumber", { framework: "React" })}
