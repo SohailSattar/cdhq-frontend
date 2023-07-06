@@ -65,7 +65,7 @@
 		"yes": "Yes",
 		"cancel": "Cancel",
 		"assignToUser": "Assign to User",
-		"selectChild":"select Child"
+		"selectChild":"Select Child"
 
 	},
 	"home": {
@@ -181,8 +181,8 @@
 	"status": {
 		"active": "Active",
 		"deactive": "Deactive",
-		"On": "On",
-		"Off": "Off"
+		"on": "On",
+		"off": "Off"
 	},
 	"pagination": {
 		"recordPerPage": "Records Per Page",
