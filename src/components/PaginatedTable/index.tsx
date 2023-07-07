@@ -1,4 +1,11 @@
-import { FC, useEffect, useRef, useState } from "react";
+import {
+	Dispatch,
+	FC,
+	SetStateAction,
+	useEffect,
+	useRef,
+	useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { Column } from "react-table";
 import {
@@ -25,6 +32,8 @@ import { getProjectsList } from "../../api/projects/get/getProjectsList";
 interface Props {
 	totalCountText: string;
 	totalCount: number;
+	currentPage?: number;
+	setCurrentPage?: Dispatch<SetStateAction<number>>;
 	pageSize: number;
 	data: any;
 	columns: Column<any>[];
@@ -46,6 +55,8 @@ interface Props {
 const PaginatedTable: FC<Props> = ({
 	totalCountText = "",
 	totalCount,
+	currentPage = 1,
+	setCurrentPage = () => {},
 	pageSize,
 	data,
 	columns,
@@ -69,7 +80,7 @@ const PaginatedTable: FC<Props> = ({
 	const tableRef = useRef(null);
 	const [myRole, setMyRole] = useState<APIUserRole>();
 
-	const [currentPage, setCurrentPage] = useState(1);
+	const [page, setPage] = useState(currentPage);
 
 	const [roleOptions, setRoleOptions] = useState<DropdownOption[]>([]);
 
@@ -168,6 +179,7 @@ const PaginatedTable: FC<Props> = ({
 	};
 
 	const pageChangeHandler = (page: number) => {
+		setPage(page);
 		setCurrentPage(page);
 		onPageChange(page);
 	};

@@ -151,8 +151,14 @@ const UserAccountPage = () => {
 				accessor: (p) => p,
 				Cell: ({ value }: any) => (
 					<div className={styles.name}>
-						<div className={styles.arabic}>{value.department.name}</div>
-						<div className={styles.english}>{value.department.nameEnglish}</div>
+						{value.department && (
+							<>
+								<div className={styles.arabic}>{value.department.name}</div>
+								<div className={styles.english}>
+									{value.department.nameEnglish}
+								</div>
+							</>
+						)}
 					</div>
 				),
 			},
@@ -201,6 +207,8 @@ const UserAccountPage = () => {
 				selectedRole,
 				orderBy
 			);
+
+			console.log(currentPage);
 
 			if (error?.response!.status! === 401) {
 				navigate(RoutePath.LOGIN);
@@ -277,6 +285,7 @@ const UserAccountPage = () => {
 		}
 		setOrderBy(orderByParam);
 		// fetchData(currentPage, orderByParam);
+		setCurrentPage(1);
 	};
 
 	const pageChangeHandler = (currentpage: number) => {
@@ -374,6 +383,8 @@ const UserAccountPage = () => {
 						})}
 						totalCount={totalCount}
 						pageSize={pageSize}
+						currentPage={currentPage}
+						setCurrentPage={setCurrentPage}
 						data={users}
 						columns={columns}
 						onSearch={userSearchClickHandler}
