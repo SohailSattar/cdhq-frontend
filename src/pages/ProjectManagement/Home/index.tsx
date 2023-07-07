@@ -11,7 +11,6 @@ import { DropdownOption } from "../../../components/Dropdown";
 
 import { APIProject } from "../../../api/projects/types";
 import { getProjects } from "../../../api/projects/get/getProjects";
-import { getProjectsByKeyword } from "../../../api/projects/get/getProjectsByKeyword";
 
 import { Id, ROLE } from "../../../utils";
 import { useStore } from "../../../utils/store";
@@ -33,6 +32,8 @@ const ProjectManagementPage = () => {
 
 	const [projects, setProjects] = useState<APIProject[]>([]);
 	const [totalCount, setTotalCount] = useState<number>(0);
+
+	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [pageSize, setPageSize] = useState<number>(10);
 
 	const [toggleSort, setToggleSort] = useState(false);
@@ -48,6 +49,8 @@ const ProjectManagementPage = () => {
 
 	const status = t("global.status", { framework: "React" });
 
+	const [orderBy, setOrderBy] = useState<string>("");
+
 	//Actions
 	const actions = t("global.actions", { framework: "React" });
 	const detail = t("button.detail", { framework: "React" });
@@ -55,18 +58,22 @@ const ProjectManagementPage = () => {
 	const columns: Column<ProjectColumns>[] = [
 		{
 			Header: id,
+			id: "id",
 			accessor: (p) => p.id,
 		},
 		{
 			Header: projectName,
+			id: "name",
 			accessor: (p) => p.name,
 		},
 		{
 			Header: projectNameEng,
+			id: "nameEnglish",
 			accessor: (p) => p.nameEnglish,
 		},
 		{
 			Header: projectGroup,
+			id: "projectGroupId",
 			accessor: (p) => p.group?.nameArabic,
 		},
 		{
@@ -106,40 +113,59 @@ const ProjectManagementPage = () => {
 	];
 
 	const fetchProjects = useMemo(
-		() => async (currentPage: number) => {
-			if (keyword === "") {
-				// Get all the projects if no keyword is mentioned
-				const { data, error } = await getProjects(
-					currentPage,
-					pageSize,
-					selectedStatusCode
-				);
-				if (error) {
-					if (error?.response!.status! === 403) {
-						setCanView(false);
-					}
-				}
+		() => async () => {
+			// if (keyword === "") {
+			// 	// Get all the projects if no keyword is mentioned
+			// 	const { data, error } = await getProjects(
+			// 		currentPage,
+			// 		pageSize,
+			// 		keyword,
+			// 		selectedStatusCode
+			// 	);
+			// 	if (error) {
+			// 		if (error?.response!.status! === 403) {
+			// 			setCanView(false);
+			// 		}
+			// 	}
 
-				if (data) {
-					setProjects(data?.projects);
-					setTotalCount(data?.totalItems);
-					setPageSize(data?.pageSize);
-				}
-			} else {
-				const { data } = await getProjectsByKeyword(
-					keyword,
-					currentPage,
-					pageSize
-				);
+			// 	if (data) {
+			// 		setProjects(data?.projects);
+			// 		setTotalCount(data?.totalItems);
+			// 		setPageSize(data?.pageSize);
+			// 	}
+			// } else {
+			// 	const { data } = await getProjectsByKeyword(
+			// 		keyword,
+			// 		currentPage,
+			// 		pageSize
+			// 	);
 
-				if (data) {
-					setProjects(data?.projects);
-					setTotalCount(data?.totalItems);
-					setPageSize(data?.pageSize);
+			// 	if (data) {
+			// 		setProjects(data?.projects);
+			// 		setTotalCount(data?.totalItems);
+			// 		setPageSize(data?.pageSize);
+			// 	}
+			// }
+			const { data, error } = await getProjects(
+				currentPage,
+				pageSize,
+				keyword,
+				selectedStatusCode,
+				orderBy
+			);
+			if (error) {
+				if (error?.response!.status! === 403) {
+					setCanView(false);
 				}
 			}
+
+			if (data) {
+				setProjects(data?.projects);
+				setTotalCount(data?.totalItems);
+				setPageSize(data?.pageSize);
+			}
 		},
-		[keyword, pageSize, selectedStatusCode]
+		[keyword, currentPage, pageSize, selectedStatusCode, orderBy]
 	);
 
 	useEffect(() => {
@@ -147,17 +173,18 @@ const ProjectManagementPage = () => {
 			setCanView(false);
 			return;
 		} else {
-			fetchProjects(1);
+			fetchProjects();
 			setCanView(true);
 		}
-	}, [fetchProjects, pageSize, role]);
+	}, [fetchProjects, currentPage, pageSize, role]);
 
 	const projectSearchClickHandler = (keyword: string) => {
 		setKeyword(keyword);
 	};
 
 	const pageChangeHandler = (currentPage: number) => {
-		fetchProjects(currentPage);
+		// fetchProjects();
+		setCurrentPage(currentPage);
 	};
 
 	const pageViewSelectionHandler = (option: DropdownOption) => {
@@ -173,6 +200,7 @@ const ProjectManagementPage = () => {
 		} else {
 			orderByParam = `&OrderByDesc=${columnId}`;
 		}
+		setOrderBy(orderByParam);
 		// fetchProjects(currentPage, orderByParam);
 	};
 
@@ -195,11 +223,13 @@ const ProjectManagementPage = () => {
 			<PaginatedTable
 				totalCountText={t("project.count", { framework: "React" })}
 				totalCount={totalCount}
+				currentPage={currentPage}
+				setCurrentPage={setCurrentPage}
 				pageSize={pageSize}
 				data={projects}
 				columns={columns}
 				onSearch={projectSearchClickHandler}
-				onTableSort={() => {}}
+				onTableSort={tableSortHandler}
 				onPageChange={pageChangeHandler}
 				hideWorkflowStatusDropdown
 				onPageViewSelectionChange={pageViewSelectionHandler}
