@@ -1,21 +1,35 @@
-import { FC } from 'react';
-import styles from './styles.module.scss';
+import { FC } from "react";
+import ReactCard from "react-bootstrap/Card";
+import styles from "./styles.module.scss";
 
-interface Props {
+export interface ICard {
+	image: string;
 	title: string;
 }
 
-const Card: FC<Props> = ({ title }) => {
+export interface Props {
+	data: ICard;
+}
+
+const Card: FC<Props> = ({ data }) => {
+	const { title, image } = data;
+
 	return (
-		<div className={styles.card}>
-			<img src='img_avatar.png' alt='Avatar' style={{ width: '100%' }} />
-			<div className={styles.container}>
-				<h4>
-					<b>{title}</b>
-				</h4>
-				<p>Architect & Engineer</p>
-			</div>
-		</div>
+		<ReactCard style={{ width: "18rem", textAlign: "center" }}>
+			<ReactCard.Img
+				style={{
+					minHeight: "250px",
+					maxHeight: "200px",
+					// width: "200px",
+				}}
+				variant="top"
+				src={image}
+			/>
+			<ReactCard.Body>
+				{/* <ReactCard.Title>{title}</ReactCard.Title> */}
+				<ReactCard.Text>{title}</ReactCard.Text>
+			</ReactCard.Body>
+		</ReactCard>
 	);
 };
 

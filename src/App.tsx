@@ -286,7 +286,7 @@ function App() {
 						/>
 					</Route> */}
 					{/* Honors */}
-					{/* <Route element={<ProtectedRoute />}>
+					<Route element={<ProtectedRoute />}>
 						<Route
 							path={`${RoutePath.HONORS}`}
 							element={
@@ -315,7 +315,7 @@ function App() {
 								</Layout>
 							}
 						/>
-					</Route> */}
+					</Route>
 					{/* News */}
 					<Route element={<ProtectedRoute />}>
 						<Route
