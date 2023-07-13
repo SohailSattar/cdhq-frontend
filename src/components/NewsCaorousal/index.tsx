@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { APINews } from "../../api/news/types";
-import { NewsBar, UpDownArrow } from "..";
+import { NewsBar, ShadowedContainer, UpDownArrow } from "..";
 
 import styles from "./styles.module.scss";
 import { rotateRight } from "../../utils";
@@ -37,7 +37,7 @@ const NewsCaorousal: FC<Props> = ({ list, intervalInMiliseconds = 5000 }) => {
 	};
 
 	return (
-		<div className={styles.newsCaorousal}>
+		<ShadowedContainer className={styles.newsCaorousal}>
 			{newsList.length > 0 && (
 				<div className={styles.arrowContainer}>
 					<UpDownArrow
@@ -60,7 +60,7 @@ const NewsCaorousal: FC<Props> = ({ list, intervalInMiliseconds = 5000 }) => {
 					/>
 				</div>
 			))}
-		</div>
+		</ShadowedContainer>
 	);
 };
 
