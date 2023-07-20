@@ -1,3 +1,4 @@
+import { Id } from "../../utils";
 import { APIDepartmentLevel } from "../departmentLevel/types";
 import { APIEmirate } from "../emirates/types";
 
@@ -19,8 +20,10 @@ export interface APIDepartmentDetail extends APIDepartmentItem {
 }
 
 export interface APIDepartmentHierarchy {
-	value: string;
+	id: Id;
 	label: string;
+	value: string;
+	name: string;
 	nameEnglish: string;
 	children?: APIDepartmentHierarchy[];
 }

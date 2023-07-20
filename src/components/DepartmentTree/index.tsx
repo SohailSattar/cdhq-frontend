@@ -10,6 +10,7 @@ import CheckboxedTree, { Node } from "../CheckboxedTree";
 
 import "./styles.scss";
 import { getDepartmentHierarchyByProject } from "../../api/departments/get/getDepartmentHierarchyByProject";
+import { APIDepartmentHierarchy } from "../../api/departments/types";
 
 export interface Props {
 	id?: number;
@@ -33,18 +34,21 @@ const DepartmentTree: FC<Props> = ({
 		const fetchData = async () => {
 			if (!id) {
 				const { data } = await getDepartmentsHierarchy();
-				if (data) {
-					setHierarchies([data]);
-				}
 			} else {
 				if (forProject) {
 					const { data } = await getDepartmentHierarchyByProject(id);
 					if (data) {
+						[data].forEach((obj) => {
+							renameNestedObjects(obj);
+						});
 						setHierarchies([data]);
 					}
 				} else {
 					const { data } = await getDepartmentHierarchy(id);
 					if (data) {
+						[data].forEach((obj) => {
+							renameNestedObjects(obj);
+						});
 						setHierarchies([data]);
 					}
 				}
@@ -52,7 +56,43 @@ const DepartmentTree: FC<Props> = ({
 		};
 
 		fetchData();
-	}, [id]);
+	}, [id, language]);
+
+	const renameNestedObjects = (obj: any) => {
+		console.log(obj["children"]);
+		if (obj!.length > 0) {
+			obj.forEach((item: any) => {
+				renameObjects(item);
+			});
+		} else {
+			renameObjects(obj);
+		}
+	};
+
+	const renameObjects = (obj: any) => {
+		Object.keys(obj).forEach((key, index) => {
+			if (key == "id") {
+				obj["value"] = obj["id"];
+				delete obj["id"];
+			}
+			if (language !== "ar") {
+				if (key == "name") {
+					obj["label"] = obj["name"];
+					delete obj["name"];
+					delete obj["nameEnglish"];
+				}
+			} else {
+				if (key == "nameEnglish") {
+					obj["label"] = obj["nameEnglish"] || "";
+					delete obj["nameEnglish"];
+					delete obj["name"];
+				}
+			}
+			if (key == "children") {
+				renameNestedObjects(obj["children"]);
+			}
+		});
+	};
 
 	return showCheckbox ? (
 		<CheckboxedTree
