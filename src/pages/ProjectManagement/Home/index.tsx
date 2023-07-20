@@ -201,6 +201,7 @@ const ProjectManagementPage = () => {
 			orderByParam = `&OrderByDesc=${columnId}`;
 		}
 		setOrderBy(orderByParam);
+		setCurrentPage(1);
 		// fetchProjects(currentPage, orderByParam);
 	};
 

@@ -73,12 +73,12 @@ const ExistingUserDetailsSection: FC<Props> = ({ list, onClick }) => {
 				<thead>
 					<tr>
 						<th>{userid}</th>
-						<th>{logName}</th>
 						<th>{empNo}</th>
 						<th>{rank}</th>
 						<th>{fullName}</th>
 						<th>{department}</th>
 						<th>{className}</th>
+						<th>{logName}</th>
 						<th className={styles.headerCell}></th>
 					</tr>
 				</thead>

@@ -31,7 +31,7 @@ const ExistingUserDetails: FC<Props> = ({ detail, onClick }) => {
 		rank = detail.rank?.name;
 		name = detail.name;
 		department = detail.department?.name!;
-		className = detail.class?.name;
+		className = detail.class?.name!;
 	} else {
 		// Check if English value is there
 
@@ -53,26 +53,26 @@ const ExistingUserDetails: FC<Props> = ({ detail, onClick }) => {
 		if (detail.department.nameEnglish) {
 			department = detail.department.nameEnglish!;
 		} else {
-			department = detail.department.name;
+			department = detail.department?.name!;
 		}
 
 		// Recruiter
-		if (detail.class.nameEnglish) {
-			className = detail.class.nameEnglish!;
+		if (detail.class?.nameEnglish!) {
+			className = detail.class?.nameEnglish!;
 		} else {
-			className = detail.class.name;
+			className = detail.class?.name!;
 		}
 	}
 
 	return (
 		<tr>
 			<td className={styles.cell}>{detail.id}</td>
-			<td>{detail.logName}</td>
 			<td>{detail.employeeNo}</td>
 			<td>{rank}</td>
 			<td>{name}</td>
 			<td>{department}</td>
 			<td>{className}</td>
+			<td>{detail.logName}</td>
 			<td className={styles.buttonSection}>
 				<Button onClick={() => selectButtonHandler(detail)}>
 					{t("button.select", { framework: "React" })}

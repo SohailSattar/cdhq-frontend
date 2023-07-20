@@ -25,6 +25,48 @@ const ExistingEmployeeDetails: FC<Props> = ({ detail, onClick }) => {
 		onClick(e);
 	};
 
+	let rank = "";
+	let name = "";
+	let department = "";
+	let className = "";
+
+	if (language !== "ar") {
+		rank = detail.rank?.name!;
+		name = detail.fullName;
+		department = detail.department?.name!;
+		className = detail.class?.name!;
+	} else {
+		// Check if English value is there
+
+		// Rank
+		if (detail.rank?.nameEnglish!) {
+			rank = detail.rank.nameEnglish!;
+		} else {
+			rank = detail.rank?.name!;
+		}
+
+		// Employee Name
+		if (detail.nameEnglish) {
+			name = detail.nameEnglish!;
+		} else {
+			name = detail.fullName;
+		}
+
+		// Department
+		if (detail.department?.nameEnglish!) {
+			department = detail.department?.nameEnglish!;
+		} else {
+			department = detail.department?.name!;
+		}
+
+		// Recruiter
+		if (detail.class?.nameEnglish!) {
+			className = detail.class?.nameEnglish!;
+		} else {
+			className = detail.class?.name!;
+		}
+	}
+
 	let hiringDate =
 		detail?.hireDate !== null
 			? format(new Date(detail?.hireDate!), "dd MMMM yyyy", {
@@ -59,15 +101,9 @@ const ExistingEmployeeDetails: FC<Props> = ({ detail, onClick }) => {
 						</div>
 					</div> */}
 			<td>{detail?.employeeNo}</td>
-			<td>
-				{language !== "ar" ? detail.rank?.name : detail.rank?.nameEnglish}
-			</td>
-			<td>{language !== "ar" ? detail.fullName : detail.nameEnglish}</td>
-			<td>
-				{language !== "ar"
-					? detail.department?.name!
-					: detail.department?.nameEnglish!}
-			</td>
+			<td>{rank}</td>
+			<td>{name}</td>
+			<td>{department}</td>
 			{/* <div>
 						<div className={styles.heading}>
 							{t('user.gender', { framework: 'React' })}
@@ -78,9 +114,7 @@ const ExistingEmployeeDetails: FC<Props> = ({ detail, onClick }) => {
 								: detail.gender?.nameEnglish}
 						</div>
 					</div> */}
-			<td>
-				{language !== "ar" ? detail.class?.name! : detail.class?.nameEnglish!}
-			</td>
+			<td>{className}</td>
 			<td className={styles.buttonSection}>
 				<Button onClick={() => selectButtonHandler(detail)}>
 					{t("button.select", { framework: "React" })}

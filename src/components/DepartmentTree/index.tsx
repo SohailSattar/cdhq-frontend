@@ -34,6 +34,12 @@ const DepartmentTree: FC<Props> = ({
 		const fetchData = async () => {
 			if (!id) {
 				const { data } = await getDepartmentsHierarchy();
+				if (data) {
+					[data].forEach((obj) => {
+						renameNestedObjects(obj);
+					});
+					setHierarchies([data]);
+				}
 			} else {
 				if (forProject) {
 					const { data } = await getDepartmentHierarchyByProject(id);
@@ -54,7 +60,6 @@ const DepartmentTree: FC<Props> = ({
 				}
 			}
 		};
-
 		fetchData();
 	}, [id, language]);
 
@@ -71,6 +76,8 @@ const DepartmentTree: FC<Props> = ({
 
 	const renameObjects = (obj: any) => {
 		Object.keys(obj).forEach((key, index) => {
+			console.log(obj);
+
 			if (key == "id") {
 				obj["value"] = obj["id"];
 				delete obj["id"];
@@ -83,7 +90,7 @@ const DepartmentTree: FC<Props> = ({
 				}
 			} else {
 				if (key == "nameEnglish") {
-					obj["label"] = obj["nameEnglish"] || "";
+					obj["label"] = obj["nameEnglish"] || obj["label"];
 					delete obj["nameEnglish"];
 					delete obj["name"];
 				}
