@@ -260,8 +260,8 @@ const PaginatedTable: FC<Props> = ({
 						</div>
 					</div>
 				)}
-				<div className={styles.detailBar}>
-					{showProjectDropdown && (
+				{showProjectDropdown && (
+					<div className={styles.detailBar}>
 						<div
 							className={
 								language !== "ar" ? styles.selection : styles.selectionLTR
@@ -276,8 +276,8 @@ const PaginatedTable: FC<Props> = ({
 								/>{" "}
 							</ShadowedContainer>
 						</div>
-					)}
-				</div>
+					</div>
+				)}
 				{!hideWorkflowStatusDropdown && (
 					<div className={styles.detailBar}>
 						<div
