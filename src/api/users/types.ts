@@ -53,7 +53,7 @@ export interface APILoggedUser {
 }
 
 export interface APIUserDetail extends APIUser {
-	department: APIDepartmentItem;
+	department?: APIDepartmentItem;
 	class: APIClass;
 	rank: APIRank;
 	role?: APIRole;
@@ -67,7 +67,9 @@ export interface APIUserDetail extends APIUser {
 }
 
 export interface APIExistingUser extends APIUser {
+	department: APIDepartmentItem;
 	rank: APIRank;
+	class: APIClass;
 }
 
 export interface APIPaginatedUser extends APIPaginate {

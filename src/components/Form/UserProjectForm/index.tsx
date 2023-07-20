@@ -3,7 +3,13 @@ import { FC, useEffect, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import _ from "lodash/fp";
 import { useTranslation } from "react-i18next";
-import { Button, Checkbox, Dropdown, ShadowedContainer } from "../..";
+import {
+	Button,
+	Checkbox,
+	DeleteConfirmation,
+	Dropdown,
+	ShadowedContainer,
+} from "../..";
 import { getActiveStatusWithoutInactive } from "../../../api/activeStatus/get/getActiveStatusWithoutInactive";
 import { APIActiveStatus } from "../../../api/activeStatus/types";
 import { APIDepartmentItem } from "../../../api/departments/types";
@@ -35,6 +41,7 @@ interface Props {
 
 	actionButtonText: string;
 	onActionButtonClick: (data: IUserProjectFormInputs) => void;
+	onDelete?: () => void;
 }
 
 const UserProjectForm: FC<Props> = ({
@@ -45,10 +52,14 @@ const UserProjectForm: FC<Props> = ({
 	detail,
 	actionButtonText,
 	onActionButtonClick,
+	onDelete = () => {},
 }) => {
 	const [t] = useTranslation("common");
 	const language = useStore((state) => state.language);
 	const { role } = useStore((state) => state.loggedInUser);
+
+	const [showModal, setShowModal] = useState(false);
+	const [showDeleteButton, setShowDeleteButton] = useState<boolean>(false);
 
 	const [data, setData] = useState<APIUserProjectDetail>();
 
@@ -236,7 +247,6 @@ const UserProjectForm: FC<Props> = ({
 	useEffect(() => {
 		const fetchData = async () => {
 			const { data } = await getActiveStatusWithoutInactive();
-
 			if (data) {
 				setWorkflowList(data);
 
@@ -483,6 +493,7 @@ const UserProjectForm: FC<Props> = ({
 		});
 
 		setValue("structureType", departmentTypeOptions[0]);
+		setShowDeleteButton(false);
 
 		if (data) {
 			const {
@@ -581,6 +592,8 @@ const UserProjectForm: FC<Props> = ({
 			setValue("structureType", selectedStructureType!);
 
 			setValue("canGrant", canGrant);
+
+			setShowDeleteButton(true);
 		}
 
 		// if (selectedProjectOption) {
@@ -787,6 +800,8 @@ const UserProjectForm: FC<Props> = ({
 			} else {
 				setHideCanGrant(false);
 			}
+		} else {
+			setHideCanGrant(true);
 		}
 
 		setValue("project", option);
@@ -814,25 +829,30 @@ const UserProjectForm: FC<Props> = ({
 		// if (role !== ROLE.SUPERADMIN) {
 		// if (!showCenterOptions) {
 		//Fetch Details
-		const projctId = getValues("project.value");
 
-		const { data: details } = await getUserProjectByDepartment(
-			projctId,
-			option.value
-		);
+		if (role !== ROLE.SUPERADMIN) {
+			const projctId = getValues("project.value");
 
-		if (details) {
-			// Privilege
-			const selectedPrivilege = privilegeOptions.find(
-				(x) => x.value == details.privilege.sequenceNumber
+			const { data: details } = await getUserProjectByDepartment(
+				projctId,
+				option.value
 			);
-			setValue("privilege", selectedPrivilege!);
 
-			const start = details.workflowStartFrom.id!;
-			const end = details.workflowEndTo.id!;
+			console.log(details);
 
-			fetchWorkflow(+start, +end);
-			fetchPrivileges(details!.privilege.sequenceNumber);
+			if (details) {
+				// Privilege
+				const selectedPrivilege = privilegeOptions.find(
+					(x) => x.value == details.privilege.sequenceNumber
+				);
+				setValue("privilege", selectedPrivilege!);
+
+				const start = details.workflowStartFrom.id!;
+				const end = details.workflowEndTo.id!;
+
+				fetchWorkflow(+start, +end);
+				fetchPrivileges(details!.privilege.sequenceNumber);
+			}
 		}
 		// }
 		// }
@@ -885,6 +905,19 @@ const UserProjectForm: FC<Props> = ({
 
 	const submitHandler = (values: IUserProjectFormInputs) => {
 		onActionButtonClick(values);
+	};
+
+	const deleteClickHandler = () => {
+		setShowModal(true);
+	};
+
+	const deleteConfirmationClickHandler = () => {
+		setShowModal(false);
+		onDelete();
+	};
+
+	const deleteCancelHandler = () => {
+		setShowModal(false);
 	};
 
 	return (
@@ -1168,12 +1201,30 @@ const UserProjectForm: FC<Props> = ({
 					<div className={styles.row}>
 						<div className={styles.rowItem}>
 							<ShadowedContainer>
-								<Button type="submit">{actionButtonText}</Button>
+								<span className={styles.btnContainer}>
+									<Button type="submit">{actionButtonText}</Button>
+								</span>
+								{showDeleteButton && (
+									<span>
+										<Button
+											type="button"
+											isCritical
+											onClick={deleteClickHandler}>
+											{t("button.delete", { framework: "React" })}
+										</Button>
+									</span>
+								)}
 							</ShadowedContainer>
 						</div>
 					</div>
 				</form>
 			</ShadowedContainer>
+
+			<DeleteConfirmation
+				isOpen={showModal}
+				onYesClick={deleteConfirmationClickHandler}
+				onCancelClick={deleteCancelHandler}
+			/>
 		</div>
 	);
 };

@@ -34,17 +34,19 @@ const ChangeLanguage: FC<Props> = ({ className }) => {
 		if (toggleLanguage === "en") {
 			setToggleLanguage("ar");
 			i18n.changeLanguage("en");
-			// localStorageService.setLanguage('en');
+			localStorageService.setLanguage("en");
 		} else {
 			setToggleLanguage("en");
 			i18n.changeLanguage("ar");
-			// localStorageService.setLanguage('ar');
+			localStorageService.setLanguage("ar");
 		}
 		localStorageService.setLanguage(toggleLanguage);
 	};
 
 	return (
-		<Button onClick={changeLanguageHandler} className={className}>
+		<Button
+			onClick={changeLanguageHandler}
+			className={className}>
 			{toggleLanguage === "ar" ? "العربية" : "EN"}
 		</Button>
 	);

@@ -49,6 +49,7 @@ const UserDetailPage = () => {
 	const [status, setStatus] = useState<APIActiveStatus>();
 
 	const [canView, setCanView] = useState<boolean>(false);
+	const [privileges, setPrivileges] = useState<APIPrivileges>();
 
 	useEffect(() => {
 		const fetch = async () => {
@@ -65,16 +66,16 @@ const UserDetailPage = () => {
 					deletePrivilege,
 				} = privilege;
 
-				// setPrivileges({
-				// 	readPrivilege,
-				// 	insertPrivilege,
-				// 	updatePrivilege,
-				// 	deletePrivilege,
-				// });
+				setPrivileges({
+					readPrivilege,
+					insertPrivilege,
+					updatePrivilege,
+					deletePrivilege,
+				});
 			}
 		};
 
-		// fetch();
+		fetch();
 	}, []);
 
 	useEffect(() => {
@@ -164,7 +165,7 @@ const UserDetailPage = () => {
 					displayContent={canView}
 					showBackButton
 					btnBackUrlLink={RoutePath.USER}
-					showEditButton
+					showEditButton={privileges?.updatePrivilege}
 					btnEditUrlLink={`${RoutePath.USER_EDIT.replace(RoutePath.ID, id!)}`}
 					// showChangeStatusButton={
 					// 	role === ROLE.SUPERADMIN && loggedUserId !== user?.id
@@ -188,12 +189,18 @@ const UserDetailPage = () => {
 							</ShadowedContainer>
 						)} */}
 
-						<Status status={status!} />
+						{/* <Status status={status!} /> */}
 						<ShadowedContainer>
-							<Details user={user!} />
+							<Details
+								user={user!}
+								status={status!}
+							/>
 						</ShadowedContainer>
 
-						<UserProjectTable id={id!} />
+						<UserProjectTable
+							id={id!}
+							displayActionsColumn={false}
+						/>
 						<hr />
 						<MetaDataDetails
 							createdBy={user?.createdBy!}

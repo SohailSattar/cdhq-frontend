@@ -13,7 +13,6 @@ import {
 	SearchBox,
 	ShadowedContainer,
 } from "../../../components";
-import { Tab, TabList, TabPanel, Tabs } from "../../../components/Tabs";
 import ExistingEmployeeDetailsSection from "./containers/ExistingEmployeeDetailsSection";
 import ExistingUserDetailsSection from "./containers/ExistingUserDetailsSection";
 import MessageBox from "./containers/MessageBox";
@@ -25,6 +24,9 @@ import * as RoutePath from "../../../RouteConfig";
 import { ROLE } from "../../../utils";
 
 import styles from "./styles.module.scss";
+import { APIPrivileges } from "../../../api/privileges/type";
+import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPrivilege";
+import { Project } from "../../../data/projects";
 
 const UserSearchPage = () => {
 	const [t] = useTranslation("common");
@@ -34,15 +36,49 @@ const UserSearchPage = () => {
 	const { role } = useStore((state) => state.loggedInUser);
 
 	const [canView, setCanView] = useState(false);
+	const [privileges, setPrivileges] = useState<APIPrivileges>();
 
 	const [existingEmployees, setExistingEmployees] = useState<APIEmployee[]>([]);
 	const [existingUsers, setExistingUsers] = useState<APIExistingUser[]>([]);
 
 	useEffect(() => {
-		if (role === ROLE.SUPERADMIN) {
-			setCanView(true);
-		}
-	}, [role]);
+		const displayForm = async () => {
+			if (role == ROLE.USER) {
+				setCanView(false);
+				return;
+			}
+
+			const { data: privilege } = await getProjectPrivilege(
+				Project.UserManagement
+			);
+
+			if (privilege) {
+				const {
+					readPrivilege,
+					insertPrivilege,
+					updatePrivilege,
+					deletePrivilege,
+				} = privilege;
+
+				setPrivileges({
+					readPrivilege,
+					insertPrivilege,
+					updatePrivilege,
+					deletePrivilege,
+				});
+
+				if (readPrivilege) {
+					setCanView(true);
+				}
+			}
+
+			if (role === ROLE.SUPERADMIN) {
+				setCanView(true);
+			}
+		};
+
+		displayForm();
+	}, [role, setPrivileges]);
 
 	const employeeSearchHandler = (employeeNumber: string) => {
 		const fetchEmployeeData = async () => {
@@ -100,7 +136,7 @@ const UserSearchPage = () => {
 					onClick={employeeSearchHandler}
 				/>
 			</div>
-			<Tabs>
+			{/* <Tabs>
 				<TabList>
 					<Tab>
 						{t("employee.names", { framework: "React" })} (
@@ -119,15 +155,17 @@ const UserSearchPage = () => {
 					</ShadowedContainer>
 				</TabPanel>
 				<TabPanel>
-					<ShadowedContainer>
-						<MessageBox
-							message={t("message.noUserInList", { framework: "React" })}
-							type={"primary"}
-						/>
-						<Button onClick={newUserClickHandler}>
-							{t("button.addNewUser", { framework: "React" })}
-						</Button>
-					</ShadowedContainer>
+					{privileges?.insertPrivilege && (
+						<ShadowedContainer>
+							<MessageBox
+								message={t("message.noUserInList", { framework: "React" })}
+								type={"primary"}
+							/>
+							<Button onClick={newUserClickHandler}>
+								{t("button.addNewUser", { framework: "React" })}
+							</Button>
+						</ShadowedContainer>
+					)}
 					<ShadowedContainer className={styles.container}>
 						<ExistingUserDetailsSection
 							list={existingUsers}
@@ -135,7 +173,30 @@ const UserSearchPage = () => {
 						/>
 					</ShadowedContainer>
 				</TabPanel>
-			</Tabs>
+			</Tabs> */}
+			<ShadowedContainer>
+				<ExistingEmployeeDetailsSection
+					list={existingEmployees}
+					onClick={existingEmployeeClickHandler}
+				/>
+			</ShadowedContainer>{" "}
+			<ShadowedContainer className={styles.container}>
+				<ExistingUserDetailsSection
+					list={existingUsers}
+					onClick={(e) => existingUserEditClickHandler(e)}
+				/>
+			</ShadowedContainer>{" "}
+			{privileges?.insertPrivilege && (
+				<ShadowedContainer>
+					<MessageBox
+						message={t("message.noUserInList", { framework: "React" })}
+						type={"primary"}
+					/>
+					<Button onClick={newUserClickHandler}>
+						{t("button.addNewUser", { framework: "React" })}
+					</Button>
+				</ShadowedContainer>
+			)}
 		</PageContainer>
 	) : (
 		<NotAuthorized />

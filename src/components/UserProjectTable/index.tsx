@@ -60,6 +60,7 @@ const UserProjectTable: FC<Props> = ({
 			);
 
 			if (data) {
+				// console.log(data);
 				setTotalCount(data?.totalItems);
 				setProjects(
 					data?.projects.map((p) => {
@@ -83,10 +84,7 @@ const UserProjectTable: FC<Props> = ({
 								canGrant: p.canGrant!,
 								status: p.activeStatus,
 							},
-							activeStatus:
-								language !== "ar"
-									? p.activeStatus.nameArabic
-									: p.activeStatus.nameEnglish,
+							activeStatus: p.activeStatus.id,
 						};
 					})
 				);
@@ -208,10 +206,16 @@ const UserProjectTable: FC<Props> = ({
 		{
 			Header: status,
 			accessor: (p) => p.activeStatus,
+			Cell: ({ value }: any) => (
+				<ActiveStatus
+					code={value}
+					text={language !== "ar" ? value.nameArabic : value.nameEnglish}
+				/>
+			),
 		},
 		{
 			Header: <div className={styles.tableHeaderCell}>{actions}</div>,
-			id: "actions",
+			id: "Actions",
 			accessor: (p) => p,
 			Cell: ({ value }: any) => (
 				<div className={language !== "ar" ? styles.action : styles.actionLTR}>

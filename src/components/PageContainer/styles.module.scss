@@ -1,4 +1,12 @@
 .container {
+	.actionContainer {
+		display: flex;
+
+		.action {
+			flex: 1;
+		}
+	}
+
 	.heading {
 		display: flex;
 		justify-content: center;

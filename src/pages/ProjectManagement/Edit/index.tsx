@@ -173,7 +173,7 @@ const ProjectEditPage = () => {
 			currentStatus={status?.id === 1 ? "ACTIVE" : "DEACTIVE"}
 			onActivate={activateButtonClickHandler}
 			onDectivate={deleteButtonClickHandler}>
-			<Status status={status!} />
+			{/* <Status status={status!} /> */}
 			<ProjectForm
 				data={project}
 				onSubmit={submitHandler}

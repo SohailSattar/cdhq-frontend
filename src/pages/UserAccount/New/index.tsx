@@ -128,9 +128,16 @@ const UserNewPage = () => {
 		};
 
 		const { data } = await addUser(params);
+		console.log(data);
 		if (data?.success!) {
 			toast.success(t("message.userAdded", { framework: "React" }).toString());
-			navigate(`${RoutePath.USER}/${id}`);
+			if (id) {
+				navigate(`${RoutePath.USER_EDIT.replace(RoutePath.ID, id!)}`);
+			} else {
+				navigate(
+					`${RoutePath.USER_EDIT.replace(RoutePath.ID, data.id?.toString()!)}`
+				);
+			}
 		}
 
 		if (data?.errors?.length! > 0) {

@@ -1,19 +1,18 @@
 @import "src/assets/css/colors.scss";
 
-
 .status {
-    display: flex;
+	display: flex;
 
-    .text {
-        margin: 0 5px;
-        font-weight: 600;
-    }
+	.text {
+		// margin: 0;
+		font-weight: 600;
+	}
 
-    .active {
-        color: green;
-    }
+	.active {
+		color: green;
+	}
 
-    .deactive {
-        color: $ERROR;
-    }
+	.deactive {
+		color: $ERROR;
+	}
 }

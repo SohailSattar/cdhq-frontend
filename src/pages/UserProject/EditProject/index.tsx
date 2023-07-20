@@ -27,6 +27,7 @@ import { APIPrivilege, APIPrivileges } from "../../../api/privileges/type";
 import SetPrivilege from "../../UserAccount/components/SetPrivilege";
 import { Project } from "../../../data/projects";
 import { APIUserRole } from "../../../api/users/types";
+import { deleteProject } from "../../../api/users/delete/deleteProject";
 const UserProjectEditPage = () => {
 	const { userId, userProjectId } = useParams<{
 		userId: string;
@@ -135,6 +136,21 @@ const UserProjectEditPage = () => {
 		}
 	};
 
+	const deleteUserProjectClickHandler = async () => {
+		if (userProjectId !== "") {
+			const { data, error } = await deleteProject(userProjectId!);
+
+			if (error) {
+				toast.error(error.ErrorMessage);
+			}
+
+			if (data) {
+				toast.success("Deleted successfully");
+				navigate(`${RoutePath.USER_EDIT.replace(RoutePath.ID, userId!)}`);
+			}
+		}
+	};
+
 	return (
 		<PageContainer
 			lockFor={[ROLE.USER]}
@@ -148,6 +164,7 @@ const UserProjectEditPage = () => {
 					disableProject={true}
 					actionButtonText={t("button.update", { framework: "React" })}
 					onActionButtonClick={updateUserProjectClickHandler}
+					onDelete={deleteUserProjectClickHandler}
 				/>
 			) : (
 				<UserProjectPreview data={userProject!} />

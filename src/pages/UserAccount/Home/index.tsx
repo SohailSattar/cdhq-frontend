@@ -184,7 +184,6 @@ const UserAccountPage = () => {
 				Cell: ({ value }: any) => (
 					<ActionButtons
 						id={""}
-						showEdit={role?.name === ROLE.SUPERADMIN}
 						showView={true}
 						detailPageLink={`${RoutePath.USER}/${value.id}`}
 						editPageLink={`${RoutePath.USER}/${value.id}/edit`}
@@ -355,7 +354,7 @@ const UserAccountPage = () => {
 			displayContent={privileges?.readPrivilege!}
 			title={t("page.userHome", { framework: "React" })}
 			className={styles.userList}
-			showAddButton={role?.name === ROLE.SUPERADMIN}
+			showAddButton={privileges?.insertPrivilege!}
 			btnAddLabel={t("button.addNewUser", { framework: "React" })}
 			btnAddUrlLink={RoutePath.USER_SEARCH}>
 			<div className={styles.content}>

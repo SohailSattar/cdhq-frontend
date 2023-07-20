@@ -1,21 +1,21 @@
 .container {
-    padding-top: 0;
-    padding-bottom: 0;
-    ;
+	padding-top: 0;
+	padding-bottom: 0;
+	width: 100%;
 }
 
 .searchBox {
-    display: flex;
+	display: flex;
 
-    margin-right: 5px;
+	margin-right: 5px;
 
-    .searchIcon {
-        display: flex;
-        align-items: center;
-    }
+	.searchIcon {
+		display: flex;
+		align-items: center;
+	}
 
-    .clearIcon {
-        display: flex;
-        align-items: center;
-    }
+	.clearIcon {
+		display: flex;
+		align-items: center;
+	}
 }

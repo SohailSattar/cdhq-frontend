@@ -1,61 +1,86 @@
 .paginatedTable {
-    margin-bottom: 15px;
+	margin-bottom: 15px;
 
+	.searchContainer {
+		display: flex;
 
-    .detailBar {
-        display: flex;
+		.search {
+			display: flex;
+			flex: 1;
+			width: 100%;
+		}
 
-        .info {
-            margin-left: 5px;
-            flex: 1;
-        }
+		.bar {
+			display: flex;
+			// flex: 1;
+			.info {
+				// margin-left: 5px;
+				// flex: 1;
+			}
 
-        .infoLTR {
-            flex: 1;
-            margin-right: 5px;
-        }
+			.infoLTR {
+				// flex: 1;
+				// margin-right: 5px;
+			}
+		}
+	}
+	.selectionContainer {
+		display: flex;
+	}
 
-        .selection {
-            flex: 1;
-            margin-right: 5px;
-        }
+	.detailBar {
+		display: flex;
+		flex: 1;
+		.info {
+			margin-left: 5px;
+			// flex: 1;
+		}
 
-        .selectionLTR {
-            flex: 1;
-            margin-left: 5px;
-        }
-    }
+		.infoLTR {
+			// flex: 1;
+			margin-right: 5px;
+		}
 
-    .name {
-        display: flex;
-        flex-direction: column;
+		.selection {
+			flex: 1;
+			margin-right: 5px;
+		}
 
-        .arabic {
-            display: flex;
-            justify-content: right;
-        }
+		.selectionLTR {
+			flex: 1;
+			margin-left: 5px;
+		}
+	}
 
-        .english {
-            display: flex;
-            justify-content: left;
-        }
-    }
+	.name {
+		display: flex;
+		flex-direction: column;
 
+		.arabic {
+			display: flex;
+			justify-content: right;
+		}
 
-    .action {
-        display: flex;
-        justify-content: flex-end;
-    }
+		.english {
+			display: flex;
+			justify-content: left;
+		}
+	}
 
-    .btnDiv {
-        margin-left: 5px;
-    }
+	.action {
+		display: flex;
+		justify-content: flex-end;
+	}
 
-    .btnDivLTR {
-        margin-right: 5px;
-    }
+	.btnDiv {
+		margin-left: 5px;
+	}
 
-    .box {
-        padding: 6px;
-    }
+	.btnDivLTR {
+		margin-right: 5px;
+	}
+
+	.box {
+		padding: 6px;
+	}
 }

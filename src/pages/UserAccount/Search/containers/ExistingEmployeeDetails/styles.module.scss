@@ -1,20 +1,27 @@
 .details {
-    display: flex;
-    // padding: 15px;
+	display: flex;
+	// padding: 15px;
 
-    flex-direction: column;
+	flex-direction: column;
 
-    .detail {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 15px;
-    }
+	.detail {
+		display: flex;
+		justify-content: space-between;
+		margin-bottom: 15px;
+	}
 
-    .buttonSection {
-        // margin-bottom: 5px;
-    }
+	.table {
+		width: 100%;
+	}
 
-    .heading {
-        font-weight: 800;
-    }
+	.heading {
+		font-weight: 800;
+	}
+}
+.buttonSection {
+	width: 80px;
+}
+
+.cell {
+	padding: 5px 5px;
 }

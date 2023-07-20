@@ -4,12 +4,15 @@ import { APIUserDetail } from "../../../../../api/users/types";
 
 import styles from "./styles.module.scss";
 import { useStore } from "../../../../../utils/store";
+import { APIActiveStatus } from "../../../../../api/activeStatus/types";
+import { Status } from "../../../../../components";
 
 interface Props {
 	user: APIUserDetail;
+	status: APIActiveStatus;
 }
 
-const Details: FC<Props> = ({ user }) => {
+const Details: FC<Props> = ({ user, status }) => {
 	const [t] = useTranslation("common");
 	const language = useStore((state) => state.language);
 
@@ -17,6 +20,12 @@ const Details: FC<Props> = ({ user }) => {
 		<>
 			<div className={styles.details}>
 				{" "}
+				<div className={styles.detail}>
+					<div className={styles.heading}>
+						{t("user.id", { framework: "React" })}
+					</div>
+					<div className={styles.text}>{user?.id}</div>
+				</div>
 				<div className={styles.detail}>
 					<div className={styles.heading}>
 						{t("user.logName", { framework: "React" })}
@@ -71,8 +80,8 @@ const Details: FC<Props> = ({ user }) => {
 					</div>
 					<div className={styles.text}>
 						{language !== "ar"
-							? user?.department.longFullName
-							: user?.department.longFullNameEnglish}
+							? user?.department?.longFullName
+							: user?.department?.longFullNameEnglish}
 					</div>
 				</div>
 				<div className={styles.detail}>
@@ -89,15 +98,10 @@ const Details: FC<Props> = ({ user }) => {
 				</div>
 				<div className={styles.detail}>
 					<div className={styles.heading}>
-						{t("rank.name", { framework: "React" })}
+						{t("global.status", { framework: "React" })}
 					</div>
 					<div className={styles.text}>
-						{/* {user?.rank! !== null && <p>Hello</p>} */}
-						{user?.rank! !== null
-							? language !== "ar"
-								? user?.rank!.name!
-								: user?.rank!.nameEnglish!
-							: "---"}
+						<Status status={status!} />
 					</div>
 				</div>
 			</div>

@@ -27,7 +27,7 @@ export interface APIEmployee {
 	genderId: number;
 	rankId: number;
 	rank?: APIRank;
-	department?: APICategorizedDepartment;
+	department?: APIDepartmentItem;
 }
 
 export interface APIExistingEmployee {

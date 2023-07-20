@@ -202,32 +202,30 @@ const PaginatedTable: FC<Props> = ({
 
 	return (
 		<div className={styles.paginatedTable}>
-			<div style={{ marginTop: 0 }}>
-				<SearchBox onClick={onSearch} />
-			</div>
-			<div className={styles.detailBar}>
-				<div className={language !== "ar" ? styles.info : styles.infoLTR}>
-					<TotalCount
-						label={totalCountText}
-						count={totalCount}
-					/>
+			<div
+				className={styles.searchContainer}
+				style={{ marginTop: 0 }}>
+				<div className={styles.search}>
+					<SearchBox onClick={onSearch} />
 				</div>
-				<div
-					className={
-						language !== "ar" ? styles.selection : styles.selectionLTR
-					}>
-					<ShadowedContainer className={styles.box}>
-						<Dropdown
-							options={pageViewOptions}
-							onSelect={pageViewSelectionChangeHandler}
-							placeholder={t("pagination.recordPerPage", {
-								framework: "React",
-							})}
+				<div className={styles.bar}>
+					<div className={language !== "ar" ? styles.info : styles.infoLTR}>
+						<TotalCount
+							label={totalCountText}
+							count={totalCount}
 						/>
-					</ShadowedContainer>
+					</div>
 				</div>
 			</div>
-			{myRole?.role.name === ROLE.SUPERADMIN && showRoleOption && (
+			<div className={styles.selectionContainer}>
+				{/* <div className={styles.detailBar}>
+					<div className={language !== "ar" ? styles.info : styles.infoLTR}>
+						<TotalCount
+							label={totalCountText}
+							count={totalCount}
+						/>
+					</div>
+				</div> */}
 				<div className={styles.detailBar}>
 					<div
 						className={
@@ -235,65 +233,85 @@ const PaginatedTable: FC<Props> = ({
 						}>
 						<ShadowedContainer>
 							<Dropdown
-								options={roleOptions}
-								onSelect={roleSelectHandler}
-								placeholder={t("role.name", {
+								options={pageViewOptions}
+								onSelect={pageViewSelectionChangeHandler}
+								placeholder={t("pagination.recordPerPage", {
 									framework: "React",
 								})}
-							/>{" "}
+							/>
 						</ShadowedContainer>
 					</div>
 				</div>
-			)}
-			<div className={styles.detailBar}>
-				{showProjectDropdown && (
-					<div
-						className={
-							language !== "ar" ? styles.selection : styles.selectionLTR
-						}>
-						<ShadowedContainer>
-							<Dropdown
-								options={projectsOptions}
-								onSelect={projectSelectHandler}
-								placeholder={t("project.name", {
-									framework: "React",
-								})}
-							/>{" "}
-						</ShadowedContainer>
+				{myRole?.role.name === ROLE.SUPERADMIN && showRoleOption && (
+					<div className={styles.detailBar}>
+						<div
+							className={
+								language !== "ar" ? styles.selection : styles.selectionLTR
+							}>
+							<ShadowedContainer>
+								<Dropdown
+									options={roleOptions}
+									onSelect={roleSelectHandler}
+									placeholder={t("role.name", {
+										framework: "React",
+									})}
+								/>{" "}
+							</ShadowedContainer>
+						</div>
 					</div>
 				)}
-			</div>
-			<div className={styles.detailBar}>
+				<div className={styles.detailBar}>
+					{showProjectDropdown && (
+						<div
+							className={
+								language !== "ar" ? styles.selection : styles.selectionLTR
+							}>
+							<ShadowedContainer>
+								<Dropdown
+									options={projectsOptions}
+									onSelect={projectSelectHandler}
+									placeholder={t("project.name", {
+										framework: "React",
+									})}
+								/>{" "}
+							</ShadowedContainer>
+						</div>
+					)}
+				</div>
 				{!hideWorkflowStatusDropdown && (
-					<div
-						className={
-							language !== "ar" ? styles.selection : styles.selectionLTR
-						}>
-						<ShadowedContainer>
-							<Dropdown
-								options={statusOptions}
-								onSelect={workflowStatusOptionChangeHandler}
-								placeholder={t("global.status", {
-									framework: "React",
-								})}
-							/>{" "}
-						</ShadowedContainer>
+					<div className={styles.detailBar}>
+						<div
+							className={
+								language !== "ar" ? styles.selection : styles.selectionLTR
+							}>
+							<ShadowedContainer>
+								<Dropdown
+									options={statusOptions}
+									onSelect={workflowStatusOptionChangeHandler}
+									placeholder={t("global.status", {
+										framework: "React",
+									})}
+								/>{" "}
+							</ShadowedContainer>
+						</div>
 					</div>
-				)}{" "}
+				)}
 				{!hideActiveStatusDropdown && (
-					<div
-						className={
-							language !== "ar" ? styles.selection : styles.selectionLTR
-						}>
-						<ShadowedContainer>
-							<Dropdown
-								options={activeStatusOptions}
-								onSelect={activeStatusOptionChangeHandler}
-								placeholder={t("global.activeStatus", {
-									framework: "React",
-								})}
-							/>{" "}
-						</ShadowedContainer>
+					<div className={styles.detailBar}>
+						<div
+							className={
+								language !== "ar" ? styles.selection : styles.selectionLTR
+							}>
+							<ShadowedContainer>
+								<Dropdown
+									options={activeStatusOptions}
+									onSelect={activeStatusOptionChangeHandler}
+									placeholder={t("global.activeStatus", {
+										framework: "React",
+									})}
+								/>{" "}
+							</ShadowedContainer>
+						</div>
 					</div>
 				)}
 			</div>

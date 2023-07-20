@@ -54,8 +54,6 @@ const HomePage = () => {
 				// });
 
 				if (loggedInUser.role !== ROLE.SUPERADMIN) {
-					const x = accessibleProjects?.find((x) => x.id === 0);
-
 					const projectsList = data
 						.map((project) => {
 							project.isAvailable = accessibleProjects?.find(
@@ -66,6 +64,15 @@ const HomePage = () => {
 							return project;
 						})
 						.sort((a, b) => +b.isAvailable! - +a.isAvailable!);
+
+					// Forbid user to access User Accounts page even if they have been assigned it to them.
+					if (loggedInUser.role === ROLE.USER) {
+						const objIndex = projectsList.findIndex((obj) => obj.id == 110);
+
+						projectsList[objIndex].isAvailable = false;
+
+						// console.log(objIndex);
+					}
 
 					setProjects(projectsList);
 				} else {

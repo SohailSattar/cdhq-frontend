@@ -188,6 +188,9 @@ const UserEditPage = () => {
 		};
 
 		const { data, error } = await updateUser(params);
+
+		console.log(error);
+
 		if (data?.success!) {
 			toast.success(
 				t("message.userDetailUpdated", { framework: "React" }).toString()
@@ -302,12 +305,18 @@ const UserEditPage = () => {
 	// };
 
 	const editUserProjectClickHandler = (projectId: string) => {
+		console.log(id, projectId);
 		navigate(`${RoutePath.USER}/${id}/project/${projectId}/edit`);
 	};
 
 	const deleteUserProjectClickHandler = (projectId: string) => {
 		// TODO - Add logic
 	};
+
+	console.log(
+		privilege?.updatePrivilege,
+		!privilege?.updatePrivilege ?? isExistingEmployee
+	);
 
 	return (
 		<PageContainer
@@ -320,7 +329,7 @@ const UserEditPage = () => {
 			onActivate={activateButtonClickHandler}
 			onDectivate={deleteButtonClickHandler}
 			displayContent={privilege?.readPrivilege || false}>
-			<Status status={status!} />
+			{/* <Status status={status!} /> */}
 			<ShadowedContainer>
 				<div>
 					{userDetail?.employeeNo}{" "}
@@ -334,7 +343,9 @@ const UserEditPage = () => {
 				<TabList>
 					<Tab>{t("user.basicDetails", { framework: "React" })} </Tab>
 					<Tab>{t("project.projects", { framework: "React" })}</Tab>
-					<Tab>{t("form.changePassword", { framework: "React" })}</Tab>
+					{privilege?.updatePrivilege && (
+						<Tab>{t("form.changePassword", { framework: "React" })}</Tab>
+					)}
 					{role === ROLE.SUPERADMIN && (
 						<>
 							<Tab>{t("user.assignRole", { framework: "React" })}</Tab>
@@ -345,7 +356,9 @@ const UserEditPage = () => {
 					<ShadowedContainer>
 						<UserForm
 							isExistingEmployee={false}
-							hideActionButton={isExistingEmployee}
+							hideActionButton={
+								!privilege?.updatePrivilege ?? isExistingEmployee
+							}
 							data={userDetail}
 							actionButtonText={t("button.update", { framework: "React" })}
 							onSubmit={updateDetailsClickHandler}
@@ -368,11 +381,13 @@ const UserEditPage = () => {
 						onDeleteButtonClick={deleteUserProjectClickHandler}
 					/>
 				</TabPanel>
-				<TabPanel>
-					<ShadowedContainer>
-						<ChangePassword onClick={updatePasswordClickHandler} />
-					</ShadowedContainer>
-				</TabPanel>
+				{privilege?.updatePrivilege && (
+					<TabPanel>
+						<ShadowedContainer>
+							<ChangePassword onClick={updatePasswordClickHandler} />
+						</ShadowedContainer>
+					</TabPanel>
+				)}
 
 				{role === ROLE.SUPERADMIN && (
 					<>

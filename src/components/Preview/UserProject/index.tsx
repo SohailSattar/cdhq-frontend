@@ -3,7 +3,7 @@ import { MetaDataDetails, ShadowedContainer } from "../..";
 
 import styles from "./styles.module.scss";
 import { useStore } from "../../../utils/store";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { APIUserProjectDetail } from "../../../api/userProjects/types";
 
 interface Props {

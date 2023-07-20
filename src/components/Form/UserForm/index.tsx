@@ -13,6 +13,8 @@ import { IUserFormInputs } from "../types";
 
 import styles from "./styles.module.scss";
 import { APIUserDetail } from "../../../api/users/types";
+import { getDepartmentsByProject } from "../../../api/departments/get/getDepartmentsByProject";
+import { Project } from "../../../data/projects";
 
 interface Props {
 	isNewUser?: boolean;
@@ -132,7 +134,7 @@ const UserForm: FC<Props> = ({
 			setValue("email", email || "");
 
 			const selectedDepartment = departmentOptions.find(
-				(x) => x.value === department.id
+				(x) => x.value === department?.id
 			);
 			setValue("department", selectedDepartment!);
 
@@ -164,12 +166,14 @@ const UserForm: FC<Props> = ({
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const { data } = await getDepartments();
+			const { data } = await getDepartmentsByProject(Project.UserManagement);
 
 			if (data) {
 				setDepartmentOptions(
 					data.map((x) => ({
-						label: language !== "ar" ? x.longFullName : x.longFullNameEnglish,
+						label: `${x.id} - ${
+							language !== "ar" ? x.longFullName : x.longFullNameEnglish
+						}`,
 						value: x.id,
 					}))
 				);
@@ -179,8 +183,9 @@ const UserForm: FC<Props> = ({
 				if (selectedOption) {
 					const selected = data.find((x) => x.id === selectedOption.value!)!;
 
-					const label =
-						language !== "ar" ? selected?.name! : selected?.nameEnglish!;
+					const label = `${selected?.id} - ${
+						language !== "ar" ? selected?.name! : selected?.nameEnglish!
+					}`;
 
 					setValue("department", {
 						label: label,
@@ -200,7 +205,7 @@ const UserForm: FC<Props> = ({
 			if (data) {
 				setClassOptions(
 					data?.map((x) => ({
-						label: language !== "ar" ? x.name : x.nameEnglish,
+						label: `${x.id} - ${language !== "ar" ? x.name : x.nameEnglish}`,
 						value: x.id,
 						meta: x.logPre,
 					}))
@@ -211,8 +216,9 @@ const UserForm: FC<Props> = ({
 				if (selectedOption) {
 					const selected = data.find((x) => x.id === selectedOption.value!)!;
 
-					const label =
-						language !== "ar" ? selected?.name! : selected?.nameEnglish!;
+					const label = `${selected.id} - ${
+						language !== "ar" ? selected?.name! : selected?.nameEnglish!
+					}`;
 
 					setValue("userClass", {
 						label: label,
@@ -232,7 +238,7 @@ const UserForm: FC<Props> = ({
 			if (data) {
 				setRankOptions(
 					data.map((x) => ({
-						label: language !== "ar" ? x.name : x.nameEnglish,
+						label: `${x.id} - ${language !== "ar" ? x.name : x.nameEnglish}`,
 						value: x.id,
 					}))
 				);
@@ -242,8 +248,9 @@ const UserForm: FC<Props> = ({
 				if (selectedOption) {
 					const selected = data.find((x) => x.id === selectedOption.value!)!;
 
-					const label =
-						language !== "ar" ? selected?.name! : selected?.nameEnglish!;
+					const label = `${selected?.id} - ${
+						language !== "ar" ? selected?.name! : selected?.nameEnglish!
+					}`;
 
 					setValue("rank", {
 						label: label,
@@ -291,7 +298,7 @@ const UserForm: FC<Props> = ({
 	};
 
 	return (
-		<div className={styles.editUser}>
+		<ShadowedContainer className={styles.editUser}>
 			<form onSubmit={handleSubmit(onSubmit)}>
 				<div className={styles.section}>
 					<div className={styles.field}>
@@ -395,7 +402,7 @@ const UserForm: FC<Props> = ({
 						/>
 					</div>
 				</div>
-				<ShadowedContainer className={styles.section}>
+				<div className={styles.section}>
 					<div className={styles.dropDownContainer}>
 						<Controller
 							render={({ field: { value, onChange } }) => (
@@ -411,8 +418,8 @@ const UserForm: FC<Props> = ({
 							control={control}
 						/>
 					</div>
-				</ShadowedContainer>
-				<ShadowedContainer className={styles.section}>
+				</div>
+				<div className={styles.section}>
 					<div className={styles.dropDownContainer}>
 						<Controller
 							render={({ field: { value } }) => (
@@ -444,9 +451,9 @@ const UserForm: FC<Props> = ({
 							control={control}
 						/>
 					</div>
-				</ShadowedContainer>
+				</div>
 				{isNewUser && (
-					<ShadowedContainer className={styles.section}>
+					<div className={styles.section}>
 						<div className={styles.field}>
 							<Controller
 								render={({ field: { value, onChange } }) => (
@@ -477,7 +484,7 @@ const UserForm: FC<Props> = ({
 								defaultValue=""
 							/>
 						</div>
-					</ShadowedContainer>
+					</div>
 				)}
 
 				{Object.keys(errors).length > 0 && (
@@ -608,17 +615,17 @@ const UserForm: FC<Props> = ({
 						/>
 					</ShadowedContainer>
 				)}
-				{/* {!hideActionButton && ( */}
-				<ShadowedContainer className={styles.buttonSection}>
-					<Button
-						type="submit"
-						className={language !== "ar" ? styles.btn : styles.btnLTR}>
-						{actionButtonText}
-					</Button>
-				</ShadowedContainer>
-				{/* )} */}
+				{!hideActionButton && (
+					<div className={styles.buttonSection}>
+						<Button
+							type="submit"
+							className={language !== "ar" ? styles.btn : styles.btnLTR}>
+							{actionButtonText}
+						</Button>
+					</div>
+				)}
 			</form>
-		</div>
+		</ShadowedContainer>
 	);
 };
 

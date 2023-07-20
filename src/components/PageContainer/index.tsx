@@ -87,12 +87,84 @@ const PageContainer: FC<Props> = ({
 				<NotAuthorized />
 			) : (
 				<div className={styles.container}>
+					{/* UNCOMMENT LATER ON */}
 					{title && (
 						<div className={styles.heading}>
 							<span className={styles.title}>{title}</span>
 						</div>
 					)}
-					{showBackButton && (
+					<div className={styles.actionContainer}>
+						{showBackButton && (
+							<div className={styles.action}>
+								<ShadowedContainer className={styles.btnSection}>
+									<div
+										className={language !== "ar" ? styles.btn : styles.btnLTR}>
+										<RedirectButton
+											label={
+												btnBackLabel!
+													? btnBackLabel
+													: t("button.backToHome", { framework: "React" })
+											}
+											redirectTo={btnBackUrlLink!}
+										/>
+									</div>
+								</ShadowedContainer>
+							</div>
+						)}
+						{(showEditButton || showAddButton || showChangeStatusButton) && (
+							<div className={styles.action}>
+								<ShadowedContainer className={styles.btnSection}>
+									{showEditButton && (
+										<div
+											className={
+												language !== "ar" ? styles.btn : styles.btnLTR
+											}>
+											<RedirectButton
+												label={t("button.edit", { framework: "React" })}
+												redirectTo={btnEditUrlLink!}
+											/>
+										</div>
+									)}
+
+									{showAddButton && (
+										<div
+											className={
+												language !== "ar" ? styles.btn : styles.btnLTR
+											}>
+											<RedirectButton
+												label={
+													btnAddLabel
+														? btnAddLabel
+														: t("button.add", { framework: "React" })
+												}
+												redirectTo={btnAddUrlLink!}
+											/>
+										</div>
+									)}
+
+									{showChangeStatusButton && (
+										<div
+											className={
+												language !== "ar" ? styles.btn : styles.btnLTR
+											}>
+											{currentStatus === "ACTIVE" ? (
+												<Button
+													onClick={onDectivate}
+													isCritical>
+													{t("button.deactivate", { framework: "React" })}
+												</Button>
+											) : (
+												<Button onClick={onActivate}>
+													{t("button.activate", { framework: "React" })}
+												</Button>
+											)}
+										</div>
+									)}
+								</ShadowedContainer>
+							</div>
+						)}
+					</div>
+					{/* {showBackButton && (
 						<ShadowedContainer className={styles.btnSection}>
 							<div className={language !== "ar" ? styles.btn : styles.btnLTR}>
 								<RedirectButton
@@ -146,7 +218,86 @@ const PageContainer: FC<Props> = ({
 								</div>
 							)}
 						</ShadowedContainer>
-					)}
+					)} */}
+
+					{/* <table style={{ width: "100%" }}>
+						<tr>
+							<td>
+								{" "}
+								{showBackButton && (
+									<ShadowedContainer className={styles.btnSection}>
+										<div
+											className={
+												language !== "ar" ? styles.btn : styles.btnLTR
+											}>
+											<RedirectButton
+												label={
+													btnBackLabel!
+														? btnBackLabel
+														: t("button.backToHome", { framework: "React" })
+												}
+												redirectTo={btnBackUrlLink!}
+											/>
+										</div>
+									</ShadowedContainer>
+								)}
+							</td>
+							<td>
+								{(showEditButton ||
+									showAddButton ||
+									showChangeStatusButton) && (
+									<ShadowedContainer className={styles.btnSection}>
+										{showEditButton && (
+											<div
+												className={
+													language !== "ar" ? styles.btn : styles.btnLTR
+												}>
+												<RedirectButton
+													label={t("button.edit", { framework: "React" })}
+													redirectTo={btnEditUrlLink!}
+												/>
+											</div>
+										)}
+
+										{showAddButton && (
+											<div
+												className={
+													language !== "ar" ? styles.btn : styles.btnLTR
+												}>
+												<RedirectButton
+													label={
+														btnAddLabel
+															? btnAddLabel
+															: t("button.add", { framework: "React" })
+													}
+													redirectTo={btnAddUrlLink!}
+												/>
+											</div>
+										)}
+
+										{showChangeStatusButton && (
+											<div
+												className={
+													language !== "ar" ? styles.btn : styles.btnLTR
+												}>
+												{currentStatus === "ACTIVE" ? (
+													<Button
+														onClick={onDectivate}
+														isCritical>
+														{t("button.deactivate", { framework: "React" })}
+													</Button>
+												) : (
+													<Button onClick={onActivate}>
+														{t("button.activate", { framework: "React" })}
+													</Button>
+												)}
+											</div>
+										)}
+									</ShadowedContainer>
+								)}
+							</td>
+						</tr>
+					</table> */}
 					<div className={className}>{children}</div>
 				</div>
 			)}
