@@ -1,9 +1,9 @@
 import { FC } from "react";
 import Marquee from "react-fast-marquee";
 import { NewsFlashItem } from "..";
-import { APINews } from "../../api/news/types";
 
 import styles from "./styles.module.scss";
+import { APINews } from "../../../api/news/types";
 
 interface Props {
 	news: APINews[];

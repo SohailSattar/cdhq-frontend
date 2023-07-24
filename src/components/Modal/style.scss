@@ -1,4 +1,10 @@
 // This css file contains the react-modal component related styles.
 .ReactModal__Overlay--after-open {
-    z-index: 999;
+	z-index: 999;
+	display: flex;
+	justify-content: center;
+}
+
+.ReactModal__Overlay--after-open:focus-visible {
+	outline: none;
 }

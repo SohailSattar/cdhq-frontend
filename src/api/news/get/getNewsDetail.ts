@@ -13,6 +13,7 @@ export async function getNewsDetail(
 
 		const response = await instance.get<APINewsDetail>(url, config);
 		const data = response.data;
+		console.log(data);
 		return { data };
 	} catch (err: any) {
 		const error = err.response.data;

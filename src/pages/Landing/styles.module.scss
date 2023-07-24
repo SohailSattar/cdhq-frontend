@@ -20,6 +20,12 @@
 	}
 
 	.centerContainer {
+		background-color: unset;
+		border: unset;
 		// border: 1px solid black;
 	}
+}
+
+.modal {
+	width: 1500px !important;
 }

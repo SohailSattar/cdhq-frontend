@@ -48,10 +48,10 @@ const Menu: FC<Props> = ({ title }) => {
 	return (
 		<>
 			<div
-				style={{
-					backgroundImage:
-						"url('https://img.freepik.com/free-vector/stylish-line-pattern-background_361591-1174.jpg?w=1060&t=st=1678781765~exp=1678782365~hmac=19b909311ac8659a13999ac8a681f622df04f5915a8162d285207b3e70622742')",
-				}}
+				// style={{
+				// 	backgroundImage:
+				// 		"url('https://img.freepik.com/free-vector/stylish-line-pattern-background_361591-1174.jpg?w=1060&t=st=1678781765~exp=1678782365~hmac=19b909311ac8659a13999ac8a681f622df04f5915a8162d285207b3e70622742')",
+				// }}
 				className={styles.nav}>
 				<img
 					src="/portal/static/media/moi-logo.9513a445fa7fe6cd5192bab48cd22250.svg"
@@ -213,7 +213,8 @@ const Menu: FC<Props> = ({ title }) => {
 						</Navbar.Collapse>
 						<Button
 							variant="outline-dark"
-							onClick={loginClickHandler}>
+							onClick={loginClickHandler}
+							className={styles.loginButton}>
 							{t("account.login", { framework: "React" })}
 						</Button>
 						{/* <RedirectButton

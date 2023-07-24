@@ -1,0 +1,48 @@
+.display-enter {
+	top: var(--menu-starting-top);
+	width: var(--toggler-width);
+	max-height: var(--toggler-height);
+	color: var(--fade-from-color);
+	background-color: var(--toggler-bg-color);
+}
+
+:root {
+	--toggler-width: 120px;
+	--toggler-height: 40px;
+	--toggler-bg-color: #da110a;
+	--toggler-active-bg-color: #08853c;
+	--menu-starting-top: 0px;
+	--menu-ending-top: 45px;
+	--menu-width: 200px;
+	--menu-max-height: 200px;
+	--menu-bg-color: #188ddb;
+	--fade-from-color: transparent;
+	--fade-to-color: black;
+	--timeout: 350ms;
+}
+
+.display-enter-active {
+	top: var(--menu-ending-top);
+	width: var(--menu-width);
+	max-height: var(--menu-max-height);
+	color: var(--fade-to-color);
+	background-color: var(--menu-bg-color);
+	transition: all var(--timeout);
+}
+
+.display-exit {
+	top: var(--menu-ending-top);
+	width: var(--menu-width);
+	max-height: var(--menu-max-height);
+	color: var(--fade-to-color);
+	background-color: var(--menu-bg-color);
+}
+
+.display-exit-active {
+	top: var(--menu-starting-top);
+	width: var(--toggler-width);
+	max-height: var(--toggler-height);
+	color: var(--fade-from-color);
+	background-color: var(--toggler-bg-color);
+	transition: all var(--timeout);
+}
