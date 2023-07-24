@@ -67,7 +67,7 @@ const HomePage = () => {
 
 					// Forbid user to access User Accounts page even if they have been assigned it to them.
 					if (loggedInUser.role === ROLE.USER) {
-						const objIndex = projectsList.findIndex((obj) => obj.id == 110);
+						const objIndex = projectsList.findIndex((obj) => obj.id === 110);
 
 						projectsList[objIndex].isAvailable = false;
 

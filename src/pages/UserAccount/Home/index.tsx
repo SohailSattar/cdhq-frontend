@@ -100,7 +100,7 @@ const UserAccountPage = () => {
 		};
 
 		fetch();
-	}, [setPrivileges]);
+	}, [role?.name, setPrivileges]);
 
 	const id = t("user.id", { framework: "React" });
 	const employeeNo = t("user.employeeNumber", { framework: "React" });
@@ -191,7 +191,7 @@ const UserAccountPage = () => {
 				),
 			},
 		],
-		[actions, employeeNo, fullName, id, logName, role]
+		[actions, department, employeeNo, fullName, id, language, logName, status]
 	);
 
 	// New maybe
@@ -249,8 +249,9 @@ const UserAccountPage = () => {
 			}
 		},
 		[
-			departmentIds,
 			currentPage,
+			pageSize,
+			departmentIds,
 			keyword,
 			selectedRole,
 			selectedProject,
@@ -267,7 +268,7 @@ const UserAccountPage = () => {
 				fetchByDepartment();
 			}
 		}
-	}, [fetch, fetchByDepartment]);
+	}, [departmentIds.length, fetch, fetchByDepartment, role?.name]);
 
 	const userSearchClickHandler = (keyword: string) => {
 		setKeyword(keyword);
