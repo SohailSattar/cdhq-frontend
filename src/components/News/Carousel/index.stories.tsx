@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import NewsCaorousal, { Props as NewsCaorousalProps } from ".";
-import { APINews } from "../../api/news/types";
+import { APINews } from "../../../api/news/types";
 
 const meta = {
 	title: "components/NewsCaorousal",

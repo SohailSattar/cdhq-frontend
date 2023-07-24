@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getNewsDetail } from "../../../api/news/get/getNewsDetail";
 import { APINewsDetail } from "../../../api/news/types";
-import { PageContainer, ShadowedContainer } from "../../../components";
-import NewsContent from "./containers/Content";
-import NewsHeading from "./containers/Heading";
-import NewsMeta from "./containers/Meta";
+import {
+	NewsContent,
+	NewsHeading,
+	NewsMeta,
+	PageContainer,
+	ShadowedContainer,
+} from "../../../components";
 
 import * as RoutePath from "../../../RouteConfig";
 
@@ -37,8 +40,7 @@ const NewsDetailPage = () => {
 		<PageContainer
 			showBackButton={loggedInUser.id !== 0}
 			btnBackUrlLink={RoutePath.NEWS}
-			className={styles.detail}
-		>
+			className={styles.detail}>
 			<ShadowedContainer className={styles.container}>
 				<NewsHeading title={detail?.title!} />
 			</ShadowedContainer>
@@ -46,7 +48,10 @@ const NewsDetailPage = () => {
 				<NewsMeta postedDate={new Date(detail?.newsDate!).toDateString()} />
 			</div>
 			<ShadowedContainer className={styles.container}>
-				<NewsContent imagePath={detail?.imageName} data={detail?.fullNews!} />
+				<NewsContent
+					imagePath={detail?.imageName}
+					data={detail?.fullNews!}
+				/>
 			</ShadowedContainer>
 		</PageContainer>
 	);

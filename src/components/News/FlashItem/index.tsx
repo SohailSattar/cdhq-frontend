@@ -1,6 +1,6 @@
 import { FC } from "react";
-import { APINews } from "../../api/news/types";
-import { Id } from "../../utils";
+import { APINews } from "../../../api/news/types";
+import { Id } from "../../../utils";
 
 import styles from "./styles.module.scss";
 
@@ -11,7 +11,9 @@ interface Props {
 
 const NewsFlashItem: FC<Props> = ({ data, onClick }) => {
 	return (
-		<div className={styles.newsItem} onClick={() => onClick(data.id)}>
+		<div
+			className={styles.newsItem}
+			onClick={() => onClick(data.id)}>
 			* {data.title}
 		</div>
 	);

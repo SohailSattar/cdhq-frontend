@@ -1,26 +1,36 @@
-import { useEffect, useState } from "react";
-import { APINews } from "../../api/news/types";
+import { useEffect, useMemo, useState } from "react";
+import { APINews, APINewsDetail } from "../../api/news/types";
 import {
 	DisplayCard,
 	NewsFlashMarquee,
 	CardsCarousel,
 	ShadowedContainer,
+	Modal,
+	NewsDetail,
+	NewsList,
 } from "../../components";
 
 import { getLatest20News } from "../../api/news/get/getLatest20News";
 import { Id } from "../../utils";
-import NewsCaorousal from "../../components/NewsCaorousal";
+import { NewsCarousel } from "../../components";
 import clsx from "clsx";
 
 import styles from "./styles.module.scss";
 import { ICard } from "../../components/Card";
 import { getLatest20Honors } from "../../api/honors/get/getLatest20Honors";
+import { getNewsDetail } from "../../api/news/get/getNewsDetail";
 
 const LandingPage = () => {
 	const [news, setNews] = useState<APINews[]>([]);
 
 	const [empOfMonthCardsList, setEmpOfMonthCardsList] = useState<ICard[]>([]);
 	const [skilledEmpsCardsList, setSkilledEmpsCardsList] = useState<ICard[]>([]);
+
+	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+	const [isNewsTableModalOpen, setIsNewsTableModalOpen] =
+		useState<boolean>(false);
+
+	const [newsDetail, setNewsDetail] = useState<APINewsDetail>();
 
 	useEffect(() => {
 		const fetch = async () => {
@@ -72,8 +82,38 @@ const LandingPage = () => {
 		fetch();
 	}, [setEmpOfMonthCardsList]);
 
+	const fetchNewsDetail = useMemo(
+		() => async (id: Id) => {
+			console.log(id);
+			const { data } = await getNewsDetail(id);
+
+			if (data) {
+				setNewsDetail(data);
+			}
+		},
+		[]
+	);
+
 	const marqueeItemClickHandler = (id: Id) => {
-		console.log(id);
+		setIsModalOpen(true);
+		fetchNewsDetail(id);
+	};
+
+	const newsListButtonClickHandler = async () => {
+		setIsNewsTableModalOpen(true);
+	};
+
+	const modalNewsListCloseHandler = () => {
+		setIsNewsTableModalOpen(false);
+	};
+
+	const newsDetailClickHandler = async (id: Id) => {
+		setIsModalOpen(true);
+		fetchNewsDetail(id);
+	};
+
+	const modalCloseHandler = () => {
+		setIsModalOpen(false);
 	};
 
 	return (
@@ -94,9 +134,11 @@ const LandingPage = () => {
 				</ShadowedContainer>
 
 				<div className={clsx("col-8", styles.centerContainer)}>
-					<NewsCaorousal
+					<NewsCarousel
 						list={news}
 						intervalInMiliseconds={5000}
+						onViewClick={newsDetailClickHandler}
+						onTableViewClick={newsListButtonClickHandler!}
 					/>
 				</div>
 
@@ -109,6 +151,18 @@ const LandingPage = () => {
 				</ShadowedContainer>
 			</div>
 			<br />
+			<Modal
+				isOpen={isNewsTableModalOpen}
+				onClose={modalNewsListCloseHandler}
+				className={styles.modal}>
+				<NewsList onViewClick={newsDetailClickHandler} />
+			</Modal>
+			<Modal
+				isOpen={isModalOpen}
+				onClose={modalCloseHandler}
+				className={styles.modal}>
+				<NewsDetail detail={newsDetail!} />
+			</Modal>{" "}
 		</div>
 	);
 };

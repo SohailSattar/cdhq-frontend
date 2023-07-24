@@ -5,11 +5,12 @@
 	border-radius: 9px;
 	box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.53);
 	// max-width: 501px;
-	left: calc(50% - 250px);
+	// left: calc(50% - 250px);
 	position: absolute;
 	background: white; // $color_white;
 	padding: 0 13px;
 	z-index: 999;
+	outline: none;
 
 	.closeLine {
 		display: flex;

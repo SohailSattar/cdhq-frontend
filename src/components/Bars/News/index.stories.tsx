@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import NewsBar, { NewsItem } from ".";
+import NewsBar from ".";
 import { Id } from "../../../utils";
 
 const meta = {
@@ -10,7 +10,10 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const data: NewsItem = { id: 1, src: "x", title: "News 1", body: "adsadasa" };
+const id = 1;
+const src = "x";
+const title = "News 1";
+const body = "adsadasa";
 
 // const list: APINews[] = [
 // 	{
@@ -44,7 +47,5 @@ const data: NewsItem = { id: 1, src: "x", title: "News 1", body: "adsadasa" };
 // ];
 
 export const Primary: Story = {
-	args: {
-		data: data,
-	},
+	args: { id, title, body, src },
 };
