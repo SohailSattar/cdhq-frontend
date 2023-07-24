@@ -207,8 +207,6 @@ const UserAccountPage = () => {
 				orderBy
 			);
 
-			console.log(currentPage);
-
 			if (error?.response!.status! === 401) {
 				navigate(RoutePath.LOGIN);
 			} else if (error?.response!.status! === 403) {
@@ -235,8 +233,8 @@ const UserAccountPage = () => {
 	const fetchByDepartment = useMemo(
 		() => async () => {
 			const { data } = await getUsersByDepartments(
-				1,
-				10,
+				currentPage,
+				pageSize,
 				departmentIds,
 				keyword,
 				selectedRole,
@@ -252,6 +250,7 @@ const UserAccountPage = () => {
 		},
 		[
 			departmentIds,
+			currentPage,
 			keyword,
 			selectedRole,
 			selectedProject,

@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
-import clsx from 'clsx';
-import styles from './styles.module.scss';
+import React, { FC } from "react";
+import clsx from "clsx";
+import styles from "./styles.module.scss";
 
 export interface Props
 	extends React.DetailedHTMLProps<
@@ -26,6 +26,7 @@ const Button: FC<Props> = ({
 	withIcon = false,
 	isCritical = false,
 	withIconTransparent = false,
+	disabled = false,
 	...buttonProps
 }) => {
 	const classes = clsx(
@@ -36,10 +37,13 @@ const Button: FC<Props> = ({
 		isGradient && styles.gradiant,
 		withIcon && styles.withIcon,
 		isCritical && styles.critical,
-		withIconTransparent && styles.withIconTransparent
+		withIconTransparent && styles.withIconTransparent,
+		disabled && styles.disabled
 	);
 	return (
-		<button className={classes} {...buttonProps}>
+		<button
+			className={classes}
+			{...buttonProps}>
 			{children}
 		</button>
 	);

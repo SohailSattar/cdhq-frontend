@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { getExistingEmployees } from "../../../api/employees/get/getExistingEmployeesList";
-import { APIEmployee } from "../../../api/employees/types";
+import { APIEmployee, APIExistingEmployee } from "../../../api/employees/types";
 import { checkIfUserExists } from "../../../api/users/get/checkIfUserExists";
 import { getExistingUsers } from "../../../api/users/get/getExistingUsers";
 import { APIExistingUser } from "../../../api/users/types";
@@ -38,7 +38,9 @@ const UserSearchPage = () => {
 	const [canView, setCanView] = useState(false);
 	const [privileges, setPrivileges] = useState<APIPrivileges>();
 
-	const [existingEmployees, setExistingEmployees] = useState<APIEmployee[]>([]);
+	const [existingEmployees, setExistingEmployees] = useState<
+		APIExistingEmployee[]
+	>([]);
 	const [existingUsers, setExistingUsers] = useState<APIExistingUser[]>([]);
 
 	useEffect(() => {

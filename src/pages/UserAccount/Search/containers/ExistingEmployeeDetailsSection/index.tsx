@@ -1,19 +1,17 @@
 import { FC } from "react";
 import ExistingEmployeeDetails from "../ExistingEmployeeDetails";
 
-import { APIEmployee } from "../../../../../api/employees/types";
+import { APIExistingEmployee } from "../../../../../api/employees/types";
 
 import styles from "./styles.module.scss";
 import { useTranslation } from "react-i18next";
 
 interface Props {
-	list: APIEmployee[];
+	list: APIExistingEmployee[];
 	onClick: (e: any) => void;
 }
 
 const ExistingExployeeDetailsSection: FC<Props> = ({ list, onClick }) => {
-	console.log(list);
-
 	const [t] = useTranslation("common");
 	return (
 		<div>

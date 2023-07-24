@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -20,6 +20,10 @@ import { addUser } from "../../../api/users/add/addUser";
 import * as RoutePath from "../../../RouteConfig";
 
 import { ROLE } from "../../../utils";
+import { APIPrivileges } from "../../../api/privileges/type";
+import { Project } from "../../../data/projects";
+import { checkPrivilegeForProjectUser } from "../../../api/userProjects/get/checkPrivilegeForProjectUser";
+import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPrivilege";
 
 const UserNewPage = () => {
 	const { id } = useParams<{ id: string }>();
@@ -28,7 +32,7 @@ const UserNewPage = () => {
 	const language = useStore((state) => state.language);
 
 	const { role } = useStore((state) => state.loggedInUser);
-	// const [canView, setCanView] = useState(false);
+	const [canView, setCanView] = useState(false);
 
 	const [employeeExists, setEmployeeExists] = useState(true);
 
@@ -37,18 +41,33 @@ const UserNewPage = () => {
 	const [details, setDetails] = useState<IUserFormInputs>();
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 
+	const [privilege, setPrivilege] = useState<APIPrivileges>();
+
 	const previewHandler = async (values: IUserFormInputs) => {
 		setDetails(values);
 		setIsOpen(true);
 	};
 
-	useEffect(() => {
-		// if (role === ROLE.SUPERADMIN) {
-		// 	setCanView(true);
-		// }
+	const fetchDetails = useMemo(
+		() => async () => {
+			// check if user can get details
+			const { data: privilege } = await getProjectPrivilege(
+				Project.UserManagement
+			);
 
-		const fetchData = async () => {
-			if (id) {
+			if (!privilege?.insertPrivilege) {
+				setCanView(false);
+				return;
+			} else {
+				// check if user has read or write privilege
+				const { data: projectUserPrivilege } =
+					await checkPrivilegeForProjectUser(id!, Project.UserManagement);
+
+				if (!projectUserPrivilege?.insertPrivilege) {
+					setCanView(false);
+					return;
+				}
+				// What if doesnt have read privilege?
 				const { data: isExist } = await checkIfUserExists(id!);
 
 				if (isExist) {
@@ -88,15 +107,104 @@ const UserNewPage = () => {
 						updatedOn: "",
 					});
 				}
-			} else {
-				setEmployeeExists(false);
-			}
-		};
 
-		if (role === ROLE.SUPERADMIN || role === ROLE.ADMIN) {
-			fetchData();
-		}
-	}, [id, language, navigate, role]);
+				setCanView(true);
+			}
+
+			// get the details.
+		},
+		[]
+	);
+
+	useEffect(() => {
+		// if (
+		// 	(role === ROLE.USER || role === "" || role === ROLE.ADMIN) &&
+		// 	(loggedUserId.toString() !== id || loggedUserId === 0)
+		// ) {
+		// 	navigate(RoutePath.USER);
+		// } else {
+		// 	setCanView(true);
+		// }
+		fetchDetails();
+	}, [language, id, navigate, role]);
+
+	// useEffect(() => {
+	// 	// if (role === ROLE.SUPERADMIN) {
+	// 	// 	setCanView(true);
+	// 	// }
+
+	// 	const fetchData = async () => {
+	// 		if (id) {
+	// 			const { data: privilege } = await checkPrivilegeForProjectUser(
+	// 				id!,
+	// 				Project.UserManagement
+	// 			);
+
+	// 			if (privilege) {
+	// 				const {
+	// 					readPrivilege,
+	// 					insertPrivilege,
+	// 					updatePrivilege,
+	// 					deletePrivilege,
+	// 				} = privilege;
+
+	// 				setPrivilege({
+	// 					readPrivilege,
+	// 					insertPrivilege,
+	// 					updatePrivilege,
+	// 					deletePrivilege,
+	// 				});
+	// 			}
+
+	// 			const { data: isExist } = await checkIfUserExists(id!);
+
+	// 			console.log(isExist);
+	// 			if (isExist) {
+	// 				navigate(`${RoutePath.USER}/${id}/edit`);
+	// 			}
+
+	// 			const { data } = await getExistingEmployee(id!);
+	// 			if (data) {
+	// 				const {
+	// 					id,
+	// 					employeeNo: empNo,
+	// 					fullName: name,
+	// 					nameEnglish,
+	// 					phone,
+	// 					email,
+	// 					department,
+	// 					class: classDetail,
+	// 					rank,
+	// 				} = data;
+
+	// 				setEmployeeExists(true);
+
+	// 				setEmployee({
+	// 					id: id,
+	// 					logName: "",
+	// 					employeeNo: empNo!,
+	// 					name,
+	// 					nameEnglish,
+	// 					phone: phone!,
+	// 					email: email!,
+	// 					department: department!,
+	// 					class: classDetail!,
+	// 					rank: rank!,
+	// 					createdBy: "",
+	// 					createdOn: "",
+	// 					updatedBy: "",
+	// 					updatedOn: "",
+	// 				});
+	// 			}
+	// 		} else {
+	// 			setEmployeeExists(false);
+	// 		}
+	// 	};
+
+	// 	if (role === ROLE.SUPERADMIN || role === ROLE.ADMIN) {
+	// 		fetchData();
+	// 	}
+	// }, [id, language, navigate, role]);
 
 	const submitHandler = async () => {
 		const {
@@ -128,7 +236,6 @@ const UserNewPage = () => {
 		};
 
 		const { data } = await addUser(params);
-		console.log(data);
 		if (data?.success!) {
 			toast.success(t("message.userAdded", { framework: "React" }).toString());
 			if (id) {
@@ -151,7 +258,8 @@ const UserNewPage = () => {
 		<PageContainer
 			lockFor={[ROLE.USER]}
 			showBackButton
-			btnBackUrlLink={RoutePath.USER}>
+			btnBackUrlLink={RoutePath.USER}
+			displayContent={canView}>
 			<UserForm
 				data={employee}
 				isExistingEmployee={employeeExists}

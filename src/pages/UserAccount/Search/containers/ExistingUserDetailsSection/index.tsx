@@ -26,8 +26,6 @@ const ExistingUserDetailsSection: FC<Props> = ({ list, onClick }) => {
 	const department = t("department.name", { framework: "React" });
 	const className = t("user.class", { framework: "React" });
 
-	console.log(list);
-
 	// const columns: Column<ExistingUserTable>[] = [
 	// 	{
 	// 		Header: userid,

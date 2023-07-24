@@ -189,8 +189,6 @@ const UserEditPage = () => {
 
 		const { data, error } = await updateUser(params);
 
-		console.log(error);
-
 		if (data?.success!) {
 			toast.success(
 				t("message.userDetailUpdated", { framework: "React" }).toString()
@@ -305,18 +303,12 @@ const UserEditPage = () => {
 	// };
 
 	const editUserProjectClickHandler = (projectId: string) => {
-		console.log(id, projectId);
 		navigate(`${RoutePath.USER}/${id}/project/${projectId}/edit`);
 	};
 
 	const deleteUserProjectClickHandler = (projectId: string) => {
 		// TODO - Add logic
 	};
-
-	console.log(
-		privilege?.updatePrivilege,
-		!privilege?.updatePrivilege ?? isExistingEmployee
-	);
 
 	return (
 		<PageContainer

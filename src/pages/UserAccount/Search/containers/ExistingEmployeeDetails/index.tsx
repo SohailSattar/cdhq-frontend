@@ -7,12 +7,12 @@ import { enGB, ar } from "date-fns/locale";
 import { useStore } from "../../../../../utils/store";
 import { Button, ShadowedContainer } from "../../../../../components";
 
-import { APIEmployee } from "../../../../../api/employees/types";
+import { APIExistingEmployee } from "../../../../../api/employees/types";
 
 import styles from "./styles.module.scss";
 
 interface Props {
-	detail: APIEmployee;
+	detail: APIExistingEmployee;
 	onClick: (detail: any) => void;
 }
 
@@ -67,13 +67,6 @@ const ExistingEmployeeDetails: FC<Props> = ({ detail, onClick }) => {
 		}
 	}
 
-	let hiringDate =
-		detail?.hireDate !== null
-			? format(new Date(detail?.hireDate!), "dd MMMM yyyy", {
-					locale: language !== "ar" ? ar : enGB,
-			  })
-			: "N/A";
-
 	return (
 		// <ShadowedContainer>
 		<tr>
@@ -116,9 +109,11 @@ const ExistingEmployeeDetails: FC<Props> = ({ detail, onClick }) => {
 					</div> */}
 			<td>{className}</td>
 			<td className={styles.buttonSection}>
-				<Button onClick={() => selectButtonHandler(detail)}>
-					{t("button.select", { framework: "React" })}
-				</Button>
+				{detail.status.id !== 90 && (
+					<Button onClick={() => selectButtonHandler(detail)}>
+						{t("button.select", { framework: "React" })}
+					</Button>
+				)}
 			</td>
 		</tr>
 	);

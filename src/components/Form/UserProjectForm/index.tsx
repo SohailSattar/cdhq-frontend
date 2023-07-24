@@ -838,8 +838,6 @@ const UserProjectForm: FC<Props> = ({
 				option.value
 			);
 
-			console.log(details);
-
 			if (details) {
 				// Privilege
 				const selectedPrivilege = privilegeOptions.find(

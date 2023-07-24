@@ -11,7 +11,6 @@ interface Props {
 }
 
 const CardsCarousel: FC<Props> = ({ data }) => {
-	console.log(data);
 	return (
 		<Carousel className={styles.carousel}>
 			{data.map((x, index) => (

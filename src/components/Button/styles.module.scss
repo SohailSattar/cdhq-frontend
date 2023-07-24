@@ -28,7 +28,6 @@
 	&:visited {
 		background: $PRIMARY;
 		box-shadow: none;
-
 	}
 
 	&:hover {
@@ -45,6 +44,10 @@
 		background-color: #ff0033;
 		// color: $color_white;
 		border: none;
+	}
+
+	&.disabled {
+		cursor: not-allowed;
 	}
 
 	&.roundButton {
@@ -94,7 +97,7 @@
 	}
 
 	&.gradiant {
-		background: linear-gradient(102.77deg, #B68A35 8.79%, #0a1222 141.81%);
+		background: linear-gradient(102.77deg, #b68a35 8.79%, #0a1222 141.81%);
 		border: none;
 		color: white;
 	}

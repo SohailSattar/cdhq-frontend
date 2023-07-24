@@ -41,4 +41,11 @@ export interface APIExistingEmployee {
 	department?: APIDepartmentItem;
 	class?: APIClass;
 	rank?: APIRank;
+	status: APIEmployeeStatus;
+}
+
+export interface APIEmployeeStatus {
+	id: number;
+	name: string;
+	nameEnglish: string;
 }
