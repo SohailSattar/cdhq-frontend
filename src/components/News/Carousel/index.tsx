@@ -99,39 +99,7 @@ const NewsCarousel: FC<Props> = ({
 				</div>
 			)}
 
-			{transition((newsList, stage) => (
-				<h1
-					style={{
-						transition: ".3s",
-						...(stage === "leave" && { transitionDelay: 5 * 50 + "ms" }),
-						opacity: stage === "enter" ? 1 : 0,
-						display: "flex",
-						alignItems: "center",
-						justifyContent: "center",
-						gap: 20,
-						transformOrigin: "center right",
-						transform: {
-							from: "translateY(-100%) rotate(0deg)",
-							enter: "translateX(0%)",
-							leave: "translateX(100%) rotate(-90deg)",
-						}[stage],
-					}}>
-					Test {newsList.id}
-				</h1>
-			))}
-
-			{/* {transition((stye, item, t, index) => (
-				<animated.div>
-					<NewsBar
-						id={item?.id}
-						src={item?.imageName}
-						title={item?.title}
-						body={item?.shortSummary}
-						onMoreClick={onViewClick}
-					/>
-				</animated.div>
-			))} */}
-			{/* {newsList.map((item: APINews, index) => (
+			{newsList.map((item: APINews, index) => (
 				<div className={styles.item}>
 					<NewsBar
 						id={item?.id}
@@ -141,7 +109,7 @@ const NewsCarousel: FC<Props> = ({
 						onMoreClick={onViewClick}
 					/>
 				</div>
-			))} */}
+			))}
 		</ShadowedContainer>
 	);
 };
