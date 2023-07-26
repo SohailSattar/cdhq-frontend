@@ -30,6 +30,7 @@
 		"echarts": "^5.4.1",
 		"echarts-for-react": "^3.0.2",
 		"file-loader": "^6.2.0",
+		"framer-motion": "^10.13.1",
 		"i18next": "^21.8.14",
 		"i18next-browser-languagedetector": "^6.1.4",
 		"lodash": "^4.17.21",
