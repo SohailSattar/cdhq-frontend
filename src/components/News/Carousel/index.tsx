@@ -63,9 +63,9 @@ const NewsCarousel: FC<Props> = ({
 				transition: {
 					y: [0, 30, 0],
 
-					duration: 3,
-					type: "spring",
-					stiffness: 1000,
+					// duration: 3,
+					// type: "spring",
+					// stiffness: 1000,
 					// damping: "10",
 					// ease: [0, 0.71, 0.2, 1.01],
 				},
@@ -86,10 +86,9 @@ const NewsCarousel: FC<Props> = ({
 				height: "100%",
 				transition: {
 					y: [0, -30, 0],
-
-					duration: 3,
-					type: "spring",
-					stiffness: 1000,
+					// duration: 3,
+					// type: "spring",
+					// stiffness: 1000,
 					// damping: "10",
 					// ease: [0, 0.71, 0.2, 1.01],
 				},
@@ -110,9 +109,9 @@ const NewsCarousel: FC<Props> = ({
 				transition: {
 					y: [0, 30, 0],
 
-					duration: 3,
-					type: "spring",
-					stiffness: 1000,
+					// duration: 3,
+					// type: "spring",
+					// stiffness: 1000,
 					// damping: "10",
 					// ease: [0, 0.71, 0.2, 1.01],
 				},
@@ -169,20 +168,20 @@ const NewsCarousel: FC<Props> = ({
 					<motion.div
 						className={styles.item}
 						// initial={{ x: 0, opacity: 0, height: 0 }}
-						initial="initial"
+						// initial="initial"
 						// animate={{ x: 0, opacity: 1, height: "auto" }}
 						// animate="animate"
 						// animate={direction === "down" ? "animate" : "animateUp"}
 						// transition={{ duration: 1, delay: index * 0.2 }}
 						// transition="transition"
-						key={index}
-						exit={{
-							x: -50,
-							opacity: 0,
-							transition: { duration: 1, delay: 0.5 * (5 - index) },
-							height: 0,
-						}}
-						variants={shiftVariants}
+						// key={index}
+						// exit={{
+						// 	x: -50,
+						// 	opacity: 0,
+						// 	transition: { duration: 1, delay: 0.5 * (5 - index) },
+						// 	height: 0,
+						// }}
+						// variants={shiftVariants}
 						animate={controls}>
 						<NewsBar
 							id={item?.id}
