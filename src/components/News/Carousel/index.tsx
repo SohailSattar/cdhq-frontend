@@ -1,6 +1,7 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useMemo, useRef, useState } from "react";
 // import { useTransition, animated } from "@react-spring/web";
-import { useListTransition } from "transition-hook";
+// import { useListTransition } from "transition-hook";
+import { AnimatePresence, motion, useAnimationControls } from "framer-motion";
 
 import { APINews } from "../../../api/news/types";
 
@@ -28,62 +29,125 @@ const NewsCarousel: FC<Props> = ({
 	onViewClick,
 	onTableViewClick,
 }) => {
-	const timeoutRef = useRef(300);
-	const transition = useListTransition(list, timeoutRef.current);
-	// const [rows, set] = useState(list);
+	const controls = useAnimationControls();
 	const [newsList, setNewsList] = useState<APINews[]>([]);
-
-	let height = 0;
-	const boxHeight = 150;
-
-	// const transitions = useTransition(
-	// 	newsList.map((data) => ({ ...data, y: (height += boxHeight) - boxHeight })),
-	// 	{
-	// 		key: (item: any) => item.name,
-	// 		from: { height: 0, opacity: 0 },
-	// 		leave: { height: 0, opacity: 0 },
-	// 		enter: ({ y }) => ({ y, boxHeight, opacity: 1 }),
-	// 		update: ({ y }) => ({ y, boxHeight }),
-	// 		exitBeforeEnter: true,
-	// 	}
-	// );
-
-	// const transition = useTransition(newsList, {
-	// 	from: {
-	// 		opacity: 0,
-	// 	},
-	// 	enter: {
-	// 		opacity: 1,
-	// 	},
-	// 	leave: {
-	// 		opacity: 0,
-	// 	},
-	// 	exitBeforeEnter: true,
-	// });
+	const [direction, setDirection] = useState<string>("down");
 
 	useEffect(() => {
 		setNewsList(list);
 	}, [list]);
 
 	useEffect(() => {
+		controls.start({
+			x: 0,
+			opacity: 1,
+			height: "auto",
+			transition: {
+				duration: 3,
+				type: "spring",
+				stiffness: 1000,
+				// damping: "10",
+				ease: [0, 0.71, 0.2, 1.01],
+			},
+		});
+	}, [controls]);
+
+	useEffect(() => {
 		const interval = setInterval(() => {
 			rotateRight(newsList);
 			setNewsList((prevState) => [...prevState]);
+			controls.start({
+				y: [0, 30, 0],
+				opacity: 1,
+				height: "100%",
+				transition: {
+					y: [0, 30, 0],
+
+					duration: 3,
+					type: "spring",
+					stiffness: 1000,
+					// damping: "10",
+					// ease: [0, 0.71, 0.2, 1.01],
+				},
+			});
 		}, intervalInMiliseconds);
 
 		return () => clearInterval(interval);
-	}, [newsList, setNewsList]);
+	}, [controls, intervalInMiliseconds, newsList, setNewsList]);
 
-	const upArrowClickHandler = () => {
-		newsList.push(newsList?.shift()!);
-		setNewsList((prevState) => [...prevState]);
-	};
+	const upArrowClickHandler = useMemo(
+		() => async () => {
+			newsList.push(newsList?.shift()!);
+			setNewsList((prevState) => [...prevState]);
+			setDirection("up");
+			controls.start({
+				y: [0, -30, 0],
+				opacity: 1,
+				height: "100%",
+				transition: {
+					y: [0, -30, 0],
 
-	const downArrowClickHandler = () => {
-		rotateRight(newsList);
-		setNewsList((prevState) => [...prevState]);
+					duration: 3,
+					type: "spring",
+					stiffness: 1000,
+					// damping: "10",
+					// ease: [0, 0.71, 0.2, 1.01],
+				},
+			});
+		},
+		[controls, newsList]
+	);
+
+	const downArrowClickHandler = useMemo(
+		() => async () => {
+			rotateRight(newsList);
+			setNewsList((prevState) => [...prevState]);
+			setDirection("down");
+			controls.start({
+				y: [0, 30, 0],
+				opacity: 1,
+				height: "100%",
+				transition: {
+					y: [0, 30, 0],
+
+					duration: 3,
+					type: "spring",
+					stiffness: 1000,
+					// damping: "10",
+					// ease: [0, 0.71, 0.2, 1.01],
+				},
+			});
+		},
+		[controls, newsList]
+	);
+
+	console.log(newsList.length);
+
+	const shiftVariants = {
+		initial: { x: 0, opacity: 0, height: 0 },
+		animate: {
+			x: 0,
+			opacity: 1,
+			// height: "auto",
+			// transition: {
+			// 	type: "spring",
+			// 	stiffness: 1000,
+			// 	damping: "10",
+			// 	ease: [0, 0.71, 0.2, 1.01],
+			// },
+
+			rotate: [0, 30, 0],
+		},
+		animateUp: {
+			opacity: 1,
+			rotate: [0, -30, 0],
+			// y: [0, -30, 0],
+			transition: { repeatDelay: 1 },
+			// transition: { duration: 0.5 },
+		},
+		rotate: { rotate: [0, -30, 0], transition: { duration: 0.5 } },
+		stop: { y: [0, -10, 0], transition: { repeat: Infinity, repeatDelay: 3 } },
 	};
-	console.log(newsList);
 
 	return (
 		<ShadowedContainer className={styles.newsCaorousal}>
@@ -91,57 +155,46 @@ const NewsCarousel: FC<Props> = ({
 				<CarouselActions onTableBtnClick={onTableViewClick} />
 			</div>
 			{newsList.length > 0 && (
-				<div className={styles.arrowContainer}>
+				<motion.div
+					animate={{ x: 0, opacity: 1, height: "auto" }}
+					className={styles.arrowContainer}>
 					<UpDownArrow
 						onUpClick={upArrowClickHandler}
 						onDownClick={downArrowClickHandler}
 					/>
-				</div>
+				</motion.div>
 			)}
-
-			{transition((newsList, stage) => (
-				<h1
-					style={{
-						transition: ".3s",
-						...(stage === "leave" && { transitionDelay: 5 * 50 + "ms" }),
-						opacity: stage === "enter" ? 1 : 0,
-						display: "flex",
-						alignItems: "center",
-						justifyContent: "center",
-						gap: 20,
-						transformOrigin: "center right",
-						transform: {
-							from: "translateY(-100%) rotate(0deg)",
-							enter: "translateX(0%)",
-							leave: "translateX(100%) rotate(-90deg)",
-						}[stage],
-					}}>
-					Test {newsList.id}
-				</h1>
-			))}
-
-			{/* {transition((stye, item, t, index) => (
-				<animated.div>
-					<NewsBar
-						id={item?.id}
-						src={item?.imageName}
-						title={item?.title}
-						body={item?.shortSummary}
-						onMoreClick={onViewClick}
-					/>
-				</animated.div>
-			))} */}
-			{/* {newsList.map((item: APINews, index) => (
-				<div className={styles.item}>
-					<NewsBar
-						id={item?.id}
-						src={item?.imageName}
-						title={item?.title}
-						body={item?.shortSummary}
-						onMoreClick={onViewClick}
-					/>
-				</div>
-			))} */}
+			<AnimatePresence>
+				{newsList.map((item: APINews, index) => (
+					<motion.div
+						className={styles.item}
+						// initial={{ x: 0, opacity: 0, height: 0 }}
+						initial="initial"
+						// animate={{ x: 0, opacity: 1, height: "auto" }}
+						// animate="animate"
+						// animate={direction === "down" ? "animate" : "animateUp"}
+						// transition={{ duration: 1, delay: index * 0.2 }}
+						// transition="transition"
+						key={index}
+						exit={{
+							x: -50,
+							opacity: 0,
+							transition: { duration: 1, delay: 0.5 * (5 - index) },
+							height: 0,
+						}}
+						variants={shiftVariants}
+						animate={controls}>
+						<NewsBar
+							id={item?.id}
+							src={item?.imageName}
+							title={item?.title}
+							body={item?.shortSummary}
+							onMoreClick={onViewClick}
+							key={index}
+						/>
+					</motion.div>
+				))}
+			</AnimatePresence>
 		</ShadowedContainer>
 	);
 };
