@@ -80,7 +80,7 @@ const Header: FC<Props> = ({ hideLoginButton = false }) => {
 	};
 
 	const logoutClickHandler = () => {
-		navigate(RoutePath.LOGIN);
+		navigate(RoutePath.ROOT);
 	};
 
 	const getMenuButtons = () => {
