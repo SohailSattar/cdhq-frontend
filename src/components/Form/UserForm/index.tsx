@@ -196,7 +196,7 @@ const UserForm: FC<Props> = ({
 		};
 
 		fetchData();
-	}, [language]);
+	}, [getValues, language, setValue]);
 
 	useEffect(() => {
 		const fetchData = async () => {
