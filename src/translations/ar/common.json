@@ -231,7 +231,8 @@
 		"noProject": "لم يتم العثور على النظام",
 		"noUser": "لم يتم العثور على المستخدم",
 		"noEmployee": "لم يتم العثور على الموظف",
-		"noNews": "لم يتم العثور على أخبار"
+		"noNews": "لم يتم العثور على أخبار",
+		"noAttendance": "لم يتم العثور على حضور"
 	},
 	"footer": {
 		"text": "وزارة الداخلية - الدفاع المدني"
@@ -253,5 +254,32 @@
 		"shortSummary": "مقدمة",
 		"fullNews": "الخبر",
 		"type": "نوع الخبر"
+	},
+	"workMode": {
+		"name": "Work Mode"
+	},
+	"attendance": {
+		"name": "Work Mode",
+		"employeeCategory": {
+			"name": "Category"
+		},
+		"log":{
+			"employeeNo": "الرقم العسكري",
+    		"rank": "الرتبة",
+    		"personName": "الاسم",
+    		"dayName": "اليوم",
+    		"formatedDate": "تاريخ اليوم",
+    		"timeIn" : "اول بصمة",
+    		"timeOut": "اخر بصمة",
+    		"workMode": "نظام العمل",
+    		"workGroup": "مجموعة العمل",
+    		"leaveType": "نوع الأجازة",
+    		"leaveNotes": "ملاحظات الأجازة",
+    		"departmentName": "مكان العمل",
+    		"contract": "العقد",
+    		"contractDescription": "الملاك",
+    		"iconColor": "Icon Color",
+			"status" : "حالة"
+		}
 	}
 }

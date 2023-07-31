@@ -37,16 +37,12 @@ const AttendanceLog = () => {
 			/>
 			
 
-            <ShadowedContainer>
-				
-                <SearchBox searchOptions={onSearchHandler} />
-                
+            <ShadowedContainer>				
+                <SearchBox searchOptions={onSearchHandler} />                
 			</ShadowedContainer>
+			
 
-
-			<ShadowedContainer>				
-                <LogTable data={logs} />                
-			</ShadowedContainer>
+			<LogTable data={logs} />
 
 		</div>
 	);

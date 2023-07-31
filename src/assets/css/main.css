@@ -1,4 +1,4 @@
-* ============ desktop view ============ */
+/* ============ desktop view ============ */
 @media all and (min-width: 992px) {
 	.navbar .nav-item .dropdown-menu
 
@@ -315,3 +315,5 @@ a {
 ul {
 	list-style: none;
 }
+
+

@@ -8,6 +8,8 @@ import styles from "./styles.module.scss";
 import Table from "../../../../../../components/Table";
 import Pagination from "../../../../../../components/Pagination";
 import TotalCount from "../../../../../../components/TotalCount";
+import MultiSelectCheckBox from "../../../../../../components/DropdownWithCheckBoxes";
+import { DropdownOption } from "../../../../../../components/Dropdown";
 
 
 interface Props{
@@ -17,6 +19,7 @@ const LogTable:FC<Props> = ({ data }) =>{
     const [t] = useTranslation("common");
     const language = useStore((state) => state.language);
     const [currentPage, setCurrentPage] = useState(1);
+	
 
     const status = t("attendance.log.status", { framework: "React" });
     const employeeNo = t("attendance.log.employeeNo", { framework: "React" });
@@ -36,17 +39,31 @@ const LogTable:FC<Props> = ({ data }) =>{
 
 
     const colorValue = "ICON_RED";
+	const [allFields, setAllFields] = useState<DropdownOption[]>([{ label: status, value: status}, {label: employeeNo, value: employeeNo}, {label: rank, value: rank}, {label: personName, value: personName}, {label: dayName, value: dayName}, {label: date, value: date}, {label: timeIn, value: timeIn}, {label: timeOut, value: timeOut}, {label: workMode, value: workMode}, {label: workGroup, value: workGroup}, {label: leaveType, value: leaveType}, {label: leaveNotes, value: leaveNotes}, {label: departmentName, value: departmentName}, {label: contract, value: contract}, {label: contractDescription, value: contractDescription} ]);
+	const [selectedFields, setSelectedFields] = useState<DropdownOption[]>([{ label: status, value: status}, {label: employeeNo, value: employeeNo}, {label: rank, value: rank}, {label: personName, value: personName}, {label: dayName, value: dayName}, {label: date, value: date}, {label: timeIn, value: timeIn}, {label: timeOut, value: timeOut} ]);
+	//const [hideFields, setHideFields] = useState<DropdownOption[]>([{label: workMode, value: workMode}, {label: workGroup, value: workGroup}, {label: leaveType, value: leaveType}, {label: leaveNotes, value: leaveNotes}, {label: departmentName, value: departmentName}, {label: contract, value: contract}, {label: contractDescription, value: contractDescription}  ]);
+	const [hideFields, setHideFields] = useState<string[]>([workMode, workGroup,  leaveType, leaveNotes,  departmentName, contract,contractDescription ]);
 
+	// const getCirculStyle = (iconColor: string) => {
+	// 	let circuleStyle:any = {styles.ICON_RED};
+	// 	switch (iconColor) {
+	// 		case 'ICON_RED':
+	// 			circuleStyle = {styles.ICON_RED}
+	// 			break;
+		
+	// 		default:
+	// 			break;
+	// 	}
+	// }
 
     const columns: Column<APIAttendanceLogItem>[] = [
         { 
             Header: status, 
-            accessor: (p) => p.iconColor!
-            // ,
-			// Cell: ({ value }: any) => (
-            //     <div className={styles.ICON_RED} title=" غياب"></div>
+            accessor: (p) => p.iconColor!,
+			Cell: ({ value }: any) => (
+                <div className={styles[value]}></div>
 				
-			// ),
+			)
         },
 		{ 
             Header: employeeNo, 
@@ -118,29 +135,45 @@ const LogTable:FC<Props> = ({ data }) =>{
 	};
 
 
+	const onFieldChangeHandler = (selectedOptions: DropdownOption[]) =>{
+		setHideFields(
+			allFields.filter(f => !selectedOptions.some(item => item.value === f.value)).map(xx => xx.label)
+		);
+	}
+	
+	useEffect(()=>{
+		console.log(hideFields)
+	}, [hideFields])
 
     return(
         <>
-			<TotalCount
-				label={t("project.count", { framework: "React" })}
-				count={10}
-			/>
-            
-            <Table
-				data={data!}
-                headerTextTransformation="capitalize"
-				columns={columns}
-				columnsToHide={[]}   //{displayActionsColumn ? [] : [actions]}
-				noRecordsText={t("table.noAttendance", { framework: "React" })}
-			/>
+			<div className={styles.table}>
+				<div>
+					<MultiSelectCheckBox options={allFields} selectedOptions={selectedFields} onSelectedOptions={onFieldChangeHandler} />
+				</div>
+				
+				{/* <TotalCount
+					label={t("project.count", { framework: "React" })}
+					count={10}
+				/> */}
+				
+				<Table
+					data={data!}
+					headerTextTransformation="capitalize"
+					columns={columns}
+					columnsToHide={hideFields}   //{displayActionsColumn ? [] : [actions]}
+					noRecordsText={t("table.noAttendance", { framework: "React" })}
+				/>
+				
+				<Pagination
+					className={styles.paginationBar}
+					currentPage={currentPage}
+					totalCount={100}
+					pageSize={10}
+					onPageChange={(page) => pageChangeHandler(page)}
+				/>
+			</div>
 			
-            <Pagination
-				className={styles.paginationBar}
-				currentPage={currentPage}
-				totalCount={100}
-				pageSize={10}
-				onPageChange={(page) => pageChangeHandler(page)}
-			/>
 			
         </>
     )

@@ -232,7 +232,8 @@
 		"noProject": "No project found",
 		"noUser": "No user found",
 		"noEmployee": "No employee found",
-		"noNews": "No news found"
+		"noNews": "No news found",
+		"noAttendance": "No Attendance found"
 	},
 	"footer": {
 		"text": "Ministry of Interior - Civil Defense"

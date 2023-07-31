@@ -60,7 +60,12 @@
 	overflow: scroll;
 }
 
+.table{
+	background-color: white;
+	padding: 20px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); //5px 5px #888888;
 
+}
 
 .ICON_RED{
 	width: 20px;
@@ -72,3 +77,147 @@
 	box-shadow: 2px 3px 6px black;
 	border: none;
 }
+
+
+.ICON_GREEN{
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background-color: green;
+	margin: auto;
+	text-align: center;
+	box-shadow: 2px 3px 6px black;
+	border: none;
+}
+.ICON_RED{
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background-color: red;
+	margin: auto;
+	text-align: center;
+	box-shadow: 2px 3px 6px black;
+	border: none;
+}
+.ICON_ORANGE{
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background-color: darkorange;
+	margin: auto;
+	text-align: center;
+	box-shadow: 2px 3px 6px black;
+	border: none;
+}
+.ICON_BLUE{
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background-color: blue;
+	margin: auto;
+	text-align: center;
+	box-shadow: 2px 3px 6px black;
+	border: none;
+}
+.ICON_L_BLUE{
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background-color: rgba(210, 6, 238, 1.0);
+	margin: auto;
+	text-align: center;
+	box-shadow: 2px 3px 6px black;
+	border: none;
+}
+.ICON_GRAY{
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background-color: gray;
+	margin: auto;
+	text-align: center;
+	box-shadow: 2px 3px 6px black;
+	border: none;
+}
+.ICON_BLACK{
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background-color: black;
+	margin: auto;
+	text-align: center;
+	box-shadow: 2px 3px 6px black;
+	border: none;
+}
+.ICON_YELLOW{
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background-color: rgba(43, 32, 100, 0.9);
+	margin: auto;
+	text-align: center;
+	box-shadow: 2px 3px 6px black;
+	border: none;
+}
+.ICON_4{
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background-color: green;
+	box-shadow: 2px 3px 6px black;
+	border: none;
+}
+.ICON_5{
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background-color: red;
+	box-shadow: 2px 3px 6px black;
+	border: none;
+}
+.ICON_6{
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background-color: darkorange;
+	box-shadow: 2px 3px 6px black;
+	border: none;
+}
+.ICON_7{
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background-color: gray;
+	box-shadow: 2px 3px 6px black;
+	border: none;
+}
+.ICON_8{
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background-color: blue;
+	box-shadow: 2px 3px 6px black;
+	border: none;
+}
+.ICON_9{
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background-color: rgba(43, 32, 100, 0.9);
+	box-shadow: 2px 3px 6px black;
+	border: none;
+}
+.ICON_10{
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background-color: rgba(210, 6, 238, 1.0);
+	margin: auto;
+	text-align: center;
+	box-shadow: 2px 3px 6px black;
+	border: none;
+}
+
+
+
+
