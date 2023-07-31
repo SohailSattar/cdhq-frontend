@@ -45,7 +45,7 @@ const UserSearchPage = () => {
 
 	useEffect(() => {
 		const displayForm = async () => {
-			if (role == ROLE.USER) {
+			if (role === ROLE.USER) {
 				setCanView(false);
 				return;
 			}

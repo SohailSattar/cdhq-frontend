@@ -46,7 +46,3 @@ export { default as AssignProjectToUserPage } from "./UserProject/NewProject";
 export { default as EditUserProjectPage } from "./UserProject/EditProject";
 export { default as EditProjectUserPage } from "./UserProject/EditUser";
 export { default as AssignUserToProjectPage } from "./UserProject/NewUser";
-
-
-// Attendance
-export { default as AttendanceLog } from "./Attendance/Reports/Log";

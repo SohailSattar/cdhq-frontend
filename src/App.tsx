@@ -29,7 +29,6 @@ import {
 	HonorNewPage,
 	HonorEditPage,
 	LandingPage,
-	AttendanceLog
 } from "./pages";
 
 import * as RoutePath from "./RouteConfig";
@@ -384,20 +383,6 @@ function App() {
 							</Layout>
 						}
 					/>
-
-					{/* Attendance */}
-					<Route element={<ProtectedRoute />}>
-						<Route
-							path={`${RoutePath.ATTENDANCE_LOG_REPORT}`}
-							element={
-								<Layout
-									projectId={Project.PhoneDirectory}
-									privilegeType="Read">
-									<AttendanceLog />
-								</Layout>
-							}
-						/>
-					</Route>
 				</Routes>
 			</Router>
 

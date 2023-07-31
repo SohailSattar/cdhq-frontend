@@ -90,7 +90,7 @@ const UserProjectTable: FC<Props> = ({
 				);
 			}
 		},
-		[id, keyword]
+		[currentPage, keyword, language]
 	);
 
 	useEffect(() => {
@@ -132,7 +132,7 @@ const UserProjectTable: FC<Props> = ({
 		// };
 
 		fetchProjects(id);
-	}, [currentPage, id, keyword, language, pageSize]);
+	}, [currentPage, fetchProjects, id, keyword, language, pageSize]);
 
 	const editClickHandler = (id: string) => {
 		onEditButtonClick(id);
