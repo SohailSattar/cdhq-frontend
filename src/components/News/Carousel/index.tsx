@@ -125,7 +125,7 @@ const NewsCarousel: FC<Props> = ({
 			<div>
 				<CarouselActions onTableBtnClick={onTableViewClick} />
 			</div>
-			{newsList.length > 0 && (
+			{/* {newsList.length > 0 && (
 				<motion.div
 					animate={{ x: 0, opacity: 1, height: "auto" }}
 					className={styles.arrowContainer}>
@@ -134,7 +134,7 @@ const NewsCarousel: FC<Props> = ({
 						onDownClick={downArrowClickHandler}
 					/>
 				</motion.div>
-			)}
+			)} */}
 			{newsList.map((item: APINews, index) => (
 				<motion.div
 					className={styles.item}

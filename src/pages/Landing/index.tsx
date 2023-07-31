@@ -20,8 +20,10 @@ import { ICard } from "../../components/Card";
 import { getLatest20Honors } from "../../api/honors/get/getLatest20Honors";
 import { getNewsDetail } from "../../api/news/get/getNewsDetail";
 import { APIMenuItem } from "../../api/menu/types";
+import { useTranslation } from "react-i18next";
 
 const LandingPage = () => {
+	const [t] = useTranslation("common");
 	const [news, setNews] = useState<APINews[]>([]);
 
 	const [empOfMonthCardsList, setEmpOfMonthCardsList] = useState<ICard[]>([]);
@@ -127,7 +129,7 @@ const LandingPage = () => {
 			<div className={clsx("row", styles.container)}>
 				<ShadowedContainer className={clsx("col-2", styles.sideBar)}>
 					<DisplayCard
-						title={"الموظف الموهوب"}
+						title={t("dashboard.honors", { framework: "React" })}
 						className={styles.sideBarCard}>
 						<CardsCarousel data={skilledEmpsCardsList} />
 					</DisplayCard>
@@ -144,7 +146,7 @@ const LandingPage = () => {
 
 				<ShadowedContainer className={clsx("col-2", styles.sideBar)}>
 					<DisplayCard
-						title={"الموهوبين و المتميزين"}
+						title={t("dashboard.employeeOfMonth", { framework: "React" })}
 						className={styles.sideBarCard}>
 						<CardsCarousel data={empOfMonthCardsList} />
 					</DisplayCard>
