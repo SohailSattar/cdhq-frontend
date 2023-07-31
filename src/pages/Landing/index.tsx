@@ -19,6 +19,7 @@ import styles from "./styles.module.scss";
 import { ICard } from "../../components/Card";
 import { getLatest20Honors } from "../../api/honors/get/getLatest20Honors";
 import { getNewsDetail } from "../../api/news/get/getNewsDetail";
+import { APIMenuItem } from "../../api/menu/types";
 
 const LandingPage = () => {
 	const [news, setNews] = useState<APINews[]>([]);
