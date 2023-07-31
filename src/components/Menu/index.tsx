@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { makeStyles } from "@material-ui/core";
 
 import styles from "./styles.module.scss";
@@ -12,7 +12,7 @@ import Navbar from "react-bootstrap/Navbar";
 import Button from "react-bootstrap/Button";
 
 import NavDropdown from "react-bootstrap/NavDropdown";
-import { RedirectButton } from "..";
+import { NavMenuList, RedirectButton } from "..";
 import * as RoutePath from "../../RouteConfig";
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
@@ -219,25 +219,15 @@ const Menu: FC<Props> = ({ title }) => {
 
 						<Navbar.Collapse id="basic-navbar-nav">
 							<Nav>
-								<a href="#">
+								<Nav.Link href="">
 									<img
+										alt="home"
 										className={styles.NavDropdownHome}
 										style={{ width: "30px" }}
 										src="https://icon-library.com/images/white-home-icon-png/white-home-icon-png-21.jpg"
 									/>
-								</a>
-								{menuItems.map((menuItem) => (
-									<NavDropdown
-										className={styles.NavDropdown}
-										title={menuItem.title}
-										id="basic-nav-dropdown">
-										{menuItem.items?.map((subMenu) => (
-											<NavDropdown.Item href={`${rootPath}${subMenu.link}`}>
-												{subMenu.title}
-											</NavDropdown.Item>
-										))}
-									</NavDropdown>
-								))}
+								</Nav.Link>
+								<NavMenuList data={menuItems} />
 							</Nav>
 						</Navbar.Collapse>
 						<Button

@@ -120,34 +120,6 @@ const NewsCarousel: FC<Props> = ({
 		[controls, newsList]
 	);
 
-	console.log(newsList.length);
-
-	const shiftVariants = {
-		initial: { x: 0, opacity: 0, height: 0 },
-		animate: {
-			x: 0,
-			opacity: 1,
-			// height: "auto",
-			// transition: {
-			// 	type: "spring",
-			// 	stiffness: 1000,
-			// 	damping: "10",
-			// 	ease: [0, 0.71, 0.2, 1.01],
-			// },
-
-			rotate: [0, 30, 0],
-		},
-		animateUp: {
-			opacity: 1,
-			rotate: [0, -30, 0],
-			// y: [0, -30, 0],
-			transition: { repeatDelay: 1 },
-			// transition: { duration: 0.5 },
-		},
-		rotate: { rotate: [0, -30, 0], transition: { duration: 0.5 } },
-		stop: { y: [0, -10, 0], transition: { repeat: Infinity, repeatDelay: 3 } },
-	};
-
 	return (
 		<ShadowedContainer className={styles.newsCaorousal}>
 			<div>
@@ -163,37 +135,35 @@ const NewsCarousel: FC<Props> = ({
 					/>
 				</motion.div>
 			)}
-			<AnimatePresence>
-				{newsList.map((item: APINews, index) => (
-					<motion.div
-						className={styles.item}
-						// initial={{ x: 0, opacity: 0, height: 0 }}
-						// initial="initial"
-						// animate={{ x: 0, opacity: 1, height: "auto" }}
-						// animate="animate"
-						// animate={direction === "down" ? "animate" : "animateUp"}
-						// transition={{ duration: 1, delay: index * 0.2 }}
-						// transition="transition"
-						// key={index}
-						// exit={{
-						// 	x: -50,
-						// 	opacity: 0,
-						// 	transition: { duration: 1, delay: 0.5 * (5 - index) },
-						// 	height: 0,
-						// }}
-						// variants={shiftVariants}
-						animate={controls}>
-						<NewsBar
-							id={item?.id}
-							src={item?.imageName}
-							title={item?.title}
-							body={item?.shortSummary}
-							onMoreClick={onViewClick}
-							key={index}
-						/>
-					</motion.div>
-				))}
-			</AnimatePresence>
+			{newsList.map((item: APINews, index) => (
+				<motion.div
+					className={styles.item}
+					key={index}
+					// initial={{ x: 0, opacity: 0, height: 0 }}
+					// initial="initial"
+					// animate={{ x: 0, opacity: 1, height: "auto" }}
+					// animate="animate"
+					// animate={direction === "down" ? "animate" : "animateUp"}
+					// transition={{ duration: 1, delay: index * 0.2 }}
+					// transition="transition"
+					// key={index}
+					// exit={{
+					// 	x: -50,
+					// 	opacity: 0,
+					// 	transition: { duration: 1, delay: 0.5 * (5 - index) },
+					// 	height: 0,
+					// }}
+					// variants={shiftVariants}
+					animate={controls}>
+					<NewsBar
+						id={item?.id}
+						src={item?.imageName}
+						title={item?.title}
+						body={item?.shortSummary}
+						onMoreClick={onViewClick}
+					/>
+				</motion.div>
+			))}
 		</ShadowedContainer>
 	);
 };

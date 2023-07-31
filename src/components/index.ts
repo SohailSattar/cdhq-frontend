@@ -51,6 +51,7 @@ export { default as Menu } from "./Menu";
 export { default as MessageBox } from "./MessageBox";
 export { default as MetaDataDetails } from "./MetaDataDetails";
 export { default as Modal } from "./Modal";
+export * from "./Nav";
 export { default as NotAuthorized } from "./NotAuthorized";
 export * from "./News";
 export { default as PageContainer } from "./PageContainer";

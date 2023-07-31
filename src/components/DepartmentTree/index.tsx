@@ -64,7 +64,6 @@ const DepartmentTree: FC<Props> = ({
 	}, [id, language]);
 
 	const renameNestedObjects = (obj: any) => {
-		console.log(obj["children"]);
 		if (obj!.length > 0) {
 			obj.forEach((item: any) => {
 				renameObjects(item);

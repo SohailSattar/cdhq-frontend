@@ -22,8 +22,6 @@ export const Modal: FC<Props> = ({
 	onClose,
 	className = "",
 }) => {
-	console.log(className);
-
 	return (
 		<ReactModal
 			className={clsx(styles.modalPopup, className)}

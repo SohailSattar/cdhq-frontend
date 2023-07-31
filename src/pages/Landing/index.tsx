@@ -84,7 +84,6 @@ const LandingPage = () => {
 
 	const fetchNewsDetail = useMemo(
 		() => async (id: Id) => {
-			console.log(id);
 			const { data } = await getNewsDetail(id);
 
 			if (data) {
