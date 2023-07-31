@@ -1,0 +1,34 @@
+.searchBox {
+    .row {
+        display: flex;
+        margin-bottom: 15px;
+    }
+
+    .rowItem {
+        flex: 1;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+
+    .label {
+        margin-bottom: 5px;
+    }
+
+
+    .container {
+        padding: 0;
+    }
+
+    .rtlContainer {
+        direction: rtl;
+    }
+}
+
+.fieldLabel{
+    color: rgb(0, 0, 0);
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 1.4375em;
+    letter-spacing: 0.00938em;
+}
+

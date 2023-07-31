@@ -24,6 +24,7 @@ interface TableProps<T extends object> {
 	headerBackground?: string;
 	headerColor?: string;
 	headerPadding?: string;
+	headerTextTransformation?: string;
 	rowColor?: string;
 	rowHeight?: string;
 	rowSpacing?: string;
@@ -130,6 +131,7 @@ export function Table<T extends object>(props: Props<T>): ReactElement {
 										color: props.headerColor,
 										padding: props.headerPadding,
 										background: props.headerBackground,
+										textTransform: props.headerTextTransformation
 									}}>
 									{!(column as any).tooltip && column.render("Header")}
 								</th>

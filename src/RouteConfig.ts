@@ -34,3 +34,9 @@ export const NEWS_EDIT = NEWS_DETAIL + "/edit";
 export const NEWS_NEW = NEWS + "/new";
 
 export const PHONE_DIRECTORY = `/phone-directory`;
+
+
+// Attendance
+export const ATTENDANCE = "/attendance";
+
+export const ATTENDANCE_LOG_REPORT = ATTENDANCE + "/log";

@@ -1,0 +1,74 @@
+.info {
+	display: flex;
+	justify-content: center;
+}
+
+.tableHeaderCell {
+	display: flex;
+	justify-content: center;
+}
+
+.cell {
+	display: flex;
+	justify-content: center;
+}
+
+.childProject {
+	margin-right: 15px;
+}
+
+.childProjectLTR {
+	margin-left: 15px;
+}
+
+.action {
+	display: flex;
+	justify-content: flex-end;
+
+	.btnDiv {
+		margin-left: 5px;
+	}
+}
+
+.actionLTR {
+	display: flex;
+	justify-content: flex-end;
+
+	.btnDiv {
+		margin-right: 5px;
+	}
+}
+
+.message {
+	display: flex;
+	justify-content: center;
+}
+
+.paginationBar {
+	margin-top: 15px;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+
+
+.headerStyle{
+	text-transform: capitalize;
+}
+
+.tableArea{
+	overflow: scroll;
+}
+
+
+
+.ICON_RED{
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background-color: red;
+	margin: auto;
+	text-align: center;
+	box-shadow: 2px 3px 6px black;
+	border: none;
+}

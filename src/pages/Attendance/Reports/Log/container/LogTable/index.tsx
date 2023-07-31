@@ -18,21 +18,21 @@ const LogTable:FC<Props> = ({ data }) =>{
     const language = useStore((state) => state.language);
     const [currentPage, setCurrentPage] = useState(1);
 
-    const status = t("attendance.status", { framework: "React" });
-    const employeeNo = t("attendance.employeeNo", { framework: "React" });
-	const rank = t("attendance.rank", { framework: "React" });
-    const personName = t("attendance.personName", { framework: "React" });
-	const dayName = t("attendance.dayName", { framework: "React" });
-    const date = t("attendance.date", { framework: "React" });
-	const timeIn = t("attendance.timeIn", { framework: "React" });
-	const timeOut = t("attendance.timeOut", { framework: "React" });
-	const workMode = t("attendance.workMode", { framework: "React" });
-	const workGroup = t("attendance.workGroup", { framework: "React" });
-    const leaveType = t("attendance.leaveType", { framework: "React" });
-	const leaveNotes = t("attendance.leaveNotes", { framework: "React" });
-	const departmentName = t("attendance.departmentName", { framework: "React" });
-	const contract = t("attendance.contract", { framework: "React" });
-	const contractDescription = t("attendance.contractDescription", { framework: "React" });
+    const status = t("attendance.log.status", { framework: "React" });
+    const employeeNo = t("attendance.log.employeeNo", { framework: "React" });
+	const rank = t("attendance.log.rank", { framework: "React" });
+    const personName = t("attendance.log.personName", { framework: "React" });
+	const dayName = t("attendance.log.dayName", { framework: "React" });
+    const date = t("attendance.log.formatedDate", { framework: "React" });
+	const timeIn = t("attendance.log.timeIn", { framework: "React" });
+	const timeOut = t("attendance.log.timeOut", { framework: "React" });
+	const workMode = t("attendance.log.workMode", { framework: "React" });
+	const workGroup = t("attendance.log.workGroup", { framework: "React" });
+    const leaveType = t("attendance.log.leaveType", { framework: "React" });
+	const leaveNotes = t("attendance.log.leaveNotes", { framework: "React" });
+	const departmentName = t("attendance.log.departmentName", { framework: "React" });
+	const contract = t("attendance.log.contract", { framework: "React" });
+	const contractDescription = t("attendance.log.contractDescription", { framework: "React" });
 
 
     const colorValue = "ICON_RED";
@@ -42,11 +42,11 @@ const LogTable:FC<Props> = ({ data }) =>{
         { 
             Header: status, 
             accessor: (p) => p.iconColor!
-            ,
-			Cell: ({ value }: any) => (
-                <div className={styles.ICON_RED} title=" غياب"></div>
+            // ,
+			// Cell: ({ value }: any) => (
+            //     <div className={styles.ICON_RED} title=" غياب"></div>
 				
-			),
+			// ),
         },
 		{ 
             Header: employeeNo, 
@@ -62,7 +62,7 @@ const LogTable:FC<Props> = ({ data }) =>{
 		},
 		{
 			Header: dayName,
-			accessor: (p) => p.dayNameArabic,
+			accessor: (p) => p.dayName,
 		},
 		{
 			Header: date,
@@ -86,7 +86,7 @@ const LogTable:FC<Props> = ({ data }) =>{
 		},
 		{
 			Header: workGroup,
-			accessor: (p) => p.workGroupArabic,
+			accessor: (p) => p.workGroup,
 		},
 		{
 			Header: contract,
@@ -98,7 +98,7 @@ const LogTable:FC<Props> = ({ data }) =>{
 		},
 		{
 			Header: leaveType,
-			accessor: (p) => p.leaveTypeArabic,
+			accessor: (p) => p.leaveType,
 		},
 		{
 			Header: leaveNotes,
@@ -121,11 +121,11 @@ const LogTable:FC<Props> = ({ data }) =>{
 
     return(
         <>
-			{/* <TotalCount
+			<TotalCount
 				label={t("project.count", { framework: "React" })}
 				count={10}
-			/> */}
-            <div>
+			/>
+            
             <Table
 				data={data!}
                 headerTextTransformation="capitalize"
@@ -134,16 +134,13 @@ const LogTable:FC<Props> = ({ data }) =>{
 				noRecordsText={t("table.noAttendance", { framework: "React" })}
 			/>
 			
-            </div>
-            <div>
             <Pagination
 				className={styles.paginationBar}
 				currentPage={currentPage}
-				totalCount={10}
+				totalCount={100}
 				pageSize={10}
 				onPageChange={(page) => pageChangeHandler(page)}
 			/>
-            </div>
 			
         </>
     )

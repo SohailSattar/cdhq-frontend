@@ -254,5 +254,33 @@
 		"shortSummary": "Short Summary",
 		"fullNews": "News",
 		"type": "News Type"
+	},
+	"workMode": {
+		"name": "Work Mode"
+	},
+	"attendance": {
+		"name": "Work Mode",
+		"employeeCategory": {
+			"name": "Category"
+		},
+		"log":{
+			"employeeNo": "Employee No",
+    		"rank": "Rank",
+    		"personName": "Name",
+    		"dayName": "Day",
+    		"formatedDate": "Date",
+    		"timeIn" : "Time In",
+    		"timeOut": "Time Out",
+    		"workMode": "Work Mode",
+    		"workGroup": "Work Group",
+    		"leaveType": "Leave Type",
+    		"leaveNotes": "Leave Notes",
+    		"departmentName": "Department",
+    		"contract": "Contract",
+    		"contractDescription": "Contract Description",
+    		"iconColor": "Icon Color",
+			"status" : "Status"
+		}
 	}
+	
 }
