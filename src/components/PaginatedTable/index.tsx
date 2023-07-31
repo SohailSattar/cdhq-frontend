@@ -132,7 +132,7 @@ const PaginatedTable: FC<Props> = ({
 		};
 
 		fetch();
-	}, [setRoleOptions]);
+	}, [language, setRoleOptions]);
 
 	useEffect(() => {
 		const fetch = async () => {
@@ -172,7 +172,7 @@ const PaginatedTable: FC<Props> = ({
 		};
 
 		fetchData();
-	}, [setStatusOptions]);
+	}, [language, setStatusOptions]);
 
 	const pageViewSelectionChangeHandler = (option: DropdownOption) => {
 		onPageViewSelectionChange(option);

@@ -75,24 +75,24 @@ const DepartmentTree: FC<Props> = ({
 
 	const renameObjects = (obj: any) => {
 		Object.keys(obj).forEach((key, index) => {
-			if (key == "id") {
+			if (key === "id") {
 				obj["value"] = obj["id"];
 				delete obj["id"];
 			}
 			if (language !== "ar") {
-				if (key == "name") {
+				if (key === "name") {
 					obj["label"] = obj["name"];
 					delete obj["name"];
 					delete obj["nameEnglish"];
 				}
 			} else {
-				if (key == "nameEnglish") {
+				if (key === "nameEnglish") {
 					obj["label"] = obj["nameEnglish"] || obj["label"];
 					delete obj["nameEnglish"];
 					delete obj["name"];
 				}
 			}
-			if (key == "children") {
+			if (key === "children") {
 				renameNestedObjects(obj["children"]);
 			}
 		});

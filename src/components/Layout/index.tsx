@@ -2,7 +2,7 @@ import { FC, useEffect, useMemo, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useNavigate } from "react-router-dom";
 
-import { Footer, Header, Loader, NotAuthorized } from "..";
+import { Footer, Header, Loader, Loading, NotAuthorized } from "..";
 import { getMyDetail } from "../../api/users/get/getMyDetail";
 import { useStore } from "../../utils/store";
 import { getMyRole } from "../../api/users/get/getMyRole";
@@ -16,6 +16,7 @@ import { PrivilegeType } from "../types";
 import * as RoutePath from "../../RouteConfig";
 
 import styles from "./styles.module.scss";
+import { Id } from "../../utils";
 
 interface Props {
 	projectId?: number;
@@ -26,12 +27,19 @@ interface Props {
 const Layout: FC<Props> = ({ projectId, privilegeType = "All", children }) => {
 	const navigate = useNavigate();
 
+	const loggedUser: APILoggedUser = useStore(
+		(state: { loggedInUser: any }) => state.loggedInUser
+	);
+	const setLoggedUser = useStore((state) => state.setLoggedInUser);
+
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [content, setContent] = useState<any>();
 	const [canView, setCanView] = useState<boolean>();
 
-	const fetch = useMemo(
-		() => async () => {
-			const { data: privilege } = await getProjectPrivilege(projectId!);
+	const fetchProjectPrivilege = useMemo(
+		() => async (id: Id) => {
+			setIsLoading(true);
+			const { data: privilege } = await getProjectPrivilege(id!);
 
 			switch (privilegeType) {
 				case "All":
@@ -51,30 +59,14 @@ const Layout: FC<Props> = ({ projectId, privilegeType = "All", children }) => {
 					break;
 			}
 
-			// if (privilege?.updatePrivilege === true) {
-			// 	setCanView(true);
-			// } else {
-			// 	setCanView(false);
-			// }
+			setIsLoading(false);
 		},
-		[projectId, privilegeType, setCanView]
+		[privilegeType]
 	);
 
-	useEffect(() => {
-		if (projectId) {
-			fetch();
-		} else {
-			setCanView(true);
-		}
-	}, [projectId, fetch, canView, setCanView]);
-
-	const loggedUser: APILoggedUser = useStore(
-		(state: { loggedInUser: any }) => state.loggedInUser
-	);
-	const setLoggedUser = useStore((state) => state.setLoggedInUser);
-
-	useEffect(() => {
-		const fetchData = async () => {
+	const fetchContent = useMemo(
+		() => async () => {
+			setIsLoading(true);
 			const token = localStorageService.getJwtToken();
 			if (token) {
 				const { data: myRole } = await getMyRole();
@@ -98,10 +90,78 @@ const Layout: FC<Props> = ({ projectId, privilegeType = "All", children }) => {
 			} else {
 				navigate(RoutePath.ROOT);
 			}
-		};
 
-		fetchData();
-	}, [loggedUser, navigate, setLoggedUser]);
+			if (!canView) {
+				setContent(<NotAuthorized />);
+			} else {
+				setContent(children);
+			}
+
+			setIsLoading(false);
+		},
+		[canView, children, loggedUser, navigate, setLoggedUser]
+	);
+
+	useEffect(() => {
+		if (projectId) {
+			fetchProjectPrivilege(projectId);
+		} else {
+			setCanView(true);
+			setIsLoading(true);
+		}
+
+		fetchContent();
+	}, [projectId, fetchContent, setCanView, fetchProjectPrivilege]);
+
+	// useEffect(() => {
+	// 	const fetchData = async () => {
+	// 		setIsLoading(true);
+	// 		const token = localStorageService.getJwtToken();
+	// 		if (token) {
+	// 			const { data: myRole } = await getMyRole();
+	// 			const role = myRole?.role.name!;
+
+	// 			if (role !== loggedUser?.role!) {
+	// 				setLoggedUser({ ...loggedUser, role: role });
+	// 			}
+
+	// 			if (loggedUser.userName === "") {
+	// 				const { data, error } = await getMyDetail();
+	// 				if (error) {
+	// 					if (error.response.status === 401) {
+	// 						navigate(RoutePath.LOGIN);
+	// 					}
+	// 				}
+	// 				if (data) {
+	// 					setLoggedUser(data);
+	// 				}
+	// 			}
+	// 		} else {
+	// 			navigate(RoutePath.ROOT);
+	// 		}
+
+	// 		if (canView) {
+	// 			console.log("xxx");
+	// 			setContent(<NotAuthorized />);
+	// 		} else {
+	// 			console.log("ccc");
+	// 			setContent(children);
+	// 		}
+
+	// 		setIsLoading(false);
+	// 	};
+
+	// 	console.log(isLoading);
+	// 	fetchData();
+	// }, [
+	// 	loggedUser,
+	// 	navigate,
+	// 	setLoggedUser,
+	// 	setIsLoading,
+	// 	isLoading,
+	// 	canView,
+	// 	children,
+	// ]);
 
 	const ErrorFallback = ({ error, resetErrorBoundary }: any) => {
 		return (
@@ -115,9 +175,8 @@ const Layout: FC<Props> = ({ projectId, privilegeType = "All", children }) => {
 
 	return (
 		<>
-			{" "}
 			{!loggedUser ? (
-				<Loader />
+				<Loading />
 			) : (
 				<ErrorBoundary
 					FallbackComponent={ErrorFallback}
@@ -126,7 +185,7 @@ const Layout: FC<Props> = ({ projectId, privilegeType = "All", children }) => {
 					}}>
 					<Header />
 					<div className={styles.layout}>
-						{!canView ? <NotAuthorized /> : children}
+						{isLoading ? <Loading /> : content}
 					</div>
 					<div>
 						<br />

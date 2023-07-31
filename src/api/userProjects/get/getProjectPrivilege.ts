@@ -1,9 +1,10 @@
 import { APIResponse, getConfig } from "../..";
 import { instance } from "../../../network";
+import { Id } from "../../../utils";
 import { APIUserProjectPrivilege } from "../types";
 
 export async function getProjectPrivilege(
-	projectId: number
+	projectId: Id
 ): Promise<APIResponse<APIUserProjectPrivilege>> {
 	try {
 		const config = getConfig();
