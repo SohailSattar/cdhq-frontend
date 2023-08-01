@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useNavigate } from "react-router-dom";
 
@@ -64,43 +64,79 @@ const Layout: FC<Props> = ({ projectId, privilegeType = "All", children }) => {
 		[privilegeType]
 	);
 
-	const fetchContent = useMemo(
-		() => async () => {
-			setIsLoading(true);
-			const token = localStorageService.getJwtToken();
-			if (token) {
-				const { data: myRole } = await getMyRole();
-				const role = myRole?.role.name!;
+	const fetchContent = useCallback(async () => {
+		setIsLoading(true);
+		const token = localStorageService.getJwtToken();
+		if (token) {
+			const { data: myRole } = await getMyRole();
+			const role = myRole?.role.name!;
 
-				if (role !== loggedUser?.role!) {
-					setLoggedUser({ ...loggedUser, role: role });
-				}
-
-				if (loggedUser.userName === "") {
-					const { data, error } = await getMyDetail();
-					if (error) {
-						if (error.response.status === 401) {
-							navigate(RoutePath.LOGIN);
-						}
-					}
-					if (data) {
-						setLoggedUser(data);
-					}
-				}
-			} else {
-				navigate(RoutePath.ROOT);
+			if (role !== loggedUser?.role!) {
+				setLoggedUser({ ...loggedUser, role: role });
 			}
 
-			if (!canView) {
-				setContent(<NotAuthorized />);
-			} else {
-				setContent(children);
+			if (loggedUser.userName === "") {
+				const { data, error } = await getMyDetail();
+				if (error) {
+					if (error.response.status === 401) {
+						navigate(RoutePath.LOGIN);
+					}
+				}
+				if (data) {
+					setLoggedUser(data);
+				}
 			}
+		} else {
+			navigate(RoutePath.ROOT);
+		}
+		// console.log(canView);
+		if (!canView) {
+			setContent(<NotAuthorized />);
+		} else {
+			setContent(children);
+		}
 
-			setIsLoading(false);
-		},
-		[canView, children, loggedUser, navigate, setLoggedUser]
-	);
+		setIsLoading(false);
+	}, [canView, children, loggedUser, navigate, setLoggedUser]);
+
+	// const fetchContent = useMemo(
+	// 	() => async () => {
+	// 		setIsLoading(true);
+	// 		const token = localStorageService.getJwtToken();
+	// 		if (token) {
+	// 			const { data: myRole } = await getMyRole();
+	// 			const role = myRole?.role.name!;
+
+	// 			if (role !== loggedUser?.role!) {
+	// 				setLoggedUser({ ...loggedUser, role: role });
+	// 			}
+
+	// 			if (loggedUser.userName === "") {
+	// 				const { data, error } = await getMyDetail();
+	// 				if (error) {
+	// 					if (error.response.status === 401) {
+	// 						navigate(RoutePath.LOGIN);
+	// 					}
+	// 				}
+	// 				if (data) {
+	// 					setLoggedUser(data);
+	// 				}
+	// 			}
+	// 		} else {
+	// 			navigate(RoutePath.ROOT);
+	// 		}
+	// 		// console.log(canView);
+	// 		if (!canView) {
+	// 			setContent(<NotAuthorized />);
+	// 		} else {
+	// 			setContent(children);
+	// 		}
+
+	// 		setIsLoading(false);
+	// 	},
+	// 	[canView, children, loggedUser, navigate, setLoggedUser]
+	// );
+	console.log(canView);
 
 	useEffect(() => {
 		if (projectId) {
@@ -172,6 +208,8 @@ const Layout: FC<Props> = ({ projectId, privilegeType = "All", children }) => {
 			</div>
 		);
 	};
+
+	console.log(isLoading);
 
 	return (
 		<>
