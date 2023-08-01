@@ -15,6 +15,10 @@
 			"strategy": "Strategy"
 		}
 	},
+	"dashboard": {
+		"honors": "Honors",
+		"employeeOfMonth": "Employee of the month"
+	},
 	"page": {
 		"userHome": "User Account",
 		"userDetail": "User Details",
@@ -43,6 +47,7 @@
 	},
 	"button": {
 		"view": "View",
+		"more": "More",
 		"backToDetail": "Back to details",
 		"backToHome": "Back to home",
 		"add": "Add",
@@ -65,8 +70,7 @@
 		"yes": "Yes",
 		"cancel": "Cancel",
 		"assignToUser": "Assign to User",
-		"selectChild":"Select Child"
-
+		"selectChild": "Select Child"
 	},
 	"home": {
 		"welcome": "Welcome"
@@ -176,7 +180,6 @@
 		"activeStatus": "Active Status",
 		"name": "Name [Arabic]",
 		"nameEnglish": "Name [English]"
-
 	},
 	"status": {
 		"active": "Active",

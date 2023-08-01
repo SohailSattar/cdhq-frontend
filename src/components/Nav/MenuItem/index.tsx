@@ -3,20 +3,16 @@ import { NavDropdown } from "react-bootstrap";
 
 import "./styles.scss";
 import styles from "./styles.module.scss";
-
-interface APIMenuItem {
-	title: string;
-	link: string;
-	items?: APIMenuItem[];
-}
+import { APIMenuItem } from "../../../api/menu/types";
+import { useStore } from "../../../utils/store";
 
 interface Props {
 	title: string;
-	link: string;
 	items?: APIMenuItem[];
 }
 
-const NavMenuItem: FC<Props> = ({ title, link, items }) => {
+const NavMenuItem: FC<Props> = ({ title, items }) => {
+	const language = useStore((state) => state.language);
 	const [show, setShow] = useState(false);
 
 	const rootPath = "";
@@ -38,9 +34,9 @@ const NavMenuItem: FC<Props> = ({ title, link, items }) => {
 			onMouseLeave={hideDropdown}>
 			{items?.map((subMenu, index) => (
 				<NavDropdown.Item
-					href={`${rootPath}${subMenu.link}`}
+					href={subMenu.linkPath! ?? `#`}
 					key={index}>
-					{subMenu.title}
+					{language !== "ar" ? subMenu.name : subMenu.nameEnglish}
 				</NavDropdown.Item>
 			))}
 		</NavDropdown>

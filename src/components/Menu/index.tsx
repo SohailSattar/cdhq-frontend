@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { makeStyles } from "@material-ui/core";
 
 import styles from "./styles.module.scss";
@@ -12,11 +12,14 @@ import Navbar from "react-bootstrap/Navbar";
 import Button from "react-bootstrap/Button";
 
 import NavDropdown from "react-bootstrap/NavDropdown";
-import { NavMenuList, RedirectButton } from "..";
+import { ChangeLanguage, NavMenuList, RedirectButton } from "..";
 import * as RoutePath from "../../RouteConfig";
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
 import { useNavigate } from "react-router-dom";
+import { getMenuList } from "../../api/menu/get/getMenuList";
+import { APIMenuItem } from "../../api/menu/types";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 const useStyles = makeStyles(() => ({
 	header: {
@@ -34,15 +37,15 @@ const useStyles = makeStyles(() => ({
 	},
 }));
 
-interface APIMenuItem {
+interface APIMenuListItem {
 	title: string;
 	link: string;
-	items?: APIMenuItem[];
+	items?: APIMenuListItem[];
 }
 
 const rootPath = "";
 
-const menuItems: APIMenuItem[] = [
+const menuItems: APIMenuListItem[] = [
 	{
 		title: "الإستراتيجية",
 		link: "#",
@@ -190,8 +193,24 @@ export interface Props {
 }
 
 const Menu: FC<Props> = ({ title }) => {
-	const [t] = useTranslation("common");
+	const [t, i18n] = useTranslation("common");
 	const navigate = useNavigate();
+
+	const [menuList, setMenuList] = useState<APIMenuItem[]>([]);
+
+	const fetchMenuItems = useMemo(
+		() => async () => {
+			const { data } = await getMenuList();
+			if (data) {
+				setMenuList(data!);
+			}
+		},
+		[]
+	);
+
+	useEffect(() => {
+		fetchMenuItems();
+	}, [fetchMenuItems]);
 
 	const loginClickHandler = () => {
 		navigate(RoutePath.LOGIN);
@@ -199,6 +218,13 @@ const Menu: FC<Props> = ({ title }) => {
 
 	return (
 		<>
+			<HelmetProvider>
+				<Helmet>
+					<style>{`:root {direction: ${
+						i18n.language === "ar" ? "rtl" : "ltr"
+					};}`}</style>
+				</Helmet>
+			</HelmetProvider>
 			<div
 				// style={{
 				// 	backgroundImage:
@@ -210,11 +236,9 @@ const Menu: FC<Props> = ({ title }) => {
 					alt="text"
 				/>
 			</div>
-			<div
-				dir="rtl"
-				className={styles.Menu}>
+			<div className={styles.Menu}>
 				<Navbar expand="lg">
-					<Container>
+					<Container fluid>
 						<Navbar.Toggle aria-controls="basic-navbar-nav" />
 
 						<Navbar.Collapse id="basic-navbar-nav">
@@ -227,9 +251,10 @@ const Menu: FC<Props> = ({ title }) => {
 										src="https://icon-library.com/images/white-home-icon-png/white-home-icon-png-21.jpg"
 									/>
 								</Nav.Link>
-								<NavMenuList data={menuItems} />
+								<NavMenuList data={menuList} />
 							</Nav>
 						</Navbar.Collapse>
+						<ChangeLanguage />
 						<Button
 							variant="outline-dark"
 							onClick={loginClickHandler}
