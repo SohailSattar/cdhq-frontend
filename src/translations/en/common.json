@@ -19,6 +19,13 @@
 		"honors": "Honors",
 		"employeeOfMonth": "Employee of the month"
 	},
+	"menu": {
+		"name": "Name",
+		"nameEnglish": "Name [English]",
+		"parent": "Parent",
+		"pathLink": "Path Url",
+		"isAvailable": "Is Available"
+	},
 	"page": {
 		"userHome": "User Account",
 		"userDetail": "User Details",

@@ -20,6 +20,10 @@ export const PROJECT_NEW = `${PROJECT}/new`;
 
 export const CHANGE_PASSWORD = `/change-password`;
 
+// Settings
+export const SETTINGS = "/settings";
+export const SETTINGS_MENU_EDIT = `${SETTINGS}/menu/edit`;
+
 // Projects
 
 // Honors

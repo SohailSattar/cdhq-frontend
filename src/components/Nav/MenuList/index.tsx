@@ -1,10 +1,10 @@
 import { FC } from "react";
 import NavMenuItem from "../MenuItem";
-import { APIMenuItem } from "../../../api/menu/types";
+import { APIMenuListItem } from "../../../api/menu/types";
 import { useStore } from "../../../utils/store";
 
 interface Props {
-	data: APIMenuItem[];
+	data: APIMenuListItem[];
 }
 
 const NavMenuList: FC<Props> = ({ data }) => {

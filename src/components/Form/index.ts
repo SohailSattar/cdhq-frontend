@@ -3,6 +3,7 @@ export * from "./types";
 export { default as DepartmentForm } from "./DepartmentForm";
 export { default as HonorForm } from "./HonorForm";
 export { default as LoginForm } from "./LoginForm";
+export { default as MenuForm } from "./MenuForm";
 export { default as NewsForm } from "./NewsForm";
 export { default as PasswordForm } from "./PasswordForm";
 export { default as PhoneForm } from "./PhoneForm";

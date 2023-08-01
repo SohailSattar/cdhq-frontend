@@ -1,6 +1,6 @@
 import { AppBar, Toolbar, makeStyles, Button } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faGear } from "@fortawesome/free-solid-svg-icons";
 
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { Helmet, HelmetProvider } from "react-helmet-async";
@@ -101,6 +101,10 @@ const Header: FC<Props> = ({ hideLoginButton = false }) => {
 			});
 	};
 
+	const gearClickHandler = () => {
+		navigate(RoutePath.SETTINGS_MENU_EDIT);
+	};
+
 	const displayDesktop = () => {
 		return (
 			<Toolbar className={clsx(styles.header, toolbar)}>
@@ -124,8 +128,12 @@ const Header: FC<Props> = ({ hideLoginButton = false }) => {
 							onClick={userNameClickHandler}
 						/>
 					)}
-
 					<ChangeLanguage className={clsx(styles.menuItem, menuButton)} />
+					<FontAwesomeIcon
+						icon={faGear}
+						style={{ color: "black" }}
+						onClick={gearClickHandler}
+					/>
 					{loggedUser.userName ? (
 						<Logout
 							label={t("account.logout", { framework: "React" })}

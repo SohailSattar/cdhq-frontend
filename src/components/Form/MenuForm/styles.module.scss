@@ -1,0 +1,39 @@
+.menuForm {
+	.row {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	.basic {
+		width: 100%;
+		.row {
+			display: flex;
+			margin-bottom: 15px;
+
+			.field {
+				display: flex;
+				flex: 1;
+				flex-direction: column;
+			}
+
+			.ddlField {
+				display: flex;
+				flex: 1;
+				flex-direction: column;
+				margin: 0 5px;
+			}
+
+			.actions {
+				display: flex;
+				margin-top: 15px;
+
+				.btn {
+					margin-left: 5px;
+				}
+				.btnLTR {
+					margin-right: 5px;
+				}
+			}
+		}
+	}
+}

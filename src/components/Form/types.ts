@@ -13,6 +13,14 @@ export interface IPasswordFormInputs {
 	password2: string;
 }
 
+export interface IMenuFormInputs {
+	name: string;
+	nameEnglish: string;
+	parentProject?: DropdownOption;
+	linkPath?: string;
+	isAvailable?: boolean;
+}
+
 export interface IProjectFormInputs {
 	iconName?: string;
 	name: string;
