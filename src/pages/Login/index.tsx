@@ -28,7 +28,7 @@ const LoginPage = () => {
 		if (loggedInUser.id !== 0) {
 			navigate(RoutePath.HOME);
 		}
-	}, []);
+	}, [loggedInUser.id, navigate]);
 
 	const submitHandler = async (values: ILoginFormInputs) => {
 		const { data, error } = await loginUser(values);

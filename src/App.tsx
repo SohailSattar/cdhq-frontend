@@ -29,6 +29,7 @@ import {
 	HonorNewPage,
 	HonorEditPage,
 	LandingPage,
+	MenuEditSettingsPage,
 } from "./pages";
 
 import * as RoutePath from "./RouteConfig";
@@ -89,6 +90,17 @@ function App() {
 							element={
 								<Layout>
 									<ChangePasswordPage />
+								</Layout>
+							}
+						/>
+					</Route>
+					{/* SETTING */}
+					<Route element={<ProtectedRoute />}>
+						<Route
+							path={`${RoutePath.SETTINGS_MENU_EDIT}`}
+							element={
+								<Layout>
+									<MenuEditSettingsPage />
 								</Layout>
 							}
 						/>

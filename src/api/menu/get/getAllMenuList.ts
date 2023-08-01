@@ -1,12 +1,12 @@
 import { APIResponse } from "../..";
 import { instance } from "../../../network";
-import { APIMenuListItem } from "../types";
+import { APIMenuItem } from "../types";
 
-export async function getMenuList(): Promise<APIResponse<APIMenuListItem[]>> {
+export async function getAllMenuList(): Promise<APIResponse<APIMenuItem[]>> {
 	try {
-		const url = `/menu`;
+		const url = `/menu/all`;
 
-		const response = await instance.get<APIMenuListItem[]>(url);
+		const response = await instance.get<APIMenuItem[]>(url);
 		const data = response.data;
 		return { data };
 	} catch (err: any) {

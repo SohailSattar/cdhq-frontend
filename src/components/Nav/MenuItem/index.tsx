@@ -3,12 +3,12 @@ import { NavDropdown } from "react-bootstrap";
 
 import "./styles.scss";
 import styles from "./styles.module.scss";
-import { APIMenuItem } from "../../../api/menu/types";
+import { APIMenuListItem } from "../../../api/menu/types";
 import { useStore } from "../../../utils/store";
 
 interface Props {
 	title: string;
-	items?: APIMenuItem[];
+	items?: APIMenuListItem[];
 }
 
 const NavMenuItem: FC<Props> = ({ title, items }) => {

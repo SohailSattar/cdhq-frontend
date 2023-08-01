@@ -19,6 +19,13 @@
 		"honors": "الموظف الموهوب",
 		"employeeOfMonth": "الموهوبين و المتميزين"
 	},
+	"menu": {
+		"name": "Name",
+		"nameEnglish": "Name [English]",
+		"parent": "Parent",
+		"pathLink": "Path Url",
+		"isAvailable": "Is Available"
+	},
 	"page": {
 		"userHome": "حسابات المستخدمين",
 		"userDetail": "تفاصيل حساب المستخدم",
