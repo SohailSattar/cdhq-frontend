@@ -38,5 +38,5 @@ export const PHONE_DIRECTORY = `/phone-directory`;
 
 // Attendance
 export const ATTENDANCE = "/attendance";
-
-export const ATTENDANCE_LOG_REPORT = ATTENDANCE + "/log";
+export const ATTENDANCE_REPORTS = ATTENDANCE + "/reports";
+export const ATTENDANCE_LOG_REPORT = ATTENDANCE_REPORTS + "/log";

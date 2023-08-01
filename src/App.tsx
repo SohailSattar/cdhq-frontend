@@ -29,6 +29,8 @@ import {
 	HonorNewPage,
 	HonorEditPage,
 	LandingPage,
+	AttendanceHome,
+	AttendanceReportHome,
 	AttendanceLog
 } from "./pages";
 
@@ -389,6 +391,32 @@ function App() {
 					{/* Attendance */}
 					<Route element={<ProtectedRoute />}>
 						<Route
+							path={`${RoutePath.ATTENDANCE}`}
+							element={
+								<Layout
+									projectId={Project.PhoneDirectory}
+									privilegeType="Read">
+									<AttendanceHome />
+								</Layout>
+							}
+						/>
+					</Route>
+
+					<Route element={<ProtectedRoute />}>
+						<Route
+							path={`${RoutePath.ATTENDANCE_REPORTS}`}
+							element={
+								<Layout
+									projectId={Project.PhoneDirectory}
+									privilegeType="Read">
+									<AttendanceReportHome />
+								</Layout>
+							}
+						/>
+					</Route>
+					
+					<Route element={<ProtectedRoute />}>
+						<Route
 							path={`${RoutePath.ATTENDANCE_LOG_REPORT}`}
 							element={
 								<Layout
@@ -399,6 +427,9 @@ function App() {
 							}
 						/>
 					</Route>
+
+					
+
 				</Routes>
 			</Router>
 

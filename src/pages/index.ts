@@ -49,4 +49,6 @@ export { default as AssignUserToProjectPage } from "./UserProject/NewUser";
 
 
 // Attendance
+export { default as AttendanceHome } from "./Attendance/Home";
+export { default as AttendanceReportHome } from "./Attendance/Reports/Home";
 export { default as AttendanceLog } from "./Attendance/Reports/Log";

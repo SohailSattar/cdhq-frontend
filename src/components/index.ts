@@ -88,3 +88,5 @@ export { default as UserProjectForm } from "./Form/UserProjectForm";
 export { default as UserProjectTable } from "./UserProjectTable";
 export { default as UserTable } from "./UserTable";
 export { default as Welcome } from "./Welcome";
+export { default as SubModuleMenuItem } from "./SubModuleMenuItem";
+
