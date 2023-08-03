@@ -7,7 +7,7 @@ import { APIMenuItem, APIMenuItemDetail } from "../../../api/menu/types";
 
 import styles from "./styles.module.scss";
 import { FC, useEffect, useState } from "react";
-import { Button, Dropdown, ShadowedContainer, TextBox } from "../..";
+import { Button, Checkbox, Dropdown, ShadowedContainer, TextBox } from "../..";
 import { ErrorMessage } from "@hookform/error-message";
 import { DropdownOption } from "../../Dropdown";
 import { getAllMenuList } from "../../../api/menu/get/getAllMenuList";
@@ -51,109 +51,183 @@ const MenuForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 		fetchData();
 	}, []);
 
+	useEffect(() => {
+		// Employee Name
+		register("name", {
+			required: "Name is required.",
+			pattern: {
+				value: /[\u0621-\u064As]+$/,
+				message: "Name should only be in arabic alphabets.",
+			},
+		});
+
+		// Employee Name [English]
+		register("nameEnglish", {
+			required: "Name [English] is required.",
+			// pattern: {
+			// 	value: /[\u0621-\u064As]+$/,
+			// 	message: 'Name should only be in alphabets.',
+			// }
+		});
+
+		if (data) {
+			const { name, nameEnglish, parent, linkPath, isVisible } = data;
+
+			setValue("name", name);
+			setValue("nameEnglish", nameEnglish);
+
+			const selectedParent = menuOptions.find((x) => x.value === parent?.id);
+
+			setValue("parentProject", selectedParent);
+			setValue("linkPath", linkPath);
+			setValue("isVisible", isVisible);
+		}
+	}, [data, menuOptions, register, setValue]);
+
 	const submitHandler = (values: IMenuFormInputs) => {
 		onSubmit(values);
 	};
 
 	return (
-		<ShadowedContainer>
+		<ShadowedContainer className={styles.menuForm}>
 			<form onSubmit={handleSubmit(submitHandler)}>
-				<div className={styles.menuForm}>
-					<div className={styles.row}>
-						<div className={styles.basic}>
-							<div className={styles.field}>
-								<Controller
-									render={({ field: { value, onChange } }) => (
-										<TextBox
-											type="text"
-											label={t("menu.name", { framework: "React" })}
-											value={value}
-											onChange={onChange}
-										/>
-									)}
-									name="name"
-									control={control}
-									defaultValue={""}
+				<div className={styles.section}>
+					<div className={styles.field}>
+						<Controller
+							render={({ field: { value, onChange } }) => (
+								<TextBox
+									type="text"
+									label={t("menu.name", { framework: "React" })}
+									value={value}
+									onChange={onChange}
 								/>
-							</div>
-							<div className={styles.field}>
-								<Controller
-									render={({ field: { value, onChange } }) => (
-										<TextBox
-											type="text"
-											label={t("menu.nameEnglish", { framework: "React" })}
-											value={value}
-											onChange={onChange}
-											multiline={true}
-											maxRows={20}
-										/>
-									)}
-									name="nameEnglish"
-									control={control}
-									defaultValue={""}
-								/>
-							</div>
-							<div className={styles.ddlField}>
-								<Controller
-									render={({ field: { onChange, value } }) => (
-										<Dropdown
-											label={t("menu.parent", { framework: "React" })}
-											options={menuOptions}
-											onSelect={onChange}
-											value={value}
-										/>
-									)}
-									name="parentProject"
-									control={control}
-								/>
-							</div>
-							<div className={styles.row}>
-								<div className={styles.actions}>
-									<div
-										className={language !== "ar" ? styles.btn : styles.btnLTR}>
-										<Button type="submit">{actionButtonText}</Button>
-									</div>
-								</div>
-							</div>
-						</div>
+							)}
+							name="name"
+							control={control}
+							defaultValue={""}
+						/>
 					</div>
+					<div className={styles.field}>
+						<Controller
+							render={({ field: { value, onChange } }) => (
+								<TextBox
+									type="text"
+									label={t("menu.nameEnglish", { framework: "React" })}
+									value={value}
+									onChange={onChange}
+								/>
+							)}
+							name="nameEnglish"
+							control={control}
+							defaultValue={""}
+						/>
+					</div>
+				</div>
 
-					<div>
-						{Object.keys(errors).length > 0 && (
-							<ShadowedContainer>
-								<ErrorMessage
-									errors={errors}
-									name="name"
-									render={({ messages }) => {
-										return messages
-											? _.entries(messages).map(([type, message]) => (
-													<p
-														key={type}
-														className="error">
-														{message}
-													</p>
-											  ))
-											: null;
-									}}
+				<div className={styles.section}>
+					<div className={styles.dropDownContainer}>
+						<Controller
+							render={({ field: { onChange, value } }) => (
+								<Dropdown
+									label={t("menu.parent", { framework: "React" })}
+									options={menuOptions}
+									onSelect={onChange}
+									value={value}
 								/>
-								<ErrorMessage
-									errors={errors}
-									name="title"
-									render={({ messages }) => {
-										return messages
-											? _.entries(messages).map(([type, message]) => (
-													<p
-														key={type}
-														className="error">
-														{message}
-													</p>
-											  ))
-											: null;
-									}}
-								/>
-							</ShadowedContainer>
-						)}
+							)}
+							name="parentProject"
+							control={control}
+							defaultValue={{ label: "", value: "" }}
+						/>
 					</div>
+					<div className={styles.field}>
+						<Controller
+							render={({ field: { value, onChange } }) => (
+								<TextBox
+									type="text"
+									label={t("menu.pathLink", { framework: "React" })}
+									value={value}
+									onChange={onChange}
+								/>
+							)}
+							name="linkPath"
+							control={control}
+							defaultValue={""}
+						/>
+					</div>
+				</div>
+				<div className={styles.section}>
+					<div className={styles.dropDownContainer}>
+						<Controller
+							render={({ field: { onChange, value } }) => (
+								<Checkbox
+									label={t("menu.isVisible", { framework: "React" })}
+									checked={value}
+									onChange={onChange}
+								/>
+							)}
+							name="isVisible"
+							control={control}
+							defaultValue={false}
+						/>
+					</div>
+				</div>
+
+				{Object.keys(errors).length > 0 && (
+					<ShadowedContainer>
+						<ErrorMessage
+							errors={errors}
+							name="name"
+							render={({ messages }) => {
+								return messages
+									? _.entries(messages).map(([type, message]) => (
+											<p
+												key={type}
+												className="error">
+												{message}
+											</p>
+									  ))
+									: null;
+							}}
+						/>
+						<ErrorMessage
+							errors={errors}
+							name="nameEnglish"
+							render={({ messages }) => {
+								return messages
+									? _.entries(messages).map(([type, message]) => (
+											<p
+												key={type}
+												className="error">
+												{message}
+											</p>
+									  ))
+									: null;
+							}}
+						/>
+						<ErrorMessage
+							errors={errors}
+							name="department"
+							render={({ messages }) => {
+								return messages
+									? _.entries(messages).map(([type, message]) => (
+											<p
+												key={type}
+												className="error">
+												{message}
+											</p>
+									  ))
+									: null;
+							}}
+						/>
+					</ShadowedContainer>
+				)}
+				<div className={styles.buttonSection}>
+					<Button
+						type="submit"
+						className={language !== "ar" ? styles.btn : styles.btnLTR}>
+						{actionButtonText}
+					</Button>
 				</div>
 			</form>
 		</ShadowedContainer>

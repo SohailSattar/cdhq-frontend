@@ -135,7 +135,7 @@ const NewsCarousel: FC<Props> = ({
 					/>
 				</motion.div>
 			)} */}
-			{newsList.map((item: APINews, index) => (
+			{newsList?.map((item: APINews, index) => (
 				<motion.div
 					className={styles.item}
 					key={index}

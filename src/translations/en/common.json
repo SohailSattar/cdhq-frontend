@@ -20,11 +20,15 @@
 		"employeeOfMonth": "Employee of the month"
 	},
 	"menu": {
+		"id": "Menu Id",
 		"name": "Name",
 		"nameEnglish": "Name [English]",
 		"parent": "Parent",
+		"parentEnglish": "Parent [English]",
 		"pathLink": "Path Url",
-		"isAvailable": "Is Available"
+		"isVisible": "Is Visible?",
+		"count": "Total Items",
+		"list": "Menu List"
 	},
 	"page": {
 		"userHome": "User Account",
@@ -233,7 +237,8 @@
 		"newsAdded": "News has been added",
 		"newsUpdated": "News has been updated",
 		"savingConfirmationTitle": "Saving Approvement",
-		"savingConfirmation": "Above details will be saved. Are you sure to save?"
+		"savingConfirmation": "Above details will be saved. Are you sure to save?",
+		"menuItemUpdate": "Menu detail has been updated"
 	},
 	"dropdown": {
 		"select": "Select..."
@@ -242,7 +247,8 @@
 		"noProject": "No project found",
 		"noUser": "No user found",
 		"noEmployee": "No employee found",
-		"noNews": "No news found"
+		"noNews": "No news found",
+		"noMenu": "No menu items found"
 	},
 	"footer": {
 		"text": "Ministry of Interior - Civil Defense"
