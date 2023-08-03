@@ -20,11 +20,15 @@
 		"employeeOfMonth": "الموهوبين و المتميزين"
 	},
 	"menu": {
+		"id": "Menu Id",
 		"name": "Name",
 		"nameEnglish": "Name [English]",
 		"parent": "Parent",
+		"parentEnglish": "Parent [English]",
 		"pathLink": "Path Url",
-		"isAvailable": "Is Available"
+		"isVisible": "Is Visible",
+		"count": "Total Items",
+		"list": "Menu List"
 	},
 	"page": {
 		"userHome": "حسابات المستخدمين",
@@ -232,7 +236,8 @@
 		"newsAdded": "تمت إضافة الخبر",
 		"newsUpdated": "تم تحديث الخبر",
 		"savingConfirmationTitle": "سيتم الحفظ",
-		"savingConfirmation": "سيتم حفظ البيانات . هل أنت متأكد ؟ "
+		"savingConfirmation": "سيتم حفظ البيانات . هل أنت متأكد ؟ ",
+		"menuItemUpdate": "Menu detail has been updated"
 	},
 	"dropdown": {
 		"select": "اختر"
@@ -241,7 +246,8 @@
 		"noProject": "لم يتم العثور على النظام",
 		"noUser": "لم يتم العثور على المستخدم",
 		"noEmployee": "لم يتم العثور على الموظف",
-		"noNews": "لم يتم العثور على أخبار"
+		"noNews": "لم يتم العثور على أخبار",
+		"noMenu": "No menu items found"
 	},
 	"footer": {
 		"text": "وزارة الداخلية - الدفاع المدني"

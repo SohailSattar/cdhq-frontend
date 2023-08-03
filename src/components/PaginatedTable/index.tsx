@@ -48,8 +48,8 @@ interface Props {
 	hideActiveStatusDropdown?: boolean;
 	onRoleOptonSelectionHandler?: (option: DropdownOption) => void;
 	onProjectOptonSelectionHandler?: (option: DropdownOption) => void;
-	onActiveStatusOptionSelectionChange: (option: DropdownOption) => void;
-	onWorkflowStatusOptionSelectionChange: (option: DropdownOption) => void;
+	onActiveStatusOptionSelectionChange?: (option: DropdownOption) => void;
+	onWorkflowStatusOptionSelectionChange?: (option: DropdownOption) => void;
 }
 
 const PaginatedTable: FC<Props> = ({
@@ -71,8 +71,8 @@ const PaginatedTable: FC<Props> = ({
 	hideWorkflowStatusDropdown = false,
 	onRoleOptonSelectionHandler = () => {},
 	onProjectOptonSelectionHandler = () => {},
-	onActiveStatusOptionSelectionChange,
-	onWorkflowStatusOptionSelectionChange,
+	onActiveStatusOptionSelectionChange = () => {},
+	onWorkflowStatusOptionSelectionChange = () => {},
 }) => {
 	const [t] = useTranslation("common");
 

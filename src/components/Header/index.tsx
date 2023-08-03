@@ -25,6 +25,7 @@ import * as RoutePath from "../../RouteConfig";
 import styles from "./styles.module.scss";
 import clsx from "clsx";
 import { FC } from "react";
+import { ROLE } from "../../utils";
 
 const useStyles = makeStyles(() => ({
 	header: {
@@ -102,7 +103,7 @@ const Header: FC<Props> = ({ hideLoginButton = false }) => {
 	};
 
 	const gearClickHandler = () => {
-		navigate(RoutePath.SETTINGS_MENU_EDIT);
+		navigate(RoutePath.SETTINGS);
 	};
 
 	const displayDesktop = () => {
@@ -129,11 +130,14 @@ const Header: FC<Props> = ({ hideLoginButton = false }) => {
 						/>
 					)}
 					<ChangeLanguage className={clsx(styles.menuItem, menuButton)} />
-					<FontAwesomeIcon
-						icon={faGear}
-						style={{ color: "black" }}
-						onClick={gearClickHandler}
-					/>
+					{loggedUser.role === ROLE.SUPERADMIN && (
+						<FontAwesomeIcon
+							icon={faGear}
+							style={{ color: "black" }}
+							onClick={gearClickHandler}
+							className={clsx(styles.menuItem, styles.actionBtn, menuButton)}
+						/>
+					)}
 					{loggedUser.userName ? (
 						<Logout
 							label={t("account.logout", { framework: "React" })}

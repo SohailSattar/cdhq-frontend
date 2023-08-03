@@ -90,13 +90,14 @@ const Layout: FC<Props> = ({ projectId, privilegeType = "All", children }) => {
 			navigate(RoutePath.ROOT);
 		}
 		// console.log(canView);
-		if (!canView) {
+		if (canView === false) {
 			setContent(<NotAuthorized />);
 		} else {
 			setContent(children);
 		}
-
 		setIsLoading(false);
+		console.log("fetchContent");
+		console.log(canView);
 	}, [canView, children, loggedUser, navigate, setLoggedUser]);
 
 	// const fetchContent = useMemo(
@@ -147,6 +148,7 @@ const Layout: FC<Props> = ({ projectId, privilegeType = "All", children }) => {
 		}
 
 		fetchContent();
+		console.log("fetchContent in useEffect");
 	}, [projectId, fetchContent, setCanView, fetchProjectPrivilege]);
 
 	// useEffect(() => {
@@ -208,8 +210,6 @@ const Layout: FC<Props> = ({ projectId, privilegeType = "All", children }) => {
 			</div>
 		);
 	};
-
-	console.log(isLoading);
 
 	return (
 		<>

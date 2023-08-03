@@ -78,6 +78,8 @@ export { default as ShadowedContainer } from "./ShadowedContainer";
 export { default as Status } from "./Status";
 export { default as StatusIcon } from "./StatusIcon";
 export { default as Table } from "./Table";
+export * from "./Tables";
+export * from "./Tabs";
 export { default as TextBox } from "./TextBox";
 export { default as Title } from "./Title";
 export { default as TotalCount } from "./TotalCount";

@@ -11,11 +11,6 @@ const headerLinks = [
 		url: "/project",
 		displayFor: [ROLE.SUPERADMIN.toString()],
 	},
-	{
-		short: "menuManagement",
-		url: "/project",
-		displayFor: [ROLE.SUPERADMIN.toString()],
-	},
 ];
 
 export default headerLinks;

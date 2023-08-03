@@ -1,6 +1,8 @@
 import { APIActiveStatus } from "../../api/activeStatus/types";
+import { APIMenuItem } from "../../api/menu/types";
 import { APIProjectGroup } from "../../api/projects/types";
 import { APIRank } from "../../api/ranks/types";
+import { Id } from "../../utils";
 
 export interface PhoneDirectoryColumns {
 	id: number;
@@ -45,4 +47,13 @@ export interface ProjectColumns {
 	nameArabic: string;
 	group: APIProjectGroup;
 	activeStatus: string;
+}
+
+export interface MenuItemColumns {
+	id: number;
+	name: string;
+	nameEnglish: string;
+	parent: APIMenuItem;
+	linkPath: string;
+	isVisible: boolean;
 }

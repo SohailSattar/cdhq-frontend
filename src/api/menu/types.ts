@@ -1,3 +1,6 @@
+import { Id } from "../../utils";
+import { APIPaginate } from "../types";
+
 export interface APIMenuListItem {
 	id: number;
 	name: string;
@@ -20,4 +23,17 @@ export interface APIMenuItemDetail {
 	parent: APIMenuItem;
 	linkPath?: string;
 	isVisible: boolean;
+}
+
+export interface APIUpdateMenuItem {
+	id: Id;
+	name: string;
+	nameEnglish: string;
+	parentId?: Id;
+	linkPath?: string;
+	isVisible?: boolean;
+}
+
+export interface PaginatedMenuItem extends APIPaginate {
+	menuItems: APIMenuItemDetail[];
 }
