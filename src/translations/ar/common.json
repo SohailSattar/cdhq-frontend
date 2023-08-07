@@ -28,7 +28,8 @@
 		"pathLink": "الرابط",
 		"isVisible": "ظاهر",
 		"count": "المجموع",
-		"list": "اللائحة"
+		"list": "اللائحة",
+		"orderNo": "Order No"
 	},
 	"page": {
 		"userHome": "حسابات المستخدمين",
@@ -103,8 +104,7 @@
 		"department": "قسم",
 		"basicDetails": "تفاصيل أساسية",
 		"assignRole": "تعيين الدور",
-		"count": "إجمالي المستخدمين",
-		"orderNo": "Order No"
+		"count": "إجمالي المستخدمين"
 	},
 	"employee": {
 		"names": "الموظفين"
