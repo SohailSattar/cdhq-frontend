@@ -133,7 +133,7 @@ const Header: FC<Props> = ({ hideLoginButton = false }) => {
 					{loggedUser.role === ROLE.SUPERADMIN && (
 						<FontAwesomeIcon
 							icon={faGear}
-							style={{ color: "black" }}
+							style={{ color: "black", cursor: "pointer" }}
 							onClick={gearClickHandler}
 							className={clsx(styles.menuItem, styles.actionBtn, menuButton)}
 						/>

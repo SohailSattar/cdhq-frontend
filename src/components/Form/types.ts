@@ -17,8 +17,9 @@ export interface IMenuFormInputs {
 	name: string;
 	nameEnglish: string;
 	parentProject?: DropdownOption;
-	linkPath?: string;
+	linkPath: string;
 	isVisible?: boolean;
+	orderNo: string;
 }
 
 export interface IProjectFormInputs {

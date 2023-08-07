@@ -48,6 +48,8 @@ const ProjectDetailPage = () => {
 		const fetchData = async () => {
 			const { data } = await getProjectDetail(id!);
 
+			console.log(data);
+
 			if (!data) {
 				navigate(RoutePath.PROJECT);
 			}
@@ -60,7 +62,7 @@ const ProjectDetailPage = () => {
 		}
 
 		fetchData();
-	}, [id, navigate]);
+	}, [id, navigate, role]);
 
 	const projectTreeNodeClickHandler = (e: any) => {
 		const { id } = e;

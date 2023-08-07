@@ -11,9 +11,11 @@ import { APIMenuItemDetail } from "../../../api/menu/types";
 import * as RoutePath from "../../../RouteConfig";
 
 import styles from "./styles.module.scss";
+import { useStore } from "../../../utils/store";
 
 const MenuTable = () => {
 	const [t] = useTranslation("common");
+	const language = useStore((state) => state.language);
 
 	const [items, setItems] = useState<APIMenuItemDetail[]>([]);
 	const [totalCount, setTotalCount] = useState<number>(0);
@@ -51,7 +53,9 @@ const MenuTable = () => {
 	const menuName = t("menu.name", { framework: "React" });
 	const menuNameEng = t("menu.nameEnglish", { framework: "React" });
 	const parent = t("menu.parent", { framework: "React" });
+	const parentEnglish = t("menu.parentEnglish", { framework: "React" });
 	const linkPath = t("menu.pathLink", { framework: "React" });
+	const orderNo = t("menu.orderNo", { framework: "React" });
 
 	const status = t("global.status", { framework: "React" });
 
@@ -68,27 +72,23 @@ const MenuTable = () => {
 		{
 			Header: menuName,
 			id: "name",
-			accessor: (p) => p.name,
-		},
-		{
-			Header: menuNameEng,
-			id: "nameEnglish",
-			accessor: (p) => p.nameEnglish,
+			accessor: (p) => (language !== "ar" ? p.name : p.nameEnglish),
 		},
 		{
 			Header: parent,
 			id: "parent",
-			accessor: (p) => p.parent?.name,
-		},
-		{
-			Header: parent,
-			id: "parentEnglish",
-			accessor: (p) => p.parent?.nameEnglish,
+			accessor: (p) =>
+				language !== "ar" ? p.parent?.name : p.parent?.nameEnglish,
 		},
 		{
 			Header: linkPath,
 			id: "linkPath",
 			accessor: (p) => p.linkPath,
+		},
+		{
+			Header: orderNo,
+			id: "orderNo",
+			accessor: (p) => p.orderNo,
 		},
 		// {
 		// 	Header: status,

@@ -21,8 +21,9 @@ export interface APIMenuItemDetail {
 	name: string;
 	nameEnglish: string;
 	parent: APIMenuItem;
-	linkPath?: string;
+	linkPath: string;
 	isVisible: boolean;
+	orderNo: string;
 }
 
 export interface APIUpdateMenuItem {
@@ -32,6 +33,7 @@ export interface APIUpdateMenuItem {
 	parentId?: Id;
 	linkPath?: string;
 	isVisible?: boolean;
+	orderNo?: number;
 }
 
 export interface PaginatedMenuItem extends APIPaginate {

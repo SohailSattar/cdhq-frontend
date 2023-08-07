@@ -24,10 +24,11 @@ const MenuEditSettingsPage = () => {
 
 	useEffect(() => {
 		const fetch = async () => {
-			const { data } = await getMenuDetails(id!);
-			if (data) {
-				setDetails(data!);
-				console.log(data);
+			if (id) {
+				const { data } = await getMenuDetails(id!);
+				if (data) {
+					setDetails(data!);
+				}
 			}
 		};
 
@@ -35,22 +36,29 @@ const MenuEditSettingsPage = () => {
 	}, [id]);
 
 	const submitHandler = async (values: IMenuFormInputs) => {
-		const { name, nameEnglish, parentProject, linkPath, isVisible } = values;
+		const { name, nameEnglish, parentProject, linkPath, isVisible, orderNo } =
+			values;
 
 		const params: APIUpdateMenuItem = {
 			id: id!,
 			name: name,
 			nameEnglish: nameEnglish,
-			parentId: parentProject?.value!,
+			parentId:
+				parentProject?.value! !== "" ? +parentProject?.value! : undefined,
 			linkPath: linkPath,
 			isVisible: isVisible,
+			orderNo: orderNo !== "" ? +orderNo : undefined,
 		};
 
-		const { data } = await updateMenuItem(params);
+		const { data, error } = await updateMenuItem(params);
 		if (data) {
 			toast.success(
 				t("message.menuItemUpdate", { framework: "React" }).toString()
 			);
+		}
+
+		if (error) {
+			console.log(error);
 		}
 	};
 

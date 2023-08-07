@@ -56,4 +56,5 @@ export interface MenuItemColumns {
 	parent: APIMenuItem;
 	linkPath: string;
 	isVisible: boolean;
+	orderNo: number;
 }

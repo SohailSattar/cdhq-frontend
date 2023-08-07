@@ -55,10 +55,6 @@ const MenuForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 		// Employee Name
 		register("name", {
 			required: "Name is required.",
-			pattern: {
-				value: /[\u0621-\u064As]+$/,
-				message: "Name should only be in arabic alphabets.",
-			},
 		});
 
 		// Employee Name [English]
@@ -71,7 +67,7 @@ const MenuForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 		});
 
 		if (data) {
-			const { name, nameEnglish, parent, linkPath, isVisible } = data;
+			const { name, nameEnglish, parent, linkPath, isVisible, orderNo } = data;
 
 			setValue("name", name);
 			setValue("nameEnglish", nameEnglish);
@@ -79,8 +75,9 @@ const MenuForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 			const selectedParent = menuOptions.find((x) => x.value === parent?.id);
 
 			setValue("parentProject", selectedParent);
-			setValue("linkPath", linkPath);
+			setValue("linkPath", linkPath ?? "");
 			setValue("isVisible", isVisible);
+			setValue("orderNo", orderNo ?? "");
 		}
 	}, [data, menuOptions, register, setValue]);
 
@@ -157,6 +154,21 @@ const MenuForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 					</div>
 				</div>
 				<div className={styles.section}>
+					<div className={styles.field}>
+						<Controller
+							render={({ field: { value, onChange } }) => (
+								<TextBox
+									type="text"
+									label={t("menu.orderNo", { framework: "React" })}
+									value={value}
+									onChange={onChange}
+								/>
+							)}
+							name="orderNo"
+							control={control}
+							defaultValue={""}
+						/>
+					</div>
 					<div className={styles.dropDownContainer}>
 						<Controller
 							render={({ field: { onChange, value } }) => (
@@ -205,7 +217,7 @@ const MenuForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 									: null;
 							}}
 						/>
-						<ErrorMessage
+						{/* <ErrorMessage
 							errors={errors}
 							name="department"
 							render={({ messages }) => {
@@ -219,7 +231,7 @@ const MenuForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 									  ))
 									: null;
 							}}
-						/>
+						/> */}
 					</ShadowedContainer>
 				)}
 				<div className={styles.buttonSection}>

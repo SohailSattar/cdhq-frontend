@@ -102,9 +102,9 @@ export interface APIUpdateProject {
 	id: string;
 	name: string;
 	nameEnglish: string;
-	parentId: number;
-	projectGroupId: number;
-	departmentCategoryId?: number;
+	parentId?: Id;
+	projectGroupId: Id;
+	departmentCategoryId?: Id;
 	withAcademy: boolean;
 	hasWorkflow: boolean;
 	pathLink?: string;
