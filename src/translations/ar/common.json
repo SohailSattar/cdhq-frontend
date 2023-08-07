@@ -103,7 +103,8 @@
 		"department": "قسم",
 		"basicDetails": "تفاصيل أساسية",
 		"assignRole": "تعيين الدور",
-		"count": "إجمالي المستخدمين"
+		"count": "إجمالي المستخدمين",
+		"orderNo": "Order No"
 	},
 	"employee": {
 		"names": "الموظفين"

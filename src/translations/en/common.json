@@ -28,7 +28,8 @@
 		"pathLink": "Path Url",
 		"isVisible": "Is Visible?",
 		"count": "Total Items",
-		"list": "Menu List"
+		"list": "Menu List",
+		"orderNo": "Order No"
 	},
 	"page": {
 		"userHome": "User Account",
