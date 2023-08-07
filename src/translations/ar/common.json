@@ -20,15 +20,15 @@
 		"employeeOfMonth": "الموهوبين و المتميزين"
 	},
 	"menu": {
-		"id": "Menu Id",
-		"name": "Name",
-		"nameEnglish": "Name [English]",
-		"parent": "Parent",
-		"parentEnglish": "Parent [English]",
-		"pathLink": "Path Url",
-		"isVisible": "Is Visible",
-		"count": "Total Items",
-		"list": "Menu List"
+		"id": "رمز القائمة",
+		"name": "الاسم بالعربي",
+		"nameEnglish": "الاسم بالانجليزي [English]",
+		"parent": "العنوان الأم ",
+		"parentEnglish": "العنوان الأم بالانجليزي [English]",
+		"pathLink": "الرابط",
+		"isVisible": "ظاهر",
+		"count": "المجموع",
+		"list": "اللائحة"
 	},
 	"page": {
 		"userHome": "حسابات المستخدمين",
