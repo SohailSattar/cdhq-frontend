@@ -364,16 +364,16 @@ const UserEditPage = () => {
 					</ShadowedContainer>
 				</TabPanel>
 				<TabPanel>
-					{role === ROLE.SUPERADMIN ||
-						//  && privilege?.privilegeId !== 999
-						(role === ROLE.ADMIN && (
-							<ShadowedContainer className={styles.btnSection}>
-								<RedirectButton
-									label={t("button.assignProject", { framework: "React" })}
-									redirectTo={`${RoutePath.USER}/${id}/project/assign`}
-								/>
-							</ShadowedContainer>
-						))}
+					{(role === ROLE.SUPERADMIN ||
+						//
+						(role === ROLE.ADMIN && privilege?.privilegeId !== 999)) && (
+						<ShadowedContainer className={styles.btnSection}>
+							<RedirectButton
+								label={t("button.assignProject", { framework: "React" })}
+								redirectTo={`${RoutePath.USER}/${id}/project/assign`}
+							/>
+						</ShadowedContainer>
+					)}
 					<UserProjectTable
 						id={id!}
 						displayActionsColumn={privilege?.privilegeId !== 999 && true}
