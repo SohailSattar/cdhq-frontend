@@ -55,7 +55,7 @@ const TableList: FC<Props> = ({ onViewClick }) => {
 				),
 			},
 		],
-		[actions, title, txtId]
+		[actions, onViewClick, title, txtId, view]
 	);
 	const fetchData = useMemo(
 		() => async (currentPage: number, keyword?: string) => {
@@ -68,7 +68,7 @@ const TableList: FC<Props> = ({ onViewClick }) => {
 				// navigate(RoutePath.ROOT);
 			}
 		},
-		[pageSize, keyword]
+		[pageSize]
 	);
 
 	useEffect(() => {

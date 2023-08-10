@@ -1,9 +1,11 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import Marquee from "react-fast-marquee";
 import { NewsFlashItem } from "..";
 
 import styles from "./styles.module.scss";
 import { APINews } from "../../../api/news/types";
+import clsx from "clsx";
+import { useStore } from "../../../utils/store";
 
 interface Props {
 	news: APINews[];
@@ -11,8 +13,20 @@ interface Props {
 }
 
 const NewsFlashMarquee: FC<Props> = ({ news, onClick }) => {
+	// const language = useStore((state) => state.language);
+
+	// const [direction, setDirection] = useState<
+	// 	"left" | "right" | "up" | "down" | undefined
+	// >();
+
+	// useEffect(() => {
+	// 	setDirection(language === "ar" ? "left" : "right");
+	// }, [language]);
+
 	return (
-		<Marquee className={styles.marquee}>
+		<Marquee
+			className={clsx(styles.marquee)}
+			direction={"right"}>
 			{news?.map((x) => (
 				<NewsFlashItem
 					data={x}

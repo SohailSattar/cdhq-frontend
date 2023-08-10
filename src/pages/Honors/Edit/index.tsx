@@ -7,7 +7,9 @@ import {
 	PageContainer,
 } from "../../../components";
 import { getHonorDetail } from "../../../api/honors/get/getHonorDetail";
-import { APIHonorDetail } from "../../../api/honors/types";
+import { APIHonorDetail, APIUpdateHonorImage } from "../../../api/honors/types";
+import { updateHonorImage } from "../../../api/honors/update/updateHonorImage";
+import { toast } from "react-toastify";
 
 const HonorEditPage = () => {
 	const { id } = useParams<{ id: string }>();
@@ -29,8 +31,28 @@ const HonorEditPage = () => {
 		}
 	}, [id, fetch]);
 
-	const honorupdateClickHandler = (values: IHonorFormInputs) => {
+	const honorUpdateClickHandler = (values: IHonorFormInputs) => {
 		console.log(values);
+	};
+
+	const imageUploadHandler = async (image: File) => {
+		const params: APIUpdateHonorImage = {
+			id: id!,
+			thumbnail: image,
+		};
+
+		console.log(params);
+
+		const { data, error } = await updateHonorImage(params);
+		if (data) {
+			toast.success(
+				t("message.imageUpdated", { framework: "React" }).toString()
+			);
+		}
+
+		if (error) {
+			toast.success(t("message.fail", { framework: "React" }).toString());
+		}
 	};
 
 	return (
@@ -38,7 +60,8 @@ const HonorEditPage = () => {
 			<HonorForm
 				data={honor}
 				actionButtonText={t("button.update", { framework: "React" })}
-				onSubmit={honorupdateClickHandler}
+				onSubmit={honorUpdateClickHandler}
+				onImageUpload={imageUploadHandler}
 			/>
 		</PageContainer>
 	);

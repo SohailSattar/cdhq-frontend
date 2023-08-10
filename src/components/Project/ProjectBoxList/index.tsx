@@ -20,11 +20,10 @@ const ProjectBoxList: FC<Props> = ({ data }) => {
 			{data.map((d, index) =>
 				d.isExternalPath ? (
 					<a
-						href={d.pathLink || "#"}
+						href={d.isAvailable ? d.pathLink || "#" : "#"}
 						key={index}
 						target="_blank"
-						rel="noreferrer"
-					>
+						rel="noreferrer">
 						<ProjectBox
 							key={d.id}
 							name={language !== "ar" ? d.name : d.nameEnglish}
@@ -33,7 +32,9 @@ const ProjectBoxList: FC<Props> = ({ data }) => {
 						/>
 					</a>
 				) : (
-					<Link to={d.pathLink || "#"} key={index}>
+					<Link
+						to={d.isAvailable ? d.pathLink || "#" : "#"}
+						key={index}>
 						<ProjectBox
 							key={d.id}
 							name={language !== "ar" ? d.name : d.nameEnglish}

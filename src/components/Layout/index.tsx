@@ -21,10 +21,18 @@ import { Id } from "../../utils";
 interface Props {
 	projectId?: number;
 	privilegeType?: PrivilegeType;
+	hideLoginButton?: boolean;
+	noChecks?: boolean;
 	children: any;
 }
 
-const Layout: FC<Props> = ({ projectId, privilegeType = "All", children }) => {
+const Layout: FC<Props> = ({
+	projectId,
+	privilegeType = "All",
+	hideLoginButton = false,
+	noChecks = false,
+	children,
+}) => {
 	const navigate = useNavigate();
 
 	const loggedUser: APILoggedUser = useStore(
@@ -87,7 +95,9 @@ const Layout: FC<Props> = ({ projectId, privilegeType = "All", children }) => {
 				}
 			}
 		} else {
-			navigate(RoutePath.ROOT);
+			if (!noChecks) {
+				navigate(RoutePath.ROOT);
+			}
 		}
 		// console.log(canView);
 		if (canView === false) {
@@ -96,9 +106,7 @@ const Layout: FC<Props> = ({ projectId, privilegeType = "All", children }) => {
 			setContent(children);
 		}
 		setIsLoading(false);
-		console.log("fetchContent");
-		console.log(canView);
-	}, [canView, children, loggedUser, navigate, setLoggedUser]);
+	}, [canView, children, loggedUser, navigate, noChecks, setLoggedUser]);
 
 	// const fetchContent = useMemo(
 	// 	() => async () => {
@@ -137,7 +145,6 @@ const Layout: FC<Props> = ({ projectId, privilegeType = "All", children }) => {
 	// 	},
 	// 	[canView, children, loggedUser, navigate, setLoggedUser]
 	// );
-	console.log(canView);
 
 	useEffect(() => {
 		if (projectId) {
@@ -146,10 +153,8 @@ const Layout: FC<Props> = ({ projectId, privilegeType = "All", children }) => {
 			setCanView(true);
 			setIsLoading(true);
 		}
-
 		fetchContent();
-		console.log("fetchContent in useEffect");
-	}, [projectId, fetchContent, setCanView, fetchProjectPrivilege]);
+	}, [fetchContent, fetchProjectPrivilege, projectId]);
 
 	// useEffect(() => {
 	// 	const fetchData = async () => {
@@ -221,7 +226,7 @@ const Layout: FC<Props> = ({ projectId, privilegeType = "All", children }) => {
 					onReset={() => {
 						// reset the state of your app so the error doesn't happen again
 					}}>
-					<Header />
+					<Header hideLoginButton={hideLoginButton} />
 					<div className={styles.layout}>
 						{isLoading ? <Loading /> : content}
 					</div>

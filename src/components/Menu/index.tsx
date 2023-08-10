@@ -12,14 +12,16 @@ import Navbar from "react-bootstrap/Navbar";
 import Button from "react-bootstrap/Button";
 
 import NavDropdown from "react-bootstrap/NavDropdown";
-import { ChangeLanguage, NavMenuList, RedirectButton } from "..";
+import { ChangeLanguage, Logout, NavMenuList, RedirectButton } from "..";
 import * as RoutePath from "../../RouteConfig";
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getMenuList } from "../../api/menu/get/getMenuList";
 import { APIMenuListItem } from "../../api/menu/types";
 import { Helmet, HelmetProvider } from "react-helmet-async";
+import { useStore } from "../../utils/store";
+import localStorageService from "../../network/localStorageService";
 
 const useStyles = makeStyles(() => ({
 	header: {
@@ -51,6 +53,10 @@ const Menu: FC<Props> = ({ title }) => {
 	const [t, i18n] = useTranslation("common");
 	const navigate = useNavigate();
 
+	const loggedUser = useStore((state) => state.language);
+
+	const [isLogged, setIsLogged] = useState<boolean>(false);
+
 	const [menuList, setMenuList] = useState<APIMenuListItem[]>([]);
 
 	const fetchMenuItems = useMemo(
@@ -64,11 +70,27 @@ const Menu: FC<Props> = ({ title }) => {
 	);
 
 	useEffect(() => {
+		const token = localStorageService.getJwtToken();
+		console.log(loggedUser);
+		if (token) {
+			setIsLogged(true);
+		} else {
+			setIsLogged(false);
+		}
+
+		console.log(token);
+	}, []);
+
+	useEffect(() => {
 		fetchMenuItems();
 	}, [fetchMenuItems]);
 
 	const loginClickHandler = () => {
 		navigate(RoutePath.LOGIN);
+	};
+
+	const logoutClickHandler = () => {
+		setIsLogged(false);
 	};
 
 	return (
@@ -81,10 +103,10 @@ const Menu: FC<Props> = ({ title }) => {
 				</Helmet>
 			</HelmetProvider>
 			<div
-				// style={{
-				// 	backgroundImage:
-				// 		"url('https://img.freepik.com/free-vector/stylish-line-pattern-background_361591-1174.jpg?w=1060&t=st=1678781765~exp=1678782365~hmac=19b909311ac8659a13999ac8a681f622df04f5915a8162d285207b3e70622742')",
-				// }}
+				style={{
+					backgroundImage:
+						"url('https://img.freepik.com/free-vector/stylish-line-pattern-background_361591-1174.jpg?w=1060&t=st=1678781765~exp=1678782365~hmac=19b909311ac8659a13999ac8a681f622df04f5915a8162d285207b3e70622742')",
+				}}
 				className={styles.nav}>
 				<img
 					src="/portal/static/media/moi-logo.9513a445fa7fe6cd5192bab48cd22250.svg"
@@ -98,7 +120,9 @@ const Menu: FC<Props> = ({ title }) => {
 
 						<Navbar.Collapse id="basic-navbar-nav">
 							<Nav>
-								<Nav.Link href="">
+								<Nav.Link
+									as={Link}
+									to={isLogged ? RoutePath.HOME : RoutePath.LOGIN}>
 									<img
 										alt="home"
 										className={styles.NavDropdownHome}
@@ -110,12 +134,19 @@ const Menu: FC<Props> = ({ title }) => {
 							</Nav>
 						</Navbar.Collapse>
 						<ChangeLanguage />
-						<Button
-							variant="outline-dark"
-							onClick={loginClickHandler}
-							className={styles.loginButton}>
-							{t("account.login", { framework: "React" })}
-						</Button>
+						{isLogged ? (
+							<Logout
+								label={t("account.logout", { framework: "React" })}
+								onClick={logoutClickHandler}
+							/>
+						) : (
+							<Button
+								variant="outline-dark"
+								onClick={loginClickHandler}
+								className={styles.loginButton}>
+								{t("account.login", { framework: "React" })}
+							</Button>
+						)}
 						{/* <RedirectButton
 							label={t("account.login", { framework: "React" })}
 							redirectTo={RoutePath.LOGIN}

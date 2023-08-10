@@ -3,7 +3,7 @@ import { APIDepartmentLevel } from "../departmentLevel/types";
 import { APIEmirate } from "../emirates/types";
 
 export interface APIDepartmentItem {
-	id: number;
+	id: Id;
 	name: string;
 	nameEnglish: string;
 	longFullName: string;
@@ -29,7 +29,7 @@ export interface APIDepartmentHierarchy {
 }
 
 export interface APICategorizedDepartment {
-	id: number;
+	id: Id;
 	longFullName: string;
 	longFullNameEnglish: string;
 }

@@ -123,16 +123,17 @@ const PaginatedTable: FC<Props> = ({
 				setProjectOptions(
 					list?.map((x) => {
 						return {
-							label: language != "ar" ? x.name : x.nameEnglish,
+							label: language !== "ar" ? x.name : x.nameEnglish,
 							value: x.id,
 						};
 					})
 				);
 			}
 		};
-
-		fetch();
-	}, [language, setRoleOptions]);
+		if (showProjectDropdown) {
+			fetch();
+		}
+	}, [language, setRoleOptions, showProjectDropdown]);
 
 	useEffect(() => {
 		const fetch = async () => {
@@ -152,9 +153,10 @@ const PaginatedTable: FC<Props> = ({
 				}
 			}
 		};
-
-		fetch();
-	}, [setRoleOptions]);
+		if (showRoleOption) {
+			fetch();
+		}
+	}, [setRoleOptions, showRoleOption]);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -170,9 +172,10 @@ const PaginatedTable: FC<Props> = ({
 				);
 			}
 		};
-
-		fetchData();
-	}, [language, setStatusOptions]);
+		if (!hideWorkflowStatusDropdown) {
+			fetchData();
+		}
+	}, [hideWorkflowStatusDropdown, language, setStatusOptions]);
 
 	const pageViewSelectionChangeHandler = (option: DropdownOption) => {
 		onPageViewSelectionChange(option);

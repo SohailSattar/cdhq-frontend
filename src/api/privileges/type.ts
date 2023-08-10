@@ -1,4 +1,7 @@
+import { Id } from "../../utils";
+
 export interface APIPrivileges {
+	privilegeId?: Id;
 	insertPrivilege: boolean;
 	deletePrivilege: boolean;
 	updatePrivilege: boolean;

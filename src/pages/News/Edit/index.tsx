@@ -55,7 +55,7 @@ const NewsEditPage = () => {
 				}
 			}
 		},
-		[id]
+		[id, navigate]
 	);
 	useEffect(() => {
 		if (id) {

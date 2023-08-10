@@ -96,6 +96,7 @@ const UserEditPage = () => {
 
 			if (privilege) {
 				const {
+					privilegeId,
 					readPrivilege,
 					insertPrivilege,
 					updatePrivilege,
@@ -103,6 +104,7 @@ const UserEditPage = () => {
 				} = privilege;
 
 				setPrivilege({
+					privilegeId,
 					readPrivilege,
 					insertPrivilege,
 					updatePrivilege,
@@ -194,7 +196,8 @@ const UserEditPage = () => {
 				t("message.userDetailUpdated", { framework: "React" }).toString()
 			);
 		} else {
-			error?.map((err: any) => toast.error(err, { autoClose: false }));
+			toast.error(error, { autoClose: false });
+			// error?.map((err: any) => toast.error(err, { autoClose: false }));
 		}
 	};
 
@@ -316,7 +319,9 @@ const UserEditPage = () => {
 			showBackButton
 			btnBackLabel={t("button.backToDetail", { framework: "React" })}
 			btnBackUrlLink={`${RoutePath.USER}/${id}`}
-			showChangeStatusButton={privilege?.updatePrivilege}
+			showChangeStatusButton={
+				privilege?.privilegeId !== 999 && privilege?.updatePrivilege
+			}
 			currentStatus={status?.id === 1 ? "ACTIVE" : "DEACTIVE"}
 			onActivate={activateButtonClickHandler}
 			onDectivate={deleteButtonClickHandler}
@@ -352,13 +357,16 @@ const UserEditPage = () => {
 								!privilege?.updatePrivilege ?? isExistingEmployee
 							}
 							data={userDetail}
+							lockFields={privilege?.privilegeId === 999}
 							actionButtonText={t("button.update", { framework: "React" })}
 							onSubmit={updateDetailsClickHandler}
 						/>
 					</ShadowedContainer>
 				</TabPanel>
 				<TabPanel>
-					{(role === ROLE.SUPERADMIN || role === ROLE.ADMIN) && (
+					{(role === ROLE.SUPERADMIN ||
+						//
+						(role === ROLE.ADMIN && privilege?.privilegeId !== 999)) && (
 						<ShadowedContainer className={styles.btnSection}>
 							<RedirectButton
 								label={t("button.assignProject", { framework: "React" })}
@@ -368,7 +376,7 @@ const UserEditPage = () => {
 					)}
 					<UserProjectTable
 						id={id!}
-						displayActionsColumn={true}
+						displayActionsColumn={privilege?.privilegeId !== 999 && true}
 						onEditButtonClick={editUserProjectClickHandler}
 						onDeleteButtonClick={deleteUserProjectClickHandler}
 					/>

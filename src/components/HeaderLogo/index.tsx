@@ -12,9 +12,13 @@ export interface Props {
 
 const HeaderLogo: FC<Props> = ({ src, isLoggedIn }) => {
 	return (
-		<Link to={isLoggedIn ? RoutePath.HOME : RoutePath.ROOT}>
+		<Link to={RoutePath.ROOT}>
 			{" "}
-			<img src={src} alt="" className={styles.logo} />
+			<img
+				src={src}
+				alt=""
+				className={styles.logo}
+			/>
 		</Link>
 	);
 };
