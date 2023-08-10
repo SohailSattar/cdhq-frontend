@@ -16,9 +16,7 @@ export interface Props {
 }
 
 const NewsModal: FC<Props> = ({ id, title, body, src }) => {
-	const infoClickHandler = (id: Id) => {
-		console.log(id);
-	};
+	const infoClickHandler = (id: Id) => {};
 
 	return (
 		<>

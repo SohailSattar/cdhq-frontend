@@ -28,10 +28,13 @@ const LoginPage = () => {
 		if (loggedInUser.id !== 0) {
 			navigate(RoutePath.HOME);
 		}
-	}, [loggedInUser.id, navigate]);
+	}, [loggedInUser, loggedInUser.id, navigate]);
 
+	console.log(loggedInUser);
 	const submitHandler = async (values: ILoginFormInputs) => {
 		const { data, error } = await loginUser(values);
+
+		console.log("test");
 
 		if (error) {
 			toast.error(error.ErrorMessage, {
@@ -95,20 +98,20 @@ const LoginPage = () => {
 
 	return (
 		<>
-			<Header hideLoginButton={true} />
+			{/* <Header hideLoginButton={true} /> */}
 			<div className={styles.layout}>
 				<div className="container">
 					<main
 						role="main"
 						className="pb-3">
 						<div className="container container-custom-width">
-							<ImageLogo imagePath={logo} />
+							{/* <ImageLogo imagePath={logo} /> */}
 							<LoginForm onSubmit={submitHandler} />
 						</div>
 					</main>
 				</div>
 			</div>
-			<Footer />
+			{/* <Footer /> */}
 		</>
 	);
 };

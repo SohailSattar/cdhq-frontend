@@ -6,6 +6,7 @@
 	"header": {
 		"title": "وزارة الداخلية",
 		"menu": {
+			"dashboard": "Dashboard",
 			"projectManagement": " الأنظمة و البرامج",
 			"userAccount": "حسابات المستخدمين",
 			"departmentHierarchy": "الهيكل التنظيمي",

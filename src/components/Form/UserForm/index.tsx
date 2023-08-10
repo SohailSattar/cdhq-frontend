@@ -22,6 +22,7 @@ interface Props {
 	data?: APIUserDetail;
 	hideActionButton?: boolean;
 	actionButtonText: string;
+	lockFields?: boolean;
 	onSubmit: (data: IUserFormInputs) => void;
 }
 
@@ -31,6 +32,7 @@ const UserForm: FC<Props> = ({
 	data,
 	hideActionButton = false,
 	actionButtonText,
+	lockFields = false,
 	onSubmit,
 }) => {
 	const [t] = useTranslation("common");
@@ -136,7 +138,16 @@ const UserForm: FC<Props> = ({
 			const selectedDepartment = departmentOptions.find(
 				(x) => x.value === department?.id
 			);
-			setValue("department", selectedDepartment!);
+			if (selectedDepartment) {
+				setValue("department", selectedDepartment!);
+			} else {
+				setValue("department", {
+					label: `${department?.id} - ${
+						language !== "ar" ? department?.name! : department?.nameEnglish!
+					}`,
+					value: department?.id!,
+				});
+			}
 
 			const selectedClass = classOptions.find(
 				(x) => x.value === userClass?.id!
@@ -162,15 +173,18 @@ const UserForm: FC<Props> = ({
 		register,
 		getValues,
 		setValue,
+		language,
 	]);
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const { data } = await getDepartmentsByProject(Project.UserManagement);
+			const { data: dl } = await getDepartmentsByProject(
+				Project.UserManagement
+			);
 
-			if (data) {
+			if (dl) {
 				setDepartmentOptions(
-					data.map((x) => ({
+					dl.map((x) => ({
 						label: `${x.id} - ${
 							language !== "ar" ? x.longFullName : x.longFullNameEnglish
 						}`,
@@ -181,7 +195,7 @@ const UserForm: FC<Props> = ({
 				const selectedOption = getValues("department");
 
 				if (selectedOption) {
-					const selected = data.find((x) => x.id === selectedOption.value!)!;
+					const selected = dl.find((x) => x.id === selectedOption.value!)!;
 
 					const label = `${selected?.id} - ${
 						language !== "ar" ? selected?.name! : selected?.nameEnglish!
@@ -229,7 +243,7 @@ const UserForm: FC<Props> = ({
 		};
 
 		fetchData();
-	}, [language]);
+	}, [getValues, language, setValue]);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -261,7 +275,7 @@ const UserForm: FC<Props> = ({
 		};
 
 		fetchData();
-	}, [language]);
+	}, [getValues, language, setValue]);
 
 	const employeeNumberChangeHandler = (e: any) => {
 		const num = e.target.value;
@@ -343,7 +357,7 @@ const UserForm: FC<Props> = ({
 									label={t("user.name", { framework: "React" })}
 									value={value}
 									onChange={onChange}
-									disabled={isExistingEmployee}
+									disabled={lockFields || isExistingEmployee}
 								/>
 							)}
 							name="name"
@@ -359,7 +373,7 @@ const UserForm: FC<Props> = ({
 									label={t("user.nameEnglish", { framework: "React" })}
 									value={value}
 									onChange={onChange}
-									disabled={isExistingEmployee}
+									disabled={lockFields || isExistingEmployee}
 								/>
 							)}
 							name="nameEnglish"
@@ -377,7 +391,7 @@ const UserForm: FC<Props> = ({
 									label={t("user.phone", { framework: "React" })}
 									value={value}
 									onChange={onChange}
-									disabled={isExistingEmployee}
+									disabled={lockFields || isExistingEmployee}
 								/>
 							)}
 							name="phone"
@@ -393,7 +407,7 @@ const UserForm: FC<Props> = ({
 									label={t("user.email", { framework: "React" })}
 									value={value}
 									onChange={onChange}
-									disabled={isExistingEmployee}
+									disabled={lockFields || isExistingEmployee}
 								/>
 							)}
 							name="email"
@@ -411,7 +425,7 @@ const UserForm: FC<Props> = ({
 									options={departmentOptions}
 									onSelect={onChange}
 									value={value}
-									disabled={isExistingEmployee}
+									disabled={lockFields || isExistingEmployee}
 								/>
 							)}
 							name="department"
@@ -428,7 +442,7 @@ const UserForm: FC<Props> = ({
 									options={classOptions}
 									onSelect={classChangeHandler}
 									value={value}
-									disabled={isExistingEmployee}
+									disabled={lockFields || isExistingEmployee}
 									reference={classRef}
 								/>
 							)}
@@ -444,7 +458,7 @@ const UserForm: FC<Props> = ({
 									options={rankOptions}
 									onSelect={onChange}
 									value={value}
-									disabled={isExistingEmployee}
+									disabled={lockFields || isExistingEmployee}
 								/>
 							)}
 							name="rank"
@@ -615,7 +629,7 @@ const UserForm: FC<Props> = ({
 						/>
 					</ShadowedContainer>
 				)}
-				{!hideActionButton && (
+				{!hideActionButton && !lockFields && (
 					<div className={styles.buttonSection}>
 						<Button
 							type="submit"

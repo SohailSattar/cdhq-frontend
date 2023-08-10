@@ -73,7 +73,7 @@ const HonorForm: FC<Props> = ({
 		if (data) {
 			const { name, rank, department, imageName } = data;
 
-			setHideUploadButton(true);
+			setHideUploadButton(false);
 
 			setValue("name", name);
 			setValue("rank", rank);
@@ -144,7 +144,7 @@ const HonorForm: FC<Props> = ({
 
 	const imageUpdateHandler = () => {
 		const image = getValues("thumbnail");
-		// onImageUpload(image!)!;
+		onImageUpload(image!)!;
 	};
 
 	const submitHandler = (values: IHonorFormInputs) => {
@@ -152,7 +152,7 @@ const HonorForm: FC<Props> = ({
 	};
 
 	return (
-		<div className={styles.honorForm}>
+		<ShadowedContainer className={styles.honorForm}>
 			{!hideSearchBox && (
 				<div className={styles.row}>
 					<div className={styles.basic}>
@@ -304,7 +304,7 @@ const HonorForm: FC<Props> = ({
 				</div>
 			</form>
 			<div></div>
-		</div>
+		</ShadowedContainer>
 	);
 };
 

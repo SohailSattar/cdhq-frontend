@@ -4085,15 +4085,22 @@ fieldset:disabled .btn {
 
 .dropdown-item {
 	display: block;
-	width: 100%;
+	/* width: 100%; */
 	padding: 0.25rem 1rem;
 	clear: both;
 	color: #212529;
-	text-align: inherit;
+	text-align: center;
 	text-decoration: none;
-	white-space: nowrap;
 	background-color: transparent;
 	border: 0;
+	max-width: 300px;
+	min-width: 200px;
+	border-bottom: 1px solid #ccc;
+}
+
+.dropdown-item:last-child {
+	border-bottom: unset;
+	padding-bottom: unset;
 }
 
 .dropdown-menu-dark,
@@ -4696,30 +4703,36 @@ fieldset:disabled .btn {
 .navbar-light .navbar-brand,
 .navbar-light .navbar-brand:focus,
 .navbar-light .navbar-brand:hover {
-	color: rgba(0, 0, 0, 0.9);
+	/* color: rgba(0, 0, 0, 0.9); */
+	color: #fff;
 }
 
 .navbar-light .navbar-nav .nav-link {
-	color: rgba(0, 0, 0, 0.55);
+	color: #fff;
+	/* rgba(0, 0, 0, 0.55); */
 }
 
 .navbar-light .navbar-nav .nav-link:focus,
 .navbar-light .navbar-nav .nav-link:hover {
-	color: rgba(0, 0, 0, 0.7);
+	color: #fff;
+	/* rgba(0, 0, 0, 0.7); */
 }
 
 .navbar-light .navbar-nav .nav-link.disabled {
-	color: rgba(0, 0, 0, 0.3);
+	/* color:  rgba(0, 0, 0, 0.3); */
+	color: #fff;
 }
 
 .navbar-light .navbar-nav .nav-link.active,
 .navbar-light .navbar-nav .show > .nav-link {
-	color: rgba(0, 0, 0, 0.9);
+	/* color: rgba(0, 0, 0, 0.9); */
+	color: #fff;
 }
 
 .navbar-light .navbar-toggler {
-	color: rgba(0, 0, 0, 0.55);
+	/* color: rgba(0, 0, 0, 0.55); */
 	border-color: rgba(0, 0, 0, 0.1);
+	color: #fff;
 }
 
 .navbar-light .navbar-toggler-icon {

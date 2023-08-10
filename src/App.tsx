@@ -63,7 +63,13 @@ function App() {
 					/>
 					<Route
 						path={RoutePath.LOGIN}
-						element={<LoginPage />}
+						element={
+							<Layout
+								hideLoginButton={true}
+								noChecks={true}>
+								<LoginPage />
+							</Layout>
+						}
 					/>
 					<Route element={<ProtectedRoute />}>
 						<Route

@@ -24,3 +24,8 @@ export interface APIUpdateHonor {
 	id: Id;
 	thumbnail: File;
 }
+
+export interface APIUpdateHonorImage {
+	id: string;
+	thumbnail: File;
+}

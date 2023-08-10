@@ -4,7 +4,6 @@ import {
 	Loading,
 	PasswordExpiryMessage,
 	ProjectBoxList,
-	SearchBox,
 	Welcome,
 } from "../../components";
 import { useStore } from "../../utils/store";
@@ -53,8 +52,6 @@ const HomePage = () => {
 				// 		iconName: x.iconName,
 				// 	};
 				// });
-
-				console.log(accessibleProjects);
 
 				if (loggedInUser.role !== ROLE.SUPERADMIN) {
 					const projectsList = data
@@ -116,11 +113,6 @@ const HomePage = () => {
 					/>
 				)}
 			<Hr />
-			<SearchBox
-				onClick={function (value: string): void {
-					throw new Error("Function not implemented.");
-				}}
-			/>
 			{isLoading ? <Loading /> : <ProjectBoxList data={projects} />}
 		</div>
 	);

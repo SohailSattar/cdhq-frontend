@@ -2,6 +2,11 @@ import { ROLE } from "../utils";
 
 const headerLinks = [
 	{
+		short: "dashboard",
+		url: "/home",
+		displayFor: [ROLE.SUPERADMIN.toString(), ROLE.ADMIN.toString(), ROLE.USER],
+	},
+	{
 		short: "userAccount",
 		url: "/user",
 		displayFor: [ROLE.SUPERADMIN.toString(), ROLE.ADMIN.toString()],

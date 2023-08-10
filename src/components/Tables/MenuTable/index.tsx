@@ -76,7 +76,7 @@ const MenuTable = () => {
 		},
 		{
 			Header: parent,
-			id: "parent",
+			id: "parentId",
 			accessor: (p) =>
 				language !== "ar" ? p.parent?.name : p.parent?.nameEnglish,
 		},
@@ -168,6 +168,8 @@ const MenuTable = () => {
 				onTableSort={tableSortHandler}
 				onPageChange={pageChangeHandler}
 				onPageViewSelectionChange={pageViewSelectionHandler}
+				hideWorkflowStatusDropdown={true}
+				hideActiveStatusDropdown
 			/>
 		</>
 	);

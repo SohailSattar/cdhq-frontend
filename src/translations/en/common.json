@@ -6,6 +6,7 @@
 	"header": {
 		"title": "Ministry of Interior",
 		"menu": {
+			"dashboard": "Dashboard",
 			"projectManagement": "Project Management",
 			"userAccount": "User Account",
 			"departmentHierarchy": "Department Hierarchy",

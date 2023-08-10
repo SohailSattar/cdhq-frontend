@@ -39,7 +39,7 @@ const UserAccountPage = () => {
 	const navigate = useNavigate();
 	const language = useStore((state) => state.language);
 
-	// const { role } = useStore((state) => state.loggedInUser);
+	const loggedUser = useStore((state) => state.loggedInUser);
 	const [role, setRole] = useState<APIRole>();
 
 	const [keyword, setKeyword] = useState("");

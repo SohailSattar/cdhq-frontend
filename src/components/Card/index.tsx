@@ -17,11 +17,6 @@ const Card: FC<Props> = ({ data }) => {
 	return (
 		<ReactCard style={{ width: "18rem", textAlign: "center" }}>
 			<ReactCard.Img
-				style={{
-					minHeight: "250px",
-					maxHeight: "200px",
-					// width: "200px",
-				}}
 				variant="top"
 				src={image}
 			/>
