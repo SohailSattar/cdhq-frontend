@@ -22,7 +22,14 @@ export const CHANGE_PASSWORD = `/change-password`;
 
 // Settings
 export const SETTINGS = "/settings";
-export const SETTINGS_MENU_EDIT = `${SETTINGS}/menu/${ID}/edit`;
+
+export const SETTINGS_MENU = `${SETTINGS}/menu`;
+export const SETTINGS_MENU_EDIT = `${SETTINGS_MENU}/${ID}/edit`;
+export const SETTINGS_MENU_NEW = `${SETTINGS_MENU}/new`;
+
+export const SETTINGS_LINK_TYPES = `${SETTINGS}/link-types`;
+export const SETTINGS_LINK_TYPES_EDIT = `${SETTINGS_LINK_TYPES}/${ID}/edit`;
+export const SETTINGS_LINK_TYPES_NEW = `${SETTINGS_LINK_TYPES}/new`;
 
 // Projects
 

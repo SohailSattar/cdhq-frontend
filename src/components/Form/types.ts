@@ -3,6 +3,8 @@ import { DropdownOption } from "../Dropdown";
 
 export type FormMode = "ADD" | "EDIT";
 
+export type FileType = "image/*" | "application/pdf" | "video/mp4";
+
 export interface ILoginFormInputs {
 	userName: string;
 	password: string;
@@ -13,13 +15,22 @@ export interface IPasswordFormInputs {
 	password2: string;
 }
 
+export interface ILinkTypeFormInputs {
+	name: string;
+	nameEnglish: string;
+	isFile: boolean;
+}
+
 export interface IMenuFormInputs {
 	name: string;
 	nameEnglish: string;
 	parentProject?: DropdownOption;
+	linkType: DropdownOption;
+	file?: File;
 	linkPath: string;
 	isVisible?: boolean;
 	orderNo: string;
+	isExternalLink?: boolean;
 }
 
 export interface IProjectFormInputs {

@@ -17,6 +17,8 @@ import * as RoutePath from "../../RouteConfig";
 
 import styles from "./styles.module.scss";
 import { Id } from "../../utils";
+import { checkLoginStatus } from "../../api/login/get/checkLoginStatus";
+import { useCookies } from "react-cookie";
 
 interface Props {
 	projectId?: number;
@@ -39,13 +41,48 @@ const Layout: FC<Props> = ({
 		(state: { loggedInUser: any }) => state.loggedInUser
 	);
 	const setLoggedUser = useStore((state) => state.setLoggedInUser);
+	const [, , removeCookie] = useCookies([
+		"id",
+		"name",
+		"nameEnglish",
+		"userName",
+		"role",
+	]);
 
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [content, setContent] = useState<any>();
 	const [canView, setCanView] = useState<boolean>();
 
-	const fetchProjectPrivilege = useMemo(
-		() => async (id: Id) => {
+	const clearLoggedInUserState = () => {
+		setLoggedUser({
+			id: 0,
+			userName: "",
+			name: "",
+			nameEnglish: "",
+			role: "",
+		});
+	};
+
+	const removeLocalStorageData = () => {
+		localStorageService.clearToken();
+	};
+
+	const removeCookies = () => {
+		removeCookie("id", { path: "/" });
+		removeCookie("name", { path: "/" });
+		removeCookie("nameEnglish", { path: "/" });
+		removeCookie("userName", { path: "/" });
+		removeCookie("role", { path: "/" });
+	};
+
+	const removeLocalData = () => {
+		clearLoggedInUserState();
+		removeLocalStorageData();
+		removeCookies();
+	};
+
+	const fetchProjectPrivilege = useCallback(
+		async (id: Id) => {
 			setIsLoading(true);
 			const { data: privilege } = await getProjectPrivilege(id!);
 
@@ -106,7 +143,7 @@ const Layout: FC<Props> = ({
 			setContent(children);
 		}
 		setIsLoading(false);
-	}, [canView, children, loggedUser, navigate, noChecks, setLoggedUser]);
+	}, [canView, children, loggedUser, navigate, noChecks]);
 
 	// const fetchContent = useMemo(
 	// 	() => async () => {
@@ -146,15 +183,76 @@ const Layout: FC<Props> = ({
 	// 	[canView, children, loggedUser, navigate, setLoggedUser]
 	// );
 
-	useEffect(() => {
-		if (projectId) {
-			fetchProjectPrivilege(projectId);
-		} else {
-			setCanView(true);
-			setIsLoading(true);
+	// const fetch = useCallback(async () => {
+	// 	console.log(loggedUser);
+	// 	// if (loggedUser.id !== 0) {
+	// 	const { data } = await checkLoginStatus();
+	// 	console.log(data);
+	// 	if (data?.isLoggedIn) {
+	// 		if (projectId) {
+	// 			fetchProjectPrivilege(projectId);
+	// 		} else {
+	// 			setCanView(true);
+	// 			setIsLoading(true);
+	// 		}
+	// 		fetchContent();
+	// 	} else {
+	// 		if (data?.isLoggedIn === false) {
+	// 			setContent(children);
+
+	// 			if (loggedUser.id !== 0) {
+	// 				removeLocalData();
+	// 			}
+	// 			//
+	// 			navigate(RoutePath.LOGIN);
+	// 			console.log(data?.isLoggedIn);
+	// 		}
+	// 	}
+	// 	// }
+	// }, [
+	// 	children,
+	// 	fetchContent,
+	// 	fetchProjectPrivilege,
+	// 	loggedUser,
+	// 	navigate,
+	// 	projectId,
+	// ]);
+
+	const fetch = useCallback(async () => {
+		try {
+			const { data } = await checkLoginStatus();
+			if (data?.isLoggedIn) {
+				if (projectId) {
+					await fetchProjectPrivilege(projectId);
+				} else {
+					setCanView(true);
+					setIsLoading(true);
+				}
+				await fetchContent();
+			} else {
+				if (data?.isLoggedIn === false) {
+					setContent(children);
+					if (loggedUser.id !== 0) {
+						removeLocalData();
+					}
+					navigate(RoutePath.LOGIN);
+				}
+			}
+		} catch (error) {
+			// Handle error
 		}
-		fetchContent();
-	}, [fetchContent, fetchProjectPrivilege, projectId]);
+	}, [
+		children,
+		fetchContent,
+		fetchProjectPrivilege,
+		loggedUser,
+		navigate,
+		projectId,
+	]);
+
+	useEffect(() => {
+		fetch();
+	}, [fetch]);
 
 	// useEffect(() => {
 	// 	const fetchData = async () => {

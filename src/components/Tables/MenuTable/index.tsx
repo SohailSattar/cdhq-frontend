@@ -5,7 +5,7 @@ import { DropdownOption } from "../../Dropdown";
 import { MenuItemColumns } from "../../PaginatedTable/types";
 import { Column } from "react-table";
 import { useTranslation } from "react-i18next";
-import { ActiveStatus, RedirectButton } from "../..";
+import { ActiveStatus, RedirectButton, StatusIcon } from "../..";
 import { APIMenuItemDetail } from "../../../api/menu/types";
 
 import * as RoutePath from "../../../RouteConfig";
@@ -38,8 +38,8 @@ const MenuTable = () => {
 				"",
 				orderBy
 			);
+
 			if (data) {
-				console.log(data);
 				setItems(data.menuItems);
 				setTotalCount(data.totalItems);
 				setPageSize(data?.pageSize);
@@ -56,6 +56,8 @@ const MenuTable = () => {
 	const parentEnglish = t("menu.parentEnglish", { framework: "React" });
 	const linkPath = t("menu.pathLink", { framework: "React" });
 	const orderNo = t("menu.orderNo", { framework: "React" });
+	const linkType = t("menu.linkType", { framework: "React" });
+	const isExternalPath = t("menu.isExternal", { framework: "React" });
 
 	const status = t("global.status", { framework: "React" });
 
@@ -89,6 +91,19 @@ const MenuTable = () => {
 			Header: orderNo,
 			id: "orderNo",
 			accessor: (p) => p.orderNo,
+		},
+		{
+			Header: linkType,
+			accessor: (p) =>
+				language !== "ar" ? p.linkType?.name : p.linkType?.nameEnglish,
+		},
+		{
+			Header: "Is Visible",
+			accessor: (p) => <StatusIcon status={p.isVisible} />,
+		},
+		{
+			Header: isExternalPath,
+			accessor: (p) => <StatusIcon status={p.isExternalPath} />,
 		},
 		// {
 		// 	Header: status,

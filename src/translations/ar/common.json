@@ -28,9 +28,17 @@
 		"parentEnglish": "العنوان الأم بالانجليزي",
 		"pathLink": "الرابط",
 		"isVisible": "ظاهر",
+		"linkType": "Type",
 		"count": "المجموع",
 		"list": "اللائحة",
-		"orderNo": "الترتيب"
+		"orderNo": "الترتيب",
+		"isExternal": "الرابط خارجي ؟"
+	},
+	"linkType": {
+		"id": "Id",
+		"name": "Link Type",
+		"nameEnglish": "Link Type",
+		"isFile": "Is file?"
 	},
 	"page": {
 		"userHome": "حسابات المستخدمين",
@@ -239,7 +247,8 @@
 		"newsUpdated": "تم تحديث الخبر",
 		"savingConfirmationTitle": "سيتم الحفظ",
 		"savingConfirmation": "سيتم حفظ البيانات . هل أنت متأكد ؟ ",
-		"menuItemUpdate": "Menu detail has been updated"
+		"menuItemAdded": "Menu detail has been added",
+		"menuItemUpdated": "Menu detail has been updated"
 	},
 	"dropdown": {
 		"select": "اختر"

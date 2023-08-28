@@ -20,7 +20,7 @@ const ProjectBoxList: FC<Props> = ({ data }) => {
 			{data.map((d, index) =>
 				d.isExternalPath ? (
 					<a
-						href={d.isAvailable ? d.pathLink || "#" : "#"}
+						href={d.isAvailable ? d.pathLink || "" : ""}
 						key={index}
 						target="_blank"
 						rel="noreferrer">

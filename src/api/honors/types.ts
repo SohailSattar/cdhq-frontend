@@ -4,6 +4,7 @@ import { Id } from "../../utils";
 export interface APIHonorDetail {
 	id: number;
 	name: string;
+	nameEnglish: string;
 	imageName: string;
 	work: string;
 	rank: string;

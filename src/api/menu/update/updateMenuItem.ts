@@ -7,7 +7,7 @@ export const updateMenuItem = async (
 	updateMenuItemParams: APIUpdateMenuItem
 ): Promise<APIResponse<APIResponseStatus>> => {
 	try {
-		const config = getConfig();
+		const config = getConfig("multipart/form-data");
 
 		const url = "/menu";
 

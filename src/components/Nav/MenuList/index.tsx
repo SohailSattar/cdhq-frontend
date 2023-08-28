@@ -15,6 +15,7 @@ const NavMenuList: FC<Props> = ({ data }) => {
 			{data.map((x, index) => (
 				<NavMenuItem
 					title={language !== "ar" ? x.name : x.nameEnglish}
+					urlPath={x.linkPath}
 					items={x.children}
 					key={index}
 				/>

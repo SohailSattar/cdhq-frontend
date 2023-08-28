@@ -14,6 +14,7 @@ import * as RoutePath from "../../RouteConfig";
 
 import styles from "./styles.module.scss";
 import { useEffect } from "react";
+import { checkLoginStatus } from "../../api/login/get/checkLoginStatus";
 
 const LoginPage = () => {
 	const navigate = useNavigate();
@@ -25,16 +26,15 @@ const LoginPage = () => {
 	const setPasswordValidity = useStore((state) => state.setPasswordValidity);
 
 	useEffect(() => {
+		console.log(loggedInUser.id);
+
 		if (loggedInUser.id !== 0) {
 			navigate(RoutePath.HOME);
 		}
 	}, [loggedInUser, loggedInUser.id, navigate]);
 
-	console.log(loggedInUser);
 	const submitHandler = async (values: ILoginFormInputs) => {
 		const { data, error } = await loginUser(values);
-
-		console.log("test");
 
 		if (error) {
 			toast.error(error.ErrorMessage, {
@@ -81,7 +81,7 @@ const LoginPage = () => {
 
 			const { data: validity } = await getPasswordValidity();
 
-			if (data) {
+			if (validity) {
 				if (validity?.expiringInDays! > 0 && validity?.expiringInDays! <= 10) {
 					setPasswordValidity(validity!);
 				}
@@ -92,7 +92,9 @@ const LoginPage = () => {
 				}
 			}
 
-			navigate(RoutePath.HOME);
+			// navigate(RoutePath.HOME);
+			const { data: status } = await checkLoginStatus();
+			console.log(status);
 		}
 	};
 

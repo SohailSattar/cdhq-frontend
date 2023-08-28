@@ -123,7 +123,11 @@ const NewsCarousel: FC<Props> = ({
 	return (
 		<ShadowedContainer className={styles.newsCaorousal}>
 			<div>
-				<CarouselActions onTableBtnClick={onTableViewClick} />
+				<CarouselActions
+					onTableBtnClick={onTableViewClick}
+					onDownBtnClick={downArrowClickHandler}
+					onUpBtnClick={upArrowClickHandler}
+				/>
 			</div>
 			{/* {newsList.length > 0 && (
 				<motion.div
