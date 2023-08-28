@@ -26,8 +26,6 @@ const LoginPage = () => {
 	const setPasswordValidity = useStore((state) => state.setPasswordValidity);
 
 	useEffect(() => {
-		console.log(loggedInUser.id);
-
 		if (loggedInUser.id !== 0) {
 			navigate(RoutePath.HOME);
 		}
@@ -91,10 +89,6 @@ const LoginPage = () => {
 					navigate(RoutePath.CHANGE_PASSWORD);
 				}
 			}
-
-			// navigate(RoutePath.HOME);
-			const { data: status } = await checkLoginStatus();
-			console.log(status);
 		}
 	};
 

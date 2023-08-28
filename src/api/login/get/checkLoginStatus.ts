@@ -10,7 +10,7 @@ export async function checkLoginStatus(): Promise<APIResponse<APILoginStatus>> {
 
 		const response = await instance.get<APILoginStatus>(url, config);
 		const data = response.data;
-		console.log(data);
+
 		return { data };
 	} catch (err: any) {
 		const error = err.response.data;

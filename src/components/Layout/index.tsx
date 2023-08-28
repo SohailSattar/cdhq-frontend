@@ -136,7 +136,7 @@ const Layout: FC<Props> = ({
 				navigate(RoutePath.ROOT);
 			}
 		}
-		// console.log(canView);
+
 		if (canView === false) {
 			setContent(<NotAuthorized />);
 		} else {
@@ -241,14 +241,7 @@ const Layout: FC<Props> = ({
 		} catch (error) {
 			// Handle error
 		}
-	}, [
-		children,
-		fetchContent,
-		fetchProjectPrivilege,
-		loggedUser,
-		navigate,
-		projectId,
-	]);
+	}, [children, loggedUser, navigate, projectId]);
 
 	useEffect(() => {
 		fetch();

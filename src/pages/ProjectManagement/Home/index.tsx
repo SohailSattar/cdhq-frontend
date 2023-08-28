@@ -213,7 +213,7 @@ const ProjectManagementPage = () => {
 		}
 	};
 
-	return canView ? (
+	return (
 		<PageContainer
 			lockFor={[ROLE.ADMIN, ROLE.USER]}
 			title={t("page.projectHome", { framework: "React" })}
@@ -239,8 +239,6 @@ const ProjectManagementPage = () => {
 				onWorkflowStatusOptionSelectionChange={() => {}}
 			/>
 		</PageContainer>
-	) : (
-		<NotAuthorized />
 	);
 };
 

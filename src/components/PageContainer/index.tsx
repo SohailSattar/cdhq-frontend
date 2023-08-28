@@ -64,26 +64,26 @@ const PageContainer: FC<Props> = ({
 	const [t] = useTranslation("common");
 	const language = useStore((state) => state.language);
 
-	const [canView, setCanView] = useState<boolean>();
+	const [display, setDisplay] = useState<boolean>(true);
 
 	useEffect(() => {
 		const process = async () => {
 			const { data } = await getMyRole();
 			if (data) {
 				if (lockFor?.find((x) => x === data.role.name)) {
-					setCanView(false);
+					setDisplay(displayContent || false);
 				} else {
-					setCanView(true);
+					setDisplay(displayContent || true);
 				}
 			}
 		};
 
 		process();
-	}, [lockFor]);
+	}, [displayContent, lockFor]);
 
 	return (
 		<>
-			{!displayContent || !canView ? (
+			{display === false ? (
 				<NotAuthorized />
 			) : (
 				<div className={styles.container}>

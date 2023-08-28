@@ -291,7 +291,6 @@ const UserProjectForm: FC<Props> = ({
 		const fetchData = async () => {
 			const { data } = await getAllWorkflowStatus();
 			if (data) {
-				console.log(data);
 				setWorkflowList(data);
 
 				if (role === ROLE.SUPERADMIN) {
@@ -306,10 +305,7 @@ const UserProjectForm: FC<Props> = ({
 							};
 						})
 					);
-					console.log(data);
 				}
-
-				console.log(role);
 
 				// Workflow Start
 				let selectedOption = getValues("workflowStart");
@@ -347,8 +343,6 @@ const UserProjectForm: FC<Props> = ({
 
 		fetchData();
 	}, [setWorkflowRangeOptions, language]);
-
-	console.log(workflowRangeOptions);
 
 	// Centers
 	// const fetchCenters = useMemo(
@@ -447,7 +441,6 @@ const UserProjectForm: FC<Props> = ({
 	// Workflow Details
 	const fetchWorkflow = useMemo(
 		() => async (start: number, end: number) => {
-			console.log(start, end);
 			const range = workflowList.filter((x) => x.id >= end && x.id <= start);
 
 			const options: DropdownOption[] = range.map((x) => {
@@ -457,8 +450,6 @@ const UserProjectForm: FC<Props> = ({
 
 				return { label: label, value: x.id };
 			});
-
-			console.log(options);
 
 			// Workflow Start
 			const selectedWorkflowStart = options.find((x) => x.value === start);
