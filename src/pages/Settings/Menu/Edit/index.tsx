@@ -1,17 +1,20 @@
+import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
+import { useEffect, useState } from "react";
+import { getMenuDetails } from "../../../../api/menu/get/getMenuDetails";
+
 import {
 	IMenuFormInputs,
 	MenuForm,
 	PageContainer,
 } from "../../../../components";
-import { useEffect, useState } from "react";
-import { getMenuDetails } from "../../../../api/menu/get/getMenuDetails";
+
 import {
 	APIMenuItemDetail,
 	APIUpdateMenuItem,
 } from "../../../../api/menu/types";
-import { useParams } from "react-router-dom";
+
 import { updateMenuItem } from "../../../../api/menu/update/updateMenuItem";
 
 import * as RoutePath from "../../../../RouteConfig";
@@ -36,29 +39,47 @@ const MenuEditSettingsPage = () => {
 	}, [id]);
 
 	const submitHandler = async (values: IMenuFormInputs) => {
-		const { name, nameEnglish, parentProject, linkPath, isVisible, orderNo } =
-			values;
+		const {
+			name,
+			nameEnglish,
+			parentProject,
+			linkPath,
+			isVisible,
+			orderNo,
+			linkType,
+			file,
+			isExternalLink,
+		} = values;
+
+		const parentId =
+			parentProject?.value! !== "" ? +parentProject?.value! : undefined;
+
+		const orderNum = orderNo !== "" ? +orderNo : undefined;
+
+		const linkTypeId = linkType?.value;
 
 		const params: APIUpdateMenuItem = {
 			id: id!,
 			name: name,
 			nameEnglish: nameEnglish,
-			parentId:
-				parentProject?.value! !== "" ? +parentProject?.value! : undefined,
+			parentId: parentId,
 			linkPath: linkPath,
 			isVisible: isVisible,
-			orderNo: orderNo !== "" ? +orderNo : undefined,
+			orderNo: orderNum,
+			linkTypeId: linkTypeId,
+			file: file,
+			isExternalPath: isExternalLink!,
 		};
 
 		const { data, error } = await updateMenuItem(params);
 		if (data) {
 			toast.success(
-				t("message.menuItemUpdate", { framework: "React" }).toString()
+				t("message.menuItemUpdated", { framework: "React" }).toString()
 			);
 		}
 
 		if (error) {
-			console.log(error);
+			toast.error(error);
 		}
 	};
 

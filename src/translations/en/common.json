@@ -28,9 +28,17 @@
 		"parentEnglish": "Parent [English]",
 		"pathLink": "Path Url",
 		"isVisible": "Is Visible?",
+		"linkType": "Type",
 		"count": "Total Items",
 		"list": "Menu List",
-		"orderNo": "Order No"
+		"orderNo": "Order No",
+		"isExternal": "Is the link external?"
+	},
+	"linkType": {
+		"id": "Id",
+		"name": "Link Type",
+		"nameEnglish": "Link Type [English]",
+		"isFile": "Is file?"
 	},
 	"page": {
 		"userHome": "User Account",
@@ -240,7 +248,8 @@
 		"newsUpdated": "News has been updated",
 		"savingConfirmationTitle": "Saving Approvement",
 		"savingConfirmation": "Above details will be saved. Are you sure to save?",
-		"menuItemUpdate": "Menu detail has been updated"
+		"menuItemAdded": "Menu detail has been added",
+		"menuItemUpdated": "Menu detail has been updated"
 	},
 	"dropdown": {
 		"select": "Select..."

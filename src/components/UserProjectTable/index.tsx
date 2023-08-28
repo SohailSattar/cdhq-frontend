@@ -130,8 +130,9 @@ const UserProjectTable: FC<Props> = ({
 		// 		);
 		// 	}
 		// };
-
-		fetchProjects(id);
+		if (id) {
+			fetchProjects(id);
+		}
 	}, [currentPage, fetchProjects, id, keyword, language, pageSize]);
 
 	const editClickHandler = (id: string) => {

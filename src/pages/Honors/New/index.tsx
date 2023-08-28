@@ -4,9 +4,7 @@ import { HonorForm, IHonorFormInputs } from "../../../components";
 const HonorNewPage = () => {
 	const [t] = useTranslation("common");
 
-	const submitHandler = (values: IHonorFormInputs) => {
-		console.log(values);
-	};
+	const submitHandler = (values: IHonorFormInputs) => {};
 
 	return (
 		<div>

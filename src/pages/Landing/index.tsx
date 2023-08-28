@@ -68,7 +68,7 @@ const LandingPage = () => {
 					.map((x) => {
 						return {
 							image: x.imageName,
-							title: x.name,
+							title: language !== "ar" ? x.name : x.nameEnglish,
 						};
 					});
 
@@ -76,7 +76,7 @@ const LandingPage = () => {
 				const em: ICard[] = data?.map((x) => {
 					return {
 						image: x.imageName,
-						title: x.name,
+						title: language !== "ar" ? x.name : x.nameEnglish,
 					};
 				});
 
@@ -86,7 +86,7 @@ const LandingPage = () => {
 		};
 
 		fetch();
-	}, [setEmpOfMonthCardsList]);
+	}, [language, setEmpOfMonthCardsList]);
 
 	const fetchNewsDetail = useMemo(
 		() => async (id: Id) => {

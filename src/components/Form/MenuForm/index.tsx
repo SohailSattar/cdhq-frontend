@@ -6,11 +6,13 @@ import { IMenuFormInputs } from "../types";
 import { APIMenuItem, APIMenuItemDetail } from "../../../api/menu/types";
 
 import styles from "./styles.module.scss";
-import { FC, useEffect, useState } from "react";
+import { ChangeEvent, FC, useEffect, useState } from "react";
 import { Button, Checkbox, Dropdown, ShadowedContainer, TextBox } from "../..";
 import { ErrorMessage } from "@hookform/error-message";
 import { DropdownOption } from "../../Dropdown";
 import { getAllMenuList } from "../../../api/menu/get/getAllMenuList";
+import { getLinkTypes } from "../../../api/linkTypes/get/getLinkTypes";
+import { getFullPath } from "../../../utils";
 
 interface Props {
 	data?: APIMenuItemDetail;
@@ -23,13 +25,17 @@ const MenuForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 	const language = useStore((state) => state.language);
 
 	const [menuOptions, setMenuOptions] = useState<DropdownOption[]>([]);
+	const [typesOptions, setTypesOptions] = useState<DropdownOption[]>([]);
+
+	const [isFile, setIsFile] = useState<boolean>(false);
+
+	const [isLinkPathDisabled, setIsLinkPathDisabled] = useState<boolean>(false);
 
 	const {
 		register,
 		formState: { errors },
 		handleSubmit,
 		setValue,
-		getValues,
 		control,
 	} = useForm<IMenuFormInputs>({ criteriaMode: "all" });
 
@@ -52,12 +58,34 @@ const MenuForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 	}, []);
 
 	useEffect(() => {
-		// Employee Name
+		const fetch = async () => {
+			const { data } = await getLinkTypes();
+			if (data) {
+				setTypesOptions(
+					data?.map((d) => {
+						return {
+							label: language !== "ar" ? d.name : d.nameEnglish,
+							value: d.id,
+							meta: {
+								isFile: d.isFile,
+								linkType: d.nameEnglish,
+							},
+						};
+					})
+				);
+			}
+		};
+
+		fetch();
+	}, [language]);
+
+	useEffect(() => {
+		// Menu Name
 		register("name", {
 			required: "Name is required.",
 		});
 
-		// Employee Name [English]
+		// Menu Name [English]
 		register("nameEnglish", {
 			required: "Name [English] is required.",
 			// pattern: {
@@ -66,8 +94,26 @@ const MenuForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 			// }
 		});
 
+		// Menu Name [English]
+		register("linkType", {
+			required: "Link Type is required.",
+			// pattern: {
+			// 	value: /[\u0621-\u064As]+$/,
+			// 	message: 'Name should only be in alphabets.',
+			// }
+		});
+
 		if (data) {
-			const { name, nameEnglish, parent, linkPath, isVisible, orderNo } = data;
+			const {
+				name,
+				nameEnglish,
+				parent,
+				linkPath,
+				isVisible,
+				orderNo,
+				linkType,
+				isExternalPath,
+			} = data;
 
 			setValue("name", name);
 			setValue("nameEnglish", nameEnglish);
@@ -78,8 +124,55 @@ const MenuForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 			setValue("linkPath", linkPath ?? "");
 			setValue("isVisible", isVisible);
 			setValue("orderNo", orderNo ?? "");
+
+			const selectedType = typesOptions.find((x) => x.value === linkType?.id);
+
+			setValue("linkType", selectedType!);
+
+			if (selectedType) {
+				const { isFile } = selectedType.meta;
+
+				setIsFile(isFile);
+
+				if (isFile) {
+					setValue("linkPath", linkPath);
+					setIsLinkPathDisabled(true);
+				} else {
+					setValue("file", undefined);
+					setValue("linkPath", linkPath);
+					setIsLinkPathDisabled(false);
+				}
+			}
+
+			setValue("isExternalLink", isExternalPath);
 		}
-	}, [data, menuOptions, register, setValue]);
+	}, [data, menuOptions, register, setValue, typesOptions]);
+
+	const linkTypeChangeHandler = (option: DropdownOption) => {
+		setIsLinkPathDisabled(false);
+		if (option !== null) {
+			const { isFile } = option.meta;
+
+			setIsFile(isFile);
+
+			if (isFile) {
+				setValue("linkPath", "");
+			} else {
+				setValue("file", undefined);
+			}
+		}
+		setValue("linkType", option);
+	};
+
+	const fileChangeHandler = (evnt: ChangeEvent<HTMLInputElement>) => {
+		if (evnt.target.files) {
+			const file = evnt.target.files[0];
+
+			const fileName = file.name;
+			setValue("file", file);
+			setValue("linkPath", fileName);
+		}
+	};
 
 	const submitHandler = (values: IMenuFormInputs) => {
 		onSubmit(values);
@@ -137,6 +230,23 @@ const MenuForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 							defaultValue={{ label: "", value: "" }}
 						/>
 					</div>
+					<div className={styles.dropDownContainer}>
+						<Controller
+							render={({ field: { value } }) => (
+								<Dropdown
+									label={t("menu.linkType", { framework: "React" })}
+									options={typesOptions}
+									onSelect={linkTypeChangeHandler}
+									value={value}
+								/>
+							)}
+							name="linkType"
+							control={control}
+							defaultValue={{ label: "", value: "" }}
+						/>
+					</div>
+				</div>
+				<div className={styles.section}>
 					<div className={styles.field}>
 						<Controller
 							render={({ field: { value, onChange } }) => (
@@ -145,12 +255,23 @@ const MenuForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 									label={t("menu.pathLink", { framework: "React" })}
 									value={value}
 									onChange={onChange}
+									disabled={isLinkPathDisabled}
 								/>
 							)}
 							name="linkPath"
 							control={control}
 							defaultValue={""}
 						/>
+					</div>
+					<div className={styles.field}>
+						<div className={styles.browse}>
+							<input
+								type="file"
+								name="thumbnail"
+								onChange={fileChangeHandler}
+								accept="application/pdf, video/mp4"
+							/>
+						</div>
 					</div>
 				</div>
 				<div className={styles.section}>
@@ -179,6 +300,18 @@ const MenuForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 								/>
 							)}
 							name="isVisible"
+							control={control}
+							defaultValue={false}
+						/>
+						<Controller
+							render={({ field: { onChange, value } }) => (
+								<Checkbox
+									label={t("menu.isExternal", { framework: "React" })}
+									checked={value}
+									onChange={onChange}
+								/>
+							)}
+							name="isExternalLink"
 							control={control}
 							defaultValue={false}
 						/>
@@ -217,9 +350,9 @@ const MenuForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 									: null;
 							}}
 						/>
-						{/* <ErrorMessage
+						<ErrorMessage
 							errors={errors}
-							name="department"
+							name="linkType"
 							render={({ messages }) => {
 								return messages
 									? _.entries(messages).map(([type, message]) => (
@@ -231,7 +364,7 @@ const MenuForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 									  ))
 									: null;
 							}}
-						/> */}
+						/>
 					</ShadowedContainer>
 				)}
 				<div className={styles.buttonSection}>

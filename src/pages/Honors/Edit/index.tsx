@@ -31,17 +31,13 @@ const HonorEditPage = () => {
 		}
 	}, [id, fetch]);
 
-	const honorUpdateClickHandler = (values: IHonorFormInputs) => {
-		console.log(values);
-	};
+	const honorUpdateClickHandler = (values: IHonorFormInputs) => {};
 
 	const imageUploadHandler = async (image: File) => {
 		const params: APIUpdateHonorImage = {
 			id: id!,
 			thumbnail: image,
 		};
-
-		console.log(params);
 
 		const { data, error } = await updateHonorImage(params);
 		if (data) {

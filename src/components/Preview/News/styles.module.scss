@@ -40,3 +40,14 @@
 		}
 	}
 }
+
+.btnSection {
+	display: flex;
+	.btnSave {
+		padding-right: 5px;
+	}
+
+	.btnSaveRTL {
+		padding-left: 5px;
+	}
+}

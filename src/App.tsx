@@ -31,6 +31,10 @@ import {
 	LandingPage,
 	MenuEditSettingsPage,
 	SettingsHomePage,
+	MenuHomeSettingsPage,
+	MenuNewSettingsPage,
+	LinkTypesNewSettingsPage,
+	LinkTypesEditSettingsPage,
 } from "./pages";
 
 import * as RoutePath from "./RouteConfig";
@@ -43,6 +47,8 @@ import "./assets/fonts/index.css";
 import { useStore } from "./utils/store";
 import { Project } from "./data/projects";
 
+import { Worker } from "@react-pdf-viewer/core";
+
 import styles from "./styles.module.scss";
 
 function App() {
@@ -50,209 +56,261 @@ function App() {
 
 	return (
 		<div className={styles.app}>
-			{/* <WebSession /> */}
-			<Router basename={RoutePath.BASE_NAME}>
-				<Routes>
-					<Route
-						path={RoutePath.ROOT}
-						element={
-							<MainLayout>
-								<LandingPage />
-							</MainLayout>
-						}
-					/>
-					<Route
-						path={RoutePath.LOGIN}
-						element={
-							<Layout
-								hideLoginButton={true}
-								noChecks={true}>
-								<LoginPage />
-							</Layout>
-						}
-					/>
-					<Route element={<ProtectedRoute />}>
+			<Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
+				{/* <WebSession /> */}
+				<Router basename={RoutePath.BASE_NAME}>
+					<Routes>
 						<Route
-							path={RoutePath.USER}
+							path={RoutePath.ROOT}
 							element={
-								<Layout>
-									<UsersHomePage />
+								<MainLayout>
+									<LandingPage />
+								</MainLayout>
+							}
+						/>
+						<Route
+							path={RoutePath.LOGIN}
+							element={
+								<Layout
+									hideLoginButton={true}
+									noChecks={true}>
+									<LoginPage />
 								</Layout>
 							}
 						/>
-					</Route>
-					<Route element={<ProtectedRoute />}>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={RoutePath.USER}
+								element={
+									<Layout>
+										<UsersHomePage />
+									</Layout>
+								}
+							/>
+						</Route>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={RoutePath.HOME}
+								element={
+									<Layout>
+										<HomePage />
+									</Layout>
+								}
+							/>
+						</Route>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.CHANGE_PASSWORD}`}
+								element={
+									<Layout>
+										<ChangePasswordPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						{/* SETTING */}
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.SETTINGS}`}
+								element={
+									<Layout>
+										<SettingsHomePage />
+									</Layout>
+								}
+							/>
+						</Route>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.SETTINGS_MENU}`}
+								element={
+									<Layout>
+										<MenuHomeSettingsPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.SETTINGS_MENU_EDIT}`}
+								element={
+									<Layout>
+										<MenuEditSettingsPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.SETTINGS_MENU_NEW}`}
+								element={
+									<Layout>
+										<MenuNewSettingsPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						{/* SETTINGS - LINK TYPES */}
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.SETTINGS_LINK_TYPES}`}
+								element={
+									<Layout>
+										<MenuHomeSettingsPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.SETTINGS_LINK_TYPES_EDIT}`}
+								element={
+									<Layout>
+										<LinkTypesEditSettingsPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.SETTINGS_LINK_TYPES_NEW}`}
+								element={
+									<Layout>
+										<LinkTypesNewSettingsPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						{/* User */}
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.USER}/:id`}
+								element={
+									<Layout>
+										<UserDetailPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={RoutePath.USER_NEW}
+								element={
+									<Layout>
+										<UserNewPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.USER_NEW}/:id`}
+								element={
+									<Layout>
+										<UserNewPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={RoutePath.USER_SEARCH}
+								element={
+									<Layout>
+										<UserSearchPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.USER}/:id/edit`}
+								element={
+									<Layout>
+										<UserEditPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.USER}/:id/project/assign`}
+								element={
+									<Layout>
+										<AssignProjectToUserPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.USER}/:userId/project/:userProjectId/edit`}
+								element={
+									<Layout>
+										<EditUserProjectPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						{/* PROJECT */}
 						<Route
-							path={RoutePath.HOME}
+							path={RoutePath.PROJECT}
 							element={
 								<Layout>
-									<HomePage />
+									<ProjectManagementHomePage />
 								</Layout>
 							}
 						/>
-					</Route>
-					<Route element={<ProtectedRoute />}>
-						<Route
-							path={`${RoutePath.CHANGE_PASSWORD}`}
-							element={
-								<Layout>
-									<ChangePasswordPage />
-								</Layout>
-							}
-						/>
-					</Route>
-					{/* SETTING */}
-					<Route element={<ProtectedRoute />}>
-						<Route
-							path={`${RoutePath.SETTINGS}`}
-							element={
-								<Layout>
-									<SettingsHomePage />
-								</Layout>
-							}
-						/>
-					</Route>
-					<Route element={<ProtectedRoute />}>
-						<Route
-							path={`${RoutePath.SETTINGS_MENU_EDIT}`}
-							element={
-								<Layout>
-									<MenuEditSettingsPage />
-								</Layout>
-							}
-						/>
-					</Route>
-					{/* User */}
-					<Route element={<ProtectedRoute />}>
-						<Route
-							path={`${RoutePath.USER}/:id`}
-							element={
-								<Layout>
-									<UserDetailPage />
-								</Layout>
-							}
-						/>
-					</Route>
-					<Route element={<ProtectedRoute />}>
-						<Route
-							path={RoutePath.USER_NEW}
-							element={
-								<Layout>
-									<UserNewPage />
-								</Layout>
-							}
-						/>
-					</Route>
-					<Route element={<ProtectedRoute />}>
-						<Route
-							path={`${RoutePath.USER_NEW}/:id`}
-							element={
-								<Layout>
-									<UserNewPage />
-								</Layout>
-							}
-						/>
-					</Route>
-					<Route element={<ProtectedRoute />}>
-						<Route
-							path={RoutePath.USER_SEARCH}
-							element={
-								<Layout>
-									<UserSearchPage />
-								</Layout>
-							}
-						/>
-					</Route>
-					<Route element={<ProtectedRoute />}>
-						<Route
-							path={`${RoutePath.USER}/:id/edit`}
-							element={
-								<Layout>
-									<UserEditPage />
-								</Layout>
-							}
-						/>
-					</Route>
-					<Route element={<ProtectedRoute />}>
-						<Route
-							path={`${RoutePath.USER}/:id/project/assign`}
-							element={
-								<Layout>
-									<AssignProjectToUserPage />
-								</Layout>
-							}
-						/>
-					</Route>
-					<Route element={<ProtectedRoute />}>
-						<Route
-							path={`${RoutePath.USER}/:userId/project/:userProjectId/edit`}
-							element={
-								<Layout>
-									<EditUserProjectPage />
-								</Layout>
-							}
-						/>
-					</Route>
-					{/* PROJECT */}
-					<Route
-						path={RoutePath.PROJECT}
-						element={
-							<Layout>
-								<ProjectManagementHomePage />
-							</Layout>
-						}
-					/>
-					<Route element={<ProtectedRoute />}>
-						<Route
-							path={RoutePath.PROJECT_NEW}
-							element={
-								<Layout>
-									<ProjectCreatePage />
-								</Layout>
-							}
-						/>
-					</Route>
-					<Route element={<ProtectedRoute />}>
-						<Route
-							path={`${RoutePath.PROJECT}/:id`}
-							element={
-								<Layout>
-									<ProjectDetailPage />
-								</Layout>
-							}
-						/>
-					</Route>
-					<Route element={<ProtectedRoute />}>
-						<Route
-							path={`${RoutePath.PROJECT}/:id/edit`}
-							element={
-								<Layout>
-									<ProjectEditPage />
-								</Layout>
-							}
-						/>
-					</Route>
-					<Route element={<ProtectedRoute />}>
-						<Route
-							path={`${RoutePath.PROJECT}/:id/user/assign`}
-							element={
-								<Layout>
-									<AssignUserToProjectPage />
-								</Layout>
-							}
-						/>
-					</Route>
-					<Route element={<ProtectedRoute />}>
-						<Route
-							path={`${RoutePath.PROJECT}/:id/user/:userProjectId/edit`}
-							element={
-								<Layout>
-									<EditProjectUserPage />
-								</Layout>
-							}
-						/>
-					</Route>
-					{/* <Route element={<ProtectedRoute />}>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={RoutePath.PROJECT_NEW}
+								element={
+									<Layout>
+										<ProjectCreatePage />
+									</Layout>
+								}
+							/>
+						</Route>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.PROJECT}/:id`}
+								element={
+									<Layout>
+										<ProjectDetailPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.PROJECT}/:id/edit`}
+								element={
+									<Layout>
+										<ProjectEditPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.PROJECT}/:id/user/assign`}
+								element={
+									<Layout>
+										<AssignUserToProjectPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.PROJECT}/:id/user/:userProjectId/edit`}
+								element={
+									<Layout>
+										<EditProjectUserPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						{/* <Route element={<ProtectedRoute />}>
 						<Route
 							path={`${RoutePath.PROJECT}/hierarchy`}
 							element={
@@ -262,8 +320,8 @@ function App() {
 							}
 						/>
 					</Route> */}
-					{/* Department */}
-					{/* <Route element={<ProtectedRoute />}>
+						{/* Department */}
+						{/* <Route element={<ProtectedRoute />}>
 						<Route
 							path={`${RoutePath.DEPARTMENT}`}
 							element={
@@ -314,107 +372,107 @@ function App() {
 							}
 						/>
 					</Route> */}
-					{/* Honors */}
-					<Route element={<ProtectedRoute />}>
+						{/* Honors */}
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.HONORS}`}
+								element={
+									<Layout projectId={Project.Honors}>
+										<HonorsHomePage />
+									</Layout>
+								}
+							/>
+						</Route>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.HONORS_NEW}`}
+								element={
+									<Layout projectId={Project.Honors}>
+										<HonorNewPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.HONORS_EDIT}`}
+								element={
+									<Layout projectId={Project.Honors}>
+										<HonorEditPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						{/* News */}
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.NEWS}`}
+								element={
+									<Layout
+										projectId={Project.News}
+										privilegeType={"Read"}>
+										<NewsHomePage />
+									</Layout>
+								}
+							/>
+						</Route>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.NEWS}/new`}
+								element={
+									<Layout
+										projectId={Project.News}
+										privilegeType="Write">
+										<NewsCreatePage />
+									</Layout>
+								}
+							/>
+						</Route>
 						<Route
-							path={`${RoutePath.HONORS}`}
+							path={RoutePath.NEWS_DETAIL}
 							element={
-								<Layout projectId={Project.Honors}>
-									<HonorsHomePage />
+								<Layout>
+									<NewsDetailPage />
 								</Layout>
 							}
 						/>
-					</Route>
-					<Route element={<ProtectedRoute />}>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={RoutePath.NEWS_EDIT}
+								element={
+									<Layout
+										projectId={Project.News}
+										privilegeType="Update">
+										<NewsEditPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						{/* Phone Directory */}
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.PHONE_DIRECTORY}`}
+								element={
+									<Layout
+										projectId={Project.PhoneDirectory}
+										privilegeType="Read">
+										<PhoneDirectory />
+									</Layout>
+								}
+							/>
+						</Route>
+						{/*  Not Found Page */}
 						<Route
-							path={`${RoutePath.HONORS_NEW}`}
+							path="*"
 							element={
-								<Layout projectId={Project.Honors}>
-									<HonorNewPage />
+								<Layout>
+									<PageNotFound />
 								</Layout>
 							}
 						/>
-					</Route>
-					<Route element={<ProtectedRoute />}>
-						<Route
-							path={`${RoutePath.HONORS_EDIT}`}
-							element={
-								<Layout projectId={Project.Honors}>
-									<HonorEditPage />
-								</Layout>
-							}
-						/>
-					</Route>
-					{/* News */}
-					<Route element={<ProtectedRoute />}>
-						<Route
-							path={`${RoutePath.NEWS}`}
-							element={
-								<Layout
-									projectId={Project.News}
-									privilegeType={"Read"}>
-									<NewsHomePage />
-								</Layout>
-							}
-						/>
-					</Route>
-					<Route element={<ProtectedRoute />}>
-						<Route
-							path={`${RoutePath.NEWS}/new`}
-							element={
-								<Layout
-									projectId={Project.News}
-									privilegeType="Write">
-									<NewsCreatePage />
-								</Layout>
-							}
-						/>
-					</Route>
-					<Route
-						path={RoutePath.NEWS_DETAIL}
-						element={
-							<Layout>
-								<NewsDetailPage />
-							</Layout>
-						}
-					/>
-					<Route element={<ProtectedRoute />}>
-						<Route
-							path={RoutePath.NEWS_EDIT}
-							element={
-								<Layout
-									projectId={Project.News}
-									privilegeType="Update">
-									<NewsEditPage />
-								</Layout>
-							}
-						/>
-					</Route>
-					{/* Phone Directory */}
-					<Route element={<ProtectedRoute />}>
-						<Route
-							path={`${RoutePath.PHONE_DIRECTORY}`}
-							element={
-								<Layout
-									projectId={Project.PhoneDirectory}
-									privilegeType="Read">
-									<PhoneDirectory />
-								</Layout>
-							}
-						/>
-					</Route>
-					{/*  Not Found Page */}
-					<Route
-						path="*"
-						element={
-							<Layout>
-								<PageNotFound />
-							</Layout>
-						}
-					/>
-				</Routes>
-			</Router>
-
+					</Routes>
+				</Router>
+			</Worker>
 			<ToastContainer
 				rtl={language !== "ar" ? true : false}
 				position="top-center"

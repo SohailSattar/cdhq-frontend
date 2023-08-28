@@ -178,7 +178,9 @@ const PaginatedTable: FC<Props> = ({
 	}, [hideWorkflowStatusDropdown, language, setStatusOptions]);
 
 	const pageViewSelectionChangeHandler = (option: DropdownOption) => {
-		onPageViewSelectionChange(option);
+		if (option) {
+			onPageViewSelectionChange(option);
+		}
 	};
 
 	const pageChangeHandler = (page: number) => {

@@ -1,4 +1,5 @@
 import { APIActiveStatus } from "../../api/activeStatus/types";
+import { APIType } from "../../api/linkTypes/types";
 import { APIMenuItem } from "../../api/menu/types";
 import { APIProjectGroup } from "../../api/projects/types";
 import { APIRank } from "../../api/ranks/types";
@@ -49,6 +50,13 @@ export interface ProjectColumns {
 	activeStatus: string;
 }
 
+export interface LinkTypeColumns {
+	id: number;
+	name: string;
+	nameEnglish: string;
+	isFile: boolean;
+}
+
 export interface MenuItemColumns {
 	id: number;
 	name: string;
@@ -57,4 +65,6 @@ export interface MenuItemColumns {
 	linkPath: string;
 	isVisible: boolean;
 	orderNo: number;
+	linkType?: APIType;
+	isExternalPath: boolean;
 }

@@ -74,9 +74,10 @@ const UserDetailPage = () => {
 				});
 			}
 		};
-
-		fetch();
-	}, []);
+		if (id) {
+			fetch();
+		}
+	}, [id]);
 
 	useEffect(() => {
 		setIsLoading(true);

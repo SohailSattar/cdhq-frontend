@@ -48,8 +48,6 @@ const ProjectDetailPage = () => {
 		const fetchData = async () => {
 			const { data } = await getProjectDetail(id!);
 
-			console.log(data);
-
 			if (!data) {
 				navigate(RoutePath.PROJECT);
 			}

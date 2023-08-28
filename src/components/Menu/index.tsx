@@ -1,7 +1,5 @@
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { makeStyles } from "@material-ui/core";
-
-import styles from "./styles.module.scss";
 
 import Container from "react-bootstrap/Container";
 
@@ -22,6 +20,11 @@ import { APIMenuListItem } from "../../api/menu/types";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { useStore } from "../../utils/store";
 import localStorageService from "../../network/localStorageService";
+import { checkLoginStatus } from "../../api/login/get/checkLoginStatus";
+
+import HouseLogo from "../../assets/icons/white-home-icon.png";
+
+import styles from "./styles.module.scss";
 
 const useStyles = makeStyles(() => ({
 	header: {
@@ -53,7 +56,7 @@ const Menu: FC<Props> = ({ title }) => {
 	const [t, i18n] = useTranslation("common");
 	const navigate = useNavigate();
 
-	const loggedUser = useStore((state) => state.language);
+	const loggedUser = useStore((state) => state.loggedInUser);
 
 	const [isLogged, setIsLogged] = useState<boolean>(false);
 
@@ -69,17 +72,21 @@ const Menu: FC<Props> = ({ title }) => {
 		[]
 	);
 
-	useEffect(() => {
+	const checkLogin = useCallback(async () => {
+		const { data: status } = await checkLoginStatus();
+
 		const token = localStorageService.getJwtToken();
-		console.log(loggedUser);
-		if (token) {
+
+		if (token && status?.isLoggedIn === true) {
 			setIsLogged(true);
 		} else {
 			setIsLogged(false);
 		}
-
-		console.log(token);
 	}, []);
+
+	useEffect(() => {
+		checkLogin();
+	}, [checkLogin]);
 
 	useEffect(() => {
 		fetchMenuItems();
@@ -103,15 +110,15 @@ const Menu: FC<Props> = ({ title }) => {
 				</Helmet>
 			</HelmetProvider>
 			<div
-				style={{
-					backgroundImage:
-						"url('https://img.freepik.com/free-vector/stylish-line-pattern-background_361591-1174.jpg?w=1060&t=st=1678781765~exp=1678782365~hmac=19b909311ac8659a13999ac8a681f622df04f5915a8162d285207b3e70622742')",
-				}}
+				// style={{
+				// 	backgroundImage:
+				// 		"url('https://img.freepik.com/free-vector/stylish-line-pattern-background_361591-1174.jpg?w=1060&t=st=1678781765~exp=1678782365~hmac=19b909311ac8659a13999ac8a681f622df04f5915a8162d285207b3e70622742')",
+				// }}
 				className={styles.nav}>
-				<img
-					src="/portal/static/media/moi-logo.9513a445fa7fe6cd5192bab48cd22250.svg"
+				{/* <img
+					src="/portal/static/media/moi-logo.svg"
 					alt="text"
-				/>
+				/> */}
 			</div>
 			<div className={styles.Menu}>
 				<Navbar expand="lg">
@@ -127,26 +134,30 @@ const Menu: FC<Props> = ({ title }) => {
 										alt="home"
 										className={styles.NavDropdownHome}
 										style={{ width: "30px" }}
-										src="https://icon-library.com/images/white-home-icon-png/white-home-icon-png-21.jpg"
+										src={HouseLogo}
 									/>
 								</Nav.Link>
 								<NavMenuList data={menuList} />
+								<ChangeLanguage className={styles.btnLanguage} />
+								<div className={styles.btnContainer}>
+									{isLogged ? (
+										<Logout
+											label={t("account.logout", { framework: "React" })}
+											onClick={logoutClickHandler}
+											className={styles.btnLogout}
+										/>
+									) : (
+										<Button
+											variant="outline-dark"
+											onClick={loginClickHandler}
+											className={styles.loginButton}>
+											{t("account.login", { framework: "React" })}
+										</Button>
+									)}
+								</div>
 							</Nav>
 						</Navbar.Collapse>
-						<ChangeLanguage />
-						{isLogged ? (
-							<Logout
-								label={t("account.logout", { framework: "React" })}
-								onClick={logoutClickHandler}
-							/>
-						) : (
-							<Button
-								variant="outline-dark"
-								onClick={loginClickHandler}
-								className={styles.loginButton}>
-								{t("account.login", { framework: "React" })}
-							</Button>
-						)}
+
 						{/* <RedirectButton
 							label={t("account.login", { framework: "React" })}
 							redirectTo={RoutePath.LOGIN}

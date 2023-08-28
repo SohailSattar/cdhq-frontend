@@ -143,7 +143,7 @@ const NewsForm: FC<Props> = ({
 			setValue("fullNews", fullNews);
 			setValue("imageName", imageName);
 		}
-	}, [data, language, register, newsTypeOptions, setValue]);
+	}, [data, language, register, newsTypeOptions, setValue, departmentOptions]);
 
 	const imageChangeHandler = (evnt: ChangeEvent<HTMLInputElement>) => {
 		if (evnt.target.files) {

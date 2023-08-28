@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Button, ShadowedContainer } from "../..";
 
 import styles from "./styles.module.scss";
+import { useStore } from "../../../utils/store";
 
 interface Props {
 	data: INewsFormInputs;
@@ -12,6 +13,7 @@ interface Props {
 
 const NewsPreview: FC<Props> = ({ data, onClick }) => {
 	const [t] = useTranslation("common");
+	const language = useStore((state) => state.language);
 
 	const { department, fullNews, imageName, newsType, shortSummary, title } =
 		data;
@@ -25,7 +27,7 @@ const NewsPreview: FC<Props> = ({ data, onClick }) => {
 							<div className={styles.imageContainer}>
 								<img
 									src={imageName}
-									alt="image"
+									alt="thumb"
 									className={styles.image}
 								/>
 							</div>
@@ -73,10 +75,13 @@ const NewsPreview: FC<Props> = ({ data, onClick }) => {
 					</div>
 				</div>
 			</ShadowedContainer>
-			<div>
-				<Button onClick={onClick}>
-					{t("button.save", { framework: "React" })}
-				</Button>
+			<div className={styles.btnSection}>
+				<span
+					className={language !== "ar" ? styles.btnSaveRTL : styles.btnSave}>
+					<Button onClick={onClick}>
+						{t("button.save", { framework: "React" })}
+					</Button>
+				</span>
 				<Button onClick={onClick}>
 					{t("button.cancel", { framework: "React" })}
 				</Button>

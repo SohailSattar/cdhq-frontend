@@ -272,6 +272,7 @@ const UserAccountPage = () => {
 
 	const userSearchClickHandler = (keyword: string) => {
 		setKeyword(keyword);
+		setCurrentPage(1);
 	};
 
 	const tableSortHandler = (columnId: string, isSortedDesc: boolean) => {
@@ -294,6 +295,7 @@ const UserAccountPage = () => {
 
 	const departmentNodeCheckHandler = (ids: any) => {
 		setDepartmentIds(ids);
+		setCurrentPage(1);
 	};
 
 	// const fetchUsersByDepartment = useMemo(
@@ -321,6 +323,7 @@ const UserAccountPage = () => {
 		const size = +option.value;
 
 		setPageSize(size);
+		setCurrentPage(1);
 	};
 
 	const roleSelectHandler = useMemo(
