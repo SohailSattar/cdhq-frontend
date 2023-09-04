@@ -77,7 +77,11 @@ const PageContainer: FC<Props> = ({
 					setDisplay(false);
 					setIsVisible(false);
 				} else {
-					setDisplay(displayContent);
+					if (displayContent) {
+						setDisplay(displayContent);
+					} else {
+						setDisplay(true);
+					}
 					setIsVisible(true);
 					// animateActionSection();
 				}
