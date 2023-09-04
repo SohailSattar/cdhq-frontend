@@ -275,7 +275,7 @@ const UserProjectTable: FC<Props> = ({
 			<Table
 				data={projects!}
 				columns={columns}
-				columnsToHide={displayActionsColumn ? [] : [actions]}
+				columnsToHide={displayActionsColumn ? [] : ["Actions"]}
 				noRecordsText={t("table.noProject", { framework: "React" })}
 			/>
 			<Pagination

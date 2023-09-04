@@ -1,6 +1,6 @@
-import { APIResponse, getConfig } from '../..';
-import { instance } from '../../../network';
-import { APIProjectItem } from '../types';
+import { APIResponse, getConfig } from "../..";
+import { instance } from "../../../network";
+import { APIProjectItem } from "../types";
 
 export async function getAllProjectsList(): Promise<
 	APIResponse<APIProjectItem[]>
@@ -8,7 +8,7 @@ export async function getAllProjectsList(): Promise<
 	try {
 		const config = getConfig();
 
-		const url = '/projects/list/all';
+		const url = "/projects/list/all";
 
 		const response = await instance.get<APIProjectItem[]>(url, config);
 		const data = response.data;

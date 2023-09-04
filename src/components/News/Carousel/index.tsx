@@ -1,7 +1,7 @@
 import { FC, useEffect, useMemo, useRef, useState } from "react";
 // import { useTransition, animated } from "@react-spring/web";
 // import { useListTransition } from "transition-hook";
-import { AnimatePresence, motion, useAnimationControls } from "framer-motion";
+import { motion, useAnimationControls } from "framer-motion";
 
 import { APINews } from "../../../api/news/types";
 

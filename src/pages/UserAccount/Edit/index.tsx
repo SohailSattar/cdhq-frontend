@@ -325,7 +325,7 @@ const UserEditPage = () => {
 			currentStatus={status?.id === 1 ? "ACTIVE" : "DEACTIVE"}
 			onActivate={activateButtonClickHandler}
 			onDectivate={deleteButtonClickHandler}
-			displayContent={privilege?.readPrivilege || false}>
+			displayContent={privilege?.readPrivilege!}>
 			{/* <Status status={status!} /> */}
 			<ShadowedContainer>
 				<div>
