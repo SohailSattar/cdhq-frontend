@@ -261,14 +261,14 @@ const UserAccountPage = () => {
 	);
 
 	useEffect(() => {
-		if (role?.name !== ROLE.USER) {
+		if (role && role?.name !== ROLE.USER) {
 			if (departmentIds.length === 0) {
 				fetch();
 			} else {
 				fetchByDepartment();
 			}
 		}
-	}, [departmentIds.length, fetch, fetchByDepartment, role?.name]);
+	}, [departmentIds.length, fetch, fetchByDepartment, role]);
 
 	const userSearchClickHandler = (keyword: string) => {
 		setKeyword(keyword);

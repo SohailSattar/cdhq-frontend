@@ -137,13 +137,13 @@ const Layout: FC<Props> = ({
 			}
 		}
 
-		if (canView === false) {
+		if (canView === undefined || canView === false) {
 			setContent(<NotAuthorized />);
 		} else {
 			setContent(children);
 		}
 		setIsLoading(false);
-	}, [canView, children, loggedUser, navigate, noChecks]);
+	}, [canView, children, loggedUser, navigate, noChecks, setLoggedUser]); //canView, children, loggedUser, navigate, noChecks
 
 	// const fetchContent = useMemo(
 	// 	() => async () => {
@@ -218,30 +218,87 @@ const Layout: FC<Props> = ({
 	// 	projectId,
 	// ]);
 
-	const fetch = useCallback(async () => {
-		try {
-			const { data } = await checkLoginStatus();
-			if (data?.isLoggedIn) {
-				if (projectId) {
-					await fetchProjectPrivilege(projectId);
-				} else {
-					setCanView(true);
-					setIsLoading(true);
+	useEffect(() => {
+		const fetch = async () => {
+			const token = localStorageService.getJwtToken();
+			if (token) {
+				const { data: myRole } = await getMyRole();
+				const role = myRole?.role.name!;
+				if (role !== loggedUser?.role!) {
+					setLoggedUser({ ...loggedUser, role: role });
 				}
-				await fetchContent();
-			} else {
-				if (data?.isLoggedIn === false) {
-					setContent(children);
-					if (loggedUser.id !== 0) {
-						removeLocalData();
+				if (loggedUser.userName === "") {
+					const { data, error } = await getMyDetail();
+
+					if (error) {
+						if (error.response.status === 401) {
+							navigate(RoutePath.LOGIN);
+						}
 					}
-					navigate(RoutePath.LOGIN);
+					if (data) {
+						setLoggedUser(data);
+					}
+				}
+			} else {
+				if (!noChecks) {
+					navigate(RoutePath.ROOT);
 				}
 			}
-		} catch (error) {
-			// Handle error
-		}
-	}, [children, loggedUser, navigate, projectId]);
+		};
+
+		fetch();
+	}, [loggedUser, navigate, noChecks, setLoggedUser]);
+
+	const fetch = useMemo(
+		() => async () => {
+			try {
+				const { data } = await checkLoginStatus();
+				if (data?.isLoggedIn) {
+					if (projectId) {
+						await fetchProjectPrivilege(projectId);
+					} else {
+						setCanView(true);
+						setIsLoading(true);
+					}
+					// await fetchContent();
+
+					///////////////////////////// fetch Content
+
+					if (canView === undefined) {
+						setContent(<Loading />);
+					}
+
+					if (canView === false) {
+						setContent(<NotAuthorized />);
+					} else {
+						setContent(children);
+					}
+					setIsLoading(false);
+
+					//////////////////////////////
+				} else {
+					if (data?.isLoggedIn === false) {
+						setContent(children);
+						if (loggedUser.id !== 0) {
+							removeLocalData();
+						}
+						navigate(RoutePath.LOGIN);
+					}
+				}
+			} catch (error) {
+				// Handle error
+			}
+		},
+		[
+			projectId,
+			canView,
+			fetchProjectPrivilege,
+			children,
+			loggedUser.id,
+			navigate,
+			removeLocalData,
+		] // children, projectId, canView
+	);
 
 	useEffect(() => {
 		fetch();
@@ -307,6 +364,8 @@ const Layout: FC<Props> = ({
 		);
 	};
 
+	// console.log(content);
+
 	return (
 		<>
 			{!loggedUser ? (
@@ -319,7 +378,13 @@ const Layout: FC<Props> = ({
 					}}>
 					<Header hideLoginButton={hideLoginButton} />
 					<div className={styles.layout}>
-						{isLoading ? <Loading /> : content}
+						{isLoading ? (
+							<Loading />
+						) : content === undefined ? (
+							<Loading />
+						) : (
+							content
+						)}
 					</div>
 					<div>
 						<br />

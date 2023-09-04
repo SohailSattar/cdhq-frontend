@@ -1,18 +1,19 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { motion } from "framer-motion";
 import {
-	AuthorizedContainer,
 	Button,
+	Loading,
 	NotAuthorized,
 	RedirectButton,
 	ShadowedContainer,
 } from "..";
 import { useStore } from "../../utils/store";
 import { StatusType } from "../types";
-
-import styles from "./styles.module.scss";
 import { ROLE } from "../../utils";
 import { getMyRole } from "../../api/users/get/getMyRole";
+
+import styles from "./styles.module.scss";
 
 interface Props {
 	lockFor?: ROLE[];
@@ -44,7 +45,7 @@ interface Props {
 }
 const PageContainer: FC<Props> = ({
 	lockFor,
-	displayContent = true,
+	displayContent,
 	title,
 	showBackButton = false,
 	btnBackUrlLink,
@@ -64,16 +65,21 @@ const PageContainer: FC<Props> = ({
 	const [t] = useTranslation("common");
 	const language = useStore((state) => state.language);
 
-	const [display, setDisplay] = useState<boolean>(true);
+	const [display, setDisplay] = useState<boolean>();
+
+	const [isVisible, setIsVisible] = useState(false);
 
 	useEffect(() => {
 		const process = async () => {
 			const { data } = await getMyRole();
 			if (data) {
 				if (lockFor?.find((x) => x === data.role.name)) {
-					setDisplay(displayContent || false);
+					setDisplay(false);
+					setIsVisible(false);
 				} else {
-					setDisplay(displayContent || true);
+					setDisplay(displayContent);
+					setIsVisible(true);
+					// animateActionSection();
 				}
 			}
 		};
@@ -81,9 +87,30 @@ const PageContainer: FC<Props> = ({
 		process();
 	}, [displayContent, lockFor]);
 
+	// useEffect(() => {
+	// 	animate(scope.current, { opacity: 1 });
+	// }, [animate, scope]);
+
+	// useEffect(() => {
+	// 	controls.start({
+	// 		x: 0,
+	// 		opacity: 1,
+	// 		height: "auto",
+	// 		transition: {
+	// 			duration: 3,
+	// 			type: "spring",
+	// 			stiffness: 1000,
+	// 			// damping: "10",
+	// 			ease: [0, 0.71, 0.2, 1.01],
+	// 		},
+	// 	});
+	// }, [controls]);
+
 	return (
 		<>
-			{display === false ? (
+			{display === undefined ? (
+				<Loading />
+			) : display === false ? (
 				<NotAuthorized />
 			) : (
 				<div className={styles.container}>
@@ -93,9 +120,33 @@ const PageContainer: FC<Props> = ({
 							<span className={styles.title}>{title}</span>
 						</div>
 					)}
-					<div className={styles.actionContainer}>
+					{/* <button onClick={handleFadeIn}>Fade In</button>
+					<motion.div
+						initial={{ opacity: 0 }}
+						animate={{ opacity: isVisible ? 1 : 0 }}
+						exit={{ opacity: 0 }}
+						transition={{ duration: 0.5 }}
+						style={{
+							width: "200px",
+							height: "200px",
+							background: "blue",
+							margin: "20px",
+						}}>
+						{isVisible ? "Visible" : "Hidden"}
+					</motion.div> */}
+					<motion.div
+						className={styles.actionContainer}
+						initial={{ opacity: 0, visibility: "hidden" }}
+						animate={{ opacity: isVisible ? 1 : 0, visibility: "visible" }}
+						exit={{ opacity: 0 }}
+						transition={{ duration: 1 }}>
 						{showBackButton && (
-							<div className={styles.action}>
+							<motion.div
+								className={styles.action}
+								initial={{ opacity: 0 }}
+								animate={{ opacity: isVisible ? 1 : 0 }}
+								exit={{ opacity: 0 }}
+								transition={{ duration: 0.2 }}>
 								<ShadowedContainer className={styles.btnSection}>
 									<div
 										className={language !== "ar" ? styles.btn : styles.btnLTR}>
@@ -109,10 +160,15 @@ const PageContainer: FC<Props> = ({
 										/>
 									</div>
 								</ShadowedContainer>
-							</div>
+							</motion.div>
 						)}
 						{(showEditButton || showAddButton || showChangeStatusButton) && (
-							<div className={styles.action}>
+							<motion.div
+								className={styles.action}
+								initial={{ opacity: 0 }}
+								animate={{ opacity: isVisible ? 1 : 0 }}
+								exit={{ opacity: 0 }}
+								transition={{ duration: 0.2 }}>
 								<ShadowedContainer className={styles.btnSection}>
 									{showEditButton && (
 										<div
@@ -161,9 +217,9 @@ const PageContainer: FC<Props> = ({
 										</div>
 									)}
 								</ShadowedContainer>
-							</div>
+							</motion.div>
 						)}
-					</div>
+					</motion.div>
 					{/* {showBackButton && (
 						<ShadowedContainer className={styles.btnSection}>
 							<div className={language !== "ar" ? styles.btn : styles.btnLTR}>
@@ -298,7 +354,14 @@ const PageContainer: FC<Props> = ({
 							</td>
 						</tr>
 					</table> */}
-					<div className={className}>{children}</div>
+					<motion.div
+						className={className}
+						initial={{ opacity: 0 }}
+						animate={{ opacity: isVisible ? 1 : 0 }}
+						exit={{ opacity: 0 }}
+						transition={{ duration: 0.5, delay: 0.1 }}>
+						{children}
+					</motion.div>
 				</div>
 			)}
 		</>

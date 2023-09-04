@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { motion, useAnimationControls } from "framer-motion";
 import {
 	Hr,
 	Loading,
@@ -19,6 +20,7 @@ import { ROLE } from "../../utils";
 
 const HomePage = () => {
 	const language = useStore((state) => state.language);
+	const [isVisible, setIsVisible] = useState(false);
 
 	const passwordValidity = useStore((state) => state.passwordValidity);
 
@@ -35,6 +37,7 @@ const HomePage = () => {
 			// 	loggedInUser.id!
 			// );
 
+			setIsVisible(true);
 			//Getting all projects
 			const { data } = await getAllProjectsList();
 
@@ -100,7 +103,12 @@ const HomePage = () => {
 	}, [loggedInUser]);
 
 	return (
-		<div className={styles.home}>
+		<motion.div
+			className={styles.home}
+			initial={{ opacity: 0.1, visibility: "hidden" }}
+			animate={{ opacity: isVisible ? 1 : 0, visibility: "visible" }}
+			exit={{ opacity: 0 }}
+			transition={{ duration: 1 }}>
 			<Welcome
 				name={language !== "ar" ? loggedInUser.name : loggedInUser.nameEnglish}
 				role={loggedInUser.role}
@@ -114,7 +122,7 @@ const HomePage = () => {
 				)}
 			<Hr />
 			{isLoading ? <Loading /> : <ProjectBoxList data={projects} />}
-		</div>
+		</motion.div>
 	);
 };
 

@@ -48,7 +48,7 @@ const UserDetailPage = () => {
 
 	const [status, setStatus] = useState<APIActiveStatus>();
 
-	const [canView, setCanView] = useState<boolean>(false);
+	const [canView, setCanView] = useState<boolean>();
 	const [privileges, setPrivileges] = useState<APIPrivileges>();
 
 	useEffect(() => {
@@ -94,8 +94,9 @@ const UserDetailPage = () => {
 			// 	navigate(RoutePath.USER);
 			// }
 		};
-
-		fetchData();
+		if (id) {
+			fetchData();
+		}
 
 		setIsLoading(false);
 	}, [id, loggedUserId, navigate, role]);
@@ -156,27 +157,22 @@ const UserDetailPage = () => {
 
 	return (
 		<div className={styles.userDetail}>
-			{isLoading ? (
-				<Loading
-					text={t("global.loading", { framework: "React" }).toString()}
-				/>
-			) : (
-				<PageContainer
-					title={t("page.userDetail", { framework: "React" })}
-					displayContent={canView}
-					showBackButton
-					btnBackUrlLink={RoutePath.USER}
-					showEditButton={privileges?.updatePrivilege}
-					btnEditUrlLink={`${RoutePath.USER_EDIT.replace(RoutePath.ID, id!)}`}
-					// showChangeStatusButton={
-					// 	role === ROLE.SUPERADMIN && loggedUserId !== user?.id
-					// }
-					// currentStatus={status?.id === 1 ? "ACTIVE" : "DEACTIVE"}
-					// onActivate={activateButtonClickHandler}
-					// 	onDectivate={deleteButtonClickHandler}
-				>
-					<div>
-						{/* {(role === ROLE.ADMIN || role === ROLE.SUPERADMIN) && (
+			<PageContainer
+				title={t("page.userDetail", { framework: "React" })}
+				displayContent={canView}
+				showBackButton
+				btnBackUrlLink={RoutePath.USER}
+				showEditButton={privileges?.updatePrivilege}
+				btnEditUrlLink={`${RoutePath.USER_EDIT.replace(RoutePath.ID, id!)}`}
+				// showChangeStatusButton={
+				// 	role === ROLE.SUPERADMIN && loggedUserId !== user?.id
+				// }
+				// currentStatus={status?.id === 1 ? "ACTIVE" : "DEACTIVE"}
+				// onActivate={activateButtonClickHandler}
+				// 	onDectivate={deleteButtonClickHandler}
+			>
+				<div>
+					{/* {(role === ROLE.ADMIN || role === ROLE.SUPERADMIN) && (
 							<ShadowedContainer className={styles.btnSection}>
 								{
 									<div
@@ -190,33 +186,32 @@ const UserDetailPage = () => {
 							</ShadowedContainer>
 						)} */}
 
-						{/* <Status status={status!} /> */}
-						<ShadowedContainer>
-							<Details
-								user={user!}
-								status={status!}
-							/>
-						</ShadowedContainer>
+					{/* <Status status={status!} /> */}
+					<ShadowedContainer>
+						<Details
+							user={user!}
+							status={status!}
+						/>
+					</ShadowedContainer>
 
-						<UserProjectTable
-							id={id!}
-							displayActionsColumn={false}
-						/>
-						<hr />
-						<MetaDataDetails
-							createdBy={user?.createdBy!}
-							createdOn={user?.createdOn!}
-							updatedBy={user?.updatedBy}
-							updatedOn={user?.updatedOn}
-						/>
-						<DeleteConfirmation
-							isOpen={showModal}
-							onYesClick={deleteConfirmationClickHandler}
-							onCancelClick={deleteCancelHandler}
-						/>
-					</div>
-				</PageContainer>
-			)}
+					<UserProjectTable
+						id={id!}
+						displayActionsColumn={false}
+					/>
+					<hr />
+					<MetaDataDetails
+						createdBy={user?.createdBy!}
+						createdOn={user?.createdOn!}
+						updatedBy={user?.updatedBy}
+						updatedOn={user?.updatedOn}
+					/>
+					<DeleteConfirmation
+						isOpen={showModal}
+						onYesClick={deleteConfirmationClickHandler}
+						onCancelClick={deleteCancelHandler}
+					/>
+				</div>
+			</PageContainer>
 		</div>
 	);
 };
