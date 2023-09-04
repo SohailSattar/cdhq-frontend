@@ -147,7 +147,7 @@
 	"userProject": {
 		"workflowStart": "بداية التمرير",
 		"workflowEnd": "نهاية التمرير",
-		"canGrant": " منح الصلاحية",
+		"canGrant": "مشرف صلاحيات",
 		"assignNewProject": "تعيين برنامج ل _USER_",
 		"assignNewUser": "تعيين مستخدم جديد",
 		"editUser": "تعديل بيانات    _USER_",
