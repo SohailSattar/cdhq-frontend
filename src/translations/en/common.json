@@ -40,6 +40,14 @@
 		"nameEnglish": "Link Type [English]",
 		"isFile": "Is file?"
 	},
+	"creation": {
+		"name": "Creation",
+		"imageType": {
+			"fireDepartment": "Fire Departments",
+			"servicesDepartment": "Service Department",
+			"creation": "Creation"
+		}
+	},
 	"page": {
 		"userHome": "User Account",
 		"userDetail": "User Details",
