@@ -75,9 +75,7 @@ const Menu: FC<Props> = ({ title }) => {
 	const checkLogin = useCallback(async () => {
 		const { data: status } = await checkLoginStatus();
 
-		const token = localStorageService.getJwtToken();
-
-		if (token && status?.isLoggedIn === true) {
+		if (status?.isLoggedIn === true) {
 			setIsLogged(true);
 		} else {
 			setIsLogged(false);
