@@ -18,8 +18,6 @@ export interface Props {
 const Card: FC<Props> = ({ data, showRating = false }) => {
 	const { title, image, rating } = data;
 
-	console.log(rating);
-
 	return (
 		<ReactCard style={{ width: "18rem", textAlign: "center" }}>
 			<ReactCard.Img
