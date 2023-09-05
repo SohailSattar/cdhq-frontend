@@ -126,34 +126,40 @@ const Menu: FC<Props> = ({ title }) => {
 						<Navbar.Toggle aria-controls="basic-navbar-nav" />
 
 						<Navbar.Collapse id="basic-navbar-nav">
-							<Nav>
-								<Nav.Link
-									as={Link}
-									to={isLogged ? RoutePath.HOME : RoutePath.LOGIN}>
-									<img
-										alt="home"
-										className={styles.NavDropdownHome}
-										style={{ width: "30px" }}
-										src={HouseLogo}
-									/>
-								</Nav.Link>
-								<NavMenuList data={menuList} />
-								<ChangeLanguage className={styles.btnLanguage} />
-								<div className={styles.btnContainer}>
-									{isLogged ? (
-										<Logout
-											label={t("account.logout", { framework: "React" })}
-											onClick={logoutClickHandler}
-											className={styles.btnLogout}
+							<Nav className={styles.nav}>
+								<div className={styles.navCat}>
+									<Nav.Link
+										as={Link}
+										to={isLogged ? RoutePath.HOME : RoutePath.LOGIN}>
+										<img
+											alt="home"
+											className={styles.NavDropdownHome}
+											style={{ width: "30px" }}
+											src={HouseLogo}
 										/>
-									) : (
-										<Button
-											variant="outline-dark"
-											onClick={loginClickHandler}
-											className={styles.loginButton}>
-											{t("account.login", { framework: "React" })}
-										</Button>
-									)}
+									</Nav.Link>
+								</div>
+								<div className={styles.navCat}>
+									<NavMenuList data={menuList} />
+								</div>
+								<div className={styles.navCat}>
+									<ChangeLanguage className={styles.btnLanguage} />
+									<div className={styles.btnContainer}>
+										{isLogged ? (
+											<Logout
+												label={t("account.logout", { framework: "React" })}
+												onClick={logoutClickHandler}
+												className={styles.btnLogout}
+											/>
+										) : (
+											<Button
+												variant="outline-dark"
+												onClick={loginClickHandler}
+												className={styles.loginButton}>
+												{t("account.login", { framework: "React" })}
+											</Button>
+										)}
+									</div>
 								</div>
 							</Nav>
 						</Navbar.Collapse>

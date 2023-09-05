@@ -10,13 +10,15 @@
 
 	.sideBar {
 		text-align: center;
+		max-height: unset;
 		// border: 1px solid black;
 		background-color: white;
+
 		border-radius: 2px;
 	}
 
 	.sideBarCard {
-		margin-bottom: 15px;
+		margin-bottom: 25px;
 	}
 
 	.centerContainer {

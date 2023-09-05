@@ -21,14 +21,23 @@ import { getLatest20Honors } from "../../api/honors/get/getLatest20Honors";
 import { getNewsDetail } from "../../api/news/get/getNewsDetail";
 import { useTranslation } from "react-i18next";
 import { useStore } from "../../utils/store";
+import { getCreationsList } from "../../api/creations/get/getCreationsList";
 
 const LandingPage = () => {
 	const [t] = useTranslation("common");
 	const language = useStore((state) => state.language);
 	const [news, setNews] = useState<APINews[]>([]);
 
+	// Honors
 	const [empOfMonthCardsList, setEmpOfMonthCardsList] = useState<ICard[]>([]);
 	const [skilledEmpsCardsList, setSkilledEmpsCardsList] = useState<ICard[]>([]);
+
+	// Creations
+	const [fireDeptCardsList, setFireDeptCardsList] = useState<ICard[]>([]);
+	const [servicesDeptCardsList, setServicesDeptCardsList] = useState<ICard[]>(
+		[]
+	);
+	const [creationsCardsList, setCreationsCardsList] = useState<ICard[]>([]);
 
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [isNewsTableModalOpen, setIsNewsTableModalOpen] =
@@ -88,6 +97,54 @@ const LandingPage = () => {
 		fetch();
 	}, [language, setEmpOfMonthCardsList]);
 
+	useEffect(() => {
+		const fetch = async () => {
+			const { data } = await getCreationsList();
+			if (data!) {
+				// Fire Department
+				const fd: ICard[] = data
+					?.filter((x) => x.imageType.id === 1)
+					.map((x) => {
+						return {
+							image: x.imageName,
+							title: language !== "ar" ? x.name : x.nameEnglish,
+						};
+					});
+
+				setFireDeptCardsList(fd!);
+
+				// Services Department
+				const sd: ICard[] = data
+					?.filter((x) => x.imageType.id === 2)
+					.map((x) => {
+						return {
+							image: x.imageName,
+							title: language !== "ar" ? x.name : x.nameEnglish,
+							rating: x.stars!,
+						};
+					});
+
+				setServicesDeptCardsList(sd!);
+
+				// Creation
+				const cr: ICard[] = data
+					?.filter((x) => x.imageType.id === 3)
+					.map((x) => {
+						return {
+							image: x.imageName,
+							title: language !== "ar" ? x.name : x.nameEnglish,
+						};
+					});
+
+				setCreationsCardsList(cr!);
+			}
+		};
+
+		fetch();
+	}, [language]);
+
+	console.log(servicesDeptCardsList);
+
 	const fetchNewsDetail = useMemo(
 		() => async (id: Id) => {
 			const { data } = await getNewsDetail(id);
@@ -132,13 +189,30 @@ const LandingPage = () => {
 				)}
 			</div>
 			<div className={clsx("row", styles.container)}>
-				<ShadowedContainer className={clsx("col-2", styles.sideBar)}>
+				<div className={clsx("col-2", styles.sideBar)}>
 					<DisplayCard
-						title={t("dashboard.honors", { framework: "React" })}
+						title={t("dashboard.employeeOfMonth", { framework: "React" })}
 						className={styles.sideBarCard}>
-						<CardsCarousel data={skilledEmpsCardsList} />
+						<CardsCarousel data={empOfMonthCardsList} />
 					</DisplayCard>
-				</ShadowedContainer>
+					<DisplayCard
+						title={t("creation.imageType.fireDepartment", {
+							framework: "React",
+						})}
+						className={styles.sideBarCard}>
+						<CardsCarousel data={fireDeptCardsList} />
+					</DisplayCard>
+					<DisplayCard
+						title={t("creation.imageType.servicesDepartment", {
+							framework: "React",
+						})}
+						className={styles.sideBarCard}>
+						<CardsCarousel
+							data={servicesDeptCardsList}
+							showRating
+						/>
+					</DisplayCard>
+				</div>
 
 				<div className={clsx("col-8", styles.centerContainer)}>
 					<NewsCarousel
@@ -149,13 +223,20 @@ const LandingPage = () => {
 					/>
 				</div>
 
-				<ShadowedContainer className={clsx("col-2", styles.sideBar)}>
+				<div className={clsx("col-2", styles.sideBar)}>
 					<DisplayCard
-						title={t("dashboard.employeeOfMonth", { framework: "React" })}
+						title={t("dashboard.honors", { framework: "React" })}
 						className={styles.sideBarCard}>
-						<CardsCarousel data={empOfMonthCardsList} />
+						<CardsCarousel data={skilledEmpsCardsList} />
 					</DisplayCard>
-				</ShadowedContainer>
+					<DisplayCard
+						title={t("creation.imageType.creation", {
+							framework: "React",
+						})}
+						className={styles.sideBarCard}>
+						<CardsCarousel data={creationsCardsList} />
+					</DisplayCard>
+				</div>
 			</div>
 			<br />
 			<Modal

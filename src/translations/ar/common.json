@@ -40,6 +40,13 @@
 		"nameEnglish": "Link Type",
 		"isFile": "Is file?"
 	},
+	"creation": {
+		"imageType": {
+			"fireDepartment": "أفضل مراكز إطفاء",
+			"servicesDepartment": "أفضل مراكز خدمة",
+			"creation": "الابتكارات"
+		}
+	},
 	"page": {
 		"userHome": "حسابات المستخدمين",
 		"userDetail": "تفاصيل حساب المستخدم",
