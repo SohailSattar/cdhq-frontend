@@ -24,12 +24,14 @@ const AssignProjectToUserPage = () => {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const { data } = await getRole(id!);
+			if (id) {
+				const { data } = await getRole(id!);
 
-			if (data?.role === undefined || data?.role?.name! === ROLE.USER) {
-				setIsNormalUser(true);
-			} else {
-				setIsNormalUser(false);
+				if (data?.role === undefined || data?.role?.name! === ROLE.USER) {
+					setIsNormalUser(true);
+				} else {
+					setIsNormalUser(false);
+				}
 			}
 		};
 

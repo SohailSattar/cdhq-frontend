@@ -129,6 +129,10 @@ const MenuForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 
 			setValue("linkType", selectedType!);
 
+			if (selectedType?.value !== 4) {
+				setValue("isExternalLink", false);
+			}
+
 			if (selectedType) {
 				const { isFile } = selectedType.meta;
 
@@ -144,13 +148,19 @@ const MenuForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 				}
 			}
 
-			setValue("isExternalLink", isExternalPath);
+			// setValue("isExternalLink", isExternalPath);
 		}
 	}, [data, menuOptions, register, setValue, typesOptions]);
 
 	const linkTypeChangeHandler = (option: DropdownOption) => {
 		setIsLinkPathDisabled(false);
 		if (option !== null) {
+			if (option.value === 4) {
+				setValue("isExternalLink", true);
+			} else {
+				setValue("isExternalLink", false);
+			}
+
 			const { isFile } = option.meta;
 
 			setIsFile(isFile);
@@ -263,16 +273,18 @@ const MenuForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 							defaultValue={""}
 						/>
 					</div>
-					<div className={styles.field}>
-						<div className={styles.browse}>
-							<input
-								type="file"
-								name="thumbnail"
-								onChange={fileChangeHandler}
-								accept="application/pdf, video/mp4"
-							/>
+					{isFile && (
+						<div className={styles.field}>
+							<div className={styles.browse}>
+								<input
+									type="file"
+									name="thumbnail"
+									onChange={fileChangeHandler}
+									accept="application/pdf, video/mp4"
+								/>
+							</div>
 						</div>
-					</div>
+					)}
 				</div>
 				<div className={styles.section}>
 					<div className={styles.field}>
@@ -309,6 +321,7 @@ const MenuForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 									label={t("menu.isExternal", { framework: "React" })}
 									checked={value}
 									onChange={onChange}
+									disabled={true}
 								/>
 							)}
 							name="isExternalLink"

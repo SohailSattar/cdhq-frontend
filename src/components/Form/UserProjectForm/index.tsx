@@ -128,27 +128,32 @@ const UserProjectForm: FC<Props> = ({
 					})
 				);
 				const selectedOption = getValues("department");
-				if (selectedOption?.value! != "" && selectedOption) {
+				if (selectedOption?.value! !== "" && selectedOption) {
 					const selected = data.find((x) => x.id === selectedOption?.value!)!;
-					const label =
-						language !== "ar"
-							? selected.longFullName
-							: selected.longFullNameEnglish;
-					const value = selected?.id;
 
-					setValue("department", {
-						label: `${value} - ${label}`,
-						value: value,
-					});
+					if (selected) {
+						const label =
+							language !== "ar"
+								? selected.longFullName
+								: selected.longFullNameEnglish;
+						const value = selected?.id;
 
-					// // Centers
-					// if (showCenterOptions) {
-					// 	fetchCenters(selected.id);
-					// }
+						setValue("department", {
+							label: `${value} - ${label}`,
+							value: value,
+						});
+
+						// // Centers
+						// if (showCenterOptions) {
+						// 	fetchCenters(selected.id);
+						// }
+					} else {
+						setValue("department", null!);
+					}
 				}
 			}
 		},
-		[setDepartmentsOptions, setDepartmentsList, language]
+		[getValues, language, setValue]
 	);
 
 	const fetchProjects = useMemo(
@@ -413,7 +418,7 @@ const UserProjectForm: FC<Props> = ({
 				}
 			}
 		},
-		[setPrivilegeOptions, language]
+		[getValues, language, setValue]
 	);
 
 	// Structure Type
@@ -437,7 +442,7 @@ const UserProjectForm: FC<Props> = ({
 				value: selected?.value,
 			});
 		}
-	}, [language]);
+	}, [departmentTypeOptions, getValues, language, setValue]);
 
 	// Workflow Details
 	const fetchWorkflow = useMemo(
@@ -809,7 +814,7 @@ const UserProjectForm: FC<Props> = ({
 
 		setValue("project", option);
 
-		setValue("department", { label: "", value: "", meta: null });
+		// setValue("department", { label: "", value: "", meta: null });
 
 		if (option?.value) {
 			fetchDepartments(option?.value);

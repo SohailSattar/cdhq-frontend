@@ -27,12 +27,14 @@ const AssignUserToProjectPage = () => {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const { data } = await getRole(id!);
+			if (id) {
+				const { data } = await getRole(id!);
 
-			if (data?.role === undefined || data?.role?.name! === ROLE.USER) {
-				setIsNormalUser(true);
-			} else {
-				setIsNormalUser(false);
+				if (data?.role === undefined || data?.role?.name! === ROLE.USER) {
+					setIsNormalUser(true);
+				} else {
+					setIsNormalUser(false);
+				}
 			}
 		};
 
@@ -59,7 +61,7 @@ const AssignUserToProjectPage = () => {
 			WorkflowEndToId: workflowEndId!,
 			departmentId: deptId!,
 			departmentStructureType: deptStruct,
-			canGrant: canGrant
+			canGrant: canGrant,
 		};
 
 		const { data: userProjectId } = await assignNewProjectToUser(params);
