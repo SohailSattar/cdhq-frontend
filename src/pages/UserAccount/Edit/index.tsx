@@ -140,8 +140,9 @@ const UserEditPage = () => {
 				}
 			}
 		};
-
-		fetchData();
+		if (id) {
+			fetchData();
+		}
 	}, [language, id, navigate, role, loggedUserId]);
 
 	useEffect(() => {

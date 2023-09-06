@@ -108,8 +108,9 @@ const UserProjectEditPage = () => {
 				}
 			}
 		};
-
-		fetchData();
+		if (userProjectId) {
+			fetchData();
+		}
 	}, [language, t, userId, navigate, userProjectId, setUserProject]);
 
 	const updateUserProjectClickHandler = async (
@@ -155,6 +156,8 @@ const UserProjectEditPage = () => {
 		<PageContainer
 			lockFor={[ROLE.USER]}
 			showBackButton
+			displayContent={!true}
+			// TO DO - ADD LOGIC
 			btnBackLabel={t("button.backToDetail", { framework: "React" })}
 			btnBackUrlLink={`${RoutePath.USER}/${userId}`}>
 			{!showCard ? (

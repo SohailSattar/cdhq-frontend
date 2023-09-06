@@ -45,7 +45,7 @@
 		"imageType": {
 			"fireDepartment": "Fire Departments",
 			"servicesDepartment": "Service Department",
-			"creation": "Innovations"
+			"creation": "Creation"
 		}
 	},
 	"page": {
@@ -237,6 +237,7 @@
 		"passwordNotMatched": "Passwords don't match",
 		"roleUpdated": "Role updated",
 		"privilegeUpdated": "Privilege Updated",
+		"noPrivilegeSelected": "No privilege selected",
 		"noProjectSelected": "No project has been selected",
 		"userProjectAssigned": "The project is successfully assigned",
 		"userProjectNotAssigned": "Project assignment failed",

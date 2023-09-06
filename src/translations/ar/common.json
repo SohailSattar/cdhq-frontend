@@ -159,7 +159,7 @@
 		"canGrant": "مشرف صلاحيات",
 		"assignNewProject": "تعيين برنامج ل _USER_",
 		"assignNewUser": "تعيين مستخدم جديد",
-		"editUser": "تعديل بيانات    _USER_",
+		"editUser": "تعديل بيانات _USER_",
 		"withOrWithoutSubSection": "مع أو بدون الأقسام و الأفرع ؟"
 	},
 	"department": {
