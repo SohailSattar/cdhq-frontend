@@ -40,7 +40,7 @@ const ExistingEmployeeDetails: FC<Props> = ({ detail, onClick }) => {
 
 		// Rank
 		if (detail.rank?.nameEnglish!) {
-			rank = detail.rank.nameEnglish!;
+			rank = detail.rank?.nameEnglish!;
 		} else {
 			rank = detail.rank?.name!;
 		}

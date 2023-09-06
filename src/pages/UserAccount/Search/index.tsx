@@ -138,44 +138,6 @@ const UserSearchPage = () => {
 					onClick={employeeSearchHandler}
 				/>
 			</div>
-			{/* <Tabs>
-				<TabList>
-					<Tab>
-						{t("employee.names", { framework: "React" })} (
-						{existingEmployees.length})
-					</Tab>
-					<Tab>
-						{t("user.names", { framework: "React" })} ({existingUsers.length})
-					</Tab>
-				</TabList>
-				<TabPanel>
-					<ShadowedContainer>
-						<ExistingEmployeeDetailsSection
-							list={existingEmployees}
-							onClick={existingEmployeeClickHandler}
-						/>
-					</ShadowedContainer>
-				</TabPanel>
-				<TabPanel>
-					{privileges?.insertPrivilege && (
-						<ShadowedContainer>
-							<MessageBox
-								message={t("message.noUserInList", { framework: "React" })}
-								type={"primary"}
-							/>
-							<Button onClick={newUserClickHandler}>
-								{t("button.addNewUser", { framework: "React" })}
-							</Button>
-						</ShadowedContainer>
-					)}
-					<ShadowedContainer className={styles.container}>
-						<ExistingUserDetailsSection
-							list={existingUsers}
-							onClick={(e) => existingUserEditClickHandler(e)}
-						/>
-					</ShadowedContainer>
-				</TabPanel>
-			</Tabs> */}
 			<ShadowedContainer>
 				<ExistingEmployeeDetailsSection
 					list={existingEmployees}

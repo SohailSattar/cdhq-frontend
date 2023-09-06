@@ -59,61 +59,65 @@ const UserNewPage = () => {
 				setCanView(false);
 				return;
 			} else {
-				// check if user has read or write privilege
-				const { data: projectUserPrivilege } =
-					await checkPrivilegeForProjectUser(id!, Project.UserManagement);
+				if (id) {
+					// check if user has read or write privilege
+					const { data: projectUserPrivilege } =
+						await checkPrivilegeForProjectUser(id!, Project.UserManagement);
 
-				if (!projectUserPrivilege?.insertPrivilege) {
-					setCanView(false);
-					return;
+					if (!projectUserPrivilege?.insertPrivilege) {
+						setCanView(false);
+						return;
+					}
+					// What if doesnt have read privilege?
+					const { data: isExist } = await checkIfUserExists(id!);
+
+					if (isExist) {
+						navigate(`${RoutePath.USER}/${id}/edit`);
+					}
+
+					const { data } = await getExistingEmployee(id!);
+
+					if (data) {
+						const {
+							id,
+							employeeNo: empNo,
+							fullName: name,
+							nameEnglish,
+							phone,
+							email,
+							department,
+							class: classDetail,
+							rank,
+						} = data;
+
+						setEmployeeExists(true);
+
+						setEmployee({
+							id: id,
+							logName: "",
+							employeeNo: empNo!,
+							name,
+							nameEnglish,
+							phone: phone!,
+							email: email!,
+							department: department!,
+							class: classDetail!,
+							rank: rank!,
+							createdBy: "",
+							createdOn: "",
+							updatedBy: "",
+							updatedOn: "",
+						});
+					}
+				} else {
+					setEmployeeExists(false);
 				}
-				// What if doesnt have read privilege?
-				const { data: isExist } = await checkIfUserExists(id!);
-
-				if (isExist) {
-					navigate(`${RoutePath.USER}/${id}/edit`);
-				}
-
-				const { data } = await getExistingEmployee(id!);
-				if (data) {
-					const {
-						id,
-						employeeNo: empNo,
-						fullName: name,
-						nameEnglish,
-						phone,
-						email,
-						department,
-						class: classDetail,
-						rank,
-					} = data;
-
-					setEmployeeExists(true);
-
-					setEmployee({
-						id: id,
-						logName: "",
-						employeeNo: empNo!,
-						name,
-						nameEnglish,
-						phone: phone!,
-						email: email!,
-						department: department!,
-						class: classDetail!,
-						rank: rank!,
-						createdBy: "",
-						createdOn: "",
-						updatedBy: "",
-						updatedOn: "",
-					});
-				}
-
 				setCanView(true);
 			}
 
 			// get the details.
 		},
-		[]
+		[id, navigate]
 	);
 
 	useEffect(() => {
@@ -126,7 +130,7 @@ const UserNewPage = () => {
 		// 	setCanView(true);
 		// }
 		fetchDetails();
-	}, [language, id, navigate, role]);
+	}, [language, id, navigate, role, fetchDetails]);
 
 	// useEffect(() => {
 	// 	// if (role === ROLE.SUPERADMIN) {

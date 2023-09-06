@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, ShadowedContainer } from "../../../../../components";
+import { Button } from "../../../../../components";
 
 import { useStore } from "../../../../../utils/store";
 
@@ -36,10 +36,10 @@ const ExistingUserDetails: FC<Props> = ({ detail, onClick }) => {
 		// Check if English value is there
 
 		// Rank
-		if (detail.rank.nameEnglish) {
-			rank = detail.rank.nameEnglish!;
+		if (detail.rank?.nameEnglish) {
+			rank = detail.rank?.nameEnglish!;
 		} else {
-			rank = detail.rank.name;
+			rank = detail.rank?.name!;
 		}
 
 		// Employee Name

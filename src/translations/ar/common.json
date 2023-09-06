@@ -6,7 +6,7 @@
 	"header": {
 		"title": "وزارة الداخلية",
 		"menu": {
-			"dashboard": "Dashboard",
+			"dashboard": "الأنظمة",
 			"projectManagement": " الأنظمة و البرامج",
 			"userAccount": "حسابات المستخدمين",
 			"departmentHierarchy": "الهيكل التنظيمي",
@@ -35,10 +35,10 @@
 		"isExternal": "الرابط خارجي ؟"
 	},
 	"linkType": {
-		"id": "Id",
-		"name": "Link Type",
-		"nameEnglish": "Link Type",
-		"isFile": "Is file?"
+		"id": "رمز الرابط",
+		"name": "الاسم بالعربي",
+		"nameEnglish": "الاسم بالانجليزي",
+		"isFile": "يحتوي على ملف"
 	},
 	"creation": {
 		"imageType": {
@@ -254,8 +254,8 @@
 		"newsUpdated": "تم تحديث الخبر",
 		"savingConfirmationTitle": "سيتم الحفظ",
 		"savingConfirmation": "سيتم حفظ البيانات . هل أنت متأكد ؟ ",
-		"menuItemAdded": "Menu detail has been added",
-		"menuItemUpdated": "Menu detail has been updated"
+		"menuItemAdded": "تم اضافة عنوان على القائمة",
+		"menuItemUpdated": "تم تحديث القائمة"
 	},
 	"dropdown": {
 		"select": "اختر"
@@ -265,7 +265,7 @@
 		"noUser": "لم يتم العثور على المستخدم",
 		"noEmployee": "لم يتم العثور على الموظف",
 		"noNews": "لم يتم العثور على أخبار",
-		"noMenu": "No menu items found"
+		"noMenu": "لم يتم العثور على القائمة"
 	},
 	"footer": {
 		"text": "وزارة الداخلية - الدفاع المدني"

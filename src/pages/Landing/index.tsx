@@ -22,6 +22,7 @@ import { getNewsDetail } from "../../api/news/get/getNewsDetail";
 import { useTranslation } from "react-i18next";
 import { useStore } from "../../utils/store";
 import { getCreationsList } from "../../api/creations/get/getCreationsList";
+import { getLatest10CreationsList } from "../../api/creations/get/getLatest10CreationsList";
 
 const LandingPage = () => {
 	const [t] = useTranslation("common");
@@ -99,21 +100,26 @@ const LandingPage = () => {
 
 	useEffect(() => {
 		const fetch = async () => {
-			const { data } = await getCreationsList();
+			const { data } = await getLatest10CreationsList(1);
 			if (data!) {
-				// Fire Department
-				const fd: ICard[] = data
-					?.filter((x) => x.imageType.id === 1)
-					.map((x) => {
-						return {
-							image: x.imageName,
-							title: language !== "ar" ? x.name : x.nameEnglish,
-						};
-					});
+				const fd: ICard[] = data?.map((x) => {
+					return {
+						image: x.imageName,
+						title: language !== "ar" ? x.name : x.nameEnglish,
+					};
+				});
 
 				setFireDeptCardsList(fd!);
+			}
+		};
 
-				// Services Department
+		fetch();
+	}, [language]);
+
+	useEffect(() => {
+		const fetch = async () => {
+			const { data } = await getLatest10CreationsList(2);
+			if (data!) {
 				const sd: ICard[] = data
 					?.filter((x) => x.imageType.id === 2)
 					.map((x) => {
@@ -125,8 +131,16 @@ const LandingPage = () => {
 					});
 
 				setServicesDeptCardsList(sd!);
+			}
+		};
 
-				// Creation
+		fetch();
+	}, [language]);
+
+	useEffect(() => {
+		const fetch = async () => {
+			const { data } = await getLatest10CreationsList(3);
+			if (data!) {
 				const cr: ICard[] = data
 					?.filter((x) => x.imageType.id === 3)
 					.map((x) => {
@@ -142,8 +156,6 @@ const LandingPage = () => {
 
 		fetch();
 	}, [language]);
-
-	console.log(servicesDeptCardsList);
 
 	const fetchNewsDetail = useMemo(
 		() => async (id: Id) => {
