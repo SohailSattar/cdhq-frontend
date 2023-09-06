@@ -289,7 +289,7 @@ const UserProjectForm: FC<Props> = ({
 	// Workflow
 	useEffect(() => {
 		const fetchData = async () => {
-			const { data } = await getAllWorkflowStatus();
+			const { data } = await getActiveStatusWithoutInactive();
 			if (data) {
 				setWorkflowList(data);
 
@@ -304,6 +304,7 @@ const UserProjectForm: FC<Props> = ({
 								value: status.id,
 							};
 						})
+						// .sort((a, b) => +b.value - +a.value)
 					);
 				}
 
@@ -521,6 +522,8 @@ const UserProjectForm: FC<Props> = ({
 				} else {
 					setHideCanGrant(false);
 				}
+			} else {
+				setHideCanGrant(true);
 			}
 
 			// const selectedDepartment = departmentsList.find(

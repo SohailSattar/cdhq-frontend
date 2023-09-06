@@ -18,6 +18,6 @@ export interface APIProjectTable {
 
 export interface ProjectDetailTable {
 	canGrant: boolean;
-	departmentChild: number;
+	departmentStructureType: number;
 	status: APIActiveStatus;
 }
