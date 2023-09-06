@@ -60,10 +60,7 @@ const UserProjectTable: FC<Props> = ({
 				keyword
 			);
 
-			console.log(id!, currentPage, pageSize, keyword);
-
 			if (data) {
-				// console.log(data);
 				setTotalCount(data?.totalItems);
 				setProjects(
 					data?.projects.map((p) => {
