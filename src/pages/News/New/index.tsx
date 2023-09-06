@@ -53,7 +53,7 @@ const NewsCreatePage = () => {
 		};
 
 		fetch();
-	}, [setPrivileges]);
+	}, [navigate, setPrivileges]);
 
 	const previewHandler = async (values: INewsFormInputs) => {
 		setDetails(values);

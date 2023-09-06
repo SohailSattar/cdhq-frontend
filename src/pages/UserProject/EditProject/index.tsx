@@ -156,7 +156,7 @@ const UserProjectEditPage = () => {
 		<PageContainer
 			lockFor={[ROLE.USER]}
 			showBackButton
-			displayContent={!true}
+			displayContent={privilege?.updatePrivilege}
 			// TO DO - ADD LOGIC
 			btnBackLabel={t("button.backToDetail", { framework: "React" })}
 			btnBackUrlLink={`${RoutePath.USER}/${userId}`}>

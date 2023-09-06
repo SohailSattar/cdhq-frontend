@@ -241,6 +241,7 @@
 		"noProjectSelected": "No project has been selected",
 		"userProjectAssigned": "The project is successfully assigned",
 		"userProjectNotAssigned": "Project assignment failed",
+		"userProjectActivated": "Project has been reactivated",
 		"userProjectDeleted": "Project removed successfully",
 		"unvailable": "N/A",
 		"projectAdded": "New project created",

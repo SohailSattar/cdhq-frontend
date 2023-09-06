@@ -377,7 +377,9 @@ function App() {
 							<Route
 								path={`${RoutePath.HONORS}`}
 								element={
-									<Layout projectId={Project.Honors}>
+									<Layout
+									// projectId={Project.Honors}  TODO: Fix this
+									>
 										<HonorsHomePage />
 									</Layout>
 								}
@@ -387,7 +389,10 @@ function App() {
 							<Route
 								path={`${RoutePath.HONORS_NEW}`}
 								element={
-									<Layout projectId={Project.Honors}>
+									<Layout
+
+									// projectId={Project.Honors}  TODO: Fix this
+									>
 										<HonorNewPage />
 									</Layout>
 								}
@@ -397,8 +402,23 @@ function App() {
 							<Route
 								path={`${RoutePath.HONORS_EDIT}`}
 								element={
-									<Layout projectId={Project.Honors}>
+									<Layout
+									// projectId={Project.Honors}   TODO: Fix this
+									>
 										<HonorEditPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						{/* Image Management */}
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.IMAGE_MANAGING}`}
+								element={
+									<Layout
+										// projectId={Project.ImageManagement}  TODO: Fix this
+										privilegeType={"Read"}>
+										<NewsHomePage />
 									</Layout>
 								}
 							/>
@@ -408,9 +428,7 @@ function App() {
 							<Route
 								path={`${RoutePath.NEWS}`}
 								element={
-									<Layout
-										projectId={Project.News}
-										privilegeType={"Read"}>
+									<Layout>
 										<NewsHomePage />
 									</Layout>
 								}
@@ -420,9 +438,7 @@ function App() {
 							<Route
 								path={`${RoutePath.NEWS}/new`}
 								element={
-									<Layout
-										projectId={Project.News}
-										privilegeType="Write">
+									<Layout>
 										<NewsCreatePage />
 									</Layout>
 								}
@@ -441,7 +457,7 @@ function App() {
 								path={RoutePath.NEWS_EDIT}
 								element={
 									<Layout
-										projectId={Project.News}
+										// projectId={Project.News}  TODO: Fix this
 										privilegeType="Update">
 										<NewsEditPage />
 									</Layout>
@@ -454,7 +470,7 @@ function App() {
 								path={`${RoutePath.PHONE_DIRECTORY}`}
 								element={
 									<Layout
-										projectId={Project.PhoneDirectory}
+										// projectId={Project.PhoneDirectory} TODO: Fix this
 										privilegeType="Read">
 										<PhoneDirectory />
 									</Layout>

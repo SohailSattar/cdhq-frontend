@@ -1,6 +1,6 @@
-import { APIResponse, getConfig } from '../..';
-import { instance } from '../../../network';
-import { APIProjectStatus } from '../types';
+import { APIResponse, getConfig } from "../..";
+import { instance } from "../../../network";
+import { APIProjectStatus } from "../types";
 
 export async function updateUserProjectStatus(
 	updateProjectStatusParams: APIProjectStatus
@@ -8,7 +8,9 @@ export async function updateUserProjectStatus(
 	try {
 		const config = getConfig();
 
-		const url = '/users/project/status';
+		const url = "/users/project/status";
+
+		console.log(updateProjectStatusParams);
 
 		await instance.put<APIProjectStatus>(
 			url,

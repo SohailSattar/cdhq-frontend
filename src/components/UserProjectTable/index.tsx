@@ -21,6 +21,7 @@ import {
 } from "..";
 import { deleteProject } from "../../api/users/delete/deleteProject";
 import { toast } from "react-toastify";
+import { APIProjectStatus } from "../../api/userProjects/types";
 
 interface Props {
 	id: string;
@@ -58,6 +59,8 @@ const UserProjectTable: FC<Props> = ({
 				pageSize,
 				keyword
 			);
+
+			console.log(id!, currentPage, pageSize, keyword);
 
 			if (data) {
 				// console.log(data);
@@ -155,8 +158,9 @@ const UserProjectTable: FC<Props> = ({
 	const status = t("global.status", { framework: "React" });
 
 	const actions = t("global.actions", { framework: "React" });
+	const activate = t("button.activate", { framework: "React" });
 	const edit = t("button.edit", { framework: "React" });
-	const deleteBtn = t("button.delete", { framework: "React" });
+	const deleteBtn = t("button.deactivate", { framework: "React" });
 
 	const columns: Column<APIProjectTable>[] = [
 		{ Header: projectId, accessor: (p) => p.projectId! },
@@ -223,11 +227,21 @@ const UserProjectTable: FC<Props> = ({
 					<div className={styles.btnDiv}>
 						<Button onClick={(id) => editClickHandler(value.id)}>{edit}</Button>
 					</div>
-					<div>
-						<Button onClick={(id) => deleteClickHandler(value.id)}>
-							{deleteBtn}
-						</Button>
-					</div>
+					{value.activeStatus === 8 || value.activeStatus === 9 ? (
+						<div className={styles.btnDiv}>
+							<Button onClick={(id) => activateClickHandler(value.id)}>
+								{activate}
+							</Button>
+						</div>
+					) : (
+						<div>
+							<Button
+								isCritical
+								onClick={(id) => deleteClickHandler(value.id)}>
+								{deleteBtn}
+							</Button>
+						</div>
+					)}
 				</div>
 			),
 		},
@@ -236,6 +250,29 @@ const UserProjectTable: FC<Props> = ({
 	const searchClickHandler = (value: string) => {
 		// const {data} =
 		setKeyword(value);
+	};
+
+	const activateClickHandler = async (upId: string) => {
+		const params: APIProjectStatus = {
+			id: upId,
+			statusId: 1,
+		};
+
+		const { data, error } = await updateUserProjectStatus(params);
+
+		if (data) {
+			fetchProjects(id);
+			toast.success(
+				t("message.userProjectActivated", { framework: "React" }).toString()
+			);
+		}
+
+		if (error) {
+			toast.error(error.ErrorMessage);
+		}
+
+		if (data) {
+		}
 	};
 
 	const deleteConfirmationClickHandler = async () => {
@@ -247,8 +284,13 @@ const UserProjectTable: FC<Props> = ({
 			}
 
 			if (data) {
-				setProjects(projects.filter((p) => p.id !== +selectedProjectId));
-				toast.success("Deleted successfully");
+				// projects.find((x) => x.id === +selectedProjectId)?.activeStatus;
+
+				// setProjects(projects.filter((p) => p.id !== +selectedProjectId));
+				fetchProjects(id);
+				toast.success(
+					t("message.userProjectDeleted", { framework: "React" }).toString()
+				);
 			}
 		}
 

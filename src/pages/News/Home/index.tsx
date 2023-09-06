@@ -64,7 +64,7 @@ const NewsHomePage = () => {
 				}
 			}
 		},
-		[pageSize, keyword]
+		[pageSize]
 	);
 
 	useEffect(() => {
@@ -125,7 +125,7 @@ const NewsHomePage = () => {
 				fetchData(currentPage, keyword);
 			}
 		},
-		[currentPage, fetchData]
+		[currentPage, fetchData, keyword]
 	);
 
 	const txtId = t("news.id", { framework: "React" });
@@ -152,7 +152,7 @@ const NewsHomePage = () => {
 				Cell: ({ value }: any) => (
 					<ActionButtons
 						id={value.id}
-						detailPageLink={`${value.id}`}
+						detailPageLink={`${RoutePath.NEWS}/${value.id}`}
 						showView={privileges?.readPrivilege}
 						showEdit={privileges?.updatePrivilege}
 						showDelete={privileges?.deletePrivilege}

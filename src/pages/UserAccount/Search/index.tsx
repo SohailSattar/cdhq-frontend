@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getExistingEmployees } from "../../../api/employees/get/getExistingEmployeesList";
 import { APIEmployee, APIExistingEmployee } from "../../../api/employees/types";
 import { checkIfUserExists } from "../../../api/users/get/checkIfUserExists";
@@ -27,6 +27,7 @@ import styles from "./styles.module.scss";
 import { APIPrivileges } from "../../../api/privileges/type";
 import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPrivilege";
 import { Project } from "../../../data/projects";
+import { style } from "@material-ui/system";
 
 const UserSearchPage = () => {
 	const [t] = useTranslation("common");
@@ -54,6 +55,8 @@ const UserSearchPage = () => {
 				Project.UserManagement
 			);
 
+			console.log(privilege);
+
 			if (privilege) {
 				const {
 					readPrivilege,
@@ -69,9 +72,7 @@ const UserSearchPage = () => {
 					deletePrivilege,
 				});
 
-				if (readPrivilege) {
-					setCanView(true);
-				}
+				setCanView(insertPrivilege);
 			}
 
 			if (role === ROLE.SUPERADMIN) {
@@ -131,7 +132,8 @@ const UserSearchPage = () => {
 		<PageContainer
 			showBackButton
 			btnBackUrlLink={RoutePath.USER}
-			className={styles.newUser}>
+			className={styles.newUser}
+			displayContent={canView}>
 			<div className={styles.field}>
 				<SearchBox
 					label={t("user.employeeNumber", { framework: "React" })}
@@ -152,13 +154,11 @@ const UserSearchPage = () => {
 			</ShadowedContainer>{" "}
 			{privileges?.insertPrivilege && (
 				<ShadowedContainer>
-					<MessageBox
-						message={t("message.noUserInList", { framework: "React" })}
-						type={"primary"}
-					/>
-					<Button onClick={newUserClickHandler}>
+					<Link
+						to={RoutePath.USER_NEW}
+						className={styles.link}>
 						{t("button.addNewUser", { framework: "React" })}
-					</Button>
+					</Link>
 				</ShadowedContainer>
 			)}
 		</PageContainer>

@@ -1,5 +1,9 @@
 import { useTranslation } from "react-i18next";
-import { HonorForm, IHonorFormInputs } from "../../../components";
+import {
+	HonorForm,
+	IHonorFormInputs,
+	PageContainer,
+} from "../../../components";
 
 const HonorNewPage = () => {
 	const [t] = useTranslation("common");
@@ -7,12 +11,12 @@ const HonorNewPage = () => {
 	const submitHandler = (values: IHonorFormInputs) => {};
 
 	return (
-		<div>
+		<PageContainer displayContent={false}>
 			<HonorForm
 				actionButtonText={t("button.save", { framework: "React" })}
 				onSubmit={submitHandler}
 			/>
-		</div>
+		</PageContainer>
 	);
 };
 

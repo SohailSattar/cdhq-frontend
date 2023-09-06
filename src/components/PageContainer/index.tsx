@@ -78,7 +78,7 @@ const PageContainer: FC<Props> = ({
 					setDisplay(false);
 					setIsVisible(false);
 				} else {
-					if (displayContent) {
+					if (displayContent !== undefined) {
 						setDisplay(displayContent);
 					} else {
 						setDisplay(true);
@@ -90,7 +90,7 @@ const PageContainer: FC<Props> = ({
 		};
 
 		process();
-	}, [displayContent, lockFor]);
+	}, [displayContent, display, lockFor]);
 
 	// useEffect(() => {
 	// 	animate(scope.current, { opacity: 1 });
