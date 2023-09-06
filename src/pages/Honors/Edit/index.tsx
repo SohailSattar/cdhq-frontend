@@ -10,19 +10,54 @@ import { getHonorDetail } from "../../../api/honors/get/getHonorDetail";
 import { APIHonorDetail, APIUpdateHonorImage } from "../../../api/honors/types";
 import { updateHonorImage } from "../../../api/honors/update/updateHonorImage";
 import { toast } from "react-toastify";
+import { APIPrivileges } from "../../../api/privileges/type";
+import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPrivilege";
+import { Project } from "../../../data/projects";
 
 const HonorEditPage = () => {
 	const { id } = useParams<{ id: string }>();
 	const [t] = useTranslation("common");
 
+	const [privileges, setPrivileges] = useState<APIPrivileges>();
+
 	const [honor, setHonor] = useState<APIHonorDetail>();
+
+	const [canView, setCanView] = useState<boolean>();
 
 	const fetch = useMemo(
 		() => async () => {
-			const { data } = await getHonorDetail(id!);
-			setHonor(data);
+			const { data: privilege } = await getProjectPrivilege(Project.Honors);
+			console.log(privilege);
+			if (privilege) {
+				const {
+					readPrivilege,
+					insertPrivilege,
+					updatePrivilege,
+					deletePrivilege,
+				} = privilege;
+
+				setPrivileges({
+					readPrivilege,
+					insertPrivilege,
+					updatePrivilege,
+					deletePrivilege,
+				});
+
+				if (readPrivilege) {
+					const { data } = await getHonorDetail(id!);
+
+					if (data) {
+						setHonor(data);
+						setCanView(privileges?.updatePrivilege);
+					} else {
+						// navigate(RoutePath.ROOT);
+					}
+				} else {
+					setCanView(false);
+				}
+			}
 		},
-		[id]
+		[id, privileges?.updatePrivilege]
 	);
 
 	useEffect(() => {
@@ -51,8 +86,12 @@ const HonorEditPage = () => {
 		}
 	};
 
+	console.log(privileges?.updatePrivilege);
+
 	return (
-		<PageContainer title="Edit">
+		<PageContainer
+			title="Edit"
+			displayContent={canView}>
 			<HonorForm
 				data={honor}
 				actionButtonText={t("button.update", { framework: "React" })}

@@ -240,6 +240,7 @@
 		"noProjectSelected": "لم يتم اختيار أي برنامج",
 		"userProjectAssigned": "تم تعيين البرنامج  بنجاح",
 		"userProjectNotAssigned": "لم يتم تعيين البرنامج",
+		"userProjectActivated": "Project has been reactivated",
 		"userProjectDeleted": "تمت إزالة البرنامج بنجاح",
 		"unvailable": "غير متاح",
 		"projectAdded": "تم إنشاء برنامج جديد",

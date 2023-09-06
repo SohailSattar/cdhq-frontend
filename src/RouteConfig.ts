@@ -38,10 +38,14 @@ export const HONORS = `/honors`;
 export const HONORS_EDIT = HONORS + "/" + ID + "/edit";
 export const HONORS_NEW = HONORS + "/new";
 
+// Image Managing
+export const IMAGE_MANAGING = `/image-managing`;
+
 // News
 export const NEWS = "/news";
 export const NEWS_DETAIL = NEWS + "/" + ID;
 export const NEWS_EDIT = NEWS_DETAIL + "/edit";
 export const NEWS_NEW = NEWS + "/new";
 
+// Phone Directory
 export const PHONE_DIRECTORY = `/phone-directory`;

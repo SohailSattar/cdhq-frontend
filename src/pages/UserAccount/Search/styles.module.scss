@@ -1,29 +1,32 @@
 .newUser {
-    display: flex;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
 
+	.field {
+		width: 100%;
+		margin-bottom: 5px;
+	}
 
-    .field {
-        width: 100%;
-        margin-bottom: 5px;
-    }
+	.section {
+		// width: 100%;
+		display: flex;
+		// flex-direction: row;
+	}
 
-    .section {
-        // width: 100%;
-        display: flex;
-        // flex-direction: row;
-    }
+	.buttonSection {
+		margin-top: 15px;
+		display: flex;
 
-    .buttonSection {
-        margin-top: 15px;
-        display: flex;
+		.btn {
+			margin-left: 5px;
+		}
+	}
 
-        .btn {
-            margin-left: 5px;
-        }
-    }
+	.container {
+		overflow: auto;
+	}
 
-    .container {
-        overflow: auto;
-    }
+	.link {
+		color: darkblue;
+	}
 }

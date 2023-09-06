@@ -618,17 +618,17 @@ const UserProjectForm: FC<Props> = ({
 	}, [
 		data,
 		setData,
-		// departmentTypeOptions,
-		// departmentsOptions,
-		// setDepartmentsOptions,
-		// disableWorkflow,
-		// privilegeOptions,
 		projectOptions,
-		// register,
-		// setValue,
-		// workflowRangeOptions,
 		fetchDepartments,
 		language,
+		register,
+		setValue,
+		departmentTypeOptions,
+		role,
+		departmentsOptions,
+		privilegeOptions,
+		workflowList,
+		disableWorkflow,
 	]);
 
 	// comment if not used
@@ -1207,7 +1207,12 @@ const UserProjectForm: FC<Props> = ({
 					<div className={styles.row}>
 						<div className={styles.rowItem}>
 							<ShadowedContainer>
-								<span className={styles.btnContainer}>
+								<span
+									className={
+										language === "ar"
+											? styles.btnContainer
+											: styles.btnContainerRTL
+									}>
 									<Button type="submit">{actionButtonText}</Button>
 								</span>
 								{showDeleteButton && (

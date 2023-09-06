@@ -21,7 +21,7 @@ import { checkLoginStatus } from "../../api/login/get/checkLoginStatus";
 import { useCookies } from "react-cookie";
 
 interface Props {
-	projectId?: number;
+	// projectId?: number;
 	privilegeType?: PrivilegeType;
 	hideLoginButton?: boolean;
 	noChecks?: boolean;
@@ -29,7 +29,7 @@ interface Props {
 }
 
 const Layout: FC<Props> = ({
-	projectId,
+	// projectId,
 	privilegeType = "All",
 	hideLoginButton = false,
 	noChecks = false,
@@ -81,33 +81,33 @@ const Layout: FC<Props> = ({
 		removeCookies();
 	};
 
-	const fetchProjectPrivilege = useCallback(
-		async (id: Id) => {
-			setIsLoading(true);
-			const { data: privilege } = await getProjectPrivilege(id!);
+	// const fetchProjectPrivilege = useCallback(
+	// 	async (id: Id) => {
+	// 		setIsLoading(true);
+	// 		const { data: privilege } = await getProjectPrivilege(id!);
 
-			switch (privilegeType) {
-				case "All":
-					setCanView(true);
-					break;
-				case "Read":
-					setCanView(privilege?.readPrivilege!);
-					break;
-				case "Write":
-					setCanView(privilege?.insertPrivilege!);
-					break;
-				case "Update":
-					setCanView(privilege?.updatePrivilege!);
-					break;
-				case "None":
-					setCanView(false);
-					break;
-			}
+	// 		switch (privilegeType) {
+	// 			case "All":
+	// 				setCanView(true);
+	// 				break;
+	// 			case "Read":
+	// 				setCanView(privilege?.readPrivilege!);
+	// 				break;
+	// 			case "Write":
+	// 				setCanView(privilege?.insertPrivilege!);
+	// 				break;
+	// 			case "Update":
+	// 				setCanView(privilege?.updatePrivilege!);
+	// 				break;
+	// 			case "None":
+	// 				setCanView(false);
+	// 				break;
+	// 		}
 
-			setIsLoading(false);
-		},
-		[privilegeType]
-	);
+	// 		setIsLoading(false);
+	// 	},
+	// 	[privilegeType]
+	// );
 
 	// const fetchContent = useCallback(async () => {
 	// 	setIsLoading(true);
@@ -260,12 +260,12 @@ const Layout: FC<Props> = ({
 			try {
 				const { data } = await checkLoginStatus();
 				if (data?.isLoggedIn) {
-					if (projectId) {
-						await fetchProjectPrivilege(projectId);
-					} else {
-						setCanView(true);
-						setIsLoading(true);
-					}
+					// if (projectId) {
+					// 	await fetchProjectPrivilege(projectId);
+					// } else {
+					setCanView(true);
+					setIsLoading(true);
+					// }
 					// await fetchContent();
 
 					///////////////////////////// fetch Content
@@ -295,15 +295,7 @@ const Layout: FC<Props> = ({
 				// Handle error
 			}
 		},
-		[
-			projectId,
-			canView,
-			fetchProjectPrivilege,
-			children,
-			loggedUser.id,
-			navigate,
-			removeLocalData,
-		] // children, projectId, canView
+		[canView, children, loggedUser.id, navigate, removeLocalData] // children, projectId, canView
 	);
 
 	useEffect(() => {

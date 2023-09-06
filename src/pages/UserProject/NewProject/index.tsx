@@ -85,6 +85,7 @@ const AssignProjectToUserPage = () => {
 	return (
 		<PageContainer
 			lockFor={[ROLE.USER]}
+			displayContent={true}
 			showBackButton
 			btnBackUrlLink={`${RoutePath.USER_DETAIL.replace(":id", id!)}`}
 			btnBackLabel={t("button.backToDetail", { framework: "React" })}>
