@@ -41,6 +41,7 @@
 		"isFile": "يحتوي على ملف"
 	},
 	"creation": {
+		"name": "ابتكارات",
 		"imageType": {
 			"fireDepartment": "أفضل مراكز إطفاء",
 			"servicesDepartment": "أفضل مراكز خدمة",
@@ -75,6 +76,7 @@
 	},
 	"button": {
 		"view": "عرض",
+		"more": "المزيد",
 		"backToDetail": "العودة إلى التفاصيل",
 		"backToHome": "العودة الى القائمة الرئيسية ",
 		"add": "حفظ",
@@ -238,7 +240,6 @@
 		"noProjectSelected": "لم يتم اختيار أي برنامج",
 		"userProjectAssigned": "تم تعيين البرنامج  بنجاح",
 		"userProjectNotAssigned": "لم يتم تعيين البرنامج",
-		"noPrivilegeSelected": "لم يتم تحديد الصلاحية",
 		"userProjectDeleted": "تمت إزالة البرنامج بنجاح",
 		"unvailable": "غير متاح",
 		"projectAdded": "تم إنشاء برنامج جديد",
