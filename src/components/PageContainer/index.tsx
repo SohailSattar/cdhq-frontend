@@ -11,9 +11,10 @@ import {
 import { useStore } from "../../utils/store";
 import { StatusType } from "../types";
 import { ROLE } from "../../utils";
-import { getMyRole } from "../../api/users/get/getMyRole";
+// import { getMyRole } from "../../api/users/get/getMyRole";
 
 import styles from "./styles.module.scss";
+import { checkLoginStatus } from "../../api/login/get/checkLoginStatus";
 
 interface Props {
 	lockFor?: ROLE[];
@@ -71,9 +72,9 @@ const PageContainer: FC<Props> = ({
 
 	useEffect(() => {
 		const process = async () => {
-			const { data } = await getMyRole();
+			const { data } = await checkLoginStatus();
 			if (data) {
-				if (lockFor?.find((x) => x === data.role.name)) {
+				if (lockFor?.find((x) => x === data.role)) {
 					setDisplay(false);
 					setIsVisible(false);
 				} else {

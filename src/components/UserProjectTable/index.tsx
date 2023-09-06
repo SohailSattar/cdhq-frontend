@@ -80,7 +80,7 @@ const UserProjectTable: FC<Props> = ({
 									? p.department.name
 									: p.department.nameEnglish,
 							details: {
-								departmentChild: p.departmentChild,
+								departmentStructureType: p.departmentStructureType,
 								canGrant: p.canGrant!,
 								status: p.activeStatus,
 							},
@@ -186,12 +186,12 @@ const UserProjectTable: FC<Props> = ({
 		},
 		{
 			Header: deptStructure,
-			accessor: (p) => p.details.departmentChild,
+			accessor: (p) => p.details.departmentStructureType,
 			Cell: ({ value }: any) => (
 				<div>
 					{value === 9
-						? t("department.withChild", { framework: "React" })
-						: t("department.single", { framework: "React" })}
+						? t("project.withChild", { framework: "React" })
+						: t("project.withoutChild", { framework: "React" })}
 				</div>
 			),
 		},

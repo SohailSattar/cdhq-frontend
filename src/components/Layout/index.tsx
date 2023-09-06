@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Footer, Header, Loader, Loading, NotAuthorized } from "..";
 import { getMyDetail } from "../../api/users/get/getMyDetail";
 import { useStore } from "../../utils/store";
-import { getMyRole } from "../../api/users/get/getMyRole";
+// import { getMyRole } from "../../api/users/get/getMyRole";
 import { APILoggedUser } from "../../api/users/types";
 import { getProjectPrivilege } from "../../api/userProjects/get/getProjectPrivilege";
 
@@ -109,41 +109,41 @@ const Layout: FC<Props> = ({
 		[privilegeType]
 	);
 
-	const fetchContent = useCallback(async () => {
-		setIsLoading(true);
-		const token = localStorageService.getJwtToken();
-		if (token) {
-			const { data: myRole } = await getMyRole();
-			const role = myRole?.role.name!;
+	// const fetchContent = useCallback(async () => {
+	// 	setIsLoading(true);
+	// 	const token = localStorageService.getJwtToken();
+	// 	if (token) {
+	// 		const { data: myRole } = await getMyRole();
+	// 		const role = myRole?.role.name!;
 
-			if (role !== loggedUser?.role!) {
-				setLoggedUser({ ...loggedUser, role: role });
-			}
+	// 		if (role !== loggedUser?.role!) {
+	// 			setLoggedUser({ ...loggedUser, role: role });
+	// 		}
 
-			if (loggedUser.userName === "") {
-				const { data, error } = await getMyDetail();
-				if (error) {
-					if (error.response.status === 401) {
-						navigate(RoutePath.LOGIN);
-					}
-				}
-				if (data) {
-					setLoggedUser(data);
-				}
-			}
-		} else {
-			if (!noChecks) {
-				navigate(RoutePath.ROOT);
-			}
-		}
+	// 		if (loggedUser.userName === "") {
+	// 			const { data, error } = await getMyDetail();
+	// 			if (error) {
+	// 				if (error.response.status === 401) {
+	// 					navigate(RoutePath.LOGIN);
+	// 				}
+	// 			}
+	// 			if (data) {
+	// 				setLoggedUser(data);
+	// 			}
+	// 		}
+	// 	} else {
+	// 		if (!noChecks) {
+	// 			navigate(RoutePath.ROOT);
+	// 		}
+	// 	}
 
-		if (canView === undefined || canView === false) {
-			setContent(<NotAuthorized />);
-		} else {
-			setContent(children);
-		}
-		setIsLoading(false);
-	}, [canView, children, loggedUser, navigate, noChecks, setLoggedUser]); //canView, children, loggedUser, navigate, noChecks
+	// 	if (canView === undefined || canView === false) {
+	// 		setContent(<NotAuthorized />);
+	// 	} else {
+	// 		setContent(children);
+	// 	}
+	// 	setIsLoading(false);
+	// }, [canView, children, loggedUser, navigate, noChecks, setLoggedUser]); //canView, children, loggedUser, navigate, noChecks
 
 	// const fetchContent = useMemo(
 	// 	() => async () => {
@@ -222,21 +222,27 @@ const Layout: FC<Props> = ({
 		const fetch = async () => {
 			const token = localStorageService.getJwtToken();
 			if (token) {
-				const { data: myRole } = await getMyRole();
-				const role = myRole?.role.name!;
-				if (role !== loggedUser?.role!) {
-					setLoggedUser({ ...loggedUser, role: role });
-				}
+				// const { data: myStatus } = await checkLoginStatus();
+				// const role = myStatus?.role!;
+				// if (role !== loggedUser?.role!) {
+				// 	setLoggedUser({ ...loggedUser, role: role });
+				// }
 				if (loggedUser.userName === "") {
-					const { data, error } = await getMyDetail();
+					const { data: myStatus } = await checkLoginStatus();
 
-					if (error) {
-						if (error.response.status === 401) {
-							navigate(RoutePath.LOGIN);
+					if (myStatus?.isLoggedIn === true) {
+						const { data, error } = await getMyDetail();
+
+						if (error) {
+							if (error.response.status === 401) {
+								navigate(RoutePath.LOGIN);
+							}
 						}
-					}
-					if (data) {
-						setLoggedUser(data);
+						if (data) {
+							setLoggedUser(data);
+						}
+					} else {
+						navigate(RoutePath.LOGIN);
 					}
 				}
 			} else {

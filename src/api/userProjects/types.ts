@@ -37,7 +37,7 @@ export interface APIUserProject extends APIPrivileges {
 	id: number;
 	project: APIProjectWithParentIdItem;
 	canGrant: boolean;
-	departmentChild: number;
+	departmentStructureType: number;
 	department: APIDepartmentItem;
 	privilege: APIPrivilegeItem;
 	activeStatus: APIActiveStatus;
