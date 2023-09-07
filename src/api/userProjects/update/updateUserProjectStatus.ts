@@ -10,8 +10,6 @@ export async function updateUserProjectStatus(
 
 		const url = "/users/project/status";
 
-		console.log(updateProjectStatusParams);
-
 		await instance.put<APIProjectStatus>(
 			url,
 			updateProjectStatusParams,

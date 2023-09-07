@@ -27,7 +27,6 @@ const HonorEditPage = () => {
 	const fetch = useMemo(
 		() => async () => {
 			const { data: privilege } = await getProjectPrivilege(Project.Honors);
-			console.log(privilege);
 			if (privilege) {
 				const {
 					readPrivilege,
@@ -85,8 +84,6 @@ const HonorEditPage = () => {
 			toast.success(t("message.fail", { framework: "React" }).toString());
 		}
 	};
-
-	console.log(privileges?.updatePrivilege);
 
 	return (
 		<PageContainer
