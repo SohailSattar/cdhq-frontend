@@ -39,15 +39,15 @@ const NewsCarousel: FC<Props> = ({
 
 	useEffect(() => {
 		controls.start({
-			x: 0,
-			opacity: 1,
-			height: "auto",
+			y: [-50, 0, 0], // Keyframes for y: [-150, 0, -150, 0]
+			opacity: [0, 0.5, 1],
+			height: "100%",
 			transition: {
-				duration: 3,
-				type: "spring",
-				stiffness: 1000,
-				// damping: "10",
-				ease: [0, 0.71, 0.2, 1.01],
+				y: {
+					type: "tween",
+					duration: 1, // Total duration for the animation (e.g., 2 seconds)
+				},
+				opacity: { duration: 1 }, // Adjust the duration for opacity
 			},
 		});
 	}, [controls]);
@@ -79,7 +79,7 @@ const NewsCarousel: FC<Props> = ({
 			setNewsList((prevState) => [...prevState]);
 			setDirection("up");
 			controls.start({
-				y: [100, 0, 0], // Keyframes for y: [-150, 0, -150, 0]
+				y: [50, 0, 0], // Keyframes for y: [-150, 0, -150, 0]
 				opacity: [0, 0.5, 1],
 				height: "100%",
 				transition: {
