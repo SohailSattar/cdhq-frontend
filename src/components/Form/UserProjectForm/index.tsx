@@ -260,7 +260,7 @@ const UserProjectForm: FC<Props> = ({
 				setPrivilegeOptions(
 					data?.map((privilege: APIPrivilege) => {
 						const name = `${privilege.sequenceNumber} - ${
-							language != "ar" ? privilege.name : privilege.nameEnglish
+							language !== "ar" ? privilege.name : privilege.nameEnglish
 						}`;
 						return {
 							label: name,
@@ -289,7 +289,7 @@ const UserProjectForm: FC<Props> = ({
 		};
 
 		fetchData();
-	}, [language]);
+	}, [getValues, language, setValue]);
 
 	// Workflow
 	useEffect(() => {
@@ -298,20 +298,23 @@ const UserProjectForm: FC<Props> = ({
 			if (data) {
 				setWorkflowList(data);
 
-				if (role === ROLE.SUPERADMIN) {
-					setWorkflowRangeOptions(
-						data?.map((status: APIActiveStatus) => {
-							const name = `${status.id} - ${
-								language !== "ar" ? status.nameArabic : status.nameEnglish
-							}`;
-							return {
-								label: name,
-								value: status.id,
-							};
-						})
-						// .sort((a, b) => +b.value - +a.value)
-					);
-				}
+				//get currently selected project
+				const selectedProject = getValues("project.value");
+
+				// if (role === ROLE.SUPERADMIN) {
+				setWorkflowRangeOptions(
+					data?.map((status: APIActiveStatus) => {
+						const name = `${status.id} - ${
+							language !== "ar" ? status.nameArabic : status.nameEnglish
+						}`;
+						return {
+							label: name,
+							value: status.id,
+						};
+					})
+					// .sort((a, b) => +b.value - +a.value)
+				);
+				// }
 
 				// Workflow Start
 				let selectedOption = getValues("workflowStart");
@@ -327,6 +330,19 @@ const UserProjectForm: FC<Props> = ({
 						label: label,
 						value: selected?.id,
 					});
+				} else {
+					if (selectedProject) {
+						const selected = data.find((x) => x.id === 7)!;
+
+						const label = `${selected.id} - ${
+							language !== "ar" ? selected?.nameArabic! : selected?.nameEnglish!
+						}`;
+
+						setValue("workflowStart", {
+							label: label,
+							value: selected?.id,
+						});
+					}
 				}
 
 				// Workflow End
@@ -343,12 +359,25 @@ const UserProjectForm: FC<Props> = ({
 						label: label,
 						value: selected?.id,
 					});
+				} else {
+					if (selectedProject) {
+						const selected = data.find((x) => x.id === 1)!;
+
+						const label = `${selected.id} - ${
+							language !== "ar" ? selected?.nameArabic! : selected?.nameEnglish!
+						}`;
+
+						setValue("workflowEnd", {
+							label: label,
+							value: selected?.id,
+						});
+					}
 				}
 			}
 		};
 
 		fetchData();
-	}, [setWorkflowRangeOptions, language]);
+	}, [setWorkflowRangeOptions, language, role, getValues, setValue]);
 
 	// Centers
 	// const fetchCenters = useMemo(
@@ -457,15 +486,27 @@ const UserProjectForm: FC<Props> = ({
 				return { label: label, value: x.id };
 			});
 
+			if (role !== ROLE.SUPERADMIN) {
+				setWorkflowRangeOptions(options);
+			}
+
 			// Workflow Start
 			const selectedWorkflowStart = options.find((x) => x.value === start);
-			setValue("workflowStart", selectedWorkflowStart!);
+
+			if (selectedWorkflowStart) {
+				setValue("workflowStart", selectedWorkflowStart!);
+			}
+			// else {
+			// 	const newWorkflow = options.find((x) => x.value === 7);
+			// }
 
 			// Workflow End
 			const selectedWorkflowEnd = options.find((x) => x.value === end);
-			setValue("workflowEnd", selectedWorkflowEnd!);
+			if (selectedWorkflowEnd) {
+				setValue("workflowEnd", selectedWorkflowEnd!);
+			}
 		},
-		[setWorkflowRangeOptions, workflowList, language]
+		[language, role, setValue, workflowList]
 	);
 
 	useEffect(() => {
@@ -618,17 +659,17 @@ const UserProjectForm: FC<Props> = ({
 	}, [
 		data,
 		setData,
+		// departmentTypeOptions,
+		// departmentsOptions,
+		// setDepartmentsOptions,
+		// disableWorkflow,
+		// privilegeOptions,
 		projectOptions,
+		// register,
+		// setValue,
+		// workflowRangeOptions,
 		fetchDepartments,
 		language,
-		register,
-		setValue,
-		departmentTypeOptions,
-		role,
-		departmentsOptions,
-		privilegeOptions,
-		workflowList,
-		disableWorkflow,
 	]);
 
 	// comment if not used
@@ -670,7 +711,14 @@ const UserProjectForm: FC<Props> = ({
 		};
 
 		fetchData();
-	}, [data, setData, departmentsOptions]);
+	}, [
+		data,
+		departmentsOptions,
+		fetchPrivileges,
+		fetchWorkflow,
+		setData,
+		setValue,
+	]);
 
 	// useEffect(() => {
 	// 	const fetch = async () => {
