@@ -31,7 +31,6 @@ const NewsCarousel: FC<Props> = ({
 }) => {
 	const controls = useAnimationControls();
 	const [newsList, setNewsList] = useState<APINews[]>([]);
-	const [direction, setDirection] = useState<string>("down");
 
 	useEffect(() => {
 		setNewsList(list);
@@ -77,7 +76,6 @@ const NewsCarousel: FC<Props> = ({
 		() => async () => {
 			newsList.push(newsList?.shift()!);
 			setNewsList((prevState) => [...prevState]);
-			setDirection("up");
 			controls.start({
 				y: [50, 0, 0], // Keyframes for y: [-150, 0, -150, 0]
 				opacity: [0, 0.5, 1],
@@ -90,19 +88,6 @@ const NewsCarousel: FC<Props> = ({
 					opacity: { duration: 1 }, // Adjust the duration for opacity
 				},
 			});
-			// controls.start({
-			// 	y: [150, 0, 0],
-			// 	opacity: 1,
-			// 	height: "100%",
-			// 	transition: {
-			// 		y: [0, -30, 0],
-			// 		// duration: 3,
-			// 		// type: "spring",
-			// 		// stiffness: 1000,
-			// 		// damping: "10",
-			// 		// ease: [0, 0.71, 0.2, 1.01],
-			// 	},
-			// });
 		},
 		[controls, newsList]
 	);
@@ -111,9 +96,8 @@ const NewsCarousel: FC<Props> = ({
 		() => async () => {
 			rotateRight(newsList);
 			setNewsList((prevState) => [...prevState]);
-			setDirection("down");
 			controls.start({
-				y: [-50, 0, 0], // Keyframes for y: [-150, 0, -150, 0]
+				y: [-50, 0, 0],
 				opacity: [0, 0.5, 1],
 				height: "100%",
 				transition: {
