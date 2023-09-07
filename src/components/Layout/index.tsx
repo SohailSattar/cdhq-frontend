@@ -53,7 +53,7 @@ const Layout: FC<Props> = ({
 	const [content, setContent] = useState<any>();
 	const [canView, setCanView] = useState<boolean>();
 
-	const clearLoggedInUserState = () => {
+	const clearLoggedInUserState = useCallback(() => {
 		setLoggedUser({
 			id: 0,
 			userName: "",
@@ -61,25 +61,25 @@ const Layout: FC<Props> = ({
 			nameEnglish: "",
 			role: "",
 		});
-	};
+	}, [setLoggedUser]);
 
 	const removeLocalStorageData = () => {
 		localStorageService.clearToken();
 	};
 
-	const removeCookies = () => {
+	const removeCookies = useCallback(() => {
 		removeCookie("id", { path: "/" });
 		removeCookie("name", { path: "/" });
 		removeCookie("nameEnglish", { path: "/" });
 		removeCookie("userName", { path: "/" });
 		removeCookie("role", { path: "/" });
-	};
+	}, [removeCookie]);
 
-	const removeLocalData = () => {
+	const removeLocalData = useCallback(() => {
 		clearLoggedInUserState();
 		removeLocalStorageData();
 		removeCookies();
-	};
+	}, [clearLoggedInUserState, removeCookies]);
 
 	// const fetchProjectPrivilege = useCallback(
 	// 	async (id: Id) => {
@@ -295,7 +295,7 @@ const Layout: FC<Props> = ({
 				// Handle error
 			}
 		},
-		[canView, children, loggedUser.id, navigate, removeLocalData] // children, projectId, canView
+		[canView, children, loggedUser.id, navigate, removeLocalData] // , loggedUser.id, navigate, removeLocalData
 	);
 
 	useEffect(() => {
