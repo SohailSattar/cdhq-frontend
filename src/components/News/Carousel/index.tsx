@@ -58,7 +58,7 @@ const NewsCarousel: FC<Props> = ({
 			setNewsList((prevState) => [...prevState]);
 			controls.start({
 				y: [-50, 0, 0], // Keyframes for y: [-150, 0, -150, 0]
-				opacity: 1,
+				opacity: [0, 0.5, 1],
 				height: "100%",
 				transition: {
 					y: {
@@ -80,7 +80,7 @@ const NewsCarousel: FC<Props> = ({
 			setDirection("up");
 			controls.start({
 				y: [100, 0, 0], // Keyframes for y: [-150, 0, -150, 0]
-				opacity: 1,
+				opacity: [0, 0.5, 1],
 				height: "100%",
 				transition: {
 					y: {
@@ -114,7 +114,7 @@ const NewsCarousel: FC<Props> = ({
 			setDirection("down");
 			controls.start({
 				y: [-50, 0, 0], // Keyframes for y: [-150, 0, -150, 0]
-				opacity: 1,
+				opacity: [0, 0.5, 1],
 				height: "100%",
 				transition: {
 					y: {

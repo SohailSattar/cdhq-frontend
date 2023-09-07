@@ -75,8 +75,6 @@ const Menu: FC<Props> = ({ title }) => {
 	const checkLogin = useCallback(async () => {
 		const { data: status } = await checkLoginStatus();
 
-		console.log(status);
-
 		if (status?.isLoggedIn === true) {
 			setIsLogged(true);
 		} else {
