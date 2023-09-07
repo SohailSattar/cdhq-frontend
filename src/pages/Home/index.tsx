@@ -73,8 +73,6 @@ const HomePage = () => {
 						const objIndex = projectsList.findIndex((obj) => obj.id === 110);
 
 						projectsList[objIndex].isAvailable = false;
-
-						// console.log(objIndex);
 					}
 
 					setProjects(projectsList);
@@ -89,13 +87,6 @@ const HomePage = () => {
 					setProjects(projectsList);
 				}
 				setIsLoading(false);
-
-				// const { data } = await getUserProjectsList(loggedInUser.id!);
-
-				// if (data) {
-				// 	setIsLoading(false);
-				// 	// setProjects(data);
-				// }
 			}
 		};
 

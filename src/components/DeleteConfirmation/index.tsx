@@ -32,7 +32,8 @@ const DeleteConfirmation: FC<Props> = ({
 		<Modal
 			isOpen={isOpen}
 			onClose={cancelButtonClickHandler}
-			hideXButton={true}>
+			hideXButton={true}
+			className={styles.modal}>
 			<div
 				className={
 					language !== "ar" ? styles.confirmationBox : styles.confirmationBoxLTR

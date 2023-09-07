@@ -16,6 +16,22 @@ interface Props {
 	className?: string;
 }
 
+const customStyles = {
+	overlay: {
+		// backgroundColor: "rgba(0, 0, 0, 0.3)",
+		display: "flex",
+		justifyContent: "center",
+		// alignItems: "center",
+	},
+	content: {
+		background: "white",
+		// padding: "20px",
+		maxWidth: "80%",
+		maxHeight: "95%",
+		overflow: "auto",
+	},
+};
+
 export const Modal: FC<Props> = ({
 	hideXButton = false,
 	isOpen,
@@ -34,7 +50,8 @@ export const Modal: FC<Props> = ({
 			className={clsx(styles.modalPopup, className)}
 			isOpen={isOpen}
 			ariaHideApp={false}
-			shouldCloseOnOverlayClick={true}>
+			shouldCloseOnOverlayClick={true}
+			style={customStyles}>
 			<motion.div
 				className="modal"
 				initial={{ opacity: 0, y: -50 }}
