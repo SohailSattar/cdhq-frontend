@@ -55,8 +55,6 @@ const UserSearchPage = () => {
 				Project.UserManagement
 			);
 
-			console.log(privilege);
-
 			if (privilege) {
 				const {
 					readPrivilege,

@@ -57,17 +57,15 @@ const NewsCarousel: FC<Props> = ({
 			rotateRight(newsList);
 			setNewsList((prevState) => [...prevState]);
 			controls.start({
-				y: [0, 30, 0],
+				y: [-50, 0, 0], // Keyframes for y: [-150, 0, -150, 0]
 				opacity: 1,
 				height: "100%",
 				transition: {
-					y: [0, 30, 0],
-
-					// duration: 3,
-					// type: "spring",
-					// stiffness: 1000,
-					// damping: "10",
-					// ease: [0, 0.71, 0.2, 1.01],
+					y: {
+						type: "tween",
+						duration: 1, // Total duration for the animation (e.g., 2 seconds)
+					},
+					opacity: { duration: 1 }, // Adjust the duration for opacity
 				},
 			});
 		}, intervalInMiliseconds);
@@ -81,18 +79,30 @@ const NewsCarousel: FC<Props> = ({
 			setNewsList((prevState) => [...prevState]);
 			setDirection("up");
 			controls.start({
-				y: [0, -30, 0],
+				y: [100, 0, 0], // Keyframes for y: [-150, 0, -150, 0]
 				opacity: 1,
 				height: "100%",
 				transition: {
-					y: [0, -30, 0],
-					// duration: 3,
-					// type: "spring",
-					// stiffness: 1000,
-					// damping: "10",
-					// ease: [0, 0.71, 0.2, 1.01],
+					y: {
+						type: "tween",
+						duration: 1, // Total duration for the animation (e.g., 2 seconds)
+					},
+					opacity: { duration: 1 }, // Adjust the duration for opacity
 				},
 			});
+			// controls.start({
+			// 	y: [150, 0, 0],
+			// 	opacity: 1,
+			// 	height: "100%",
+			// 	transition: {
+			// 		y: [0, -30, 0],
+			// 		// duration: 3,
+			// 		// type: "spring",
+			// 		// stiffness: 1000,
+			// 		// damping: "10",
+			// 		// ease: [0, 0.71, 0.2, 1.01],
+			// 	},
+			// });
 		},
 		[controls, newsList]
 	);
@@ -103,19 +113,53 @@ const NewsCarousel: FC<Props> = ({
 			setNewsList((prevState) => [...prevState]);
 			setDirection("down");
 			controls.start({
-				y: [0, 30, 0],
+				y: [-50, 0, 0], // Keyframes for y: [-150, 0, -150, 0]
 				opacity: 1,
 				height: "100%",
 				transition: {
-					y: [0, 30, 0],
-
-					// duration: 3,
-					// type: "spring",
-					// stiffness: 1000,
-					// damping: "10",
-					// ease: [0, 0.71, 0.2, 1.01],
+					y: {
+						type: "tween",
+						duration: 1, // Total duration for the animation (e.g., 2 seconds)
+					},
+					opacity: { duration: 1 }, // Adjust the duration for opacity
 				},
 			});
+			// controls.start({
+			// 	y: 0, // Start from y: 0
+			// 	opacity: 1,
+			// 	height: "100%",
+			// 	transition: {
+			// 		y: {
+			// 			type: "tween",
+			// 			from: -150, // Start from y: -150
+			// 			to: 0, // End at y: 0
+			// 			duration: 0.5, // Adjust the duration here (e.g., 1 second)
+			// 		},
+			// 		opacity: { duration: 1 }, // Adjust the duration for opacity
+			// 	},
+			// });
+			// controls.start({
+			// 	y: [-100, 0, 0],
+			// 	opacity: 1,
+			// 	height: "100%",
+			// 	// transition: {
+			// 	// 	y: [-100, 0, 0],
+			// 	// 	// duration: 1,
+			// 	// 	delay: 0.02,
+			// 	// 	// type: "spring",
+			// 	// 	// stiffness: 1000,
+			// 	// 	// damping: "10",
+			// 	// 	// ease: [0, 0.71, 0.2, 1.01],
+			// 	// },
+			// 	transition: {
+			// 		y: {
+			// 			type: "spring", // You can use spring for smoother animations
+			// 			stiffness: 500,
+			// 			damping: 10,
+			// 		},
+			// 		opacity: { duration: 1 }, // Adjust the duration here (e.g., 0.3 seconds)
+			// 	},
+			// });
 		},
 		[controls, newsList]
 	);

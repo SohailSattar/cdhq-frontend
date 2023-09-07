@@ -10,8 +10,6 @@ export const updateProject = async (
 		const config = getConfig();
 		const url = "/projects";
 
-		console.log(updateProjectParams);
-
 		const response = await instance.put<APIResponseStatus>(
 			url,
 			updateProjectParams,
