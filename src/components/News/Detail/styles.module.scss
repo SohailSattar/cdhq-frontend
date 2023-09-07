@@ -1,4 +1,12 @@
 .container {
-	margin: 5px 0;
-	overflow: scroll;
+	margin: 10px 5px;
+	direction: rtl;
+	// overflow: scroll;
+}
+
+.content {
+	margin: 5px;
+	direction: rtl;
+	box-shadow: unset;
+	overflow-y: scroll;
 }
