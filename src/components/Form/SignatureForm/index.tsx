@@ -86,7 +86,7 @@ const SignatureForm: FC<Props> = ({ data, onSubmit }) => {
 							type="file"
 							name="thumbnail"
 							onChange={imageChangeHandler}
-							accept="image/*"
+							accept="image/png"
 						/>
 					</div>
 				</div>
