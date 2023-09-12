@@ -5,5 +5,6 @@ export enum Project {
 	ImageManagement = 6310,
 	News = 6110,
 	PhoneDirectory = 1910,
+	Signature = 160,
 	UserManagement = 110,
 }

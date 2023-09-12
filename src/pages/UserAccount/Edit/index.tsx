@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -8,6 +8,7 @@ import { updatePassword } from "../../../api/users/update/updatePassword";
 import { updateRole } from "../../../api/users/update/updateRole";
 import {
 	DeleteConfirmation,
+	IEmployeeSignatureFormInputs,
 	MetaDataDetails,
 	PageContainer,
 	RedirectButton,
@@ -34,7 +35,7 @@ import { checkIfEmployeeExists } from "../../../api/employees/get/checkIfEmploye
 
 import * as RoutePath from "../../../RouteConfig";
 
-import { ROLE } from "../../../utils";
+import { Id, ROLE } from "../../../utils";
 import {
 	UserForm,
 	IPasswordFormInputs,
@@ -49,6 +50,13 @@ import { APIPrivilege, APIPrivileges } from "../../../api/privileges/type";
 import { checkPrivilegeForProjectUser } from "../../../api/userProjects/get/checkPrivilegeForProjectUser";
 import { Project } from "../../../data/projects";
 import { APIUserProjectPrivilege } from "../../../api/userProjects/types";
+import SignatureManagement from "./containers/SignatureManagement";
+import {
+	APIEmployeeSignature,
+	APIUpdateEmployeeSignature,
+} from "../../../api/employees/types";
+import { getEmployeeSignature } from "../../../api/employees/get/getEmployeeSignature";
+import { updateEmployeeSignature } from "../../../api/employees/update/updateEmployeeSignature";
 
 const UserEditPage = () => {
 	const { id } = useParams<{ id: string }>();
@@ -70,6 +78,9 @@ const UserEditPage = () => {
 
 	const [privilege, setPrivilege] = useState<APIPrivileges>();
 
+	const [signature, setSignature] = useState<APIEmployeeSignature>();
+	const [canViewSignature, setCanViewSignature] = useState<boolean>(false);
+
 	// User Roles
 	const [roles, setRoles] = useState<APIRole[]>([]);
 	const [roleDropdownOptions, setRoleDropdownOptions] = useState<
@@ -77,6 +88,8 @@ const UserEditPage = () => {
 	>([]);
 	const [selectedRoleOption, setSelectedRoleOption] =
 		useState<DropdownOption>();
+
+	console.log(role);
 
 	useEffect(() => {
 		// if (
@@ -279,6 +292,60 @@ const UserEditPage = () => {
 
 	// const isAdmin = false;
 
+	const fetchSignature = useCallback(
+		async (empId: string) => {
+			if (role === ROLE.USER) {
+				setCanViewSignature(false);
+				return;
+			} else if (role === ROLE.SUPERADMIN || role === ROLE.ADMIN) {
+				console.log(role);
+
+				const { data: signPrivilege, error } =
+					await checkPrivilegeForProjectUser(id!, Project.Signature);
+
+				if (error) {
+					setCanViewSignature(false);
+				} else {
+					if (signPrivilege) {
+						setCanViewSignature(signPrivilege.updatePrivilege);
+					}
+					if (signPrivilege?.updatePrivilege === true) {
+						const { data } = await getEmployeeSignature(empId);
+						if (data) {
+							setSignature(data);
+						}
+					}
+				}
+			}
+		},
+		[id, role]
+	);
+
+	useEffect(() => {
+		if (id) {
+			fetchSignature(id!);
+		}
+	}, [fetchSignature, id]);
+
+	const submitSignatureHandler = async (
+		values: IEmployeeSignatureFormInputs
+	) => {
+		const { thumbnail } = values;
+
+		const params: APIUpdateEmployeeSignature = {
+			id: id!,
+			thumbnail: thumbnail!,
+		};
+
+		const { data } = await updateEmployeeSignature(params);
+
+		if (data) {
+			toast.success(
+				t("message.signatureUpdated", { framework: "React" }).toString()
+			);
+		}
+	};
+
 	const roleSelectHandler = (option: DropdownOption) => {
 		setSelectedRoleOption(option);
 	};
@@ -344,6 +411,11 @@ const UserEditPage = () => {
 					{privilege?.updatePrivilege && (
 						<Tab>{t("form.changePassword", { framework: "React" })}</Tab>
 					)}
+					{(role === ROLE.SUPERADMIN || canViewSignature === true) && (
+						<>
+							<Tab>{t("employee.signature", { framework: "React" })}</Tab>
+						</>
+					)}
 					{role === ROLE.SUPERADMIN && (
 						<>
 							<Tab>{t("user.assignRole", { framework: "React" })}</Tab>
@@ -388,6 +460,16 @@ const UserEditPage = () => {
 							<ChangePassword onClick={updatePasswordClickHandler} />
 						</ShadowedContainer>
 					</TabPanel>
+				)}
+				{(role === ROLE.SUPERADMIN || canViewSignature === true) && (
+					<>
+						<TabPanel>
+							<SignatureManagement
+								data={signature!}
+								onSubmit={submitSignatureHandler}
+							/>
+						</TabPanel>
+					</>
 				)}
 
 				{role === ROLE.SUPERADMIN && (

@@ -38,8 +38,8 @@ const NewsCarousel: FC<Props> = ({
 
 	useEffect(() => {
 		controls.start({
-			y: [-50, 0, 0], // Keyframes for y: [-150, 0, -150, 0]
-			opacity: [0, 0.5, 1],
+			y: [-100, 0, 0], // Keyframes for y: [-150, 0, -150, 0]
+			opacity: [0, 1, 1],
 			height: "100%",
 			transition: {
 				y: {
@@ -56,8 +56,8 @@ const NewsCarousel: FC<Props> = ({
 			rotateRight(newsList);
 			setNewsList((prevState) => [...prevState]);
 			controls.start({
-				y: [-50, 0, 0], // Keyframes for y: [-150, 0, -150, 0]
-				opacity: [0, 0.5, 1],
+				y: [-100, 0, 0], // Keyframes for y: [-150, 0, -150, 0]
+				opacity: [0, 1, 1],
 				height: "100%",
 				transition: {
 					y: {
@@ -77,8 +77,8 @@ const NewsCarousel: FC<Props> = ({
 			newsList.push(newsList?.shift()!);
 			setNewsList((prevState) => [...prevState]);
 			controls.start({
-				y: [50, 0, 0], // Keyframes for y: [-150, 0, -150, 0]
-				opacity: [0, 0.5, 1],
+				y: [100, 0, 0], // Keyframes for y: [-150, 0, -150, 0]
+				// opacity: [1, 0.5, 0],
 				height: "100%",
 				transition: {
 					y: {
@@ -97,8 +97,8 @@ const NewsCarousel: FC<Props> = ({
 			rotateRight(newsList);
 			setNewsList((prevState) => [...prevState]);
 			controls.start({
-				y: [-50, 0, 0],
-				opacity: [0, 0.5, 1],
+				y: [-100, 0, 0],
+				opacity: [0, 1, 1],
 				height: "100%",
 				transition: {
 					y: {
@@ -171,22 +171,7 @@ const NewsCarousel: FC<Props> = ({
 				<motion.div
 					className={styles.item}
 					key={index}
-					// initial={{ x: 0, opacity: 0, height: 0 }}
-					// initial="initial"
-					// animate={{ x: 0, opacity: 1, height: "auto" }}
-					// animate="animate"
-					// animate={direction === "down" ? "animate" : "animateUp"}
-					// transition={{ duration: 1, delay: index * 0.2 }}
-					// transition="transition"
-					// key={index}
-					// exit={{
-					// 	x: -50,
-					// 	opacity: 0,
-					// 	transition: { duration: 1, delay: 0.5 * (5 - index) },
-					// 	height: 0,
-					// }}
-					// variants={shiftVariants}
-					animate={controls}>
+					animate={index === 0 && controls}>
 					<NewsBar
 						id={item?.id}
 						src={item?.imageName}

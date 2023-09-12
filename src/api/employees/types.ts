@@ -44,8 +44,18 @@ export interface APIExistingEmployee {
 	status: APIEmployeeStatus;
 }
 
+export interface APIEmployeeSignature {
+	id: number;
+	imageName?: string;
+}
+
 export interface APIEmployeeStatus {
 	id: number;
 	name: string;
 	nameEnglish: string;
+}
+
+export interface APIUpdateEmployeeSignature {
+	id: Id;
+	thumbnail: File;
 }

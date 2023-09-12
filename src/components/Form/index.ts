@@ -10,5 +10,6 @@ export { default as PasswordForm } from "./PasswordForm";
 export { default as PhoneForm } from "./PhoneForm";
 export { default as ProjectForm } from "./ProjectForm";
 export { default as ProjectUserForm } from "./ProjectUserForm";
+export { default as SignatureForm } from "./SignatureForm";
 export { default as UserForm } from "./UserForm";
 export { default as UserProjectForm } from "./UserProjectForm";

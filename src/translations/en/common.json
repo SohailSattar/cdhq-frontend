@@ -125,7 +125,8 @@
 		"count": "Total Users"
 	},
 	"employee": {
-		"names": "Employees"
+		"names": "Employees",
+		"signature": "Signature"
 	},
 	"project": {
 		"id": "Project Id",
@@ -235,6 +236,7 @@
 		"userDetailUpdated": "User detail has been updated",
 		"passwordUpdated": "Password updated",
 		"passwordNotMatched": "Passwords don't match",
+		"signatureUpdated": "New signature has been updated",
 		"roleUpdated": "Role updated",
 		"privilegeUpdated": "Privilege Updated",
 		"noPrivilegeSelected": "No privilege selected",

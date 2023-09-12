@@ -125,7 +125,8 @@
 		"count": "إجمالي المستخدمين"
 	},
 	"employee": {
-		"names": "الموظفين"
+		"names": "الموظفين",
+		"signature": "التوقيع"
 	},
 	"project": {
 		"id": "رقم النظام",
@@ -235,6 +236,7 @@
 		"userDetailUpdated": "تم تحديث تفاصيل حساب المستخدم",
 		"passwordUpdated": "تم تحديث كلمة السر",
 		"passwordNotMatched": "كلمات السر لا تتطابق",
+		"signatureUpdated": "تم تحديث التوقيع",
 		"roleUpdated": "تم تحديث الدور",
 		"privilegeUpdated": "تم تحديث الامتياز",
 		"noProjectSelected": "لم يتم اختيار أي برنامج",

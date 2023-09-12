@@ -251,6 +251,7 @@ const LandingPage = () => {
 				</div>
 			</div>
 			<br />
+			<br />
 			<Modal
 				isOpen={isNewsTableModalOpen}
 				onClose={modalNewsListCloseHandler}

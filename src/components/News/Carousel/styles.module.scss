@@ -1,5 +1,8 @@
 .newsCaorousal {
-	max-height: unset;
+	max-height: 1200px;
+	position: relative;
+	overflow: hidden;
+	// max-height: unset;
 	transition: 3ms;
 	// border: 1px solid black;
 	.arrowContainer {

@@ -33,19 +33,9 @@ export interface IMenuFormInputs {
 	isExternalLink?: boolean;
 }
 
-export interface IProjectFormInputs {
-	iconName?: string;
-	name: string;
-	nameEnglish: string;
-	parentProject?: DropdownOption;
-	projectGroup: DropdownOption;
-	departmentCategory?: DropdownOption;
-	withAcademy: boolean;
-	hasWorkflow: boolean;
-	pathLink: string;
-	isExternalPath: boolean;
-	thumbnail: File;
-	displayOnDashboard: boolean;
+export interface IEmployeeSignatureFormInputs {
+	thumbnail?: File;
+	imageName: string;
 }
 
 export interface IUserFormInputs {
@@ -60,6 +50,21 @@ export interface IUserFormInputs {
 	rank: DropdownOption;
 	password: string;
 	password2: string;
+}
+
+export interface IProjectFormInputs {
+	iconName?: string;
+	name: string;
+	nameEnglish: string;
+	parentProject?: DropdownOption;
+	projectGroup: DropdownOption;
+	departmentCategory?: DropdownOption;
+	withAcademy: boolean;
+	hasWorkflow: boolean;
+	pathLink: string;
+	isExternalPath: boolean;
+	thumbnail: File;
+	displayOnDashboard: boolean;
 }
 
 interface IUserProjectForm {

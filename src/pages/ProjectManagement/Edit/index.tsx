@@ -140,11 +140,6 @@ const ProjectEditPage = () => {
 			displayOnDashboard,
 		} = values;
 
-		console.log(
-			parentProject,
-			parentProject !== undefined ? parentProject?.value! : undefined
-		);
-
 		const params: APIUpdateProject = {
 			id: id!,
 			name: name,
