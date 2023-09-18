@@ -121,7 +121,6 @@ const UserEditPage = () => {
 		} else {
 			navigate(`${RoutePath.USER}/${loggedUserId}`);
 		}
-		console.log("dasds");
 	}, [id, loggedUserId, navigate]);
 
 	useEffect(() => {

@@ -18,8 +18,6 @@ export async function getDepartmentsByProject(
 
 		const url = `/projects/${projectId}/departments${keyword}`;
 
-		console.log(url);
-
 		const response = await instance.get<APIDepartmentItem[]>(url, config);
 		const data = response.data;
 		return { data };
