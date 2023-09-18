@@ -117,6 +117,18 @@ const UserAccountPage = () => {
 	const columns: Column<UserColumns>[] = useMemo(
 		() => [
 			{
+				id: "actions",
+				accessor: (p) => p,
+				Cell: ({ value }: any) => (
+					<ActionButtons
+						id={""}
+						showView={true}
+						detailPageLink={`${RoutePath.USER}/${value.id}`}
+						editPageLink={`${RoutePath.USER}/${value.id}/edit`}
+					/>
+				),
+			},
+			{
 				Header: id,
 				id: "id",
 				accessor: (p) => p.id,
@@ -174,19 +186,6 @@ const UserAccountPage = () => {
 								? value.activeStatus.nameArabic
 								: value.activeStatus.nameEnglish
 						}
-					/>
-				),
-			},
-			{
-				Header: <div className={styles.tableHeaderCell}>{actions}</div>,
-				id: "actions",
-				accessor: (p) => p,
-				Cell: ({ value }: any) => (
-					<ActionButtons
-						id={""}
-						showView={true}
-						detailPageLink={`${RoutePath.USER}/${value.id}`}
-						editPageLink={`${RoutePath.USER}/${value.id}/edit`}
 					/>
 				),
 			},

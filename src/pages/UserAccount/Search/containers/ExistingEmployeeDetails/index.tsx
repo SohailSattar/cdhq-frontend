@@ -32,7 +32,7 @@ const ExistingEmployeeDetails: FC<Props> = ({ detail, onClick }) => {
 
 	if (language !== "ar") {
 		rank = detail.rank?.name!;
-		name = detail.fullName;
+		name = detail.name;
 		department = detail.department?.name!;
 		className = detail.class?.name!;
 	} else {
@@ -49,7 +49,7 @@ const ExistingEmployeeDetails: FC<Props> = ({ detail, onClick }) => {
 		if (detail.nameEnglish) {
 			name = detail.nameEnglish!;
 		} else {
-			name = detail.fullName;
+			name = detail.name;
 		}
 
 		// Department

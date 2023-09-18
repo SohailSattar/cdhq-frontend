@@ -179,7 +179,8 @@ const UserForm: FC<Props> = ({
 	useEffect(() => {
 		const fetchData = async () => {
 			const { data: dl } = await getDepartmentsByProject(
-				Project.UserManagement
+				Project.UserManagement,
+				true
 			);
 
 			if (dl) {

@@ -127,3 +127,11 @@ export interface APIUpdateUserStatus {
 	userId: string;
 	activeStatusId: number;
 }
+
+export interface APIEmployeeUpdateStatus {
+	updateAvailable: boolean;
+}
+
+export interface APISyncUser {
+	id: string;
+}

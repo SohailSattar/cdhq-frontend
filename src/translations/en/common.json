@@ -229,6 +229,7 @@
 		"noAccountContact": "Don't have an account? Contact the electronic services department",
 		"employeeNotExists": "No employee with this employee number exists! Please contact the Ministry of Interior.",
 		"employeeUserExists": "User already exists. To edit this user, click on this link",
+		"employeeUpdateAvailable": "Employee update is available",
 		"noUserInList": "Not in the list? Click on \"New User\"",
 		"userActivated": "User is now active",
 		"userDeactivated": "The user has been deactivated",

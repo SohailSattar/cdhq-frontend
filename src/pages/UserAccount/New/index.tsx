@@ -81,7 +81,7 @@ const UserNewPage = () => {
 						const {
 							id,
 							employeeNo: empNo,
-							fullName: name,
+							name,
 							nameEnglish,
 							phone,
 							email,

@@ -9,6 +9,7 @@ import { updateRole } from "../../../api/users/update/updateRole";
 import {
 	DeleteConfirmation,
 	IEmployeeSignatureFormInputs,
+	MessageBox,
 	MetaDataDetails,
 	PageContainer,
 	RedirectButton,
@@ -25,6 +26,7 @@ import RoleAssignment from "./containers/RoleAssignment";
 
 import { updateUser } from "../../../api/users/update/updateUser";
 import {
+	APISyncUser,
 	APIUpdateUser,
 	APIUpdateUserStatus,
 	APIUserDetail,
@@ -57,6 +59,8 @@ import {
 } from "../../../api/employees/types";
 import { getEmployeeSignature } from "../../../api/employees/get/getEmployeeSignature";
 import { updateEmployeeSignature } from "../../../api/employees/update/updateEmployeeSignature";
+import { checkEmployeeUpdateStatus } from "../../../api/users/get/checkEmployeeUpdateStatus";
+import { synchronizeUser } from "../../../api/users/update/synchronizeUser";
 
 const UserEditPage = () => {
 	const { id } = useParams<{ id: string }>();
@@ -69,6 +73,8 @@ const UserEditPage = () => {
 	const { id: loggedUserId, role } = useStore((state) => state.loggedInUser);
 
 	const [showModal, setShowModal] = useState(false);
+
+	const [isUpdateAvailable, setIsUpdateAvailable] = useState<boolean>();
 
 	const [isExistingEmployee, setIsExistingEmployee] = useState(true);
 
@@ -89,7 +95,34 @@ const UserEditPage = () => {
 	const [selectedRoleOption, setSelectedRoleOption] =
 		useState<DropdownOption>();
 
-	console.log(role);
+	const fecthUserDetails = useCallback(async () => {
+		const { data, error } = await getUserDetail(id!);
+
+		if (error) {
+			if (error.request.status === 401) {
+				navigate(RoutePath.LOGIN);
+			}
+		}
+
+		if (data) {
+			setUserDetail(data);
+			setStatus(data.activeStatus);
+
+			const { data: isExist } = await checkIfEmployeeExists(data?.id!);
+
+			if (data.role) {
+				setSelectedRoleOption({
+					value: data.role?.id!,
+					label: data?.role?.name!,
+				});
+			}
+
+			setIsExistingEmployee(isExist!);
+		} else {
+			navigate(`${RoutePath.USER}/${loggedUserId}`);
+		}
+		console.log("dasds");
+	}, [id, loggedUserId, navigate]);
 
 	useEffect(() => {
 		// if (
@@ -125,38 +158,39 @@ const UserEditPage = () => {
 				});
 
 				if (privilege?.readPrivilege) {
-					const { data, error } = await getUserDetail(id!);
+					fecthUserDetails();
+					// const { data, error } = await getUserDetail(id!);
 
-					if (error) {
-						if (error.request.status === 401) {
-							navigate(RoutePath.LOGIN);
-						}
-					}
+					// if (error) {
+					// 	if (error.request.status === 401) {
+					// 		navigate(RoutePath.LOGIN);
+					// 	}
+					// }
 
-					if (data) {
-						setUserDetail(data);
-						setStatus(data.activeStatus);
+					// if (data) {
+					// 	setUserDetail(data);
+					// 	setStatus(data.activeStatus);
 
-						const { data: isExist } = await checkIfEmployeeExists(data?.id!);
+					// 	const { data: isExist } = await checkIfEmployeeExists(data?.id!);
 
-						if (data.role) {
-							setSelectedRoleOption({
-								value: data.role?.id!,
-								label: data?.role?.name!,
-							});
-						}
+					// 	if (data.role) {
+					// 		setSelectedRoleOption({
+					// 			value: data.role?.id!,
+					// 			label: data?.role?.name!,
+					// 		});
+					// 	}
 
-						setIsExistingEmployee(isExist!);
-					} else {
-						navigate(`${RoutePath.USER}/${loggedUserId}`);
-					}
+					// 	setIsExistingEmployee(isExist!);
+					// } else {
+					// 	navigate(`${RoutePath.USER}/${loggedUserId}`);
+					// }
 				}
 			}
 		};
 		if (id) {
 			fetchData();
 		}
-	}, [language, id, navigate, role, loggedUserId]);
+	}, [fecthUserDetails, id]);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -172,11 +206,42 @@ const UserEditPage = () => {
 		fetchData();
 	}, [role]);
 
+	// Check if employee's update is available
+	useEffect(() => {
+		const fetchData = async () => {
+			if (role === ROLE.SUPERADMIN || privilege?.updatePrivilege === true) {
+				const { data } = await checkEmployeeUpdateStatus(id!);
+
+				if (data) {
+					setIsUpdateAvailable(data.updateAvailable);
+				}
+			}
+		};
+		if (id) {
+			fetchData();
+		}
+	}, [id, privilege?.updatePrivilege, role]);
+
 	useEffect(() => {
 		setRoleDropdownOptions(
 			roles.map((role) => ({ label: role.name, value: role.id }))
 		);
 	}, [roles]);
+
+	// Synchornize User
+	const synchUserClickHandler = async () => {
+		const params: APISyncUser = { id: id! };
+
+		const { data } = await synchronizeUser(params);
+
+		if (data) {
+			toast.success(
+				t("message.userDetailUpdated", { framework: "React" }).toString()
+			);
+			fecthUserDetails();
+			setIsUpdateAvailable(false);
+		}
+	};
 
 	// User Details tab
 	const updateDetailsClickHandler = async (values: IUserFormInputs) => {
@@ -298,8 +363,6 @@ const UserEditPage = () => {
 				setCanViewSignature(false);
 				return;
 			} else if (role === ROLE.SUPERADMIN || role === ROLE.ADMIN) {
-				console.log(role);
-
 				const { data: signPrivilege, error } =
 					await checkPrivilegeForProjectUser(id!, Project.Signature);
 
@@ -395,6 +458,14 @@ const UserEditPage = () => {
 			onDectivate={deleteButtonClickHandler}
 			displayContent={privilege?.readPrivilege!}>
 			{/* <Status status={status!} /> */}
+			{isUpdateAvailable && (
+				<MessageBox
+					message={t("message.employeeUpdateAvailable", { framework: "React" })}
+					type={"notification"}
+					btnText={t("button.update", { framework: "React" })}
+					onClick={synchUserClickHandler}
+				/>
+			)}
 			<ShadowedContainer>
 				<div>
 					{userDetail?.employeeNo}{" "}
