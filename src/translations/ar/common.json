@@ -79,6 +79,7 @@
 		"more": "المزيد",
 		"backToDetail": "العودة إلى التفاصيل",
 		"backToHome": "العودة الى القائمة الرئيسية ",
+		"back": "العودة",
 		"add": "حفظ",
 		"clear": "افراغ الحقول",
 		"select": "تعديل",
@@ -89,8 +90,9 @@
 		"delete": "حذف",
 		"activate": "تفعيل",
 		"deactivate": "الغاء التفعيل",
+		"synchronize": "سحب البيانات المحدثة",
 		"addNewDepartment": "اضافة ادارة ",
-		"addNewUser": " اضافة مستخدم من خارج الدفاع المدني  ",
+		"addNewUser": "اضافة مستخدم جديد",
 		"addNewProject": "اضافة نظام جديد ",
 		"hierarchy": "الهيكل التنظيمي",
 		"assign": "تعيين",
@@ -127,6 +129,9 @@
 	"employee": {
 		"names": "الموظفين",
 		"signature": "التوقيع"
+	},
+	"link": {
+		"addNewUser": "اضافة مستخدم من خارج الدفاع المدني"
 	},
 	"project": {
 		"id": "رقم النظام",
@@ -229,7 +234,7 @@
 		"noAccountContact": "ليس لديك حساب؟ اتصل بقسم الخدمات الألكترونية",
 		"employeeNotExists": "لا يوجد موظف بهذا الرقم ! الرجاء الاتصال بوزارة الداخلية",
 		"employeeUserExists": "المستخدم موجود من قبل . لتعديل هذا المستخدم ، انقر فوق هذا الارتباط",
-		"employeeUpdateAvailable": "Employee update is available",
+		"employeeUpdateAvailable": "توجد تحديثات في بيانات الموظف",
 		"noUserInList": "لست في القائمة أو مستخدم جديد ؟",
 		"userActivated": " تم تفعيل حساب المستخدم ",
 		"userDeactivated": "تم إلغاء تفعيل حساب المستخدم",

@@ -72,7 +72,9 @@ const HomePage = () => {
 					if (loggedInUser.role === ROLE.USER) {
 						const objIndex = projectsList.findIndex((obj) => obj.id === 110);
 
-						projectsList[objIndex].isAvailable = false;
+						if (objIndex !== -1) {
+							projectsList[objIndex].isAvailable = false;
+						}
 					}
 
 					setProjects(projectsList);

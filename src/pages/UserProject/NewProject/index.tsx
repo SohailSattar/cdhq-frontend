@@ -87,8 +87,8 @@ const AssignProjectToUserPage = () => {
 			lockFor={[ROLE.USER]}
 			displayContent={true}
 			showBackButton
-			btnBackUrlLink={`${RoutePath.USER_DETAIL.replace(":id", id!)}`}
-			btnBackLabel={t("button.backToDetail", { framework: "React" })}>
+			btnBackUrlLink={`${RoutePath.USER_EDIT.replace(RoutePath.ID, id!)}`}
+			btnBackLabel={t("button.back", { framework: "React" })}>
 			<UserProjectForm
 				isNormalUser={isNormalUser}
 				title={t("message.userProjectAdd", { framework: "React" })}

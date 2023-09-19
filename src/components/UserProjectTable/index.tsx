@@ -12,6 +12,7 @@ import styles from "./styles.module.scss";
 import {
 	ActiveStatus,
 	DeleteConfirmation,
+	PaginatedTable,
 	Pagination,
 	ProjectSummary,
 	SearchBox,
@@ -22,6 +23,8 @@ import {
 import { deleteProject } from "../../api/users/delete/deleteProject";
 import { toast } from "react-toastify";
 import { APIProjectStatus } from "../../api/userProjects/types";
+import { DropdownOption } from "../Dropdown";
+import { Id } from "../../utils";
 
 interface Props {
 	id: string;
@@ -49,7 +52,11 @@ const UserProjectTable: FC<Props> = ({
 
 	const [currentPage, setCurrentPage] = useState(1);
 	const [totalCount, setTotalCount] = useState(0);
-	const pageSize = 50;
+	const [pageSize, setPageSize] = useState<number>(50);
+
+	const [statusCode, setStatusCode] = useState<Id>(1);
+
+	// const pageSize = 50;
 
 	const fetchProjects = useMemo(
 		() => async (id: string) => {
@@ -57,7 +64,8 @@ const UserProjectTable: FC<Props> = ({
 				id!,
 				currentPage,
 				pageSize,
-				keyword
+				keyword,
+				statusCode
 			);
 
 			if (data) {
@@ -90,7 +98,7 @@ const UserProjectTable: FC<Props> = ({
 				);
 			}
 		},
-		[currentPage, keyword, language]
+		[currentPage, keyword, language, pageSize, statusCode]
 	);
 
 	useEffect(() => {
@@ -300,14 +308,39 @@ const UserProjectTable: FC<Props> = ({
 		setIsModalOpen(false);
 	};
 
+	const statusChangeHandler = (option: DropdownOption) => {
+		setStatusCode(+option.value);
+	};
+
+	// Dropdown selection handlers
+	const pageViewSelectionHandler = (option: DropdownOption) => {
+		const size = +option.value;
+
+		setPageSize(size);
+	};
+
 	const pageChangeHandler = (pageNumber: number) => {
 		setCurrentPage(pageNumber);
 	};
 
 	return (
 		<>
-			<SearchBox onClick={searchClickHandler} />
-			<TotalCount
+			<PaginatedTable
+				totalCountText={t("project.count", { framework: "React" })}
+				totalCount={totalCount}
+				pageSize={pageSize}
+				data={projects}
+				columns={columns}
+				noRecordText={t("table.noProject", { framework: "React" })}
+				onSearch={searchClickHandler}
+				onTableSort={() => {}}
+				onPageChange={(page) => pageChangeHandler(page)}
+				onPageViewSelectionChange={pageViewSelectionHandler}
+				onActiveStatusOptionSelectionChange={statusChangeHandler}
+				hideWorkflowStatusDropdown={true}
+			/>
+			{/*<SearchBox onClick={searchClickHandler} />
+			 <TotalCount
 				label={t("project.count", { framework: "React" })}
 				count={totalCount}
 			/>
@@ -323,7 +356,7 @@ const UserProjectTable: FC<Props> = ({
 				totalCount={totalCount}
 				pageSize={pageSize}
 				onPageChange={(page) => pageChangeHandler(page)}
-			/>
+			/> */}
 
 			<DeleteConfirmation
 				isOpen={isModalOpen}

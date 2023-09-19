@@ -74,6 +74,8 @@ export interface APIUserProjectDetail {
 	canGrant: boolean;
 	createdBy?: string;
 	createdOn: string;
+	updatedBy?: string;
+	updatedOn?: string;
 }
 
 export interface APIUserProjectDetail2 {

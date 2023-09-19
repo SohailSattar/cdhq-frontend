@@ -64,7 +64,6 @@ const ActionButtons: FC<Props> = ({
 						<RedirectButton
 							label={t("button.view", { framework: "React" })}
 							redirectTo={detailPageLink}
-							openInNewTab
 						/>
 					</div>
 				)}
@@ -74,7 +73,6 @@ const ActionButtons: FC<Props> = ({
 							<RedirectButton
 								label={t("button.edit", { framework: "React" })}
 								redirectTo={editPageLink!}
-								openInNewTab
 							/>
 						) : (
 							<Button onClick={onEditClick}>

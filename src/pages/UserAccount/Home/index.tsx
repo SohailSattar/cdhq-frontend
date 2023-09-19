@@ -56,7 +56,7 @@ const UserAccountPage = () => {
 	const [selectedRole, setSelectedRole] = useState<Id>();
 	const [selectedProject, setSelectedProject] = useState<Id>();
 	// This variable is to set the status code which we can pass to the API
-	const [selectedStatusCode, setSelectedStatusCode] = useState<Id>();
+	const [selectedStatusCode, setSelectedStatusCode] = useState<Id>(1);
 	const [orderBy, setOrderBy] = useState<string>("");
 
 	const [privileges, setPrivileges] = useState<APIPrivileges>();
@@ -122,9 +122,10 @@ const UserAccountPage = () => {
 				Cell: ({ value }: any) => (
 					<ActionButtons
 						id={""}
-						showView={true}
+						// showView={true}
 						detailPageLink={`${RoutePath.USER}/${value.id}`}
 						editPageLink={`${RoutePath.USER}/${value.id}/edit`}
+						showEdit={true}
 					/>
 				),
 			},
@@ -190,7 +191,7 @@ const UserAccountPage = () => {
 				),
 			},
 		],
-		[actions, department, employeeNo, fullName, id, language, logName, status]
+		[department, employeeNo, fullName, id, language, logName, status]
 	);
 
 	// New maybe
@@ -361,12 +362,12 @@ const UserAccountPage = () => {
 			btnAddUrlLink={RoutePath.USER_SEARCH}>
 			<div className={styles.content}>
 				<div>
-					<ShadowedContainer
+					{/* <ShadowedContainer
 						className={language === "ar" ? styles.filterLTR : styles.filter}>
 						<Button onClick={filterByDepartmentClickHandler}>
 							{t("filter.byDepartment", { framework: "React" })}
 						</Button>
-					</ShadowedContainer>
+					</ShadowedContainer> */}
 					<ShadowedContainer
 						className={
 							language === "ar" ? styles.hierarchyLTR : styles.hierarchy

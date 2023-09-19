@@ -79,6 +79,7 @@
 		"more": "More",
 		"backToDetail": "Back to details",
 		"backToHome": "Back to home",
+		"back": "Back",
 		"add": "Add",
 		"clear": "Clear",
 		"select": "Select",
@@ -89,6 +90,7 @@
 		"delete": "Delete",
 		"activate": "Activate",
 		"deactivate": "Deactivate",
+		"synchronize": "Synchronize",
 		"addNewDepartment": "New Department",
 		"addNewUser": "New User",
 		"addNewProject": "New Project",
@@ -127,6 +129,9 @@
 	"employee": {
 		"names": "Employees",
 		"signature": "Signature"
+	},
+	"link": {
+		"addNewUser": "Add new User"
 	},
 	"project": {
 		"id": "Project Id",

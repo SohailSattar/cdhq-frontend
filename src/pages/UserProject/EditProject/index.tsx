@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
 	IUserProjectFormInputs,
+	MetaDataDetails,
 	PageContainer,
 	UserProjectForm,
 } from "../../../components";
@@ -158,8 +159,8 @@ const UserProjectEditPage = () => {
 			showBackButton
 			displayContent={privilege?.updatePrivilege}
 			// TO DO - ADD LOGIC
-			btnBackLabel={t("button.backToDetail", { framework: "React" })}
-			btnBackUrlLink={`${RoutePath.USER}/${userId}`}>
+			btnBackLabel={t("button.back", { framework: "React" })}
+			btnBackUrlLink={`${RoutePath.USER_EDIT.replace(RoutePath.ID, userId!)}`}>
 			{!showCard ? (
 				<UserProjectForm
 					id={userProjectId}
@@ -172,6 +173,12 @@ const UserProjectEditPage = () => {
 			) : (
 				<UserProjectPreview data={userProject!} />
 			)}
+			<MetaDataDetails
+				createdBy={userProject?.createdBy!}
+				createdOn={userProject?.createdOn!}
+				updatedBy={userProject?.updatedBy!}
+				updatedOn={userProject?.updatedOn}
+			/>
 		</PageContainer>
 	);
 };

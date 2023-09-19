@@ -155,7 +155,7 @@ const UserSearchPage = () => {
 					<Link
 						to={RoutePath.USER_NEW}
 						className={styles.link}>
-						{t("button.addNewUser", { framework: "React" })}
+						{t("link.addNewUser", { framework: "React" })}
 					</Link>
 				</ShadowedContainer>
 			)}

@@ -447,8 +447,8 @@ const UserEditPage = () => {
 		<PageContainer
 			title={t("page.userEdit", { framework: "React" })}
 			showBackButton
-			btnBackLabel={t("button.backToDetail", { framework: "React" })}
-			btnBackUrlLink={`${RoutePath.USER}/${id}`}
+			btnBackLabel={t("button.backToHome", { framework: "React" })}
+			btnBackUrlLink={`${RoutePath.USER}`}
 			showChangeStatusButton={
 				privilege?.privilegeId !== 999 && privilege?.updatePrivilege
 			}
@@ -461,7 +461,7 @@ const UserEditPage = () => {
 				<MessageBox
 					message={t("message.employeeUpdateAvailable", { framework: "React" })}
 					type={"notification"}
-					btnText={t("button.update", { framework: "React" })}
+					btnText={t("button.synchronize", { framework: "React" })}
 					onClick={synchUserClickHandler}
 				/>
 			)}

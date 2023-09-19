@@ -39,7 +39,7 @@ const ProjectManagementPage = () => {
 	const [toggleSort, setToggleSort] = useState(false);
 
 	// This variable is to set the status code which we can pass to the API
-	const [selectedStatusCode, setSelectedStatusCode] = useState<Id>();
+	const [selectedStatusCode, setSelectedStatusCode] = useState<Id>(1);
 
 	const id = t("project.id", { framework: "React" });
 	const projectName = t("project.name", { framework: "React" });
