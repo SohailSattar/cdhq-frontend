@@ -218,7 +218,7 @@ const UserProjectTable: FC<Props> = ({
 			accessor: (p) => p.activeStatus,
 			Cell: ({ value }: any) => (
 				<ActiveStatus
-					code={value}
+					code={value === 1 ? 1 : 9}
 					text={language !== "ar" ? value.nameArabic : value.nameEnglish}
 				/>
 			),
@@ -232,7 +232,7 @@ const UserProjectTable: FC<Props> = ({
 					<div className={styles.btnDiv}>
 						<Button onClick={(id) => editClickHandler(value.id)}>{edit}</Button>
 					</div>
-					{value.activeStatus === 8 || value.activeStatus === 9 ? (
+					{value.activeStatus !== 1 ? (
 						<div className={styles.btnDiv}>
 							<Button onClick={(id) => activateClickHandler(value.id)}>
 								{activate}
@@ -309,7 +309,9 @@ const UserProjectTable: FC<Props> = ({
 	};
 
 	const statusChangeHandler = (option: DropdownOption) => {
-		setStatusCode(+option.value);
+		if (option) {
+			setStatusCode(+option.value);
+		}
 	};
 
 	// Dropdown selection handlers
