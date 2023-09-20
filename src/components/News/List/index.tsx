@@ -104,6 +104,7 @@ const TableList: FC<Props> = ({ onViewClick }) => {
 			noRecordText={t("table.noNews", { framework: "React" })}
 			onActiveStatusOptionSelectionChange={() => {}}
 			onWorkflowStatusOptionSelectionChange={() => {}}
+			hideActiveStatusDropdown
 			hideWorkflowStatusDropdown
 		/>
 	);
