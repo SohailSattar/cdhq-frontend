@@ -277,7 +277,7 @@ const UserProjectForm: FC<Props> = ({
 					)!;
 
 					const label = `${selected.sequenceNumber} - ${
-						language != "ar" ? selected.name : selected.nameEnglish
+						language !== "ar" ? selected.name : selected.nameEnglish
 					}`;
 
 					setValue("privilege", {
@@ -486,9 +486,9 @@ const UserProjectForm: FC<Props> = ({
 				return { label: label, value: x.id };
 			});
 
-			if (role !== ROLE.SUPERADMIN) {
-				setWorkflowRangeOptions(options);
-			}
+			// if (role !== ROLE.SUPERADMIN) {
+			// 	setWorkflowRangeOptions(options);
+			// }
 
 			// Workflow Start
 			const selectedWorkflowStart = options.find((x) => x.value === start);
@@ -704,9 +704,7 @@ const UserProjectForm: FC<Props> = ({
 					privId = data!.privilege.sequenceNumber;
 				}
 
-				fetchPrivileges(privId!);
-
-				// setValue("department", { label: "Test", value: "1" });
+				// fetchPrivileges(privId!);
 			}
 		};
 

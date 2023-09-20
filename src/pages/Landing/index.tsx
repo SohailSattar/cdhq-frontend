@@ -190,6 +190,8 @@ const LandingPage = () => {
 		setIsModalOpen(false);
 	};
 
+	console.log(empOfMonthCardsList.length);
+
 	return (
 		<div className={styles.landingPage}>
 			<div className={styles.newsMarquee}>
@@ -202,52 +204,64 @@ const LandingPage = () => {
 			</div>
 			<div className={clsx("row", styles.container)}>
 				<div className={clsx("col-2", styles.sideBar)}>
-					<DisplayCard
-						title={t("dashboard.employeeOfMonth", { framework: "React" })}
-						className={styles.sideBarCard}>
-						<CardsCarousel data={empOfMonthCardsList} />
-					</DisplayCard>
-					<DisplayCard
-						title={t("creation.imageType.fireDepartment", {
-							framework: "React",
-						})}
-						className={styles.sideBarCard}>
-						<CardsCarousel data={fireDeptCardsList} />
-					</DisplayCard>
-					<DisplayCard
-						title={t("creation.imageType.servicesDepartment", {
-							framework: "React",
-						})}
-						className={styles.sideBarCard}>
-						<CardsCarousel
-							data={servicesDeptCardsList}
-							showRating
-						/>
-					</DisplayCard>
+					{empOfMonthCardsList.length > 0 && (
+						<DisplayCard
+							title={t("dashboard.employeeOfMonth", { framework: "React" })}
+							className={styles.sideBarCard}>
+							<CardsCarousel data={empOfMonthCardsList} />
+						</DisplayCard>
+					)}
+					{fireDeptCardsList.length > 0 && (
+						<DisplayCard
+							title={t("creation.imageType.fireDepartment", {
+								framework: "React",
+							})}
+							className={styles.sideBarCard}>
+							<CardsCarousel data={fireDeptCardsList} />
+						</DisplayCard>
+					)}
+					{servicesDeptCardsList.length > 0 && (
+						<DisplayCard
+							title={t("creation.imageType.servicesDepartment", {
+								framework: "React",
+							})}
+							className={styles.sideBarCard}>
+							<CardsCarousel
+								data={servicesDeptCardsList}
+								showRating
+							/>
+						</DisplayCard>
+					)}
 				</div>
 
 				<div className={clsx("col-8", styles.centerContainer)}>
-					<NewsCarousel
-						list={news}
-						intervalInMiliseconds={5000}
-						onViewClick={newsDetailClickHandler}
-						onTableViewClick={newsListButtonClickHandler!}
-					/>
+					{news.length > 0 && (
+						<NewsCarousel
+							list={news}
+							intervalInMiliseconds={5000}
+							onViewClick={newsDetailClickHandler}
+							onTableViewClick={newsListButtonClickHandler!}
+						/>
+					)}
 				</div>
 
 				<div className={clsx("col-2", styles.sideBar)}>
-					<DisplayCard
-						title={t("dashboard.honors", { framework: "React" })}
-						className={styles.sideBarCard}>
-						<CardsCarousel data={skilledEmpsCardsList} />
-					</DisplayCard>
-					<DisplayCard
-						title={t("creation.imageType.creation", {
-							framework: "React",
-						})}
-						className={styles.sideBarCard}>
-						<CardsCarousel data={creationsCardsList} />
-					</DisplayCard>
+					{skilledEmpsCardsList.length > 0 && (
+						<DisplayCard
+							title={t("dashboard.honors", { framework: "React" })}
+							className={styles.sideBarCard}>
+							<CardsCarousel data={skilledEmpsCardsList} />
+						</DisplayCard>
+					)}
+					{creationsCardsList.length > 0 && (
+						<DisplayCard
+							title={t("creation.imageType.creation", {
+								framework: "React",
+							})}
+							className={styles.sideBarCard}>
+							<CardsCarousel data={creationsCardsList} />
+						</DisplayCard>
+					)}
 				</div>
 			</div>
 			<br />

@@ -329,6 +329,7 @@ const UserAccountPage = () => {
 	const roleSelectHandler = useMemo(
 		() => (option: DropdownOption) => {
 			setSelectedRole(option?.value!);
+			setCurrentPage(1);
 		},
 		[]
 	);
@@ -336,6 +337,7 @@ const UserAccountPage = () => {
 	const projectSelectionHandler = useMemo(
 		() => (option: DropdownOption) => {
 			setSelectedProject(option?.value!);
+			setCurrentPage(1);
 		},
 		[]
 	);
@@ -345,8 +347,9 @@ const UserAccountPage = () => {
 			if (option) {
 				setSelectedStatusCode((prevState) => (prevState = option?.value!));
 			} else {
-				setSelectedStatusCode("");
+				setSelectedStatusCode(1);
 			}
+			setCurrentPage(1);
 		},
 		[]
 	);

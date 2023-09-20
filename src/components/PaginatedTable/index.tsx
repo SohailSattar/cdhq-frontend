@@ -123,7 +123,7 @@ const PaginatedTable: FC<Props> = ({
 				setProjectOptions(
 					list?.map((x) => {
 						return {
-							label: language !== "ar" ? x.name : x.nameEnglish,
+							label: `${x.id} - ${language !== "ar" ? x.name : x.nameEnglish}`,
 							value: x.id,
 						};
 					})
