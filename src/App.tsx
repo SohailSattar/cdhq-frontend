@@ -50,9 +50,28 @@ import { Project } from "./data/projects";
 import { Worker } from "@react-pdf-viewer/core";
 
 import styles from "./styles.module.scss";
+import { useEffect } from "react";
 
 function App() {
 	const language = useStore((state) => state.language);
+
+	// Your token storage key (e.g., 'authToken')
+	const tokenKey = "token";
+
+	useEffect(() => {
+		// Function to clear the token from local storage
+		const clearToken = () => {
+			localStorage.removeItem(tokenKey);
+		};
+
+		// Add an event listener for beforeunload
+		window.addEventListener("beforeunload", clearToken);
+
+		// Clean up the event listener when the component unmounts
+		return () => {
+			window.removeEventListener("beforeunload", clearToken);
+		};
+	}, []); // Empty dependency array to ensure the effect runs once
 
 	return (
 		<div className={styles.app}>
