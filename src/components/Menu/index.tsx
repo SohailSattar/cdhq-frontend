@@ -9,8 +9,7 @@ import Navbar from "react-bootstrap/Navbar";
 
 import Button from "react-bootstrap/Button";
 
-import NavDropdown from "react-bootstrap/NavDropdown";
-import { ChangeLanguage, Logout, NavMenuList, RedirectButton } from "..";
+import { ChangeLanguage, Logout, NavMenuList } from "..";
 import * as RoutePath from "../../RouteConfig";
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
@@ -19,8 +18,9 @@ import { getMenuList } from "../../api/menu/get/getMenuList";
 import { APIMenuListItem } from "../../api/menu/types";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { useStore } from "../../utils/store";
-import localStorageService from "../../network/localStorageService";
 import { checkLoginStatus } from "../../api/login/get/checkLoginStatus";
+
+import HeaderLogo from "../../assets/images/header_login.png";
 
 import HouseLogo from "../../assets/icons/white-home-icon.png";
 
@@ -110,13 +110,13 @@ const Menu: FC<Props> = ({ title }) => {
 			<div
 				// style={{
 				// 	backgroundImage:
-				// 		"url('https://img.freepik.com/free-vector/stylish-line-pattern-background_361591-1174.jpg?w=1060&t=st=1678781765~exp=1678782365~hmac=19b909311ac8659a13999ac8a681f622df04f5915a8162d285207b3e70622742')",
+				// 		"url()",
 				// }}
-				className={styles.nav}>
-				{/* <img
-					src="/portal/static/media/moi-logo.svg"
+				className={styles.navLogo}>
+				<img
+					src={HeaderLogo}
 					alt="text"
-				/> */}
+				/>
 			</div>
 			<div className={styles.Menu}>
 				<Navbar expand="lg">

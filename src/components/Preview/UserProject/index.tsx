@@ -27,7 +27,7 @@ const UserProjectPreview: FC<Props> = ({ data }) => {
 						{t("project.name", { framework: "React" })}
 					</div>
 					<div className={styles.value}>
-						{language != "ar" ? project.name : project.nameEnglish}
+						{language !== "ar" ? project?.name! : project?.nameEnglish!}
 					</div>
 				</div>
 			</div>
@@ -38,9 +38,9 @@ const UserProjectPreview: FC<Props> = ({ data }) => {
 						{t("department.name", { framework: "React" })}
 					</div>
 					<div className={styles.value}>
-						{language != "ar"
-							? department.longFullName
-							: department.longFullNameEnglish}
+						{language !== "ar"
+							? department?.longFullName!
+							: department?.longFullNameEnglish!}
 					</div>
 				</div>
 				{/* <div className={styles.rowItem}>
@@ -65,9 +65,9 @@ const UserProjectPreview: FC<Props> = ({ data }) => {
 						{t("privilege.name", { framework: "React" })}
 					</div>
 					<div className={styles.value}>
-						{language != "ar"
-							? data?.privilege.name
-							: data?.privilege.nameEnglish}
+						{language !== "ar"
+							? data?.privilege?.name!
+							: data?.privilege?.nameEnglish!}
 					</div>
 				</div>
 			</div>
@@ -77,9 +77,9 @@ const UserProjectPreview: FC<Props> = ({ data }) => {
 						{t("userProject.workflowStart", { framework: "React" })}
 					</div>
 					<div className={styles.value}>
-						{language != "ar"
-							? data.workflowStartFrom.nameArabic
-							: data.workflowStartFrom.nameEnglish}
+						{language !== "ar"
+							? data.workflowStartFrom?.nameArabic!
+							: data.workflowStartFrom?.nameEnglish!}
 					</div>
 				</div>
 				<div className={styles.rowItem}>
@@ -87,9 +87,9 @@ const UserProjectPreview: FC<Props> = ({ data }) => {
 						{t("userProject.workflowStart", { framework: "React" })}
 					</div>
 					<div className={styles.value}>
-						{language != "ar"
-							? data.workflowEndTo.nameArabic
-							: data.workflowEndTo.nameEnglish}
+						{language !== "ar"
+							? data.workflowEndTo?.nameArabic!
+							: data.workflowEndTo?.nameEnglish!}
 					</div>
 				</div>
 			</div>

@@ -190,8 +190,6 @@ const LandingPage = () => {
 		setIsModalOpen(false);
 	};
 
-	console.log(empOfMonthCardsList.length);
-
 	return (
 		<div className={styles.landingPage}>
 			<div className={styles.newsMarquee}>

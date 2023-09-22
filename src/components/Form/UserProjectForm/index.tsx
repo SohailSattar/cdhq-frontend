@@ -210,7 +210,8 @@ const UserProjectForm: FC<Props> = ({
 			if (list) {
 				setProjectOptions(
 					list?.map((project: APIProjectItem) => {
-						const name = language !== "ar" ? project.name : project.nameEnglish;
+						const name =
+							language !== "ar" ? project?.name : project?.nameEnglish;
 
 						return {
 							label: `${project.id}`.concat(" - ", name),
@@ -260,7 +261,7 @@ const UserProjectForm: FC<Props> = ({
 				setPrivilegeOptions(
 					data?.map((privilege: APIPrivilege) => {
 						const name = `${privilege.sequenceNumber} - ${
-							language !== "ar" ? privilege.name : privilege.nameEnglish
+							language !== "ar" ? privilege.name : privilege?.nameEnglish
 						}`;
 						return {
 							label: name,
@@ -277,7 +278,7 @@ const UserProjectForm: FC<Props> = ({
 					)!;
 
 					const label = `${selected.sequenceNumber} - ${
-						language !== "ar" ? selected.name : selected.nameEnglish
+						language !== "ar" ? selected.name : selected?.nameEnglish
 					}`;
 
 					setValue("privilege", {
@@ -305,7 +306,7 @@ const UserProjectForm: FC<Props> = ({
 				setWorkflowRangeOptions(
 					data?.map((status: APIActiveStatus) => {
 						const name = `${status.id} - ${
-							language !== "ar" ? status.nameArabic : status.nameEnglish
+							language !== "ar" ? status.nameArabic : status?.nameEnglish
 						}`;
 						return {
 							label: name,
@@ -476,6 +477,10 @@ const UserProjectForm: FC<Props> = ({
 	// Workflow Details
 	const fetchWorkflow = useMemo(
 		() => async (start: number, end: number) => {
+			if (end > start) {
+				end = 1;
+			}
+
 			const range = workflowList.filter((x) => x.id >= end && x.id <= start);
 
 			const options: DropdownOption[] = range.map((x) => {
@@ -486,9 +491,9 @@ const UserProjectForm: FC<Props> = ({
 				return { label: label, value: x.id };
 			});
 
-			// if (role !== ROLE.SUPERADMIN) {
-			// 	setWorkflowRangeOptions(options);
-			// }
+			if (role !== ROLE.SUPERADMIN) {
+				setWorkflowRangeOptions(options);
+			}
 
 			// Workflow Start
 			const selectedWorkflowStart = options.find((x) => x.value === start);
@@ -510,152 +515,176 @@ const UserProjectForm: FC<Props> = ({
 	);
 
 	useEffect(() => {
-		// Project
-		register("project", {
-			required: "Project is required.",
-		});
-
-		// Privilege
-		register("privilege", {
-			required: "Privilege is required.",
-		});
-
-		// Workflow
-		register("workflowStart", {
-			required: "Workflow starts from is required.",
-		});
-
-		register("workflowEnd", {
-			required: "Workflow ends at is required.",
-		});
-
-		// Department
-		register("department", {
-			required: "Department is required.",
-		});
-
-		// Department Structure Type
-		register("structureType", {
-			required: "Structure type is required.",
-		});
-
-		setValue("structureType", departmentTypeOptions[0]);
-		setShowDeleteButton(false);
-
-		if (data) {
-			const {
-				project,
-				privilege,
-				workflowStartFrom,
-				workflowEndTo,
-				department,
-				departmentStructureType,
-				canGrant,
-			} = data;
-
+		const initialProcess = async () => {
 			// Project
-			const selectedProject = projectOptions.find(
-				(x) => x.value === project.id
-			);
-
-			fetchDepartments(project.id);
-
-			setValue("project", selectedProject!);
-
-			if (role === ROLE.SUPERADMIN) {
-				if (selectedProject?.value! === Project.UserManagement) {
-					setHideCanGrant(true);
-				} else {
-					setHideCanGrant(false);
-				}
-			} else {
-				setHideCanGrant(true);
-			}
-
-			// const selectedDepartment = departmentsList.find(
-			// 	(x) => x.id === department.id
-			// )!;
-
-			// setValue("department", {
-			// 	label:
-			// 		language !== "ar"
-			// 			? selectedDepartment?.id + " - " + selectedDepartment?.longFullName
-			// 			: selectedDepartment?.id +
-			// 			  " - " +
-			// 			  selectedDepartment?.longFullNameEnglish,
-			// 	value: selectedDepartment?.id!,
-			// });
-			// console.log(selectedDepartment);
-
-			const selectedDepartment = departmentsOptions.find(
-				(x) => x.value === department.id
-			)!;
-
-			setValue("department", selectedDepartment!);
+			register("project", {
+				required: "Project is required.",
+			});
 
 			// Privilege
-
-			const selectedPrivilege = privilegeOptions.find(
-				(x) => x.value === privilege?.sequenceNumber!
-			);
-			setValue("privilege", selectedPrivilege!);
+			register("privilege", {
+				required: "Privilege is required.",
+			});
 
 			// Workflow
-			if (project.hasWorkflow! === false) {
-				setDisableWorkflow(true);
-			} else {
-				if (disableWorkflow === true) {
-					setDisableWorkflow(false);
+			register("workflowStart", {
+				required: "Workflow starts from is required.",
+			});
+
+			register("workflowEnd", {
+				required: "Workflow ends at is required.",
+			});
+
+			// Department
+			register("department", {
+				required: "Department is required.",
+			});
+
+			// Department Structure Type
+			register("structureType", {
+				required: "Structure type is required.",
+			});
+
+			setValue("structureType", departmentTypeOptions[0]);
+			setShowDeleteButton(false);
+
+			if (data) {
+				const {
+					project,
+					privilege,
+					workflowStartFrom,
+					workflowEndTo,
+					department,
+					departmentStructureType,
+					canGrant,
+				} = data;
+
+				// Project
+				const selectedProject = projectOptions.find(
+					(x) => x.value === project.id
+				);
+
+				fetchDepartments(project.id);
+
+				setValue("project", selectedProject!);
+
+				if (role === ROLE.SUPERADMIN) {
+					if (selectedProject?.value! === Project.UserManagement) {
+						setHideCanGrant(true);
+					} else {
+						setHideCanGrant(false);
+					}
+				} else {
+					setHideCanGrant(true);
 				}
+
+				// const selectedDepartment = departmentsList.find(
+				// 	(x) => x.id === department.id
+				// )!;
+
+				// setValue("department", {
+				// 	label:
+				// 		language !== "ar"
+				// 			? selectedDepartment?.id + " - " + selectedDepartment?.longFullName
+				// 			: selectedDepartment?.id +
+				// 			  " - " +
+				// 			  selectedDepartment?.longFullNameEnglish,
+				// 	value: selectedDepartment?.id!,
+				// });
+				// console.log(selectedDepartment);
+
+				const selectedDepartment = departmentsOptions.find(
+					(x) => x.value === department.id
+				)!;
+
+				setValue("department", selectedDepartment!);
+
+				// Privilege
+
+				const selectedPrivilege = privilegeOptions.find(
+					(x) => x.value === privilege?.sequenceNumber!
+				);
+				setValue("privilege", selectedPrivilege!);
+
+				// Workflow
+				if (project.hasWorkflow! === false) {
+					setDisableWorkflow(true);
+				} else {
+					if (disableWorkflow === true) {
+						setDisableWorkflow(false);
+					}
+				}
+
+				if (project.hasWorkflow !== false) {
+					const { data: up } = await getUserProjectByDepartment(
+						project?.id!,
+						department?.id!
+					);
+
+					if (up) {
+						const start = up.workflowStartFrom.id!;
+						const end = up.workflowEndTo.id!;
+
+						fetchWorkflow(+start, +end);
+					} else {
+						const start = data.workflowStartFrom.id!;
+						const end = data.workflowEndTo.id!;
+
+						fetchWorkflow(+start, +end);
+					}
+
+					// const start = data.workflowStartFrom.id!;
+					// const end = data.workflowEndTo.id!;
+
+					// fetchWorkflow(+start, +end);
+				}
+
+				const selectedWorkflowStart = workflowList.find(
+					(x) => x.id === workflowStartFrom?.id!
+				);
+
+				const lblWFS = `${selectedWorkflowStart?.id!} - ${
+					language !== "ar"
+						? selectedWorkflowStart?.nameArabic
+						: selectedWorkflowStart?.nameEnglish!
+				}`;
+
+				setValue("workflowStart", {
+					label: lblWFS,
+					value: selectedWorkflowStart?.id!,
+				});
+
+				const selectedWorkflowEnd = workflowRangeOptions.find(
+					(x) => x.value === workflowEndTo?.id!
+				);
+				setValue("workflowEnd", selectedWorkflowEnd!);
+
+				// fetchPrivileges(data!.privilege.sequenceNumber);
+
+				const selectedStructureType = departmentTypeOptions.find(
+					(x) => x.value === departmentStructureType.toString()
+				);
+				setValue("structureType", selectedStructureType!);
+
+				setValue("canGrant", canGrant);
+
+				setShowDeleteButton(true);
 			}
 
-			const selectedWorkflowStart = workflowList.find(
-				(x) => x.id === workflowStartFrom?.id!
-			);
+			// if (selectedProjectOption) {
+			// 	const { meta: hasHierarchy } = selectedProjectOption!; //.meta!;
 
-			// const lblWFS = `${selectedWorkflowStart?.id!} - ${
-			// 	language != "ar"
-			// 		? selectedWorkflowStart?.nameArabic
-			// 		: selectedWorkflowStart?.nameEnglish!
-			// }`;
+			// 	if (hasHierarchy === false) {
+			// 		setDisableWorkflow(true);
+			// 	} else {
+			// 		setDisableWorkflow(false);
+			// 	}
 
-			// setValue("workflowStart", {
-			// 	label: lblWFS,
-			// 	value: selectedWorkflowStart?.id!,
-			// });
+			// 	setIsPrivilegeDisabled(false);
+			// }
+		};
 
-			// const selectedWorkflowEnd = workflowRangeOptions.find(
-			// 	(x) => x.value === workflowEndTo?.id!
-			// );
-			// setValue("workflowEnd", selectedWorkflowEnd!);
-
-			const start = data.workflowStartFrom.id!;
-			const end = data.workflowEndTo.id!;
-
-			// fetchWorkflow(+start, +end);
-			// fetchPrivileges(data!.privilege.sequenceNumber);
-
-			const selectedStructureType = departmentTypeOptions.find(
-				(x) => x.value === departmentStructureType.toString()
-			);
-			setValue("structureType", selectedStructureType!);
-
-			setValue("canGrant", canGrant);
-
-			setShowDeleteButton(true);
-		}
-
-		// if (selectedProjectOption) {
-		// 	const { meta: hasHierarchy } = selectedProjectOption!; //.meta!;
-
-		// 	if (hasHierarchy === false) {
-		// 		setDisableWorkflow(true);
-		// 	} else {
-		// 		setDisableWorkflow(false);
-		// 	}
-
-		// 	setIsPrivilegeDisabled(false);
-		// }
+		initialProcess();
 	}, [
 		data,
 		setData,
@@ -681,10 +710,10 @@ const UserProjectForm: FC<Props> = ({
 				)!;
 
 				setValue("department", selectedDepartment!);
-				const start = data.workflowStartFrom.id!;
-				const end = data.workflowEndTo.id!;
-
-				fetchWorkflow(+start, +end);
+				// const start = data.workflowStartFrom.id!;
+				// const end = data.workflowEndTo.id!;
+				// console.log(data);
+				// fetchWorkflow(+start, +end);
 
 				let privId;
 
@@ -704,7 +733,7 @@ const UserProjectForm: FC<Props> = ({
 					privId = data!.privilege.sequenceNumber;
 				}
 
-				// fetchPrivileges(privId!);
+				fetchPrivileges(privId!);
 			}
 		};
 
