@@ -1,6 +1,11 @@
 .react-checkbox-tree {
-	height: inherit;
+	// height: 670px;
 	width: 400px;
+	display: inline-block;
 	overflow-x: auto;
 	overflow-y: auto;
+}
+
+.rct-node-leaf {
+	list-style-type: none;
 }

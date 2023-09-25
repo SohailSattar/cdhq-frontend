@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import CheckboxTree from "react-checkbox-tree";
 
 import "react-checkbox-tree/lib/react-checkbox-tree.css";
@@ -7,6 +7,7 @@ import { Button } from "..";
 import { useTranslation } from "react-i18next";
 
 import "./styles.scss";
+import { useStore } from "../../utils/store";
 
 export interface Node {
 	value: string;
@@ -18,18 +19,83 @@ export interface Props {
 	direction?: string;
 	nodes: Node[];
 	onNodeCheck: (checkedNodes: string[]) => void;
+	isExpanded?: boolean;
 }
 
 const CheckboxedTree: FC<Props> = ({
 	nodes,
 	direction = "rtl",
 	onNodeCheck,
+	isExpanded = false,
 }) => {
 	const [t] = useTranslation("common");
+
+	const language = useStore((state) => state.language);
+	const treeRef = useRef<HTMLDivElement | null>(null);
+
 	const [checked, setChecked] = useState<string[]>([]); // '110000000'
 	const [expanded, setExpanded] = useState<string[]>([]);
 
 	const [noCascade, setNoCascade] = useState(false);
+
+	useEffect(() => {
+		if (treeRef.current) {
+			treeRef.current.scrollLeft = 0;
+		}
+	}, [language]);
+
+	// const iterateHierarchy = (items: Node[]) => {
+	// 	// const recursiveIterate = (subItems: Node[]) => {
+	// 	// 	for (const item of subItems) {
+	// 	// 		if (item.children && item.children.length > 0) {
+	// 	// 			setExpanded((prevState) => {
+	// 	// 				return [...prevState, item.value.toString()];
+	// 	// 			});
+	// 	// 			recursiveIterate(item.children); // Recursively iterate through children
+	// 	// 		}
+	// 	// 	}
+	// 	// };
+
+	// 	// recursiveIterate(items);
+
+	// 	const recursiveIterate = (
+	// 		subItems: Node[],
+	// 		parentValues: string[] = []
+	// 	) => {
+	// 		for (const item of subItems) {
+	// 			if (item.children && item.children.length > 0) {
+	// 				// Check if the item's value is not already in the expanded state
+	// 				if (!parentValues.includes(item.value.toString())) {
+	// 					setExpanded((prevState) => {
+	// 						return [...prevState, item.value.toString()];
+	// 					});
+	// 					parentValues.push(item.value.toString()); // Add the parent value to the tracking array
+	// 				}
+	// 				recursiveIterate(item.children, parentValues); // Recursively iterate through children, passing parentValues
+	// 			}
+	// 		}
+	// 	};
+
+	// 	recursiveIterate(items);
+	// };
+
+	useEffect(() => {
+		if (isExpanded) {
+			const deptids: string[] = [];
+			// iterateHierarchy(nodes);
+			nodes?.forEach((x) => {
+				deptids.push(x.value);
+
+				x.children?.forEach((c) => deptids.push(c.value));
+			});
+
+			if (treeRef.current) {
+				treeRef.current.scrollLeft = 0;
+			}
+
+			setExpanded(deptids);
+		}
+	}, [isExpanded, nodes]);
 
 	const checkHandler = (checked: string[], node: any) => {
 		setChecked(checked);
@@ -45,7 +111,9 @@ const CheckboxedTree: FC<Props> = ({
 	};
 
 	return (
-		<div className="checkTree">
+		<div
+			className="checkTree"
+			ref={treeRef}>
 			<div className="btnSection">
 				<Button onClick={cascadeButtonClickHandler}>
 					{t("button.selectChild", { framework: "React" })}:{" "}

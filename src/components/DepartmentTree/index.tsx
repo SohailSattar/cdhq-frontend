@@ -18,6 +18,7 @@ export interface Props {
 	// node: Node;
 	onNodeCheck: (ids: string[] | string) => void;
 	forProject?: boolean;
+	isExpanded?: boolean;
 }
 
 const DepartmentTree: FC<Props> = ({
@@ -25,6 +26,7 @@ const DepartmentTree: FC<Props> = ({
 	showCheckbox = true,
 	onNodeCheck,
 	forProject = true,
+	isExpanded = false,
 }) => {
 	const [hierarchies, setHierarchies] = useState<Node[]>([]);
 
@@ -103,6 +105,7 @@ const DepartmentTree: FC<Props> = ({
 			nodes={hierarchies!}
 			direction={language !== "ar" ? "rtl" : "ltr"}
 			onNodeCheck={onNodeCheck}
+			isExpanded
 		/>
 	) : (
 		<Tree
