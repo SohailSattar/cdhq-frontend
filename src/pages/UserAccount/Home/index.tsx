@@ -364,22 +364,23 @@ const UserAccountPage = () => {
 			btnAddLabel={t("button.addNewUser", { framework: "React" })}
 			btnAddUrlLink={RoutePath.USER_SEARCH}>
 			<div className={styles.content}>
-				<div>
+				<div className={styles.hierarchyContainer}>
 					{/* <ShadowedContainer
 						className={language === "ar" ? styles.filterLTR : styles.filter}>
 						<Button onClick={filterByDepartmentClickHandler}>
 							{t("filter.byDepartment", { framework: "React" })}
 						</Button>
 					</ShadowedContainer> */}
-					<ShadowedContainer
+					<div
 						className={
 							language === "ar" ? styles.hierarchyLTR : styles.hierarchy
 						}>
 						<DepartmentTree
 							onNodeCheck={departmentNodeCheckHandler}
 							id={Project.UserManagement}
+							isExpanded
 						/>
-					</ShadowedContainer>
+					</div>
 				</div>
 				<div className={styles.table}>
 					<PaginatedTable
@@ -400,6 +401,7 @@ const UserAccountPage = () => {
 						hideWorkflowStatusDropdown
 						showProjectDropdown
 						onProjectOptonSelectionHandler={projectSelectionHandler}
+						activeStatusPlaceHolder={t("user.status", { framework: "React" })}
 						onActiveStatusOptionSelectionChange={statusSelectHandler}
 						onWorkflowStatusOptionSelectionChange={() => {}}
 						showRoleOption
