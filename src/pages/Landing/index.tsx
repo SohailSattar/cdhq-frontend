@@ -4,7 +4,6 @@ import {
 	DisplayCard,
 	NewsFlashMarquee,
 	CardsCarousel,
-	ShadowedContainer,
 	Modal,
 	NewsDetail,
 	NewsList,
@@ -21,7 +20,6 @@ import { getLatest20Honors } from "../../api/honors/get/getLatest20Honors";
 import { getNewsDetail } from "../../api/news/get/getNewsDetail";
 import { useTranslation } from "react-i18next";
 import { useStore } from "../../utils/store";
-import { getCreationsList } from "../../api/creations/get/getCreationsList";
 import { getLatest10CreationsList } from "../../api/creations/get/getLatest10CreationsList";
 
 const LandingPage = () => {

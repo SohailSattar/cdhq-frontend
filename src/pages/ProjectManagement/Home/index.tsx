@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
 	ActiveStatus,
-	NotAuthorized,
 	PageContainer,
 	PaginatedTable,
 	RedirectButton,

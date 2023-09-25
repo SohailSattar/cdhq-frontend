@@ -6,7 +6,6 @@ import { useStore } from "../../../utils/store";
 import {
 	UserForm,
 	IUserFormInputs,
-	NotAuthorized,
 	PageContainer,
 	Modal,
 	UserPreview,
@@ -20,7 +19,6 @@ import { addUser } from "../../../api/users/add/addUser";
 import * as RoutePath from "../../../RouteConfig";
 
 import { ROLE } from "../../../utils";
-import { APIPrivileges } from "../../../api/privileges/type";
 import { Project } from "../../../data/projects";
 import { checkPrivilegeForProjectUser } from "../../../api/userProjects/get/checkPrivilegeForProjectUser";
 import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPrivilege";
@@ -40,8 +38,6 @@ const UserNewPage = () => {
 
 	const [details, setDetails] = useState<IUserFormInputs>();
 	const [isOpen, setIsOpen] = useState<boolean>(false);
-
-	const [privilege, setPrivilege] = useState<APIPrivileges>();
 
 	const previewHandler = async (values: IUserFormInputs) => {
 		setDetails(values);

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { motion, useAnimationControls } from "framer-motion";
 import {
 	Hr,
-	Loading,
+	Loader,
 	PasswordExpiryMessage,
 	ProjectBoxList,
 	Welcome,
@@ -114,7 +114,7 @@ const HomePage = () => {
 					/>
 				)}
 			<Hr />
-			{isLoading ? <Loading /> : <ProjectBoxList data={projects} />}
+			{isLoading ? <Loader /> : <ProjectBoxList data={projects} />}
 		</motion.div>
 	);
 };

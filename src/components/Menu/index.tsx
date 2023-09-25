@@ -12,7 +12,6 @@ import Button from "react-bootstrap/Button";
 import { ChangeLanguage, Logout, NavMenuList } from "..";
 import * as RoutePath from "../../RouteConfig";
 import { useTranslation } from "react-i18next";
-import clsx from "clsx";
 import { Link, useNavigate } from "react-router-dom";
 import { getMenuList } from "../../api/menu/get/getMenuList";
 import { APIMenuListItem } from "../../api/menu/types";

@@ -17,17 +17,14 @@ import * as RoutePath from "../../../RouteConfig";
 import {
 	APIUpdateUserProjectDetail,
 	APIUserProjectDetail,
-	APIUserProjectPrivilege,
 } from "../../../api/userProjects/types";
-import { Id, ROLE } from "../../../utils";
+import { ROLE } from "../../../utils";
 import UserProjectPreview from "../../../components/Preview/UserProject";
 import { getMyRole } from "../../../api/users/get/getMyRole";
 import { checkPrivilegeForProjectUser } from "../../../api/userProjects/get/checkPrivilegeForProjectUser";
 
-import { APIPrivilege, APIPrivileges } from "../../../api/privileges/type";
-import SetPrivilege from "../../UserAccount/components/SetPrivilege";
+import { APIPrivileges } from "../../../api/privileges/type";
 import { Project } from "../../../data/projects";
-import { APIUserRole } from "../../../api/users/types";
 import { deleteProject } from "../../../api/users/delete/deleteProject";
 const UserProjectEditPage = () => {
 	const { userId, userProjectId } = useParams<{
@@ -47,10 +44,7 @@ const UserProjectEditPage = () => {
 	const [userProject, setUserProject] = useState<APIUserProjectDetail>();
 	const [privilege, setPrivilege] = useState<APIPrivileges>();
 
-	const [isNormalUser, setIsNormalUser] = useState(true);
 	const [showCard, setShowCard] = useState<boolean>(false);
-
-	const [myRole, setMyRole] = useState<APIUserRole>();
 
 	// 	useEffect(() => {
 	// const
@@ -61,7 +55,7 @@ const UserProjectEditPage = () => {
 		const fetchData = async () => {
 			const { data } = await getUserProject(userProjectId!);
 			if (data) {
-				setUserProject((prevState) => data);
+				setUserProject(() => data);
 
 				const userName =
 					language !== "ar" ? data?.user.name! : data?.user.nameEnglish!;

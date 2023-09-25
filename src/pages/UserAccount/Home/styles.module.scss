@@ -19,7 +19,6 @@
 	.hierarchyContainer,
 	.table {
 		flex-grow: 1; /* Both containers will grow equally */
-		border: 1px solid #000; /* Just for visualization */
 		padding: 10px; /* Add padding for spacing */
 		box-sizing: border-box; /* Include padding in width/height calculations */
 		overflow-y: auto; /* Add scrollbars if content overflows */

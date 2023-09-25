@@ -271,7 +271,7 @@ const Layout: FC<Props> = ({
 					///////////////////////////// fetch Content
 
 					if (canView === undefined) {
-						setContent(<Loading />);
+						setContent(<Loader />);
 					}
 
 					if (canView === false) {
@@ -367,7 +367,7 @@ const Layout: FC<Props> = ({
 	return (
 		<>
 			{!loggedUser ? (
-				<Loading />
+				<Loader />
 			) : (
 				<ErrorBoundary
 					FallbackComponent={ErrorFallback}
@@ -377,9 +377,9 @@ const Layout: FC<Props> = ({
 					<Header hideLoginButton={hideLoginButton} />
 					<div className={styles.layout}>
 						{isLoading ? (
-							<Loading />
+							<Loader />
 						) : content === undefined ? (
-							<Loading />
+							<Loader />
 						) : (
 							content
 						)}

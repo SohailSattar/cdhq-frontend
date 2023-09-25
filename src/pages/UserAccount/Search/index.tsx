@@ -7,7 +7,6 @@ import { checkIfUserExists } from "../../../api/users/get/checkIfUserExists";
 import { getExistingUsers } from "../../../api/users/get/getExistingUsers";
 import { APIExistingUser } from "../../../api/users/types";
 import {
-	Button,
 	NotAuthorized,
 	PageContainer,
 	SearchBox,
@@ -15,7 +14,6 @@ import {
 } from "../../../components";
 import ExistingEmployeeDetailsSection from "./containers/ExistingEmployeeDetailsSection";
 import ExistingUserDetailsSection from "./containers/ExistingUserDetailsSection";
-import MessageBox from "./containers/MessageBox";
 
 import { useStore } from "../../../utils/store";
 
@@ -27,7 +25,6 @@ import styles from "./styles.module.scss";
 import { APIPrivileges } from "../../../api/privileges/type";
 import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPrivilege";
 import { Project } from "../../../data/projects";
-import { style } from "@material-ui/system";
 
 const UserSearchPage = () => {
 	const [t] = useTranslation("common");
@@ -115,10 +112,6 @@ const UserSearchPage = () => {
 		} else {
 			navigate(`${RoutePath.USER}/new/${id}`);
 		}
-	};
-
-	const newUserClickHandler = () => {
-		navigate(`${RoutePath.USER}/new`);
 	};
 
 	const existingUserEditClickHandler = (e: any) => {

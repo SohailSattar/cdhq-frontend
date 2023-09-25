@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import {
 	Button,
-	Loading,
+	Loader,
 	NotAuthorized,
 	RedirectButton,
 	ShadowedContainer,
@@ -114,7 +114,7 @@ const PageContainer: FC<Props> = ({
 	return (
 		<>
 			{display === undefined ? (
-				<Loading />
+				<Loader />
 			) : display === false ? (
 				<NotAuthorized />
 			) : (
