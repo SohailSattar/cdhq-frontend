@@ -124,7 +124,8 @@
 		"department": "Department",
 		"basicDetails": "Basic Details",
 		"assignRole": "Assign Role",
-		"count": "Total Users"
+		"count": "Total Users",
+		"status": "User Status"
 	},
 	"employee": {
 		"names": "Employees",
@@ -213,7 +214,8 @@
 		"status": "Status",
 		"activeStatus": "Active Status",
 		"name": "Name [Arabic]",
-		"nameEnglish": "Name [English]"
+		"nameEnglish": "Name [English]",
+		"workflowStatus": "حالة التمرير"
 	},
 	"status": {
 		"active": "Active",

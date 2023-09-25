@@ -124,7 +124,8 @@
 		"department": "قسم",
 		"basicDetails": "تفاصيل أساسية",
 		"assignRole": "تعيين الدور",
-		"count": "إجمالي المستخدمين"
+		"count": "إجمالي المستخدمين",
+		"status": "حالة المستخدم"
 	},
 	"employee": {
 		"names": "الموظفين",
@@ -213,7 +214,8 @@
 		"status": "حالة",
 		"activeStatus": "حالة البرامج",
 		"name": "الاسم [عربي]",
-		"nameEnglish": "الاسم [إنجليزي]"
+		"nameEnglish": "الاسم [إنجليزي]",
+		"workflowStatus": "حالة التمرير"
 	},
 	"status": {
 		"active": "فعال",

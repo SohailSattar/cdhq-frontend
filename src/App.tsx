@@ -55,27 +55,42 @@ import { useEffect } from "react";
 function App() {
 	const language = useStore((state) => state.language);
 
-	// Your token storage key (e.g., 'authToken')
-	const tokenKey = "token";
+	// // Your token storage key (e.g., 'authToken')
+	// const tokenKey = "token";
 
-	useEffect(() => {
-		// Function to clear the token from local storage
-		const clearToken = () => {
-			localStorage.removeItem(tokenKey);
-		};
+	// useEffect(() => {
+	// 	// Check if the token is stored in sessionStorage
+	// 	const sessionToken = sessionStorage.getItem(tokenKey);
 
-		// Add an event listener for beforeunload
-		window.addEventListener("beforeunload", clearToken);
+	// 	console.log(sessionToken);
 
-		// Clean up the event listener when the component unmounts
-		return () => {
-			window.removeEventListener("beforeunload", clearToken);
-		};
-	}, []); // Empty dependency array to ensure the effect runs once
+	// 	if (sessionToken) {
+	// 		// If the token exists in sessionStorage, copy it to localStorage
+	// 		localStorage.setItem(tokenKey, sessionToken);
+
+	// 		// Clear the token from sessionStorage
+	// 		sessionStorage.removeItem(tokenKey);
+	// 	}
+
+	// 	// Function to clear the token from local storage
+	// 	const clearToken = () => {
+	// 		localStorage.removeItem(tokenKey);
+	// 	};
+
+	// 	// Add an event listener for beforeunload
+	// 	window.addEventListener("beforeunload", clearToken);
+
+	// 	// Clean up the event listener when the component unmounts
+	// 	return () => {
+	// 		window.removeEventListener("beforeunload", clearToken);
+	// 	};
+	// }, []); // Empty dependency array to ensure the effect runs once
 
 	return (
 		<div className={styles.app}>
-			<Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
+			<Worker workerUrl="">
+				{" "}
+				{/* https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js */}
 				{/* <WebSession /> */}
 				<Router basename={RoutePath.BASE_NAME}>
 					<Routes>

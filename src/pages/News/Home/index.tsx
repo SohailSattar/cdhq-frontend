@@ -152,8 +152,8 @@ const NewsHomePage = () => {
 				Cell: ({ value }: any) => (
 					<ActionButtons
 						id={value.id}
-						detailPageLink={`${RoutePath.NEWS}/${value.id}`}
-						showView={privileges?.readPrivilege}
+						// detailPageLink={`${RoutePath.NEWS}/${value.id}`}
+						// showView={privileges?.readPrivilege}
 						showEdit={privileges?.updatePrivilege}
 						showDelete={privileges?.deletePrivilege}
 						onDelete={deleteClickHandler}

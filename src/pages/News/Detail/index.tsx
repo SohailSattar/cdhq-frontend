@@ -54,8 +54,8 @@ const NewsDetailPage = () => {
 
 	return (
 		<PageContainer
-			showBackButton={loggedInUser.id !== 0 && canGoBack}
-			btnBackUrlLink={RoutePath.NEWS}
+			// showBackButton={loggedInUser.id !== 0 && canGoBack}
+			// btnBackUrlLink={RoutePath.NEWS}
 			className={styles.detail}>
 			<ShadowedContainer className={styles.container}>
 				<NewsHeading title={detail?.title!} />

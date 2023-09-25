@@ -45,6 +45,7 @@ interface Props {
 	showRoleOption?: boolean;
 	showProjectDropdown?: boolean;
 	hideWorkflowStatusDropdown?: boolean;
+	activeStatusPlaceHolder?: string;
 	hideActiveStatusDropdown?: boolean;
 	onRoleOptonSelectionHandler?: (option: DropdownOption) => void;
 	onProjectOptonSelectionHandler?: (option: DropdownOption) => void;
@@ -68,6 +69,7 @@ const PaginatedTable: FC<Props> = ({
 	showRoleOption = false,
 	showProjectDropdown = false,
 	hideActiveStatusDropdown = false,
+	activeStatusPlaceHolder,
 	hideWorkflowStatusDropdown = false,
 	onRoleOptonSelectionHandler = () => {},
 	onProjectOptonSelectionHandler = () => {},
@@ -88,6 +90,20 @@ const PaginatedTable: FC<Props> = ({
 	const [statusOptions, setStatusOptions] = useState<DropdownOption[]>([
 		{ label: "", value: "" },
 	]);
+
+	const [activeStatusText, setActiveStatusText] = useState<string>("");
+
+	useEffect(() => {
+		if (activeStatusPlaceHolder) {
+			setActiveStatusText(activeStatusPlaceHolder);
+		} else {
+			setActiveStatusText(
+				t("global.status", {
+					framework: "React",
+				})
+			);
+		}
+	}, [activeStatusPlaceHolder, t]);
 
 	const activeStatusOptions: DropdownOption[] = [
 		{
@@ -293,7 +309,7 @@ const PaginatedTable: FC<Props> = ({
 								<Dropdown
 									options={statusOptions}
 									onSelect={workflowStatusOptionChangeHandler}
-									placeholder={t("global.status", {
+									placeholder={t("global.workflowStatus", {
 										framework: "React",
 									})}
 								/>{" "}
@@ -311,9 +327,7 @@ const PaginatedTable: FC<Props> = ({
 								<Dropdown
 									options={activeStatusOptions}
 									onSelect={activeStatusOptionChangeHandler}
-									placeholder={t("global.activeStatus", {
-										framework: "React",
-									})}
+									placeholder={activeStatusText}
 								/>{" "}
 							</ShadowedContainer>
 						</div>
