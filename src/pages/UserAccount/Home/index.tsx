@@ -181,7 +181,7 @@ const UserAccountPage = () => {
 				accessor: (p) => p,
 				Cell: ({ value }: any) => (
 					<ActiveStatus
-						code={value.activeStatus.id}
+						code={value.activeStatus.id === 1 ? 1 : 9}
 						text={
 							language !== "ar"
 								? value.activeStatus.nameArabic
@@ -272,6 +272,12 @@ const UserAccountPage = () => {
 
 	const userSearchClickHandler = (keyword: string) => {
 		setKeyword(keyword);
+
+		if (keyword !== "") {
+			setSelectedStatusCode("");
+		} else {
+			setSelectedStatusCode("1");
+		}
 		setCurrentPage(1);
 	};
 

@@ -281,7 +281,8 @@
 		"noMenu": "No menu items found"
 	},
 	"footer": {
-		"text": "Ministry of Interior - Civil Defense"
+		"text": "Ministry of Interior - Civil Defense",
+		"copyright": "All rights reserved"
 	},
 	"search": {
 		"user": "Search user"

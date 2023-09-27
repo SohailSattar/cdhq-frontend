@@ -102,9 +102,10 @@ const NewsEditPage = () => {
 	return (
 		<PageContainer
 			title="Edit News"
-			showBackButton
-			btnBackLabel={t("button.backToDetail", { framework: "React" })}
-			btnBackUrlLink={RoutePath.NEWS_DETAIL.replace(":id", id!)}>
+			// showBackButton
+			// btnBackLabel={t("button.backToDetail", { framework: "React" })}
+			// btnBackUrlLink={RoutePath.NEWS_DETAIL.replace(":id", id!)}
+		>
 			<NewsForm
 				data={news}
 				actionButtonText={t("button.update", { framework: "React" })}

@@ -255,6 +255,14 @@ const UserProjectTable: FC<Props> = ({
 	const searchClickHandler = (value: string) => {
 		// const {data} =
 		setKeyword(value);
+
+		if (value) {
+			// if (status === "") {
+			setStatusCode("");
+			// }
+		} else {
+			setStatusCode(1);
+		}
 	};
 
 	const activateClickHandler = async (upId: string) => {
@@ -311,6 +319,8 @@ const UserProjectTable: FC<Props> = ({
 	const statusChangeHandler = (option: DropdownOption) => {
 		if (option) {
 			setStatusCode(+option.value);
+		} else {
+			setStatusCode("");
 		}
 	};
 
