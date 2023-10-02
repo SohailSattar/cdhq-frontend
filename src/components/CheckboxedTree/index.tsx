@@ -108,8 +108,6 @@ const CheckboxedTree: FC<Props> = ({
 			// 	treeRef.current.scrollLeft = 0;
 			// }
 
-			console.log(expanded);
-
 			// setExpanded(deptids);
 		}
 	}, [isExpanded, nodes]);

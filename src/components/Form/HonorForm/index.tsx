@@ -86,8 +86,6 @@ const HonorForm: FC<Props> = ({
 	const employeeNumberSearchHandler = async (value: string) => {
 		const { data } = await getEmployeesByKeyword(value);
 
-		console.log(data);
-
 		if (data) {
 			setEmployeesOptions(
 				data?.map((d) => {

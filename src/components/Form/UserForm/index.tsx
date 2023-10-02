@@ -200,8 +200,6 @@ const UserForm: FC<Props> = ({
 		t,
 	]);
 
-	console.log("dsa");
-
 	useEffect(() => {
 		const fetchData = async () => {
 			const { data: dl } = await getDepartmentsByProject(
