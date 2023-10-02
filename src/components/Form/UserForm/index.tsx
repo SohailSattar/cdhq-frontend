@@ -60,10 +60,14 @@ const UserForm: FC<Props> = ({
 	useEffect(() => {
 		// Employee No
 		register("employeeNo", {
-			required: "Employee No is required.",
+			required: t("error.form.required.employeeNo", {
+				framework: "React",
+			}).toString(),
 			pattern: {
 				value: /\d+/,
-				message: "Employee No should only be number.",
+				message: t("error.form.pattern.employeeNo", {
+					framework: "React",
+				}).toString(),
 			},
 			// minLength: {
 			// 	value: 11,
@@ -73,16 +77,22 @@ const UserForm: FC<Props> = ({
 
 		// Employee Name
 		register("name", {
-			required: "Name is required.",
+			required: t("error.form.required.nameArabic", {
+				framework: "React",
+			}).toString(),
 			pattern: {
 				value: /[\u0621-\u064As]+$/,
-				message: "Name should only be in arabic alphabets.",
+				message: t("error.form.pattern.nameArabic", {
+					framework: "React",
+				}).toString(),
 			},
 		});
 
 		// Employee Name [English]
 		register("nameEnglish", {
-			required: "Name [English] is required.",
+			required: t("error.form.required.nameEnglish", {
+				framework: "React",
+			}).toString(),
 			// pattern: {
 			// 	value: /[\u0621-\u064As]+$/,
 			// 	message: 'Name should only be in alphabets.',
@@ -91,28 +101,41 @@ const UserForm: FC<Props> = ({
 
 		// Department
 		register("department", {
-			required: "Department is required.",
+			required: t("error.form.required.department", {
+				framework: "React",
+			}).toString(),
 		});
 
 		// Class
 		register("userClass", {
-			required: "Class is required.",
+			required: t("error.form.required.class", {
+				framework: "React",
+			}).toString(),
 		});
 
 		// Rank
 		register("rank", {
-			required: "Rank is required.",
+			required: t("error.form.required.rank", {
+				framework: "React",
+			}).toString(),
 		});
 
 		if (isNewUser) {
 			// Password
 			register("password", {
-				required: "Password is required.",
+				required: t("error.form.required.password", {
+					framework: "React",
+				}).toString(),
 			});
 			register("password2", {
-				required: "You have to retype the password",
+				required: t("error.form.required.password2", {
+					framework: "React",
+				}).toString(),
 				validate: (value) =>
-					value === getValues("password") || "The passwords do not match",
+					value === getValues("password") ||
+					t("error.form.validation.passwordMismatch", {
+						framework: "React",
+					}).toString(),
 			});
 		}
 
@@ -174,7 +197,10 @@ const UserForm: FC<Props> = ({
 		getValues,
 		setValue,
 		language,
+		t,
 	]);
+
+	console.log("dsa");
 
 	useEffect(() => {
 		const fetchData = async () => {

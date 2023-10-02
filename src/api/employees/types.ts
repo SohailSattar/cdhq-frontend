@@ -6,7 +6,14 @@ import { APIRank } from "../ranks/types";
 
 export interface APIEmployeeItem {
 	id: Id;
+	employeeNo: number;
 	name: string;
+	nameEnglish: string;
+	// classId: number;
+	department?: APIDepartmentItem;
+	class?: APIClass;
+	rank?: APIRank;
+	status: APIEmployeeStatus;
 }
 
 export interface APIEmployee {

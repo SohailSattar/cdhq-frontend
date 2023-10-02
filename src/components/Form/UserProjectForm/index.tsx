@@ -518,31 +518,37 @@ const UserProjectForm: FC<Props> = ({
 		const initialProcess = async () => {
 			// Project
 			register("project", {
-				required: "Project is required.",
+				required: t("error.form.required.project", { framework: "React" }),
 			});
 
 			// Privilege
 			register("privilege", {
-				required: "Privilege is required.",
+				required: t("error.form.required.privilege", { framework: "React" }),
 			});
 
 			// Workflow
 			register("workflowStart", {
-				required: "Workflow starts from is required.",
+				required: t("error.form.required.workflowStart", {
+					framework: "React",
+				}),
 			});
 
 			register("workflowEnd", {
-				required: "Workflow ends at is required.",
+				required: t("error.form.required.workflowEnd", {
+					framework: "React",
+				}),
 			});
 
 			// Department
 			register("department", {
-				required: "Department is required.",
+				required: t("error.form.required.department", { framework: "React" }),
 			});
 
 			// Department Structure Type
 			register("structureType", {
-				required: "Structure type is required.",
+				required: t("error.form.required.structureType", {
+					framework: "React",
+				}),
 			});
 
 			setValue("structureType", departmentTypeOptions[0]);

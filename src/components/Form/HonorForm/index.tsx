@@ -14,7 +14,7 @@ import {
 	ShadowedContainer,
 	TextBox,
 } from "../..";
-import { getExistingEmployees } from "../../../api/employees/get/getExistingEmployeesList";
+import { getEmployeesByKeyword } from "../../../api/employees/get/getEmployeesByKeyword";
 import { APIHonorDetail } from "../../../api/honors/types";
 import { getFullPath } from "../../../utils";
 import { useStore } from "../../../utils/store";
@@ -84,7 +84,9 @@ const HonorForm: FC<Props> = ({
 	}, [data, language, register, setValue]);
 
 	const employeeNumberSearchHandler = async (value: string) => {
-		const { data } = await getExistingEmployees(value);
+		const { data } = await getEmployeesByKeyword(value);
+
+		console.log(data);
 
 		if (data) {
 			setEmployeesOptions(

@@ -7,6 +7,8 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPrivilege";
 import { Project } from "../../../data/projects";
+import { addHonor } from "../../../api/honors/add/addHonor";
+import { APINewHonor } from "../../../api/honors/types";
 
 const HonorNewPage = () => {
 	const [t] = useTranslation("common");
@@ -41,7 +43,14 @@ const HonorNewPage = () => {
 		fetchDetails();
 	}, [fetchDetails]);
 
-	const submitHandler = (values: IHonorFormInputs) => {};
+	const submitHandler = async (values: IHonorFormInputs) => {
+		const { employeeId, thumbnail } = values;
+		const params: APINewHonor = {
+			employeeId: employeeId,
+			thumbnail: thumbnail,
+		};
+		const { data } = await addHonor(params);
+	};
 
 	return (
 		<PageContainer displayContent={canView}>

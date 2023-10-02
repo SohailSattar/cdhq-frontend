@@ -193,11 +193,29 @@
 			"text": ".هذه الصفحة غير موجودة"
 		},
 		"form": {
+			"pattern": {
+				"employeeNo": "Employee No should only be number.",
+				"nameArabic": "Name should only be in Arabic characters."
+			},
 			"required": {
+				"userName": "User name is required.",
 				"employeeNo": " رقم الموظف حقل اجباري",
 				"nameArabic": "الاسم بالعربي حقل اجباري ",
 				"nameEnglish": " الاسم بالانجليزي حقل اجباري  ",
-				"title": "العنوان حقل اجباري"
+				"title": "العنوان حقل اجباري",
+				"password": "Password is required",
+				"password2": "You have to retype the password",
+				"department": "Department is required",
+				"structureType": "Structure type is required.",
+				"class": "Class is required",
+				"rank": "Rank is required",
+				"project": "Project is required.",
+				"privilege": "Privilege is required.",
+				"workflowStart": "Workflow starts from is required.",
+				"workflowEnd": "Workflow ends at is required."
+			},
+			"validation": {
+				"passwordMismatch": "The passwords do not match"
 			}
 		}
 	},

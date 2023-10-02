@@ -79,21 +79,38 @@ const CheckboxedTree: FC<Props> = ({
 	// 	recursiveIterate(items);
 	// };
 
+	function iterateHierarchicalList(list: Node[], level: number = 1) {
+		list.forEach((item) => {
+			if (level === 1 || level === 2) {
+				setExpanded((prevState) => [...prevState, item.value]);
+			}
+
+			// Recursively iterate over children
+			if (item.children && item.children?.length! > 0) {
+				iterateHierarchicalList(item.children!, level + 1);
+			}
+
+			setChecked((prevState) => [...prevState, item.value]);
+		});
+	}
+
 	useEffect(() => {
 		if (isExpanded) {
 			const deptids: string[] = [];
-			// iterateHierarchy(nodes);
-			nodes?.forEach((x) => {
-				deptids.push(x.value);
+			iterateHierarchicalList(nodes);
+			// nodes?.forEach((x) => {
+			// 	deptids.push(x.value);
 
-				x.children?.forEach((c) => deptids.push(c.value));
-			});
+			// 	x.children?.forEach((c) => deptids.push(c.value));
+			// });
 
-			if (treeRef.current) {
-				treeRef.current.scrollLeft = 0;
-			}
+			// if (treeRef.current) {
+			// 	treeRef.current.scrollLeft = 0;
+			// }
 
-			setExpanded(deptids);
+			console.log(expanded);
+
+			// setExpanded(deptids);
 		}
 	}, [isExpanded, nodes]);
 
@@ -130,8 +147,8 @@ const CheckboxedTree: FC<Props> = ({
 			<CheckboxTree
 				nodes={nodes}
 				checked={checked}
-				expanded={expanded}
 				onCheck={checkHandler}
+				expanded={expanded}
 				onExpand={setExpanded}
 				checkModel="all"
 				direction={direction}

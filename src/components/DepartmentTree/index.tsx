@@ -100,6 +100,8 @@ const DepartmentTree: FC<Props> = ({
 		});
 	};
 
+	console.log(hierarchies);
+
 	return showCheckbox ? (
 		<CheckboxedTree
 			nodes={hierarchies!}

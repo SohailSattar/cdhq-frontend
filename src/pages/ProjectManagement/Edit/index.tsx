@@ -169,7 +169,7 @@ const ProjectEditPage = () => {
 			title={t("page.projectEdit", { framework: "React" })}
 			showBackButton
 			btnBackLabel={t("button.backToDetail", { framework: "React" }).toString()}
-			btnBackUrlLink={RoutePath.PROJECT_DETAIL.replace(RoutePath.ID, id!)}
+			btnBackUrlLink={RoutePath.PROJECT}
 			showChangeStatusButton
 			currentStatus={status?.id === 1 ? "ACTIVE" : "DEACTIVE"}
 			onActivate={activateButtonClickHandler}
