@@ -57,6 +57,7 @@ const NewsEditPage = () => {
 		},
 		[id, navigate]
 	);
+
 	useEffect(() => {
 		if (id) {
 			fetch();

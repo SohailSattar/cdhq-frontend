@@ -112,6 +112,7 @@ const DepartmentTree: FC<Props> = ({
 			nodes={hierarchies!}
 			direction={language !== "ar" ? "rtl" : "ltr"}
 			onNodeCheck={onNodeCheck}
+			isExpanded
 		/>
 	);
 };

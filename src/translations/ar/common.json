@@ -40,8 +40,12 @@
 		"nameEnglish": "الاسم بالانجليزي",
 		"isFile": "يحتوي على ملف"
 	},
-	"creation": {
-		"name": "ابتكارات",
+	"image": {
+		"id": "Id",
+		"name": "Image Name",
+		"nameEnglish": "Image Name [English]",
+		"ratings": "Ratings",
+		"type": "Type",
 		"imageType": {
 			"fireDepartment": "أفضل مراكز إطفاء",
 			"servicesDepartment": "أفضل مراكز خدمة",
@@ -59,7 +63,13 @@
 		"projectNew": "انشاء نظام جديد",
 		"newsHome": "الأخبار",
 		"newsEdit": "تعديل خبر",
-		"newsCreate": "انشاء خبر"
+		"newsCreate": "انشاء خبر",
+		"honorHome": "Honors List",
+		"honorEdit": "Edit Honor",
+		"honorNew": "New Honor",
+		"imagesHome": "Images List",
+		"imageEdit": "Edit Image",
+		"imageNew": "New Image"
 	},
 	"account": {
 		"login": "تسجيل الدخول",
@@ -212,7 +222,10 @@
 				"project": "Project is required.",
 				"privilege": "Privilege is required.",
 				"workflowStart": "Workflow starts from is required.",
-				"workflowEnd": "Workflow ends at is required."
+				"workflowEnd": "Workflow ends at is required.",
+				"image": "Image is required",
+				"imageType": "Image type is required.",
+				"honorType": "Honor type is required."
 			},
 			"validation": {
 				"passwordMismatch": "The passwords do not match"
@@ -279,13 +292,20 @@
 		"deleteProject": "هل أنت متأكد أنك تريد حذف هذا البرنامج ؟",
 		"userProjectAdd": "تعيين برنامج  جديد للمستخدم",
 		"userProjectEdit": "تعديل النظام من أجل ",
+		"imageCreated": "Image has been created",
+		"imageActivated": "Image has been reactivated",
+		"imageDeleted": "Image has been deactivated",
 		"imageUpdated": "تم تحديث الصورة",
 		"newsAdded": "تمت إضافة الخبر",
 		"newsUpdated": "تم تحديث الخبر",
 		"savingConfirmationTitle": "سيتم الحفظ",
 		"savingConfirmation": "سيتم حفظ البيانات . هل أنت متأكد ؟ ",
 		"menuItemAdded": "تم اضافة عنوان على القائمة",
-		"menuItemUpdated": "تم تحديث القائمة"
+		"menuItemUpdated": "تم تحديث القائمة",
+		"honorCreated": "Honor has been created",
+		"honorUpdated": "Honor has been updated",
+		"honorActivated": "Honor has been activated",
+		"honorDeactivated": "Honor has been deactivated"
 	},
 	"dropdown": {
 		"select": "اختر"
@@ -305,11 +325,16 @@
 		"user": "مستخدم البحث"
 	},
 	"honor": {
+		"title": "Honors",
 		"count": "مجموع سجلات المتميزين ",
 		"id": "السجل",
 		"honoredOn": "تكريم يوم",
 		"name": "اسم الموظف",
-		"type": "الفئة"
+		"type": {
+			"name": "Honor Type",
+			"talented": "موهوب",
+			"empOfMonth": "متميز"
+		}
 	},
 	"news": {
 		"count": "مجموع سجلات الأخبار ",

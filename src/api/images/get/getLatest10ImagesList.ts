@@ -1,14 +1,14 @@
 import { APIResponse } from "../..";
 import { instance } from "../../../network";
-import { APICreation } from "../types";
+import { APIImage } from "../types";
 
-export async function getLatest10CreationsList(
+export async function getLatest10ImagesList(
 	typeId: number
-): Promise<APIResponse<APICreation[]>> {
+): Promise<APIResponse<APIImage[]>> {
 	try {
-		const url = `/creations/latest/${typeId}`;
+		const url = `/images/latest/${typeId}`;
 
-		const response = await instance.get<APICreation[]>(url);
+		const response = await instance.get<APIImage[]>(url);
 		const data = response.data;
 		return { data };
 	} catch (err: any) {

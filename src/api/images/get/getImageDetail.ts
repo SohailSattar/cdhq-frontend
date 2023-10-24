@@ -1,13 +1,15 @@
 import { APIResponse } from "../..";
 import { instance } from "../../../network";
 import { Id } from "../../../utils";
-import { APIHonor } from "../types";
+import { APIImageDetail } from "../types";
 
-export async function getHonorDetail(id: Id): Promise<APIResponse<APIHonor>> {
+export async function getImageDetail(
+	Id: Id
+): Promise<APIResponse<APIImageDetail>> {
 	try {
-		const url = `/honors/${id}`;
+		const url = `/images/${Id}`;
 
-		const response = await instance.get<APIHonor>(url);
+		const response = await instance.get<APIImageDetail>(url);
 		const data = response.data;
 		return { data };
 	} catch (err: any) {

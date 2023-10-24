@@ -39,7 +39,9 @@ export const HONORS_EDIT = HONORS + "/" + ID + "/edit";
 export const HONORS_NEW = HONORS + "/new";
 
 // Image Managing
-export const IMAGE_MANAGING = `/image-managing`;
+export const IMAGE_MANAGING = `/image-management`;
+export const IMAGE_MANAGING_EDIT = IMAGE_MANAGING + "/" + ID + "/edit";
+export const IMAGE_MANAGING_NEW = `${IMAGE_MANAGING}/new`;
 
 // News
 export const NEWS = "/news";

@@ -87,12 +87,23 @@ export interface IProjectUserFormInputs extends IUserProjectForm {
 
 // Honor
 export interface IHonorFormInputs {
+	honorType: DropdownOption;
 	employeeId: Id;
 	name: string;
 	rank: string;
 	department: string;
 	imageName: string;
 	thumbnail: File;
+}
+
+// Image
+export interface IImageFormInputs {
+	name: string;
+	nameEnglish: string;
+	imageName: string;
+	thumbnail: File;
+	imageType: DropdownOption;
+	stars?: string;
 }
 
 // News

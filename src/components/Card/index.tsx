@@ -2,8 +2,6 @@ import { FC } from "react";
 import ReactCard from "react-bootstrap/Card";
 import { Rating } from "@mui/material";
 
-import styles from "./styles.module.scss";
-
 export interface ICard {
 	image: string;
 	title: string;

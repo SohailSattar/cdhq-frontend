@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import CheckboxTree, { OnCheckNode } from "react-checkbox-tree";
 
 // import 'react-checkbox-tree/lib/react-checkbox-tree.css';
@@ -14,11 +14,34 @@ export interface Props {
 	direction?: string;
 	nodes: Node[];
 	onNodeCheck: (checkedNode: string) => void;
+	isExpanded?: boolean;
 }
 
-const Tree: FC<Props> = ({ nodes, direction = "rtl", onNodeCheck }) => {
+const Tree: FC<Props> = ({
+	nodes,
+	direction = "rtl",
+	onNodeCheck,
+	isExpanded = false,
+}) => {
+	const treeRef = useRef<HTMLDivElement | null>(null);
+
 	const [checked, setChecked] = useState<string[]>([]); // '110000000'
 	const [expanded, setExpanded] = useState<string[]>([]);
+
+	useEffect(() => {
+		if (isExpanded) {
+			const deptids: string[] = [];
+			nodes?.forEach((x) => {
+				deptids.push(x.value);
+				x.children?.forEach((c) => deptids.push(c.value));
+			});
+			if (treeRef.current) {
+				treeRef.current.scrollLeft = 0;
+			}
+
+			setExpanded(deptids);
+		}
+	}, [isExpanded, nodes]);
 
 	const checkHandler = (checked: string[], node: any) => {
 		setChecked((prevState) => checked);
@@ -29,7 +52,9 @@ const Tree: FC<Props> = ({ nodes, direction = "rtl", onNodeCheck }) => {
 	};
 
 	return (
-		<div className="tree">
+		<div
+			className="tree"
+			ref={treeRef}>
 			<CheckboxTree
 				nodes={nodes}
 				checked={checked}

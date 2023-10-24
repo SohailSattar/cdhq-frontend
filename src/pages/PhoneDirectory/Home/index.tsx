@@ -259,6 +259,7 @@ const PhoneDirectoryPage = () => {
 						<DepartmentTree
 							showCheckbox={false}
 							onNodeCheck={departmentNodeCheckHandler}
+							isExpanded
 						/>
 					</ShadowedContainer>
 				</div>

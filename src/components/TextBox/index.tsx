@@ -13,7 +13,7 @@ import styles from "./styles.module.scss";
 
 import "./styles.css";
 
-type InputType = "text" | "password";
+type InputType = "text" | "password" | "number";
 type Variant = "standard" | "filled" | "outlined";
 
 export interface Props {
@@ -44,7 +44,6 @@ const TextBox: FC<Props> = ({
 	reference,
 }) => {
 	const language = useStore((state) => state.language);
-
 	const theme = createTheme({
 		direction: "rtl", // Both here and <body dir="rtl">
 	});
@@ -63,7 +62,9 @@ const TextBox: FC<Props> = ({
 			{" "}
 			<CacheProvider value={language !== "ar" ? cacheRtl : cacheLtr}>
 				<ThemeProvider theme={theme}>
-					<FormControl fullWidth sx={{ m: 1 }}>
+					<FormControl
+						fullWidth
+						sx={{ m: 1 }}>
 						<TextField
 							name={name}
 							label={label}

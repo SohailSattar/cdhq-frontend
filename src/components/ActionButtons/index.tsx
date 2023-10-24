@@ -11,6 +11,8 @@ export interface Props {
 	id: Id;
 	detailPageLink?: string;
 	showView?: boolean;
+	showActivate?: boolean;
+	onActivate?: (id: Id) => void;
 	showEdit?: boolean;
 	editPageLink?: string;
 	onEdit?: (id: string) => void;
@@ -22,6 +24,8 @@ const ActionButtons: FC<Props> = ({
 	id,
 	detailPageLink = "",
 	showView,
+	showActivate,
+	onActivate = () => {},
 	showEdit,
 	editPageLink,
 	onEdit = () => {},
@@ -33,6 +37,10 @@ const ActionButtons: FC<Props> = ({
 	const [isEditMode, setIsEditMode] = useState(false);
 
 	const [showModal, setShowModal] = useState(false);
+
+	const activateClickHander = () => {
+		onActivate(id);
+	};
 
 	const onEditClick = () => {
 		setIsEditMode(true);
@@ -84,6 +92,15 @@ const ActionButtons: FC<Props> = ({
 				{isEditMode && showEdit && (
 					<div className={styles.divBtn}>
 						<Button>{t("button.update", { framework: "React" })}</Button>
+					</div>
+				)}
+				{showActivate && (
+					<div className={styles.divBtn}>
+						<Button
+							isPrimary
+							onClick={activateClickHander}>
+							{t("button.activate", { framework: "React" })}
+						</Button>
 					</div>
 				)}
 				{showDelete && (

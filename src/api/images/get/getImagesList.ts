@@ -1,22 +1,25 @@
-import { APIResponse, getConfig } from "../..";
+import { APIResponse } from "../..";
 import { instance } from "../../../network";
 import { Id } from "../../../utils";
-import { APIPaginatedHonors } from "../types";
+import { APIPaginatedImage } from "../types";
 
-export async function getHonors(
+export async function getImagesList(
 	currentPage: number,
 	pageSize: number,
 	keyword?: string,
+	typeId?: Id,
 	statusCode?: Id,
 	orderBy?: string
-): Promise<APIResponse<APIPaginatedHonors>> {
+): Promise<APIResponse<APIPaginatedImage>> {
 	try {
-		const config = getConfig();
-
 		let queryParam = "";
 
 		if (keyword) {
 			queryParam += `&keyword=${keyword}`;
+		}
+
+		if (typeId) {
+			queryParam += `&typeId=${statusCode}`;
 		}
 
 		if (statusCode) {
@@ -28,9 +31,9 @@ export async function getHonors(
 		}
 
 		const url =
-			`/honors?page=${currentPage}&postsperpage=${pageSize}` + queryParam!;
+			`/images?page=${currentPage}&postsperpage=${pageSize}` + queryParam!;
 
-		const response = await instance.get<APIPaginatedHonors>(url, config);
+		const response = await instance.get<APIPaginatedImage>(url);
 		const data = response.data;
 		return { data };
 	} catch (err: any) {

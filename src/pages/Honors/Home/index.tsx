@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Column } from "react-table";
 import { getHonors } from "../../../api/honors/get/getHonors";
-import { APIHonorDetail } from "../../../api/honors/types";
+import { APIHonor } from "../../../api/honors/types";
 import { APIPrivileges } from "../../../api/privileges/type";
 import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPrivilege";
 import {
@@ -12,6 +12,8 @@ import {
 	PaginatedTable,
 	RedirectButton,
 	ShadowedContainer,
+	ActiveStatus,
+	PageContainer,
 } from "../../../components";
 import { DropdownOption } from "../../../components/Dropdown";
 import { HonorColumn } from "../../../components/PaginatedTable/types";
@@ -21,9 +23,14 @@ import * as RoutePath from "../../../RouteConfig";
 import { Id } from "../../../utils";
 
 import styles from "./styles.module.scss";
+import { APIStatus } from "../../../api";
+import { updateHonorStatus } from "../../../api/honors/update/updateHonorStatus";
+import { toast } from "react-toastify";
+import { useStore } from "../../../utils/store";
 
 const HonorsHomePage = () => {
 	const [t] = useTranslation("common");
+	const language = useStore((state) => state.language);
 	const navigate = useNavigate();
 
 	const [currentPage, setCurrentPage] = useState(1);
@@ -32,10 +39,19 @@ const HonorsHomePage = () => {
 
 	const [privileges, setPrivileges] = useState<APIPrivileges>();
 
-	const [honors, setHonors] = useState<APIHonorDetail[]>([]);
+	const [honors, setHonors] = useState<APIHonor[]>([]);
+
+	const [keyword, setKeyword] = useState("");
+
+	// This variable is to set the status code which we can pass to the API
+	const [selectedStatusCode, setSelectedStatusCode] = useState<Id>(1);
+
+	//Parameters
+	const [toggleSort, setToggleSort] = useState(false);
+	const [orderBy, setOrderBy] = useState<string>("");
 
 	const fetchData = useMemo(
-		() => async (currentPage: number) => {
+		() => async () => {
 			const { data: privilege } = await getProjectPrivilege(Project.Honors);
 
 			if (privilege) {
@@ -53,7 +69,13 @@ const HonorsHomePage = () => {
 					deletePrivilege,
 				});
 
-				const { data } = await getHonors(currentPage, pageSize);
+				const { data } = await getHonors(
+					currentPage,
+					pageSize,
+					keyword,
+					selectedStatusCode,
+					orderBy
+				);
 
 				if (data) {
 					setHonors(data.honors);
@@ -63,16 +85,16 @@ const HonorsHomePage = () => {
 				}
 			}
 		},
-		[pageSize]
+		[currentPage, keyword, orderBy, pageSize, selectedStatusCode]
 	);
 
 	useEffect(() => {
-		fetchData(currentPage);
+		fetchData();
 	}, [fetchData, currentPage, pageSize]);
 
 	const pageChangeHandler = (currentpage: number) => {
-		setCurrentPage(currentPage);
-		fetchData(currentpage);
+		setCurrentPage(currentpage);
+		// fetchData(currentpage);
 	};
 
 	const pageViewSelectionHandler = (option: DropdownOption) => {
@@ -81,12 +103,64 @@ const HonorsHomePage = () => {
 		setPageSize(size);
 	};
 
+	const activateClickHandler = useMemo(
+		() => async (upId: Id) => {
+			const params: APIStatus = {
+				id: upId,
+				activeStatusId: 1,
+			};
+
+			const { data, error } = await updateHonorStatus(params);
+
+			if (data) {
+				fetchData();
+				toast.success(
+					t("message.honorActivated", { framework: "React" }).toString()
+				);
+			}
+
+			if (error) {
+				toast.error(error.ErrorMessage);
+			}
+
+			if (data) {
+			}
+		},
+		[fetchData, t]
+	);
+
 	const editClickHandler = useMemo(
 		() => (id: string) => {
 			const editPath = RoutePath.HONORS_EDIT.replace(RoutePath.ID, id);
 			navigate(editPath);
 		},
 		[navigate]
+	);
+
+	const deleteClickHandler = useMemo(
+		() => async (upId: Id) => {
+			const params: APIStatus = {
+				id: upId,
+				activeStatusId: 9,
+			};
+
+			const { data, error } = await updateHonorStatus(params);
+
+			if (data) {
+				fetchData();
+				toast.error(
+					t("message.honorDeactivated", { framework: "React" }).toString()
+				);
+			}
+
+			if (error) {
+				toast.error(error.ErrorMessage);
+			}
+
+			if (data) {
+			}
+		},
+		[fetchData, t]
 	);
 
 	const txtId = t("honor.id", { framework: "React" });
@@ -97,6 +171,7 @@ const HonorsHomePage = () => {
 
 	//Actions
 	const actions = t("global.actions", { framework: "React" });
+	const status = t("global.status", { framework: "React" });
 
 	const columns: Column<HonorColumn>[] = useMemo(
 		() => [
@@ -136,63 +211,126 @@ const HonorsHomePage = () => {
 				accessor: (p) => p.locationFullName,
 			},
 			{
+				Header: status,
+				id: "activeStatus",
+				accessor: (p) => p,
+				Cell: ({ value }: any) => (
+					<div className={styles.name}>
+						<div className={styles.arabic}>
+							<ActiveStatus
+								code={value.activeStatus.id === 1 ? 1 : 9}
+								text={
+									language !== "ar"
+										? value.activeStatus.nameArabic
+										: value.activeStatus.nameEnglish
+								}
+							/>
+						</div>
+					</div>
+				),
+			},
+			{
 				Header: actions,
+				id: "actions",
 				accessor: (p) => p,
 				Cell: ({ value }: any) => (
 					<ActionButtons
 						id={value.id}
-						detailPageLink={`${value.id}`}
-						showView={false}
+						showActivate={value.activeStatus.id !== 1}
+						onActivate={(id) => activateClickHandler(id)}
 						showEdit={privileges?.updatePrivilege}
-						showDelete={privileges?.deletePrivilege}
-						onEdit={() => editClickHandler(value.id)}
-						onDelete={function (id: Id): void {
-							throw new Error("Function not implemented.");
-						}}
+						onEdit={(id) => editClickHandler(value.id)}
+						showDelete={
+							privileges?.deletePrivilege && value.activeStatus.id === 1
+						}
+						onDelete={deleteClickHandler}
 					/>
 				),
 			},
 		],
 		[
-			privileges,
-			actions,
 			txtId,
 			honoredOn,
 			name,
 			rank,
 			department,
+			status,
+			actions,
+			language,
+			privileges?.updatePrivilege,
+			privileges?.deletePrivilege,
+			deleteClickHandler,
+			activateClickHandler,
 			editClickHandler,
 		]
 	);
 
-	return (
-		<div className={styles.honors}>
-			{privileges?.insertPrivilege && (
-				<ShadowedContainer className={styles.section}>
-					<RedirectButton
-						label={t("button.add", { framework: "React" })}
-						redirectTo={RoutePath.HONORS_NEW}
-					/>
-				</ShadowedContainer>
-			)}
+	const searchHandler = (keyword: string) => {
+		setKeyword(keyword);
 
-			<div>
-				<PaginatedTable
-					totalCountText={t("news.count", { framework: "React" })}
-					totalCount={totalCount}
-					pageSize={pageSize}
-					data={honors}
-					columns={columns}
-					onSearch={() => {}}
-					onTableSort={() => {}}
-					onPageChange={pageChangeHandler}
-					onPageViewSelectionChange={pageViewSelectionHandler}
-					noRecordText={t("table.noNews", { framework: "React" })}
-					onActiveStatusOptionSelectionChange={() => {}}
-					onWorkflowStatusOptionSelectionChange={() => {}}
-				/>
-			</div>
-		</div>
+		if (keyword !== "") {
+			setSelectedStatusCode("");
+		} else {
+			setSelectedStatusCode("1");
+		}
+		setCurrentPage(1);
+	};
+
+	const statusSelectHandler = useMemo(
+		() => (option: DropdownOption) => {
+			if (option) {
+				setSelectedStatusCode((prevState) => (prevState = option?.value!));
+			} else {
+				setSelectedStatusCode(1);
+			}
+			setCurrentPage(1);
+		},
+		[]
+	);
+
+	const tableSortHandler = (columnId: string, isSortedDesc: boolean) => {
+		let orderByParam = "";
+		setToggleSort(!toggleSort);
+		if (toggleSort) {
+			orderByParam = `&OrderBy=${columnId}`;
+		} else {
+			orderByParam = `&OrderByDesc=${columnId}`;
+		}
+
+		setOrderBy(orderByParam);
+		// fetchData(currentPage, orderByParam);
+		setCurrentPage(1);
+	};
+
+	return (
+		<PageContainer
+			// displayContent={privileges?.readPrivilege}
+			title={t("honor.title", { framework: "React" })}
+			showAddButton={privileges?.insertPrivilege}
+			btnAddUrlLink={RoutePath.HONORS_NEW}
+			btnAddLabel={t("button.add", { framework: "React" })}
+			className={styles.honors}>
+			<PaginatedTable
+				totalCountText={t("news.count", { framework: "React" })}
+				totalCount={totalCount}
+				pageSize={pageSize}
+				currentPage={currentPage}
+				setCurrentPage={setCurrentPage}
+				data={honors}
+				columns={columns}
+				onSearch={searchHandler}
+				onTableSort={tableSortHandler}
+				onPageChange={pageChangeHandler}
+				onPageViewSelectionChange={pageViewSelectionHandler}
+				noRecordText={t("table.noNews", { framework: "React" })}
+				onActiveStatusOptionSelectionChange={statusSelectHandler}
+				columnsToHide={
+					privileges?.updatePrivilege || privileges?.deletePrivilege
+						? []
+						: ["actions"]
+				}
+			/>
+		</PageContainer>
 	);
 };
 

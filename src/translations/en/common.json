@@ -40,8 +40,12 @@
 		"nameEnglish": "Link Type [English]",
 		"isFile": "Is file?"
 	},
-	"creation": {
-		"name": "Creation",
+	"image": {
+		"id": "Id",
+		"name": "Image Name",
+		"type": "Type",
+		"nameEnglish": "Image Name [English]",
+		"ratings": "Ratings",
 		"imageType": {
 			"fireDepartment": "Fire Departments",
 			"servicesDepartment": "Service Department",
@@ -59,7 +63,13 @@
 		"projectNew": "New Project",
 		"newsHome": "News List",
 		"newsEdit": "Edit News",
-		"newsCreate": "Create News"
+		"newsCreate": "Create News",
+		"honorHome": "Honors List",
+		"honorEdit": "Edit Honor",
+		"honorNew": "New Honor",
+		"imagesHome": "Images List",
+		"imageEdit": "Edit Image",
+		"imageNew": "New Image"
 	},
 	"account": {
 		"login": "Login",
@@ -212,7 +222,10 @@
 				"project": "Project is required.",
 				"privilege": "Privilege is required.",
 				"workflowStart": "Workflow starts from is required.",
-				"workflowEnd": "Workflow ends at is required."
+				"workflowEnd": "Workflow ends at is required.",
+				"image": "Image is required",
+				"imageType": "Image type is required.",
+				"honorType": "Honor type is required."
 			},
 			"validation": {
 				"passwordMismatch": "The passwords do not match"
@@ -265,7 +278,6 @@
 		"signatureUpdated": "New signature has been updated",
 		"roleUpdated": "Role updated",
 		"privilegeUpdated": "Privilege Updated",
-		"noPrivilegeSelected": "No privilege selected",
 		"noProjectSelected": "No project has been selected",
 		"userProjectAssigned": "The project is successfully assigned",
 		"userProjectNotAssigned": "Project assignment failed",
@@ -280,13 +292,20 @@
 		"deleteProject": "Are you sure you want to deactivate this project?",
 		"userProjectAdd": "Assign New Project to User",
 		"userProjectEdit": "Edit project for ",
+		"imageCreated": "Image has been created",
+		"imageActivated": "Image has been reactivated",
+		"imageDeleted": "Image has been deactivated",
 		"imageUpdated": "Image has been updated",
 		"newsAdded": "News has been added",
 		"newsUpdated": "News has been updated",
 		"savingConfirmationTitle": "Saving Approvement",
 		"savingConfirmation": "Above details will be saved. Are you sure to save?",
 		"menuItemAdded": "Menu detail has been added",
-		"menuItemUpdated": "Menu detail has been updated"
+		"menuItemUpdated": "Menu detail has been updated",
+		"honorCreated": "Honor has been created",
+		"honorUpdated": "Honor has been updated",
+		"honorActivated": "Honor has been activated",
+		"honorDeactivated": "Honor has been deactivated"
 	},
 	"dropdown": {
 		"select": "Select..."
@@ -306,11 +325,16 @@
 		"user": "Search user"
 	},
 	"honor": {
+		"title": "Honors",
 		"count": "Total Honors Count",
 		"id": "Honor Id",
 		"honoredOn": "Honored On",
 		"name": "Name",
-		"type": "News Type"
+		"type": {
+			"name": "Honor Type",
+			"talented": "Talented",
+			"empOfMonth": "Employee of the month"
+		}
 	},
 	"news": {
 		"count": "Total News Count",

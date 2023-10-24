@@ -1,16 +1,16 @@
 import { instance } from "../../../network";
 import { APIResponse, APIResponseStatus, getConfig } from "../..";
-import { APIUpdateHonor } from "../types";
+import { APIUpdateImage } from "../types";
 
-export async function updateHonor(
-	honorParams: APIUpdateHonor
+export async function updateImage(
+	params: APIUpdateImage
 ): Promise<APIResponse<APIResponseStatus>> {
 	try {
 		const config = getConfig("multipart/form-data");
 
 		const response = await instance.put<APIResponseStatus>(
-			"/honors/",
-			honorParams,
+			"/images",
+			params,
 			config
 		);
 		const data = response.data;

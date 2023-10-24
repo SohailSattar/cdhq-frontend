@@ -1,6 +1,6 @@
 import _ from "lodash/fp";
 import { ErrorMessage } from "@hookform/error-message";
-import { ChangeEvent, FC, useEffect, useState } from "react";
+import { ChangeEvent, FC, useEffect, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
@@ -15,16 +15,17 @@ import {
 	TextBox,
 } from "../..";
 import { getEmployeesByKeyword } from "../../../api/employees/get/getEmployeesByKeyword";
-import { APIHonorDetail } from "../../../api/honors/types";
+import { APIHonor } from "../../../api/honors/types";
 import { getFullPath } from "../../../utils";
 import { useStore } from "../../../utils/store";
 import { DropdownOption } from "../../Dropdown";
 import { IHonorFormInputs } from "../types";
 
 import styles from "./styles.module.scss";
+import { Project } from "../../../data/projects";
 
 interface Props {
-	data?: APIHonorDetail;
+	data?: APIHonor;
 	actionButtonText: string;
 	onSubmit: (data: IHonorFormInputs) => void;
 	onImageUpload?: (image: File) => void;
@@ -59,21 +60,61 @@ const HonorForm: FC<Props> = ({
 
 	const [hideUploadButton, setHideUploadButton] = useState<boolean>(true);
 
+	const honorTypeOptions: DropdownOption[] = useMemo(() => {
+		return [
+			{
+				label: t("honor.type.talented", {
+					framework: "React",
+				}),
+				value: 1,
+				meta: "موهوب",
+			},
+			{
+				label: t("honor.type.empOfMonth", {
+					framework: "React",
+				}),
+				value: 2,
+				meta: "متميز",
+			},
+		];
+	}, [t]);
+
 	useEffect(() => {
-		// Department
-		register("department", {
-			required: "Department is required.",
+		// Project Name
+		register("honorType", {
+			required: t("error.form.required.honorType", { framework: "React" }),
 		});
 
 		// Project Name
 		register("name", {
-			required: "Name is required.",
+			required: t("error.form.required.nameEnglish", { framework: "React" }),
+		});
+
+		// Project Name
+		register("rank", {
+			required: t("error.form.required.rank", { framework: "React" }),
+		});
+
+		// Department
+		register("department", {
+			required: t("error.form.required.department", { framework: "React" }),
+		});
+
+		// Project Name
+		register("imageName", {
+			required: t("error.form.required.image", { framework: "React" }),
 		});
 
 		if (data) {
-			const { name, rank, department, imageName } = data;
+			const { name, rank, department, imageName, type } = data;
 
 			setHideUploadButton(false);
+
+			var selectedType = honorTypeOptions.find((x) => x.meta === type);
+
+			console.log(selectedType);
+
+			setValue("honorType", selectedType!);
 
 			setValue("name", name);
 			setValue("rank", rank);
@@ -81,10 +122,10 @@ const HonorForm: FC<Props> = ({
 			setValue("imageName", imageName);
 			setHideSearchBox(true);
 		}
-	}, [data, language, register, setValue]);
+	}, [data, honorTypeOptions, language, register, setValue, t]);
 
 	const employeeNumberSearchHandler = async (value: string) => {
-		const { data } = await getEmployeesByKeyword(value);
+		const { data } = await getEmployeesByKeyword(value, Project.Honors);
 
 		if (data) {
 			setEmployeesOptions(
@@ -152,7 +193,7 @@ const HonorForm: FC<Props> = ({
 	};
 
 	return (
-		<ShadowedContainer className={styles.honorForm}>
+		<div className={styles.honorForm}>
 			{!hideSearchBox && (
 				<div className={styles.row}>
 					<div className={styles.basic}>
@@ -164,7 +205,21 @@ const HonorForm: FC<Props> = ({
 			)}
 			<form onSubmit={handleSubmit(submitHandler)}>
 				<div className={styles.row}>
-					<div className={styles.basic}>
+					<ShadowedContainer className={styles.basic}>
+						<div className={styles.ddlField}>
+							<Controller
+								render={({ field: { onChange, value } }) => (
+									<Dropdown
+										label={t("honor.type.name", { framework: "React" })}
+										options={honorTypeOptions}
+										onSelect={onChange}
+										value={value}
+									/>
+								)}
+								name="honorType"
+								control={control}
+							/>
+						</div>
 						{!hideSearchBox && (
 							<div>
 								<Dropdown
@@ -219,8 +274,49 @@ const HonorForm: FC<Props> = ({
 								defaultValue={""}
 							/>
 						</div>
-					</div>
+					</ShadowedContainer>
 					<div
+						className={
+							language !== "ar"
+								? styles.thumbnailContainer
+								: styles.thumbnailContainerLTR
+						}>
+						<Controller
+							render={({ field: { value, onChange } }) => (
+								<ShadowedContainer className={styles.thumbnail}>
+									{value && (
+										<img
+											src={value}
+											alt="thumbnail"
+											className={styles.image}
+										/>
+									)}
+									{/* <div className={styles.actionContainer}>
+										<FontAwesomeIcon icon={faXmark} />
+									</div> */}
+									<input
+										type="file"
+										name="thumbnail"
+										onChange={imageChangeHandler}
+										accept="image/*"
+									/>
+									{!hideUploadButton && (
+										<div className={styles.uploadSection}>
+											<Button
+												type="button"
+												onClick={imageUpdateHandler}>
+												{t("button.update", { framework: "React" })}
+											</Button>
+										</div>
+									)}
+								</ShadowedContainer>
+							)}
+							name="imageName"
+							control={control}
+							defaultValue={""}
+						/>
+					</div>
+					{/* <ShadowedContainer
 						className={
 							language !== "ar"
 								? styles.thumbnailContainer
@@ -258,15 +354,31 @@ const HonorForm: FC<Props> = ({
 								</Button>
 							</div>
 						)}
-					</div>
+					</ShadowedContainer> */}
 				</div>
 				<div>
 					{Object.keys(errors).length > 0 && (
 						<ShadowedContainer>
+							{/* Detail */}
+							<ErrorMessage
+								errors={errors}
+								name="honorType"
+								render={({ messages }) => {
+									return messages
+										? _.entries(messages).map(([type, message]) => (
+												<p
+													key={type}
+													className="error">
+													{message}
+												</p>
+										  ))
+										: null;
+								}}
+							/>
 							{/* Employee*/}
 							<ErrorMessage
 								errors={errors}
-								name="newsType"
+								name="name"
 								render={({ messages }) => {
 									return messages
 										? _.entries(messages).map(([type, message]) => (
@@ -283,7 +395,41 @@ const HonorForm: FC<Props> = ({
 							{/* Detail */}
 							<ErrorMessage
 								errors={errors}
-								name="fullNews"
+								name="rank"
+								render={({ messages }) => {
+									return messages
+										? _.entries(messages).map(([type, message]) => (
+												<p
+													key={type}
+													className="error">
+													{message}
+												</p>
+										  ))
+										: null;
+								}}
+							/>
+
+							{/* Detail */}
+							<ErrorMessage
+								errors={errors}
+								name="department"
+								render={({ messages }) => {
+									return messages
+										? _.entries(messages).map(([type, message]) => (
+												<p
+													key={type}
+													className="error">
+													{message}
+												</p>
+										  ))
+										: null;
+								}}
+							/>
+
+							{/* Detail */}
+							<ErrorMessage
+								errors={errors}
+								name="imageName"
 								render={({ messages }) => {
 									return messages
 										? _.entries(messages).map(([type, message]) => (
@@ -304,7 +450,7 @@ const HonorForm: FC<Props> = ({
 				</div>
 			</form>
 			<div></div>
-		</ShadowedContainer>
+		</div>
 	);
 };
 

@@ -20,7 +20,7 @@ import { getLatest20Honors } from "../../api/honors/get/getLatest20Honors";
 import { getNewsDetail } from "../../api/news/get/getNewsDetail";
 import { useTranslation } from "react-i18next";
 import { useStore } from "../../utils/store";
-import { getLatest10CreationsList } from "../../api/creations/get/getLatest10CreationsList";
+import { getLatest10ImagesList } from "../../api/images/get/getLatest10ImagesList";
 
 const LandingPage = () => {
 	const [t] = useTranslation("common");
@@ -98,7 +98,7 @@ const LandingPage = () => {
 
 	useEffect(() => {
 		const fetch = async () => {
-			const { data } = await getLatest10CreationsList(1);
+			const { data } = await getLatest10ImagesList(1);
 			if (data!) {
 				const fd: ICard[] = data?.map((x) => {
 					return {
@@ -116,7 +116,7 @@ const LandingPage = () => {
 
 	useEffect(() => {
 		const fetch = async () => {
-			const { data } = await getLatest10CreationsList(2);
+			const { data } = await getLatest10ImagesList(2);
 			if (data!) {
 				const sd: ICard[] = data
 					?.filter((x) => x.imageType.id === 2)
@@ -137,7 +137,7 @@ const LandingPage = () => {
 
 	useEffect(() => {
 		const fetch = async () => {
-			const { data } = await getLatest10CreationsList(3);
+			const { data } = await getLatest10ImagesList(3);
 			if (data!) {
 				const cr: ICard[] = data
 					?.filter((x) => x.imageType.id === 3)
@@ -209,7 +209,7 @@ const LandingPage = () => {
 					)}
 					{fireDeptCardsList.length > 0 && (
 						<DisplayCard
-							title={t("creation.imageType.fireDepartment", {
+							title={t("image.imageType.fireDepartment", {
 								framework: "React",
 							})}
 							className={styles.sideBarCard}>
@@ -218,7 +218,7 @@ const LandingPage = () => {
 					)}
 					{servicesDeptCardsList.length > 0 && (
 						<DisplayCard
-							title={t("creation.imageType.servicesDepartment", {
+							title={t("image.imageType.servicesDepartment", {
 								framework: "React",
 							})}
 							className={styles.sideBarCard}>
@@ -251,7 +251,7 @@ const LandingPage = () => {
 					)}
 					{creationsCardsList.length > 0 && (
 						<DisplayCard
-							title={t("creation.imageType.creation", {
+							title={t("image.imageType.creation", {
 								framework: "React",
 							})}
 							className={styles.sideBarCard}>

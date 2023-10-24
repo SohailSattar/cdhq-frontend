@@ -289,6 +289,7 @@ const UserAccountPage = () => {
 		} else {
 			orderByParam = `&OrderByDesc=${columnId}`;
 		}
+
 		setOrderBy(orderByParam);
 		// fetchData(currentPage, orderByParam);
 		setCurrentPage(1);

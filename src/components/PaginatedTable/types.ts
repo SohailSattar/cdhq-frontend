@@ -1,9 +1,9 @@
 import { APIActiveStatus } from "../../api/activeStatus/types";
+import { APIType as APIImageType } from "../../api/imageType/types";
 import { APIType } from "../../api/linkTypes/types";
 import { APIMenuItem } from "../../api/menu/types";
 import { APIProjectGroup } from "../../api/projects/types";
 import { APIRank } from "../../api/ranks/types";
-import { Id } from "../../utils";
 
 export interface PhoneDirectoryColumns {
 	id: number;
@@ -34,6 +34,16 @@ export interface HonorColumn {
 	rank: string;
 	locationFullName: string;
 	type: string;
+}
+
+export interface ImageColumn {
+	id: number;
+	name: string;
+	imageName: string;
+	nameEnglish: string;
+	imageType: APIImageType;
+	stars: number;
+	activeStatus: APIActiveStatus;
 }
 
 export interface NewsColumns {

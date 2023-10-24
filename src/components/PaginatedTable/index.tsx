@@ -51,6 +51,7 @@ interface Props {
 	onProjectOptonSelectionHandler?: (option: DropdownOption) => void;
 	onActiveStatusOptionSelectionChange?: (option: DropdownOption) => void;
 	onWorkflowStatusOptionSelectionChange?: (option: DropdownOption) => void;
+	columnsToHide?: string[];
 }
 
 const PaginatedTable: FC<Props> = ({
@@ -70,11 +71,12 @@ const PaginatedTable: FC<Props> = ({
 	showProjectDropdown = false,
 	hideActiveStatusDropdown = false,
 	activeStatusPlaceHolder,
-	hideWorkflowStatusDropdown = false,
+	hideWorkflowStatusDropdown = true,
 	onRoleOptonSelectionHandler = () => {},
 	onProjectOptonSelectionHandler = () => {},
 	onActiveStatusOptionSelectionChange = () => {},
 	onWorkflowStatusOptionSelectionChange = () => {},
+	columnsToHide = [],
 }) => {
 	const [t] = useTranslation("common");
 
@@ -340,6 +342,7 @@ const PaginatedTable: FC<Props> = ({
 				data={data}
 				onSort={onTableSort}
 				noRecordsText={noRecordText}
+				columnsToHide={columnsToHide}
 			/>
 			<div>
 				<Pagination

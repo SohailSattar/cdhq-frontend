@@ -2,6 +2,7 @@ export * from "./types";
 
 export { default as DepartmentForm } from "./DepartmentForm";
 export { default as HonorForm } from "./HonorForm";
+export { default as ImageForm } from "./ImageForm";
 export { default as LinkTypeForm } from "./LinkTypeForm";
 export { default as LoginForm } from "./LoginForm";
 export { default as MenuForm } from "./MenuForm";

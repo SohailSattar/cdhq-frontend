@@ -1,3 +1,5 @@
+import { Id } from "../utils";
+
 //Base
 export interface APIBase {
 	id: number;
@@ -42,6 +44,11 @@ export interface APIPaginate {
 	pageSize: number;
 	totalItems: number;
 	totalPages: number;
+}
+
+export interface APIStatus {
+	id: Id;
+	activeStatusId: number;
 }
 
 export type ContentType = "multipart/form-data" | "application/json";

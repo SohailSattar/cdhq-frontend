@@ -35,6 +35,9 @@ import {
 	MenuNewSettingsPage,
 	LinkTypesNewSettingsPage,
 	LinkTypesEditSettingsPage,
+	ImageManagementHomePage,
+	ImageManagementNewPage,
+	ImageManagementEditPage,
 } from "./pages";
 
 import * as RoutePath from "./RouteConfig";
@@ -450,9 +453,30 @@ function App() {
 								path={`${RoutePath.IMAGE_MANAGING}`}
 								element={
 									<Layout
-										// projectId={Project.ImageManagement}  TODO: Fix this
-										privilegeType={"Read"}>
-										<NewsHomePage />
+									// projectId={Project.ImageManagement}  TODO: Fix this
+									// privilegeType={"Read"}
+									>
+										<ImageManagementHomePage />
+									</Layout>
+								}
+							/>
+						</Route>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.IMAGE_MANAGING_NEW}`}
+								element={
+									<Layout>
+										<ImageManagementNewPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.IMAGE_MANAGING_EDIT}`}
+								element={
+									<Layout>
+										<ImageManagementEditPage />
 									</Layout>
 								}
 							/>
@@ -470,7 +494,7 @@ function App() {
 						</Route>
 						<Route element={<ProtectedRoute />}>
 							<Route
-								path={`${RoutePath.NEWS}/new`}
+								path={`${RoutePath.NEWS_NEW}`}
 								element={
 									<Layout>
 										<NewsCreatePage />

@@ -2,6 +2,7 @@
 	.row {
 		display: flex;
 		justify-content: space-between;
+		margin-bottom: 15px;
 	}
 
 	.basic {
@@ -14,13 +15,6 @@
 				display: flex;
 				flex: 1;
 				flex-direction: column;
-			}
-
-			.ddlField {
-				display: flex;
-				flex: 1;
-				flex-direction: column;
-				margin: 0 5px;
 			}
 
 			.actions {
@@ -36,8 +30,21 @@
 		}
 	}
 
+	.ddlField {
+		display: flex;
+		flex: 1;
+		flex-direction: column;
+		// margin: 0 5px;
+		margin-bottom: 15px;
+	}
+
 	.thumbnailContainer {
-		margin-left: 15px;
+		width: 40rem; //25rem
+		margin-right: 15px;
+
+		.image {
+			margin-bottom: 15px;
+		}
 
 		.browse {
 			margin-bottom: 15px;
@@ -62,12 +69,18 @@
 
 		.uploadSection {
 			display: flex;
+			margin-top: 15px;
 			justify-content: left;
 		}
 	}
 
 	.thumbnailContainerLTR {
-		margin-right: 15px;
+		width: 40rem; //25rem
+		margin-left: 15px;
+
+		.image {
+			margin-bottom: 15px;
+		}
 
 		.browse {
 			margin-bottom: 15px;
@@ -94,6 +107,7 @@
 
 		.uploadSection {
 			display: flex;
+			margin-top: 15px;
 			justify-content: right;
 		}
 	}
