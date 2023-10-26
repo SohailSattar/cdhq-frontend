@@ -85,20 +85,20 @@ const HonorForm: FC<Props> = ({
 			required: t("error.form.required.honorType", { framework: "React" }),
 		});
 
-		// Project Name
-		register("name", {
-			required: t("error.form.required.nameEnglish", { framework: "React" }),
-		});
+		// // Project Name
+		// register("name", {
+		// 	required: t("error.form.required.nameEnglish", { framework: "React" }),
+		// });
 
-		// Project Name
-		register("rank", {
-			required: t("error.form.required.rank", { framework: "React" }),
-		});
+		// // Project Name
+		// register("rank", {
+		// 	required: t("error.form.required.rank", { framework: "React" }),
+		// });
 
-		// Department
-		register("department", {
-			required: t("error.form.required.department", { framework: "React" }),
-		});
+		// // Department
+		// register("department", {
+		// 	required: t("error.form.required.department", { framework: "React" }),
+		// });
 
 		// Project Name
 		register("imageName", {
@@ -363,56 +363,6 @@ const HonorForm: FC<Props> = ({
 							<ErrorMessage
 								errors={errors}
 								name="honorType"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-							{/* Employee*/}
-							<ErrorMessage
-								errors={errors}
-								name="name"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-
-							{/* Detail */}
-							<ErrorMessage
-								errors={errors}
-								name="rank"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-
-							{/* Detail */}
-							<ErrorMessage
-								errors={errors}
-								name="department"
 								render={({ messages }) => {
 									return messages
 										? _.entries(messages).map(([type, message]) => (
