@@ -112,8 +112,6 @@ const HonorForm: FC<Props> = ({
 
 			var selectedType = honorTypeOptions.find((x) => x.meta === type);
 
-			console.log(selectedType);
-
 			setValue("honorType", selectedType!);
 
 			setValue("name", name);
@@ -166,12 +164,16 @@ const HonorForm: FC<Props> = ({
 	};
 
 	const employeeSelectHandler = (option: DropdownOption) => {
-		const { id, name, rank, dept } = option.meta;
+		if (option) {
+			const { id, name, rank, dept } = option.meta;
 
-		setValue("employeeId", id);
-		setValue("name", name);
-		setValue("rank", rank);
-		setValue("department", dept);
+			setSelctedEmployeesOption(option);
+
+			setValue("employeeId", id);
+			setValue("name", name);
+			setValue("rank", rank);
+			setValue("department", dept);
+		}
 	};
 
 	const imageChangeHandler = (evnt: ChangeEvent<HTMLInputElement>) => {

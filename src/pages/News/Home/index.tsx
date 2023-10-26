@@ -172,7 +172,7 @@ const NewsHomePage = () => {
 	return (
 		<PageContainer
 			displayContent={privileges?.readPrivilege}
-			title={t("news.name", { framework: "React" })}
+			title={t("page.newsHome", { framework: "React" })}
 			showAddButton={privileges?.insertPrivilege}
 			btnAddUrlLink={RoutePath.NEWS_NEW}
 			btnAddLabel={t("button.add", { framework: "React" })}

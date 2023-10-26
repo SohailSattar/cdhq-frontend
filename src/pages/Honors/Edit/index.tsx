@@ -110,8 +110,6 @@ const HonorEditPage = () => {
 		}
 	};
 
-	console.log(honor);
-
 	return (
 		<PageContainer
 			title={t("page.honorEdit", { framework: "React" })}
