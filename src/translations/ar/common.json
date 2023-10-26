@@ -204,31 +204,31 @@
 		},
 		"form": {
 			"pattern": {
-				"employeeNo": "Employee No should only be number.",
-				"nameArabic": "Name should only be in Arabic characters."
+				"employeeNo": " يرجى كتابة الأرقام فقط",
+				"nameArabic": "يرجى كتابة الاسم بالعربية"
 			},
 			"required": {
-				"userName": "User name is required.",
+				"userName": "اسم المستخدم حقل اجباري",
 				"employeeNo": " رقم الموظف حقل اجباري",
 				"nameArabic": "الاسم بالعربي حقل اجباري ",
 				"nameEnglish": " الاسم بالانجليزي حقل اجباري  ",
 				"title": "العنوان حقل اجباري",
-				"password": "Password is required",
-				"password2": "You have to retype the password",
-				"department": "Department is required",
-				"structureType": "Structure type is required.",
-				"class": "Class is required",
-				"rank": "Rank is required",
-				"project": "Project is required.",
-				"privilege": "Privilege is required.",
-				"workflowStart": "Workflow starts from is required.",
-				"workflowEnd": "Workflow ends at is required.",
-				"image": "Image is required",
-				"imageType": "Image type is required.",
-				"honorType": "Honor type is required."
+				"password": " الرمز السري اجباري ",
+				"password2": " تأكيد الرمز السري",
+				"department": "الادارة حقل اجباري",
+				"structureType": " يرجى اختيار مع أو بدون الأقسام و الأفرع",
+				"class": "الملاك حقل اجباري",
+				"rank": "حقل الرتبة اجباري",
+				"project": "حقل النظام اجباري",
+				"privilege": "الصلاحية حقل اجباري",
+				"workflowStart": "بداية التمرير",
+				"workflowEnd": "نهاية التمرير",
+				"image": "الصورة اجبارية",
+				"imageType": "نوع الصورة حقل اجباري",
+				"honorType": "الفئة اجبارية"
 			},
 			"validation": {
-				"passwordMismatch": "The passwords do not match"
+				"passwordMismatch": "الرمز السري لا يتطابق"
 			}
 		}
 	},
@@ -281,7 +281,7 @@
 		"noProjectSelected": "لم يتم اختيار أي برنامج",
 		"userProjectAssigned": "تم تعيين البرنامج  بنجاح",
 		"userProjectNotAssigned": "لم يتم تعيين البرنامج",
-		"userProjectActivated": "Project has been reactivated",
+		"userProjectActivated": "تم اعادة تفعيل النظام",
 		"userProjectDeleted": "تمت إزالة البرنامج بنجاح",
 		"unvailable": "غير متاح",
 		"projectAdded": "تم إنشاء برنامج جديد",
@@ -292,9 +292,9 @@
 		"deleteProject": "هل أنت متأكد أنك تريد حذف هذا البرنامج ؟",
 		"userProjectAdd": "تعيين برنامج  جديد للمستخدم",
 		"userProjectEdit": "تعديل النظام من أجل ",
-		"imageCreated": "Image has been created",
-		"imageActivated": "Image has been reactivated",
-		"imageDeleted": "Image has been deactivated",
+		"imageCreated": "تم اضافة الأيقونة",
+		"imageActivated": "تم  تفعيل الأيقونة",
+		"imageDeleted": "تم الغاء تفعيل الأيقونة",
 		"imageUpdated": "تم تحديث الصورة",
 		"newsAdded": "تمت إضافة الخبر",
 		"newsUpdated": "تم تحديث الخبر",
@@ -302,10 +302,10 @@
 		"savingConfirmation": "سيتم حفظ البيانات . هل أنت متأكد ؟ ",
 		"menuItemAdded": "تم اضافة عنوان على القائمة",
 		"menuItemUpdated": "تم تحديث القائمة",
-		"honorCreated": "Honor has been created",
-		"honorUpdated": "Honor has been updated",
-		"honorActivated": "Honor has been activated",
-		"honorDeactivated": "Honor has been deactivated"
+		"honorCreated": "تم اضافة سجل جديد ",
+		"honorUpdated": "تم تحديث السجل",
+		"honorActivated": "تم تفعيل السجل",
+		"honorDeactivated": "تم الغاء تفعيل السجل"
 	},
 	"dropdown": {
 		"select": "اختر"
@@ -331,7 +331,7 @@
 		"honoredOn": "تكريم يوم",
 		"name": "اسم الموظف",
 		"type": {
-			"name": "Honor Type",
+			"name": "فئة الموظف",
 			"talented": "موهوب",
 			"empOfMonth": "متميز"
 		}
