@@ -191,7 +191,7 @@ const HonorsHomePage = () => {
 				accessor: (p) => p,
 				Cell: ({ value }: any) => (
 					<>
-						{value.mmm}, {value.yyy}
+						{value.mmm} / {value.yyy}
 					</>
 				),
 			},
