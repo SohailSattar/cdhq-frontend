@@ -41,11 +41,11 @@
 		"isFile": "يحتوي على ملف"
 	},
 	"image": {
-		"id": "Id",
-		"name": "Image Name",
-		"nameEnglish": "Image Name [English]",
-		"ratings": "Ratings",
-		"type": "Type",
+		"id": "رمز الصورة",
+		"name": " اسم الصورة ",
+		"nameEnglish": " اسم الصورة [English]",
+		"ratings": "تقييم",
+		"type": "نوع الصورة",
 		"imageType": {
 			"fireDepartment": "أفضل مراكز إطفاء",
 			"servicesDepartment": "أفضل مراكز خدمة",
@@ -64,12 +64,12 @@
 		"newsHome": "الأخبار",
 		"newsEdit": "تعديل خبر",
 		"newsCreate": "انشاء خبر",
-		"honorHome": "Honors List",
-		"honorEdit": "Edit Honor",
-		"honorNew": "New Honor",
-		"imagesHome": "Images List",
-		"imageEdit": "Edit Image",
-		"imageNew": "New Image"
+		"honorHome": "سجل المتميزين و الموهوبين",
+		"honorEdit": " تعديل سجل الموهوبين و المتميزين",
+		"honorNew": " اضافة موظف متميز أو موهوب",
+		"imagesHome": " سجل الصور",
+		"imageEdit": "تعديل الصور ",
+		"imageNew": " اضافة صورة"
 	},
 	"account": {
 		"login": "تسجيل الدخول",
