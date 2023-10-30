@@ -49,7 +49,7 @@ const PhoneDirectoryPage = () => {
 	const [selectedRow, setSelectedRow] = useState<APIPhoneDirectory>();
 
 	const id = t("user.id", { framework: "React" });
-	// const employeeNo = t("user.employeeNumber", { framework: "React" });
+	const employeeNo = t("user.employeeNumber", { framework: "React" });
 	const rank = t("rank.name", { framework: "React" });
 	const fullName = t("user.name", { framework: "React" });
 	const phone = t("user.phone", { framework: "React" });
@@ -68,6 +68,12 @@ const PhoneDirectoryPage = () => {
 				Cell: ({ value }: any) => <div className={styles.name}>{value}</div>,
 			},
 			{
+				Header: employeeNo,
+				id: "employeeNo",
+				accessor: (p) => p.employeeNo,
+				Cell: ({ value }: any) => <div className={styles.name}>{value}</div>,
+			},
+			{
 				Header: rank,
 				id: "rank",
 				accessor: (p) => p.rank,
@@ -83,7 +89,7 @@ const PhoneDirectoryPage = () => {
 				accessor: (p) => p,
 				Cell: ({ value }: any) => (
 					<div className={styles.name}>
-						{language !== "ar" ? value?.fullName! : value?.nameEnglish!}
+						{language !== "ar" ? value?.name! : value?.nameEnglish!}
 					</div>
 				),
 			},
@@ -124,15 +130,16 @@ const PhoneDirectoryPage = () => {
 			},
 		],
 		[
-			actions,
-			edit,
+			id,
+			employeeNo,
+			rank,
 			fullName,
 			phone,
 			phoneOffice,
-			id,
+			actions,
 			language,
-			rank,
-			privileges,
+			privileges?.updatePrivilege,
+			edit,
 		] //role
 	);
 
@@ -176,7 +183,8 @@ const PhoneDirectoryPage = () => {
 					const { data } = await getPhoneDirectoryByDepartment(
 						selectedDepartment,
 						currentPage,
-						pageSize
+						pageSize,
+						keyword
 					);
 
 					if (data) {

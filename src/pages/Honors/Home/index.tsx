@@ -198,12 +198,22 @@ const HonorsHomePage = () => {
 			{
 				Header: name,
 				id: "name",
-				accessor: (p) => p.name,
+				accessor: (p) => p,
+				Cell: ({ value }: any) => (
+					<div className={styles.name}>
+						{language !== "ar" ? value.name : value.nameEnglish}
+					</div>
+				),
 			},
 			{
 				Header: rank,
 				id: "rank",
-				accessor: (p) => p.rank,
+				accessor: (p) => p,
+				Cell: ({ value }: any) => (
+					<div className={styles.name}>
+						{language !== "ar" ? value.rank : value.rankEnglish}
+					</div>
+				),
 			},
 			{
 				Header: department,

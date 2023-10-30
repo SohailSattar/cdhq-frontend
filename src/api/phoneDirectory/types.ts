@@ -10,7 +10,8 @@ interface APIPhone {
 
 export interface APIPhoneDirectory extends APIPhone {
 	id: number;
-	fullName: string;
+	employeeNo: number;
+	name: string;
 	nameEnglish: string;
 	rank?: APIRank;
 	department?: APIDepartmentItem;

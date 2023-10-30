@@ -43,7 +43,17 @@ const PhoneForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 				<ShadowedContainer
 					className={clsx(styles.section, styles.headingContainer)}>
 					<div className={styles.heading}>
-						{language !== "ar" ? data?.fullName : data?.nameEnglish}
+						{data?.employeeNo}{" "}
+						{language !== "ar" ? data?.rank?.name : data?.rank?.nameEnglish}{" "}
+						{language !== "ar" ? data?.name : data?.nameEnglish}
+					</div>
+				</ShadowedContainer>{" "}
+				<ShadowedContainer
+					className={clsx(styles.section, styles.headingContainer)}>
+					<div className={styles.heading}>
+						{language !== "ar"
+							? data?.department?.longFullName
+							: data?.department?.longFullNameEnglish}
 					</div>
 				</ShadowedContainer>
 				<ShadowedContainer className={styles.section}>

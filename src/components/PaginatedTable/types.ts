@@ -7,9 +7,10 @@ import { APIRank } from "../../api/ranks/types";
 
 export interface PhoneDirectoryColumns {
 	id: number;
+	employeeNo: number;
 	rank: APIRank;
 	// department: APIDe;
-	fullName: string;
+	name: string;
 	nameEnglish: string;
 	phone?: string;
 	phone2?: string;
@@ -31,7 +32,9 @@ export interface HonorColumn {
 	mmm: string;
 	yyy: string;
 	name: string;
+	nameEnglish: string;
 	rank: string;
+	rankEnglish: string;
 	locationFullName: string;
 	type: string;
 }

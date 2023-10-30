@@ -1,6 +1,13 @@
 import _ from "lodash/fp";
 import { ErrorMessage } from "@hookform/error-message";
-import { ChangeEvent, FC, useEffect, useMemo, useState } from "react";
+import {
+	ChangeEvent,
+	FC,
+	useCallback,
+	useEffect,
+	useMemo,
+	useState,
+} from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
@@ -39,6 +46,8 @@ const HonorForm: FC<Props> = ({
 }) => {
 	const [t] = useTranslation("common");
 	const language = useStore((state) => state.language);
+
+	const [keyword, setKeyword] = useState<string>();
 
 	const {
 		register,
@@ -80,6 +89,26 @@ const HonorForm: FC<Props> = ({
 	}, [t]);
 
 	useEffect(() => {
+		if (language !== "ar") {
+			// setValue("honorType", )
+			console.log(getValues("honorType"));
+		} else {
+		}
+		console.log(getValues("honorType"), honorTypeOptions);
+
+		const hType = getValues("honorType");
+
+		if (hType) {
+			const selectedType = honorTypeOptions.find(
+				(x) => x.value === hType.value
+			);
+			setValue("honorType", selectedType!);
+		}
+
+		// console.log
+	}, [getValues, honorTypeOptions, language, setValue]);
+
+	useEffect(() => {
 		// Project Name
 		register("honorType", {
 			required: t("error.form.required.honorType", { framework: "React" }),
@@ -106,7 +135,16 @@ const HonorForm: FC<Props> = ({
 		});
 
 		if (data) {
-			const { name, rank, department, imageName, type } = data;
+			const {
+				name,
+				nameEnglish,
+				rank,
+				rankEnglish,
+				work,
+				workEnglish,
+				imageName,
+				type,
+			} = data;
 
 			setHideUploadButton(false);
 
@@ -115,64 +153,92 @@ const HonorForm: FC<Props> = ({
 			setValue("honorType", selectedType!);
 
 			setValue("name", name);
+			setValue("nameEnglish", nameEnglish);
 			setValue("rank", rank);
-			setValue("department", department);
+			setValue("rankEnglish", rankEnglish);
+			setValue("department", work);
+			setValue("departmentEnglish", workEnglish);
 			setValue("imageName", imageName);
 			setHideSearchBox(true);
 		}
 	}, [data, honorTypeOptions, language, register, setValue, t]);
 
-	const employeeNumberSearchHandler = async (value: string) => {
-		const { data } = await getEmployeesByKeyword(value, Project.Honors);
+	const fetchEmployees = useCallback(
+		async (value: string) => {
+			const { data } = await getEmployeesByKeyword(value, Project.Honors);
 
-		if (data) {
-			setEmployeesOptions(
-				data?.map((d) => {
-					return {
-						label: `${d.employeeNo}  -  ${d.nameEnglish}`,
-						value: d.id,
+			if (data) {
+				setEmployeesOptions(
+					data?.map((d) => {
+						return {
+							label: `${d.employeeNo}  -  ${
+								language !== "ar" ? d.name : d.nameEnglish
+							}`,
+							value: d.id,
+							meta: {
+								id: d.id,
+								name: d.nameEnglish,
+								rank: d.rank?.name,
+								dept: d.department?.longFullName,
+							},
+						};
+					})
+				);
+
+				if (data.length > 0) {
+					const { employeeNo, name, nameEnglish, id, rank, department } =
+						data[0];
+
+					setSelctedEmployeesOption({
+						label: `${employeeNo}  -  ${
+							language !== "ar" ? name : nameEnglish
+						}`,
+						value: data[0].id,
 						meta: {
-							id: d.id,
-							name: d.nameEnglish,
-							rank: d.rank?.name,
-							dept: d.department?.longFullName,
+							id: id,
+							name: nameEnglish,
+							rank: rank?.name,
+							rankEnglish: rank?.nameEnglish,
+							dept: department?.name,
+							deptEnglish: department?.nameEnglish,
 						},
-					};
-				})
-			);
+					});
 
-			if (data.length > 0) {
-				const { employeeNo, nameEnglish, id, rank, department } = data[0];
-
-				setSelctedEmployeesOption({
-					label: `${employeeNo}  -  ${nameEnglish}`,
-					value: data[0].id,
-					meta: {
-						id: id,
-						name: nameEnglish,
-						rank: rank?.name,
-						dept: department?.longFullName,
-					},
-				});
-
-				setValue("employeeId", id);
-				setValue("name", nameEnglish);
-				setValue("rank", rank?.name!);
-				setValue("department", department?.longFullName!);
+					setValue("employeeId", id);
+					setValue("name", name);
+					setValue("nameEnglish", nameEnglish);
+					setValue("rank", rank?.name!);
+					setValue("rankEnglish", rank?.nameEnglish!);
+					setValue("department", department?.longFullName!);
+					setValue("departmentEnglish", department?.longFullNameEnglish!);
+				}
 			}
-		}
+		},
+		[language, setValue]
+	);
+
+	useEffect(() => {
+		fetchEmployees(keyword!);
+	}, [fetchEmployees, keyword]);
+
+	const employeeNumberSearchHandler = (value: string) => {
+		setKeyword(value);
 	};
 
 	const employeeSelectHandler = (option: DropdownOption) => {
 		if (option) {
-			const { id, name, rank, dept } = option.meta;
+			const { id, name, nameEnglish, rank, rankEnglish, dept, deptEnglish } =
+				option.meta;
 
 			setSelctedEmployeesOption(option);
 
 			setValue("employeeId", id);
 			setValue("name", name);
+			setValue("nameEnglish", nameEnglish);
 			setValue("rank", rank);
+			setValue("rankEnglish", rankEnglish);
 			setValue("department", dept);
+			setValue("departmentEnglish", deptEnglish);
 		}
 	};
 
@@ -245,6 +311,21 @@ const HonorForm: FC<Props> = ({
 								control={control}
 								defaultValue={""}
 							/>
+						</div>{" "}
+						<div>
+							<Controller
+								render={({ field: { value } }) => (
+									<TextBox
+										type="text"
+										label={t("user.nameEnglish", { framework: "React" })}
+										value={value}
+										disabled
+									/>
+								)}
+								name="nameEnglish"
+								control={control}
+								defaultValue={""}
+							/>
 						</div>
 						<div>
 							<Controller
@@ -266,12 +347,42 @@ const HonorForm: FC<Props> = ({
 								render={({ field: { value } }) => (
 									<TextBox
 										type="text"
+										label={t("rank.name", { framework: "React" })}
+										value={value}
+										disabled
+									/>
+								)}
+								name="rankEnglish"
+								control={control}
+								defaultValue={""}
+							/>
+						</div>
+						<div>
+							<Controller
+								render={({ field: { value } }) => (
+									<TextBox
+										type="text"
 										label={t("department.name", { framework: "React" })}
 										value={value}
 										disabled
 									/>
 								)}
 								name="department"
+								control={control}
+								defaultValue={""}
+							/>
+						</div>
+						<div>
+							<Controller
+								render={({ field: { value } }) => (
+									<TextBox
+										type="text"
+										label={t("department.name", { framework: "React" })}
+										value={value}
+										disabled
+									/>
+								)}
+								name="departmentEnglish"
 								control={control}
 								defaultValue={""}
 							/>

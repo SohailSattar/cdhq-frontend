@@ -8,7 +8,9 @@ export interface APIHonor {
 	nameEnglish: string;
 	imageName: string;
 	work: string;
+	workEnglish: string;
 	rank: string;
+	rankEnglish: string;
 	department: string;
 	type: string;
 	activeStatus: APIActiveStatus;
