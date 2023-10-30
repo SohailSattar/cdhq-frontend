@@ -22,6 +22,7 @@ import { ROLE } from "../../../utils";
 import { Project } from "../../../data/projects";
 import { checkPrivilegeForProjectUser } from "../../../api/userProjects/get/checkPrivilegeForProjectUser";
 import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPrivilege";
+import { APIPrivileges } from "../../../api/privileges/type";
 
 const UserNewPage = () => {
 	const { id } = useParams<{ id: string }>();
@@ -39,6 +40,8 @@ const UserNewPage = () => {
 	const [details, setDetails] = useState<IUserFormInputs>();
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 
+	const [privileges, setPrivileges] = useState<APIPrivileges>();
+
 	const previewHandler = async (values: IUserFormInputs) => {
 		setDetails(values);
 		setIsOpen(true);
@@ -51,6 +54,9 @@ const UserNewPage = () => {
 				Project.UserManagement
 			);
 
+			console.log(privilege);
+
+			setPrivileges(privilege);
 			if (!privilege?.insertPrivilege) {
 				setCanView(false);
 				return;
@@ -60,11 +66,12 @@ const UserNewPage = () => {
 					const { data: projectUserPrivilege } =
 						await checkPrivilegeForProjectUser(id!, Project.UserManagement);
 
-					if (!projectUserPrivilege?.insertPrivilege) {
-						setCanView(false);
-						return;
-					}
+					// if (!projectUserPrivilege?.insertPrivilege) {
+					// 	setCanView(false);
+					// 	return;
+					// }
 					// What if doesnt have read privilege?
+
 					const { data: isExist } = await checkIfUserExists(id!);
 
 					if (isExist) {
@@ -259,7 +266,7 @@ const UserNewPage = () => {
 			lockFor={[ROLE.USER]}
 			showBackButton
 			btnBackUrlLink={RoutePath.USER}
-			displayContent={canView}>
+			displayContent={privileges?.insertPrivilege}>
 			<UserForm
 				data={employee}
 				isExistingEmployee={employeeExists}

@@ -42,6 +42,7 @@ const PhoneDirectoryPage = () => {
 	const [pageSize, setPageSize] = useState<number>(10);
 
 	const [keyword, setKeyword] = useState("");
+	const [departmentIds, setDepartmentIds] = useState<string[]>([]);
 
 	const [currentPage, setCurrentPage] = useState(1);
 
@@ -179,38 +180,74 @@ const PhoneDirectoryPage = () => {
 			}
 
 			if (privilege?.readPrivilege) {
-				if (selectedDepartment) {
-					const { data } = await getPhoneDirectoryByDepartment(
-						selectedDepartment,
-						currentPage,
-						pageSize,
-						keyword
-					);
+				const { data } = await getPhoneDirectoryList(
+					currentPage,
+					pageSize,
+					keyword
+				);
 
-					if (data) {
-						setEmployees(data?.employees!);
-						setTotalCount(data?.totalItems!);
-					}
-				} else {
-					const { data } = await getPhoneDirectoryList(
-						currentPage,
-						pageSize,
-						keyword
-					);
-
-					if (data) {
-						setEmployees(data?.employees!);
-						setTotalCount(data?.totalItems!);
-					}
+				if (data) {
+					setEmployees(data?.employees!);
+					setTotalCount(data?.totalItems!);
 				}
 			}
 		},
-		[selectedDepartment, pageSize, keyword]
+		[pageSize, keyword]
+	);
+
+	const fetchByDepartment = useMemo(
+		() => async () => {
+			// Check Privilege
+			const { data: privilege, error } = await getProjectPrivilege(
+				Project.PhoneDirectory
+			);
+
+			if (error) {
+				// toast.success(
+				// 	t("message.projectUpdated", { framework: "React" }).toString()
+				// );
+			}
+
+			if (privilege) {
+				const {
+					readPrivilege,
+					insertPrivilege,
+					updatePrivilege,
+					deletePrivilege,
+				} = privilege;
+
+				setPrivileges({
+					readPrivilege,
+					insertPrivilege,
+					updatePrivilege,
+					deletePrivilege,
+				});
+			}
+
+			if (privilege?.readPrivilege) {
+				const { data } = await getPhoneDirectoryByDepartment(
+					currentPage,
+					pageSize,
+					keyword,
+					departmentIds
+				);
+
+				if (data) {
+					setEmployees(data?.employees!);
+					setTotalCount(data?.totalItems!);
+				}
+			}
+		},
+		[currentPage, pageSize, keyword, departmentIds]
 	);
 
 	useEffect(() => {
-		fetchData(currentPage);
-	}, [fetchData, currentPage]);
+		if (departmentIds.length === 0) {
+			fetchData(currentPage);
+		} else {
+			fetchByDepartment();
+		}
+	}, [fetchData, currentPage, departmentIds.length, fetchByDepartment]);
 
 	const userSearchClickHandler = (keyword: string) => {
 		setKeyword(keyword);
@@ -240,9 +277,11 @@ const PhoneDirectoryPage = () => {
 		}
 	};
 
-	const departmentNodeCheckHandler = (id: any) => {
+	const departmentNodeCheckHandler = (ids: any) => {
 		// setSelectedDepartment
-		setSelectedDepartment(id);
+		setDepartmentIds(ids);
+		setCurrentPage(1);
+		// setSelectedDepartment(id);
 	};
 
 	const pageChangeHandler = (currentpage: number) => {
@@ -265,7 +304,6 @@ const PhoneDirectoryPage = () => {
 							language === "ar" ? styles.hierarchyLTR : styles.hierarchy
 						}>
 						<DepartmentTree
-							showCheckbox={false}
 							onNodeCheck={departmentNodeCheckHandler}
 							isExpanded
 						/>

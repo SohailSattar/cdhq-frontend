@@ -90,11 +90,8 @@ const HonorForm: FC<Props> = ({
 
 	useEffect(() => {
 		if (language !== "ar") {
-			// setValue("honorType", )
-			console.log(getValues("honorType"));
 		} else {
 		}
-		console.log(getValues("honorType"), honorTypeOptions);
 
 		const hType = getValues("honorType");
 
