@@ -1,4 +1,5 @@
 import { APIActiveStatus } from "../../api/activeStatus/types";
+import { APIDepartmentItem } from "../../api/departments/types";
 import { APIType as APIImageType } from "../../api/imageType/types";
 import { APIType } from "../../api/linkTypes/types";
 import { APIMenuItem } from "../../api/menu/types";
@@ -35,6 +36,7 @@ export interface HonorColumn {
 	nameEnglish: string;
 	rank: string;
 	rankEnglish: string;
+	department: APIDepartmentItem;
 	locationFullName: string;
 	type: string;
 }

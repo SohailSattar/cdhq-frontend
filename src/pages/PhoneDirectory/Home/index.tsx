@@ -295,7 +295,7 @@ const PhoneDirectoryPage = () => {
 
 	return (
 		<PageContainer
-			title="Phone Directory"
+			title={t("page.phoneDirectoryHome", { framework: "React" })}
 			className={styles.phoneDirectory}>
 			<div className={styles.content}>
 				<div>

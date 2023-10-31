@@ -61,6 +61,7 @@
 		"projectDetail": "Project Details",
 		"projectEdit": "Edit Project",
 		"projectNew": "New Project",
+		"phoneDirectoryHome": "Phone Directory",
 		"newsHome": "News List",
 		"newsEdit": "Edit News",
 		"newsCreate": "Create News",
@@ -226,6 +227,9 @@
 				"image": "Image is required",
 				"imageType": "Image type is required.",
 				"honorType": "Honor type is required."
+			},
+			"selection": {
+				"employee": "No Employee has been selected"
 			},
 			"validation": {
 				"passwordMismatch": "The passwords do not match"

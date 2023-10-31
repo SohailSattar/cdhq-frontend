@@ -1,6 +1,7 @@
 import { APIPaginate } from "..";
 import { Id } from "../../utils";
 import { APIActiveStatus } from "../activeStatus/types";
+import { APIDepartmentItem } from "../departments/types";
 
 export interface APIHonor {
 	id: number;
@@ -11,7 +12,7 @@ export interface APIHonor {
 	workEnglish: string;
 	rank: string;
 	rankEnglish: string;
-	department: string;
+	department: APIDepartmentItem;
 	type: string;
 	activeStatus: APIActiveStatus;
 }

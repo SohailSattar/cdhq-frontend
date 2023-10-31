@@ -61,6 +61,7 @@
 		"projectDetail": "تفاصيل النظام",
 		"projectEdit": "تعديل بيانات النظام",
 		"projectNew": "انشاء نظام جديد",
+		"phoneDirectoryHome": "Phone Directory",
 		"newsHome": "الأخبار",
 		"newsEdit": "تعديل خبر",
 		"newsCreate": "انشاء خبر",
@@ -226,6 +227,9 @@
 				"image": "الصورة اجبارية",
 				"imageType": "نوع الصورة حقل اجباري",
 				"honorType": "الفئة اجبارية"
+			},
+			"selection": {
+				"employee": "No Employee has been selected"
 			},
 			"validation": {
 				"passwordMismatch": "الرمز السري لا يتطابق"

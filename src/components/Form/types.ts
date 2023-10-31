@@ -90,11 +90,8 @@ export interface IHonorFormInputs {
 	honorType: DropdownOption;
 	employeeId: Id;
 	name: string;
-	nameEnglish: string;
 	rank: string;
-	rankEnglish?: string;
 	department: string;
-	departmentEnglish?: string;
 	imageName: string;
 	thumbnail: File;
 }

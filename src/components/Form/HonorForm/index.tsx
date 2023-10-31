@@ -106,15 +106,15 @@ const HonorForm: FC<Props> = ({
 	}, [getValues, honorTypeOptions, language, setValue]);
 
 	useEffect(() => {
-		// Project Name
+		// Honor Type
 		register("honorType", {
 			required: t("error.form.required.honorType", { framework: "React" }),
 		});
 
-		// // Project Name
-		// register("name", {
-		// 	required: t("error.form.required.nameEnglish", { framework: "React" }),
-		// });
+		// Employee Id
+		register("employeeId", {
+			required: t("error.form.selection.employee", { framework: "React" }),
+		});
 
 		// // Project Name
 		// register("rank", {
@@ -132,16 +132,7 @@ const HonorForm: FC<Props> = ({
 		});
 
 		if (data) {
-			const {
-				name,
-				nameEnglish,
-				rank,
-				rankEnglish,
-				work,
-				workEnglish,
-				imageName,
-				type,
-			} = data;
+			const { name, rank, work, imageName, type } = data;
 
 			setHideUploadButton(false);
 
@@ -150,11 +141,8 @@ const HonorForm: FC<Props> = ({
 			setValue("honorType", selectedType!);
 
 			setValue("name", name);
-			setValue("nameEnglish", nameEnglish);
 			setValue("rank", rank);
-			setValue("rankEnglish", rankEnglish);
 			setValue("department", work);
-			setValue("departmentEnglish", workEnglish);
 			setValue("imageName", imageName);
 			setHideSearchBox(true);
 		}
@@ -163,6 +151,8 @@ const HonorForm: FC<Props> = ({
 	const fetchEmployees = useCallback(
 		async (value: string) => {
 			const { data } = await getEmployeesByKeyword(value, Project.Honors);
+
+			console.log("asdsa");
 
 			if (data) {
 				setEmployeesOptions(
@@ -174,8 +164,8 @@ const HonorForm: FC<Props> = ({
 							value: d.id,
 							meta: {
 								id: d.id,
-								name: d.nameEnglish,
-								rank: d.rank?.name,
+								name: language !== "ar" ? d.name : d.nameEnglish,
+								rank: language !== "ar" ? d.rank?.name : d.rank?.nameEnglish!,
 								dept: d.department?.longFullName,
 							},
 						};
@@ -186,15 +176,18 @@ const HonorForm: FC<Props> = ({
 					const { employeeNo, name, nameEnglish, id, rank, department } =
 						data[0];
 
+					const empName = language !== "ar" ? name : nameEnglish;
+					const empRank = language !== "ar" ? rank?.name : rank?.nameEnglish!;
+					const empDept =
+						language !== "ar" ? department?.name : department?.nameEnglish!;
+
 					setSelctedEmployeesOption({
-						label: `${employeeNo}  -  ${
-							language !== "ar" ? name : nameEnglish
-						}`,
+						label: `${employeeNo}  -  ${empName}`,
 						value: data[0].id,
 						meta: {
 							id: id,
-							name: nameEnglish,
-							rank: rank?.name,
+							name: empName,
+							rank: empRank,
 							rankEnglish: rank?.nameEnglish,
 							dept: department?.name,
 							deptEnglish: department?.nameEnglish,
@@ -202,12 +195,10 @@ const HonorForm: FC<Props> = ({
 					});
 
 					setValue("employeeId", id);
-					setValue("name", name);
-					setValue("nameEnglish", nameEnglish);
-					setValue("rank", rank?.name!);
-					setValue("rankEnglish", rank?.nameEnglish!);
-					setValue("department", department?.longFullName!);
-					setValue("departmentEnglish", department?.longFullNameEnglish!);
+					setValue("name", empName);
+					// setValue("nameEnglish", nameEnglish);
+					setValue("rank", empRank!);
+					setValue("department", empDept!);
 				}
 			}
 		},
@@ -224,18 +215,19 @@ const HonorForm: FC<Props> = ({
 
 	const employeeSelectHandler = (option: DropdownOption) => {
 		if (option) {
-			const { id, name, nameEnglish, rank, rankEnglish, dept, deptEnglish } =
-				option.meta;
+			const { id, name, rank, dept } = option.meta;
+
+			console.log(option.meta);
 
 			setSelctedEmployeesOption(option);
 
 			setValue("employeeId", id);
 			setValue("name", name);
-			setValue("nameEnglish", nameEnglish);
+			// setValue("nameEnglish", nameEnglish);
 			setValue("rank", rank);
-			setValue("rankEnglish", rankEnglish);
+			// setValue("rankEnglish", rankEnglish);
 			setValue("department", dept);
-			setValue("departmentEnglish", deptEnglish);
+			// setValue("departmentEnglish", deptEnglish);
 		}
 	};
 
@@ -308,21 +300,6 @@ const HonorForm: FC<Props> = ({
 								control={control}
 								defaultValue={""}
 							/>
-						</div>{" "}
-						<div>
-							<Controller
-								render={({ field: { value } }) => (
-									<TextBox
-										type="text"
-										label={t("user.nameEnglish", { framework: "React" })}
-										value={value}
-										disabled
-									/>
-								)}
-								name="nameEnglish"
-								control={control}
-								defaultValue={""}
-							/>
 						</div>
 						<div>
 							<Controller
@@ -344,42 +321,12 @@ const HonorForm: FC<Props> = ({
 								render={({ field: { value } }) => (
 									<TextBox
 										type="text"
-										label={t("rank.name", { framework: "React" })}
-										value={value}
-										disabled
-									/>
-								)}
-								name="rankEnglish"
-								control={control}
-								defaultValue={""}
-							/>
-						</div>
-						<div>
-							<Controller
-								render={({ field: { value } }) => (
-									<TextBox
-										type="text"
 										label={t("department.name", { framework: "React" })}
 										value={value}
 										disabled
 									/>
 								)}
 								name="department"
-								control={control}
-								defaultValue={""}
-							/>
-						</div>
-						<div>
-							<Controller
-								render={({ field: { value } }) => (
-									<TextBox
-										type="text"
-										label={t("department.name", { framework: "React" })}
-										value={value}
-										disabled
-									/>
-								)}
-								name="departmentEnglish"
 								control={control}
 								defaultValue={""}
 							/>
@@ -484,8 +431,22 @@ const HonorForm: FC<Props> = ({
 										  ))
 										: null;
 								}}
+							/>{" "}
+							<ErrorMessage
+								errors={errors}
+								name="employeeId"
+								render={({ messages }) => {
+									return messages
+										? _.entries(messages).map(([type, message]) => (
+												<p
+													key={type}
+													className="error">
+													{message}
+												</p>
+										  ))
+										: null;
+								}}
 							/>
-
 							{/* Detail */}
 							<ErrorMessage
 								errors={errors}

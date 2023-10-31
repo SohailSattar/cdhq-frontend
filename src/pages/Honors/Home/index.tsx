@@ -218,7 +218,14 @@ const HonorsHomePage = () => {
 			{
 				Header: department,
 				id: "department",
-				accessor: (p) => p.locationFullName,
+				accessor: (p) => p,
+				Cell: ({ value }: any) => (
+					<div className={styles.name}>
+						{language !== "ar"
+							? value.department?.name!
+							: value.department?.name!}
+					</div>
+				),
 			},
 			{
 				Header: status,
@@ -274,6 +281,8 @@ const HonorsHomePage = () => {
 			editClickHandler,
 		]
 	);
+
+	console.log(honors);
 
 	const searchHandler = (keyword: string) => {
 		setKeyword(keyword);
