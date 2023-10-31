@@ -229,7 +229,7 @@
 				"honorType": "الفئة اجبارية"
 			},
 			"selection": {
-				"employee": "No Employee has been selected"
+				"employee": " لم يتم اختيار الموظف"
 			},
 			"validation": {
 				"passwordMismatch": "الرمز السري لا يتطابق"
@@ -302,8 +302,8 @@
 		"imageUpdated": "تم تحديث الصورة",
 		"newsAdded": "تمت إضافة الخبر",
 		"newsUpdated": "تم تحديث الخبر",
-		"newsActivated": "News has been activated",
-		"newsDeactivated": "News has been deleted",
+		"newsActivated": " تم تفعيل الخبر",
+		"newsDeactivated": " تم حذف الخبر",
 		"savingConfirmationTitle": "سيتم الحفظ",
 		"savingConfirmation": "سيتم حفظ البيانات . هل أنت متأكد ؟ ",
 		"menuItemAdded": "تم اضافة عنوان على القائمة",
