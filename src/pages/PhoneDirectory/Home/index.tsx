@@ -33,7 +33,8 @@ const PhoneDirectoryPage = () => {
 	const language = useStore((state) => state.language);
 	const [t] = useTranslation("common");
 
-	const [selectedDepartment, setSelectedDepartment] = useState();
+	//Parameters
+	const [toggleSort, setToggleSort] = useState(false);
 
 	const [privileges, setPrivileges] = useState<APIPrivileges>();
 
@@ -59,6 +60,8 @@ const PhoneDirectoryPage = () => {
 	//Actions
 	const actions = t("global.actions", { framework: "React" });
 	const edit = t("button.edit", { framework: "React" });
+
+	const [orderBy, setOrderBy] = useState<string>("");
 
 	const columns: Column<PhoneDirectoryColumns>[] = useMemo(
 		() => [
@@ -183,7 +186,8 @@ const PhoneDirectoryPage = () => {
 				const { data } = await getPhoneDirectoryList(
 					currentPage,
 					pageSize,
-					keyword
+					keyword,
+					orderBy
 				);
 
 				if (data) {
@@ -192,7 +196,7 @@ const PhoneDirectoryPage = () => {
 				}
 			}
 		},
-		[pageSize, keyword]
+		[pageSize, keyword, orderBy]
 	);
 
 	const fetchByDepartment = useMemo(
@@ -293,6 +297,20 @@ const PhoneDirectoryPage = () => {
 		setIsPopupOpen(false);
 	};
 
+	const tableSortHandler = (columnId: string, isSortedDesc: boolean) => {
+		let orderByParam = "";
+		setToggleSort(!toggleSort);
+		if (toggleSort) {
+			orderByParam = `&OrderBy=${columnId}`;
+		} else {
+			orderByParam = `&OrderByDesc=${columnId}`;
+		}
+
+		setOrderBy(orderByParam);
+		// fetchData(currentPage, orderByParam);
+		setCurrentPage(1);
+	};
+
 	return (
 		<PageContainer
 			title={t("page.phoneDirectoryHome", { framework: "React" })}
@@ -317,7 +335,7 @@ const PhoneDirectoryPage = () => {
 						data={employees}
 						columns={columns}
 						onSearch={userSearchClickHandler}
-						onTableSort={() => {}}
+						onTableSort={tableSortHandler}
 						onPageChange={pageChangeHandler}
 						onPageViewSelectionChange={pageViewSelectionHandler}
 						// displayActionsColumn={privileges?.updatePrivilege!}

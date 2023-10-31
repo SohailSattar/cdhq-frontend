@@ -8,8 +8,8 @@ export interface APIHonor {
 	name: string;
 	nameEnglish: string;
 	imageName: string;
-	work: string;
-	workEnglish: string;
+	// work: string;
+	// workEnglish: string;
 	rank: string;
 	rankEnglish: string;
 	department: APIDepartmentItem;

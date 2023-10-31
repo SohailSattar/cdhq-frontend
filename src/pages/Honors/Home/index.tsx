@@ -187,7 +187,7 @@ const HonorsHomePage = () => {
 			},
 			{
 				Header: honoredOn,
-				id: "honoredOn",
+				id: "createdOn",
 				accessor: (p) => p,
 				Cell: ({ value }: any) => (
 					<>

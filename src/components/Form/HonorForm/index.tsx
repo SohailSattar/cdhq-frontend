@@ -132,17 +132,34 @@ const HonorForm: FC<Props> = ({
 		});
 
 		if (data) {
-			const { name, rank, work, imageName, type } = data;
+			const {
+				name,
+				nameEnglish,
+				rank,
+				rankEnglish,
+				department,
+				imageName,
+				type,
+			} = data;
+
+			console.log(data);
 
 			setHideUploadButton(false);
 
 			var selectedType = honorTypeOptions.find((x) => x.meta === type);
 
+			const empName = language !== "ar" ? name : nameEnglish;
+
+			const empRank = language !== "ar" ? rank : rankEnglish ?? rank;
+
+			const empDept =
+				language !== "ar" ? department?.name! : department?.nameEnglish!;
+
 			setValue("honorType", selectedType!);
 
-			setValue("name", name);
-			setValue("rank", rank);
-			setValue("department", work);
+			setValue("name", empName);
+			setValue("rank", empRank);
+			setValue("department", empDept);
 			setValue("imageName", imageName);
 			setHideSearchBox(true);
 		}
@@ -151,8 +168,6 @@ const HonorForm: FC<Props> = ({
 	const fetchEmployees = useCallback(
 		async (value: string) => {
 			const { data } = await getEmployeesByKeyword(value, Project.Honors);
-
-			console.log("asdsa");
 
 			if (data) {
 				setEmployeesOptions(

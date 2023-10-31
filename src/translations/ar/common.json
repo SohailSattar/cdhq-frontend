@@ -302,6 +302,8 @@
 		"imageUpdated": "تم تحديث الصورة",
 		"newsAdded": "تمت إضافة الخبر",
 		"newsUpdated": "تم تحديث الخبر",
+		"newsActivated": "News has been activated",
+		"newsDeactivated": "News has been deleted",
 		"savingConfirmationTitle": "سيتم الحفظ",
 		"savingConfirmation": "سيتم حفظ البيانات . هل أنت متأكد ؟ ",
 		"menuItemAdded": "تم اضافة عنوان على القائمة",

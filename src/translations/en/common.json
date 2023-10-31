@@ -302,6 +302,8 @@
 		"imageUpdated": "Image has been updated",
 		"newsAdded": "News has been added",
 		"newsUpdated": "News has been updated",
+		"newsActivated": "News has been activated",
+		"newsDeactivated": "News has been deleted",
 		"savingConfirmationTitle": "Saving Approvement",
 		"savingConfirmation": "Above details will be saved. Are you sure to save?",
 		"menuItemAdded": "Menu detail has been added",

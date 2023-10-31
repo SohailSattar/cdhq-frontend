@@ -54,6 +54,7 @@ export interface ImageColumn {
 export interface NewsColumns {
 	id: number;
 	title: string;
+	activeStatus: APIActiveStatus;
 }
 
 export interface ProjectColumns {

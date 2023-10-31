@@ -52,6 +52,7 @@ interface Props {
 	onActiveStatusOptionSelectionChange?: (option: DropdownOption) => void;
 	onWorkflowStatusOptionSelectionChange?: (option: DropdownOption) => void;
 	columnsToHide?: string[];
+	classNameTable?: string;
 }
 
 const PaginatedTable: FC<Props> = ({
@@ -77,6 +78,7 @@ const PaginatedTable: FC<Props> = ({
 	onActiveStatusOptionSelectionChange = () => {},
 	onWorkflowStatusOptionSelectionChange = () => {},
 	columnsToHide = [],
+	classNameTable,
 }) => {
 	const [t] = useTranslation("common");
 
@@ -343,6 +345,7 @@ const PaginatedTable: FC<Props> = ({
 				onSort={onTableSort}
 				noRecordsText={noRecordText}
 				columnsToHide={columnsToHide}
+				className={classNameTable}
 			/>
 			<div>
 				<Pagination

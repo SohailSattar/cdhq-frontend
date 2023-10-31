@@ -6,13 +6,24 @@ export async function getPhoneDirectoryByDepartment(
 	currentPage: number = 1,
 	pageSize: number = 50,
 	keyword: string = "",
-	deptIds: string[]
+	deptIds: string[],
+	orderBy?: string
 ): Promise<APIResponse<APIPagedPhoneDirectory>> {
 	try {
 		const config = getConfig();
 
+		let queryParam = "";
+
+		if (keyword) {
+			queryParam += `&keyword=${keyword}`;
+		}
+
+		if (orderBy) {
+			queryParam += `${orderBy}`;
+		}
+
 		const response = await instance.post<APIPagedPhoneDirectory>(
-			`/phone-directory?page=${currentPage}&postsperpage=${pageSize}&keyword=${keyword}`,
+			`/phone-directory?page=${currentPage}&postsperpage=${pageSize}&keyword=${keyword}${queryParam}`,
 			{
 				ids: deptIds,
 			},

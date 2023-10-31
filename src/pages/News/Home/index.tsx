@@ -21,6 +21,8 @@ import { Id } from "../../../utils";
 
 import styles from "./styles.module.scss";
 import { toast } from "react-toastify";
+import { APIStatus } from "../../../api";
+import { updateNewsStatus } from "../../../api/news/update/updateNewsStatus";
 
 const NewsHomePage = () => {
 	const [t] = useTranslation("common");
@@ -34,6 +36,13 @@ const NewsHomePage = () => {
 
 	const [news, setNews] = useState<APINews[]>([]);
 	const [keyword, setKeyword] = useState("");
+
+	// This variable is to set the status code which we can pass to the API
+	const [selectedStatusCode, setSelectedStatusCode] = useState<Id>(1);
+
+	//Parameters
+	const [toggleSort, setToggleSort] = useState(false);
+	const [orderBy, setOrderBy] = useState<string>("");
 
 	const fetchData = useMemo(
 		() => async (currentPage: number, keyword?: string) => {
@@ -54,7 +63,13 @@ const NewsHomePage = () => {
 					deletePrivilege,
 				});
 
-				const { data } = await getNews(currentPage, pageSize, keyword);
+				const { data } = await getNews(
+					currentPage,
+					pageSize,
+					keyword,
+					selectedStatusCode,
+					orderBy
+				);
 
 				if (data) {
 					setNews(data.news);
@@ -64,7 +79,7 @@ const NewsHomePage = () => {
 				}
 			}
 		},
-		[pageSize]
+		[orderBy, pageSize, selectedStatusCode]
 	);
 
 	useEffect(() => {
@@ -113,6 +128,32 @@ const NewsHomePage = () => {
 	// 	}
 	// };
 
+	const activateClickHandler = useMemo(
+		() => async (upId: Id) => {
+			const params: APIStatus = {
+				id: upId,
+				activeStatusId: 1,
+			};
+
+			const { data, error } = await updateNewsStatus(params);
+
+			if (data) {
+				fetchData(currentPage, keyword);
+				toast.success(
+					t("message.newsActivated", { framework: "React" }).toString()
+				);
+			}
+
+			if (error) {
+				toast.error(error.ErrorMessage);
+			}
+
+			if (data) {
+			}
+		},
+		[currentPage, fetchData, keyword, t]
+	);
+
 	const deleteClickHandler = useMemo(
 		() => async (id: Id) => {
 			const { data, error } = await deleteNews(id);
@@ -122,10 +163,25 @@ const NewsHomePage = () => {
 			}
 
 			if (data) {
+				toast.error(
+					t("message.newsDeactivated", { framework: "React" }).toString()
+				);
 				fetchData(currentPage, keyword);
 			}
 		},
 		[currentPage, fetchData, keyword]
+	);
+
+	const statusSelectHandler = useMemo(
+		() => (option: DropdownOption) => {
+			if (option) {
+				setSelectedStatusCode((prevState) => (prevState = option?.value!));
+			} else {
+				setSelectedStatusCode(1);
+			}
+			setCurrentPage(1);
+		},
+		[]
 	);
 
 	const txtId = t("news.id", { framework: "React" });
@@ -152,21 +208,48 @@ const NewsHomePage = () => {
 				Cell: ({ value }: any) => (
 					<ActionButtons
 						id={value.id}
+						showActivate={value.activeStatus.id !== 1}
+						onActivate={activateClickHandler}
 						// detailPageLink={`${RoutePath.NEWS}/${value.id}`}
 						// showView={privileges?.readPrivilege}
 						showEdit={privileges?.updatePrivilege}
-						showDelete={privileges?.deletePrivilege}
+						showDelete={
+							privileges?.deletePrivilege && value.activeStatus.id === 1
+						}
 						onDelete={deleteClickHandler}
 						onEdit={() => editClickHandler(value.id)}
 					/>
 				),
 			},
 		],
-		[privileges, actions, editClickHandler, deleteClickHandler, title, txtId]
+		[
+			txtId,
+			title,
+			actions,
+			activateClickHandler,
+			privileges?.updatePrivilege,
+			privileges?.deletePrivilege,
+			deleteClickHandler,
+			editClickHandler,
+		]
 	);
 
 	const newsSearchClickHandler = (keyword: string) => {
 		setKeyword(keyword);
+	};
+
+	const tableSortHandler = (columnId: string, isSortedDesc: boolean) => {
+		let orderByParam = "";
+		setToggleSort(!toggleSort);
+		if (toggleSort) {
+			orderByParam = `&OrderBy=${columnId}`;
+		} else {
+			orderByParam = `&OrderByDesc=${columnId}`;
+		}
+
+		setOrderBy(orderByParam);
+		// fetchData(currentPage, orderByParam);
+		setCurrentPage(1);
 	};
 
 	return (
@@ -184,13 +267,13 @@ const NewsHomePage = () => {
 				data={news}
 				columns={columns}
 				onSearch={newsSearchClickHandler}
-				onTableSort={() => {}}
+				onTableSort={tableSortHandler}
 				onPageChange={pageChangeHandler}
 				onPageViewSelectionChange={pageViewSelectionHandler}
 				noRecordText={t("table.noNews", { framework: "React" })}
-				onActiveStatusOptionSelectionChange={() => {}}
-				onWorkflowStatusOptionSelectionChange={() => {}}
+				onActiveStatusOptionSelectionChange={statusSelectHandler}
 				hideWorkflowStatusDropdown
+				classNameTable={styles.table}
 			/>
 		</PageContainer>
 	);

@@ -107,6 +107,7 @@ const UserAccountPage = () => {
 	const logName = t("user.logName", { framework: "React" });
 	const fullName = t("user.fullName", { framework: "React" });
 
+	const rank = t("rank.name", { framework: "React" });
 	const department = t("department.name", { framework: "React" });
 
 	const status = t("global.status", { framework: "React" });
@@ -159,6 +160,21 @@ const UserAccountPage = () => {
 				),
 			},
 			{
+				Header: <div className={styles.tableHeaderCell}>{rank}</div>,
+				id: "rankId",
+				accessor: (p) => p,
+				Cell: ({ value }: any) => (
+					<div className={styles.name}>
+						{value.rank && (
+							<>
+								<div className={styles.arabic}>{value.rank.name}</div>
+								<div className={styles.english}>{value.rank.nameEnglish}</div>
+							</>
+						)}
+					</div>
+				),
+			},
+			{
 				Header: <div className={styles.tableHeaderCell}>{department}</div>,
 				id: "departmentId",
 				accessor: (p) => p,
@@ -191,7 +207,7 @@ const UserAccountPage = () => {
 				),
 			},
 		],
-		[department, employeeNo, fullName, id, language, logName, status]
+		[department, employeeNo, fullName, id, language, logName, rank, status]
 	);
 
 	// New maybe
