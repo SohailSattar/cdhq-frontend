@@ -15,6 +15,7 @@ export interface APIHonor {
 	department: APIDepartmentItem;
 	type: string;
 	activeStatus: APIActiveStatus;
+	notes: string;
 }
 
 export interface APIPaginatedHonors extends APIPaginate {
@@ -25,11 +26,13 @@ export interface APINewHonor {
 	employeeId: Id;
 	honorType: number;
 	thumbnail: File;
+	notes: string;
 }
 
 export interface APIUpdateHonor {
 	id: Id;
 	honorType: number;
+	notes: string;
 }
 
 export interface APIUpdateHonorImage {

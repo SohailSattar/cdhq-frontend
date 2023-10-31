@@ -57,7 +57,7 @@ const UserAccountPage = () => {
 	const [selectedProject, setSelectedProject] = useState<Id>();
 	// This variable is to set the status code which we can pass to the API
 	const [selectedStatusCode, setSelectedStatusCode] = useState<Id>(1);
-	const [orderBy, setOrderBy] = useState<string>("");
+	const [orderBy, setOrderBy] = useState<string>("&OrderBy=rankId");
 
 	const [privileges, setPrivileges] = useState<APIPrivileges>();
 

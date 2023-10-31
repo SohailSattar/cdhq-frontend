@@ -9,9 +9,10 @@ import { useStore } from "../../../utils/store";
 interface Props {
 	data: INewsFormInputs;
 	onClick: () => {};
+	onCancel: () => void;
 }
 
-const NewsPreview: FC<Props> = ({ data, onClick }) => {
+const NewsPreview: FC<Props> = ({ data, onClick, onCancel }) => {
 	const [t] = useTranslation("common");
 	const language = useStore((state) => state.language);
 
@@ -82,7 +83,7 @@ const NewsPreview: FC<Props> = ({ data, onClick }) => {
 						{t("button.save", { framework: "React" })}
 					</Button>
 				</span>
-				<Button onClick={onClick}>
+				<Button onClick={onCancel}>
 					{t("button.cancel", { framework: "React" })}
 				</Button>
 			</div>

@@ -50,11 +50,12 @@ const HonorNewPage = () => {
 	}, [fetchDetails]);
 
 	const submitHandler = async (values: IHonorFormInputs) => {
-		const { employeeId, honorType, thumbnail } = values;
+		const { employeeId, honorType, thumbnail, notes } = values;
 		const params: APINewHonor = {
 			employeeId: employeeId,
 			honorType: +honorType.value,
 			thumbnail: thumbnail,
+			notes: notes,
 		};
 		const { data, error } = await addHonor(params);
 		if (data?.success) {

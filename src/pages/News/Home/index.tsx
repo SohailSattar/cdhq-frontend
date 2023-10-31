@@ -11,6 +11,7 @@ import {
 	PaginatedTable,
 	ActionButtons,
 	PageContainer,
+	PhotoThumbnailImage,
 } from "../../../components";
 import { DropdownOption } from "../../../components/Dropdown";
 import { NewsColumns } from "../../../components/PaginatedTable/types";
@@ -42,7 +43,7 @@ const NewsHomePage = () => {
 
 	//Parameters
 	const [toggleSort, setToggleSort] = useState(false);
-	const [orderBy, setOrderBy] = useState<string>("");
+	const [orderBy, setOrderBy] = useState<string>("&OrderByDesc=Id");
 
 	const fetchData = useMemo(
 		() => async (currentPage: number, keyword?: string) => {
@@ -87,7 +88,7 @@ const NewsHomePage = () => {
 	}, [fetchData, currentPage, pageSize, keyword]);
 
 	const pageChangeHandler = (currentpage: number) => {
-		setCurrentPage(currentPage);
+		setCurrentPage(currentpage);
 		fetchData(currentpage, keyword);
 	};
 
@@ -169,7 +170,7 @@ const NewsHomePage = () => {
 				fetchData(currentPage, keyword);
 			}
 		},
-		[currentPage, fetchData, keyword]
+		[currentPage, fetchData, keyword, t]
 	);
 
 	const statusSelectHandler = useMemo(
@@ -192,6 +193,11 @@ const NewsHomePage = () => {
 
 	const columns: Column<NewsColumns>[] = useMemo(
 		() => [
+			{
+				id: "img",
+				accessor: (p) => p.imageName,
+				Cell: ({ value }: any) => <PhotoThumbnailImage src={value!} />,
+			},
 			{
 				Header: txtId,
 				id: "id",
@@ -263,6 +269,8 @@ const NewsHomePage = () => {
 			<PaginatedTable
 				totalCountText={t("news.count", { framework: "React" })}
 				totalCount={totalCount}
+				currentPage={currentPage}
+				setCurrentPage={setCurrentPage}
 				pageSize={pageSize}
 				data={news}
 				columns={columns}

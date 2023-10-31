@@ -226,7 +226,10 @@
 				"workflowEnd": "Workflow ends at is required.",
 				"image": "Image is required",
 				"imageType": "Image type is required.",
-				"honorType": "Honor type is required."
+				"honorType": "Honor type is required.",
+				"shortSummary": "Short summary is required.",
+				"newsType": "Short summary is required.",
+				"news": "News is required."
 			},
 			"selection": {
 				"employee": "No Employee has been selected"

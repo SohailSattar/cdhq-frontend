@@ -43,9 +43,24 @@ const PhoneForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 				<ShadowedContainer
 					className={clsx(styles.section, styles.headingContainer)}>
 					<div className={styles.heading}>
-						{data?.employeeNo}{" "}
-						{language !== "ar" ? data?.rank?.name : data?.rank?.nameEnglish}{" "}
-						{language !== "ar" ? data?.name : data?.nameEnglish}
+						<div>
+							<span className={styles.title}>
+								{t("user.employeeNumber", { framework: "React" })}
+							</span>{" "}
+							: {data?.employeeNo}{" "}
+						</div>
+						<div>
+							<span className={styles.title}>
+								{t("rank.name", { framework: "React" })}
+							</span>{" "}
+							: {language !== "ar" ? data?.rank?.name : data?.rank?.nameEnglish}
+						</div>{" "}
+						<div>
+							<span className={styles.title}>
+								{t("user.name", { framework: "React" })}
+							</span>{" "}
+							: {language !== "ar" ? data?.name : data?.nameEnglish}
+						</div>
 					</div>
 				</ShadowedContainer>{" "}
 				<ShadowedContainer

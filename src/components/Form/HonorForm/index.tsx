@@ -111,11 +111,6 @@ const HonorForm: FC<Props> = ({
 			required: t("error.form.required.honorType", { framework: "React" }),
 		});
 
-		// Employee Id
-		register("employeeId", {
-			required: t("error.form.selection.employee", { framework: "React" }),
-		});
-
 		// // Project Name
 		// register("rank", {
 		// 	required: t("error.form.required.rank", { framework: "React" }),
@@ -126,7 +121,11 @@ const HonorForm: FC<Props> = ({
 		// 	required: t("error.form.required.department", { framework: "React" }),
 		// });
 
-		// Project Name
+		register("notes", {
+			required: "Reason is required",
+		});
+
+		// Image Name
 		register("imageName", {
 			required: t("error.form.required.image", { framework: "React" }),
 		});
@@ -140,9 +139,8 @@ const HonorForm: FC<Props> = ({
 				department,
 				imageName,
 				type,
+				notes,
 			} = data;
-
-			console.log(data);
 
 			setHideUploadButton(false);
 
@@ -161,6 +159,7 @@ const HonorForm: FC<Props> = ({
 			setValue("rank", empRank);
 			setValue("department", empDept);
 			setValue("imageName", imageName);
+			setValue("notes", notes);
 			setHideSearchBox(true);
 		}
 	}, [data, honorTypeOptions, language, register, setValue, t]);
@@ -231,8 +230,6 @@ const HonorForm: FC<Props> = ({
 	const employeeSelectHandler = (option: DropdownOption) => {
 		if (option) {
 			const { id, name, rank, dept } = option.meta;
-
-			console.log(option.meta);
 
 			setSelctedEmployeesOption(option);
 
@@ -346,6 +343,23 @@ const HonorForm: FC<Props> = ({
 								defaultValue={""}
 							/>
 						</div>
+						<div>
+							<Controller
+								render={({ field: { value, onChange } }) => (
+									<TextBox
+										type="text"
+										label={"Reason"}
+										value={value}
+										multiline={true}
+										maxRows={20}
+										onChange={onChange}
+									/>
+								)}
+								name="notes"
+								control={control}
+								defaultValue={""}
+							/>
+						</div>
 					</ShadowedContainer>
 					<div
 						className={
@@ -450,6 +464,22 @@ const HonorForm: FC<Props> = ({
 							<ErrorMessage
 								errors={errors}
 								name="employeeId"
+								render={({ messages }) => {
+									return messages
+										? _.entries(messages).map(([type, message]) => (
+												<p
+													key={type}
+													className="error">
+													{message}
+												</p>
+										  ))
+										: null;
+								}}
+							/>
+							{/* Reason */}
+							<ErrorMessage
+								errors={errors}
+								name="notes"
 								render={({ messages }) => {
 									return messages
 										? _.entries(messages).map(([type, message]) => (

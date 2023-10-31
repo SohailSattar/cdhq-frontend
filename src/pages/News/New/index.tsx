@@ -102,6 +102,7 @@ const NewsCreatePage = () => {
 				<NewsPreview
 					data={details!}
 					onClick={addNewsHandler}
+					onCancel={() => setIsOpen(false)}
 				/>
 			</Modal>
 		</PageContainer>

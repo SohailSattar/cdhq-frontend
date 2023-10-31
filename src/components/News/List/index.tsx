@@ -24,6 +24,9 @@ const TableList: FC<Props> = ({ onViewClick }) => {
 	const txtId = t("news.id", { framework: "React" });
 	const title = t("news.title", { framework: "React" });
 
+	const [toggleSort, setToggleSort] = useState(false);
+	const [orderBy, setOrderBy] = useState<string>("&OrderByDesc=Id");
+
 	//Actions
 	const actions = t("global.actions", { framework: "React" });
 	const view = t("button.view", { framework: "React" });
@@ -59,7 +62,13 @@ const TableList: FC<Props> = ({ onViewClick }) => {
 	);
 	const fetchData = useMemo(
 		() => async (currentPage: number, keyword?: string) => {
-			const { data } = await getNews(currentPage, pageSize, keyword);
+			const { data } = await getNews(
+				currentPage,
+				pageSize,
+				keyword,
+				1,
+				orderBy
+			);
 
 			if (data) {
 				setNews(data.news);
@@ -68,7 +77,7 @@ const TableList: FC<Props> = ({ onViewClick }) => {
 				// navigate(RoutePath.ROOT);
 			}
 		},
-		[pageSize]
+		[orderBy, pageSize]
 	);
 
 	useEffect(() => {
@@ -76,7 +85,7 @@ const TableList: FC<Props> = ({ onViewClick }) => {
 	}, [fetchData, currentPage, pageSize, keyword]);
 
 	const pageChangeHandler = (currentpage: number) => {
-		setCurrentPage(currentPage);
+		setCurrentPage(currentpage);
 		fetchData(currentpage, keyword);
 	};
 
@@ -90,15 +99,30 @@ const TableList: FC<Props> = ({ onViewClick }) => {
 		setKeyword(keyword);
 	};
 
+	const tableSortHandler = (columnId: string, isSortedDesc: boolean) => {
+		let orderByParam = "";
+		setToggleSort(!toggleSort);
+		if (toggleSort) {
+			orderByParam = `&OrderBy=${columnId}`;
+		} else {
+			orderByParam = `&OrderByDesc=${columnId}`;
+		}
+
+		setOrderBy(orderByParam);
+		// fetchData(currentPage, orderByParam);
+		setCurrentPage(1);
+	};
 	return (
 		<PaginatedTable
 			totalCountText={t("news.count", { framework: "React" })}
 			totalCount={totalCount}
 			pageSize={pageSize}
+			currentPage={currentPage}
+			setCurrentPage={setCurrentPage}
 			data={news}
 			columns={columns}
 			onSearch={newsSearchClickHandler}
-			onTableSort={() => {}}
+			onTableSort={tableSortHandler}
 			onPageChange={pageChangeHandler}
 			onPageViewSelectionChange={pageViewSelectionHandler}
 			noRecordText={t("table.noNews", { framework: "React" })}

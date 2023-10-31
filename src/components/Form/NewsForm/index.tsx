@@ -97,27 +97,32 @@ const NewsForm: FC<Props> = ({
 	useEffect(() => {
 		// Department
 		register("department", {
-			required: "Department is required.",
+			required: t("error.form.required.department", { framework: "React" }),
 		});
 
 		// Project Name
 		register("title", {
-			required: "Ttile is required.",
+			required: t("error.form.required.title", { framework: "React" }),
 		});
 
 		// Employee Name
 		register("shortSummary", {
-			required: "Short summary is required.",
+			required: t("error.form.required.shortSummary", { framework: "React" }),
 		});
 
 		// Project Group
 		register("newsType", {
-			required: "News Type is required.",
+			required: t("error.form.required.newsType", { framework: "React" }),
 		});
 
 		// Project Group
 		register("fullNews", {
-			required: "News is required.",
+			required: t("error.form.required.news", { framework: "React" }),
+		});
+
+		// Image
+		register("imageName", {
+			required: t("error.form.required.image", { framework: "React" }),
 		});
 
 		if (data) {
@@ -143,7 +148,15 @@ const NewsForm: FC<Props> = ({
 			setValue("fullNews", fullNews);
 			setValue("imageName", imageName);
 		}
-	}, [data, language, register, newsTypeOptions, setValue, departmentOptions]);
+	}, [
+		data,
+		language,
+		register,
+		newsTypeOptions,
+		setValue,
+		departmentOptions,
+		t,
+	]);
 
 	const imageChangeHandler = (evnt: ChangeEvent<HTMLInputElement>) => {
 		if (evnt.target.files) {
@@ -369,6 +382,22 @@ const NewsForm: FC<Props> = ({
 							<ErrorMessage
 								errors={errors}
 								name="fullNews"
+								render={({ messages }) => {
+									return messages
+										? _.entries(messages).map(([type, message]) => (
+												<p
+													key={type}
+													className="error">
+													{message}
+												</p>
+										  ))
+										: null;
+								}}
+							/>
+							{/* Detail */}
+							<ErrorMessage
+								errors={errors}
+								name="imageName"
 								render={({ messages }) => {
 									return messages
 										? _.entries(messages).map(([type, message]) => (

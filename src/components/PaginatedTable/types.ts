@@ -10,7 +10,7 @@ export interface PhoneDirectoryColumns {
 	id: number;
 	employeeNo: number;
 	rank: APIRank;
-	// department: APIDe;
+	department: APIDepartmentItem;
 	name: string;
 	nameEnglish: string;
 	phone?: string;
@@ -39,6 +39,7 @@ export interface HonorColumn {
 	department: APIDepartmentItem;
 	locationFullName: string;
 	type: string;
+	createdOn: string;
 }
 
 export interface ImageColumn {
@@ -53,6 +54,7 @@ export interface ImageColumn {
 
 export interface NewsColumns {
 	id: number;
+	imageName: string;
 	title: string;
 	activeStatus: APIActiveStatus;
 }

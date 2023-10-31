@@ -94,6 +94,7 @@ export interface IHonorFormInputs {
 	department: string;
 	imageName: string;
 	thumbnail: File;
+	notes: string;
 }
 
 // Image

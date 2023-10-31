@@ -226,7 +226,10 @@
 				"workflowEnd": "نهاية التمرير",
 				"image": "الصورة اجبارية",
 				"imageType": "نوع الصورة حقل اجباري",
-				"honorType": "الفئة اجبارية"
+				"honorType": "الفئة اجبارية",
+				"shortSummary": "Short summary is required.",
+				"newsType": "Short summary is required.",
+				"news": "News is required."
 			},
 			"selection": {
 				"employee": " لم يتم اختيار الموظف"
@@ -331,8 +334,8 @@
 		"user": "مستخدم البحث"
 	},
 	"honor": {
-		"title": "المتميزين و الموهوب",
-		"count": "مجموع سجلات المتميزين ",
+		"title": "المتميزين و الموهوبين",
+		"count": "مجموع سجلات المتميزين",
 		"id": "السجل",
 		"honoredOn": " تاريخ التكريم",
 		"name": "اسم الموظف",

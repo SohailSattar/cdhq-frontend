@@ -76,6 +76,7 @@ const HonorEditPage = () => {
 		const params: APIUpdateHonor = {
 			id: id!,
 			honorType: +values.honorType.value,
+			notes: values.notes,
 		};
 
 		const { data, error } = await updateHonor(params);

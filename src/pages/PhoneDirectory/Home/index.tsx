@@ -54,6 +54,7 @@ const PhoneDirectoryPage = () => {
 	const employeeNo = t("user.employeeNumber", { framework: "React" });
 	const rank = t("rank.name", { framework: "React" });
 	const fullName = t("user.name", { framework: "React" });
+	const department = t("department.name", { framework: "React" });
 	const phone = t("user.phone", { framework: "React" });
 	const phoneOffice = t("user.phoneOffice", { framework: "React" });
 
@@ -61,16 +62,10 @@ const PhoneDirectoryPage = () => {
 	const actions = t("global.actions", { framework: "React" });
 	const edit = t("button.edit", { framework: "React" });
 
-	const [orderBy, setOrderBy] = useState<string>("");
+	const [orderBy, setOrderBy] = useState<string>("&OrderBy=rankId");
 
 	const columns: Column<PhoneDirectoryColumns>[] = useMemo(
 		() => [
-			{
-				Header: id,
-				id: "id",
-				accessor: (p) => p.id,
-				Cell: ({ value }: any) => <div className={styles.name}>{value}</div>,
-			},
 			{
 				Header: employeeNo,
 				id: "employeeNo",
@@ -91,6 +86,16 @@ const PhoneDirectoryPage = () => {
 				Header: fullName,
 				id: "name",
 				accessor: (p) => p,
+				Cell: ({ value }: any) => (
+					<div className={styles.name}>
+						{language !== "ar" ? value?.name! : value?.nameEnglish!}
+					</div>
+				),
+			},
+			{
+				Header: department,
+				id: "departmentId",
+				accessor: (p) => p.department,
 				Cell: ({ value }: any) => (
 					<div className={styles.name}>
 						{language !== "ar" ? value?.name! : value?.nameEnglish!}
@@ -134,10 +139,10 @@ const PhoneDirectoryPage = () => {
 			},
 		],
 		[
-			id,
 			employeeNo,
 			rank,
 			fullName,
+			department,
 			phone,
 			phoneOffice,
 			actions,
@@ -199,6 +204,8 @@ const PhoneDirectoryPage = () => {
 		[pageSize, keyword, orderBy]
 	);
 
+	console.log(employees);
+
 	const fetchByDepartment = useMemo(
 		() => async () => {
 			// Check Privilege
@@ -233,7 +240,8 @@ const PhoneDirectoryPage = () => {
 					currentPage,
 					pageSize,
 					keyword,
-					departmentIds
+					departmentIds,
+					orderBy
 				);
 
 				if (data) {
@@ -242,7 +250,7 @@ const PhoneDirectoryPage = () => {
 				}
 			}
 		},
-		[currentPage, pageSize, keyword, departmentIds]
+		[currentPage, pageSize, keyword, departmentIds, orderBy]
 	);
 
 	useEffect(() => {
@@ -289,7 +297,7 @@ const PhoneDirectoryPage = () => {
 	};
 
 	const pageChangeHandler = (currentpage: number) => {
-		setCurrentPage(currentPage);
+		setCurrentPage(currentpage);
 		fetchData(currentpage);
 	};
 
@@ -332,6 +340,8 @@ const PhoneDirectoryPage = () => {
 						totalCountText={t("user.count", { framework: "React" })}
 						totalCount={totalCount}
 						pageSize={pageSize}
+						currentPage={currentPage}
+						setCurrentPage={setCurrentPage}
 						data={employees}
 						columns={columns}
 						onSearch={userSearchClickHandler}

@@ -18,6 +18,7 @@ import {
 import { DropdownOption } from "../../../components/Dropdown";
 import { HonorColumn } from "../../../components/PaginatedTable/types";
 import { Project } from "../../../data/projects";
+import { enGB, ar } from "date-fns/locale";
 
 import * as RoutePath from "../../../RouteConfig";
 import { Id } from "../../../utils";
@@ -27,6 +28,7 @@ import { APIStatus } from "../../../api";
 import { updateHonorStatus } from "../../../api/honors/update/updateHonorStatus";
 import { toast } from "react-toastify";
 import { useStore } from "../../../utils/store";
+import { format } from "date-fns";
 
 const HonorsHomePage = () => {
 	const [t] = useTranslation("common");
@@ -48,7 +50,7 @@ const HonorsHomePage = () => {
 
 	//Parameters
 	const [toggleSort, setToggleSort] = useState(false);
-	const [orderBy, setOrderBy] = useState<string>("");
+	const [orderBy, setOrderBy] = useState<string>("&OrderByDesc=createdOn");
 
 	const fetchData = useMemo(
 		() => async () => {
@@ -188,10 +190,12 @@ const HonorsHomePage = () => {
 			{
 				Header: honoredOn,
 				id: "createdOn",
-				accessor: (p) => p,
+				accessor: (p) => p.createdOn,
 				Cell: ({ value }: any) => (
 					<>
-						{value.mmm} / {value.yyy}
+						{format(new Date(value!), "dd MMMM yyyy", {
+							locale: language !== "ar" ? ar : enGB,
+						})}
 					</>
 				),
 			},
@@ -281,8 +285,6 @@ const HonorsHomePage = () => {
 			editClickHandler,
 		]
 	);
-
-	console.log(honors);
 
 	const searchHandler = (keyword: string) => {
 		setKeyword(keyword);
