@@ -227,9 +227,9 @@
 				"image": "الصورة اجبارية",
 				"imageType": "نوع الصورة حقل اجباري",
 				"honorType": "الفئة اجبارية",
-				"shortSummary": "Short summary is required.",
-				"newsType": "Short summary is required.",
-				"news": "News is required."
+				"shortSummary": " مقدمة الخبر حقل اجباري",
+				"newsType": " نوع الخبر اجباري",
+				"news": "  الخبر حقل اجباري"
 			},
 			"selection": {
 				"employee": " لم يتم اختيار الموظف"
