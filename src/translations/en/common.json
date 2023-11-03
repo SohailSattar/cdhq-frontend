@@ -175,7 +175,7 @@
 		"workflowStart": "Workflow starts from",
 		"workflowEnd": "Workflow ends at",
 		"canGrant": "Can grant?",
-		"assignNewProject": "Assign new project to _USER_",
+		"assignNewProject": "Assign new privilege to: _USER_",
 		"assignNewUser": "",
 		"editUser": "Edit project: [_PROJECT_] for _USER_",
 		"withOrWithoutSubSection": "With sub-sections or without sub-sections?"
