@@ -1,4 +1,10 @@
 .assignProject {
+	.title {
+		display: flex;
+		justify-content: center;
+		margin-bottom: 15px;
+	}
+
 	.row {
 		display: flex;
 		margin-bottom: 15px;

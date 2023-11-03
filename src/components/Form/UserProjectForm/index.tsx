@@ -1010,7 +1010,7 @@ const UserProjectForm: FC<Props> = ({
 	return (
 		<div className={styles.assignProject}>
 			{title && (
-				<div>
+				<div className={styles.title}>
 					<h4>{title}</h4>
 				</div>
 			)}

@@ -13,12 +13,18 @@ import {
 
 import * as RoutePath from "../../../RouteConfig";
 import { Id, ROLE } from "../../../utils";
+import { getUserDetail } from "../../../api/users/get/getUserDetail";
+import { useStore } from "../../../utils/store";
 
 const AssignProjectToUserPage = () => {
 	const { id } = useParams<{ id: string }>();
 	const [t] = useTranslation("common");
 
+	const language = useStore((state) => state.language);
+
 	const navigate = useNavigate();
+
+	const [title, setTitle] = useState<string>("");
 
 	const [isNormalUser, setIsNormalUser] = useState(true);
 
@@ -37,6 +43,28 @@ const AssignProjectToUserPage = () => {
 
 		fetchData();
 	}, [id]);
+
+	useEffect(() => {
+		const fetchDetails = async () => {
+			const { data } = await getUserDetail(id!);
+
+			if (data) {
+				const { employeeNo, rank, name, nameEnglish } = data;
+
+				if (language !== "ar") {
+					const formattedText = `${employeeNo} ${rank.name}/${name}`;
+					setTitle(formattedText);
+				} else {
+					const formattedText = `${employeeNo} ${rank.nameEnglish}\\${nameEnglish}`;
+					setTitle(formattedText);
+				}
+			}
+		};
+
+		if (id) {
+			fetchDetails();
+		}
+	}, [id, language, t]);
 
 	const assignProjectClickHandler = async (
 		formInputs: IUserProjectFormInputs
@@ -91,7 +119,9 @@ const AssignProjectToUserPage = () => {
 			btnBackLabel={t("button.back", { framework: "React" })}>
 			<UserProjectForm
 				isNormalUser={isNormalUser}
-				title={t("message.userProjectAdd", { framework: "React" })}
+				title={t("userProject.assignNewProject", { framework: "React" })
+					.toString()
+					.replace("_USER_", title)}
 				onActionButtonClick={assignProjectClickHandler}
 				actionButtonText={t("button.save", { framework: "React" })}
 			/>
