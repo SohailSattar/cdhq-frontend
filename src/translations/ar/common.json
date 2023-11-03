@@ -175,7 +175,7 @@
 		"workflowStart": "بداية التمرير",
 		"workflowEnd": "نهاية التمرير",
 		"canGrant": "مشرف صلاحيات",
-		"assignNewProject": "تعيين برنامج ل _USER_",
+		"assignNewProject": "منح صلاحيات للمستخدم : _USER_",
 		"assignNewUser": "تعيين مستخدم جديد",
 		"editUser": "تعديل بيانات _USER_",
 		"withOrWithoutSubSection": "مع أو بدون الأقسام و الأفرع ؟"
