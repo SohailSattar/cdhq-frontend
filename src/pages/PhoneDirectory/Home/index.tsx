@@ -40,7 +40,7 @@ const PhoneDirectoryPage = () => {
 
 	const [employees, setEmployees] = useState<APIPhoneDirectory[]>([]);
 	const [totalCount, setTotalCount] = useState<number>(0);
-	const [pageSize, setPageSize] = useState<number>(10);
+	const [pageSize, setPageSize] = useState<number>(50);
 
 	const [keyword, setKeyword] = useState("");
 	const [departmentIds, setDepartmentIds] = useState<string[]>([]);
@@ -62,7 +62,7 @@ const PhoneDirectoryPage = () => {
 	const actions = t("global.actions", { framework: "React" });
 	const edit = t("button.edit", { framework: "React" });
 
-	const [orderBy, setOrderBy] = useState<string>("&OrderBy=rankId");
+	const [orderBy, setOrderBy] = useState<string>("rankId");
 
 	const columns: Column<PhoneDirectoryColumns>[] = useMemo(
 		() => [
@@ -74,7 +74,7 @@ const PhoneDirectoryPage = () => {
 			},
 			{
 				Header: rank,
-				id: "rank",
+				id: "rankId",
 				accessor: (p) => p.rank,
 				Cell: ({ value }: any) => (
 					<div className={styles.name}>
@@ -192,7 +192,8 @@ const PhoneDirectoryPage = () => {
 					currentPage,
 					pageSize,
 					keyword,
-					orderBy
+					orderBy,
+					toggleSort
 				);
 
 				if (data) {
@@ -201,10 +202,8 @@ const PhoneDirectoryPage = () => {
 				}
 			}
 		},
-		[pageSize, keyword, orderBy]
+		[pageSize, keyword, orderBy, toggleSort]
 	);
-
-	console.log(employees);
 
 	const fetchByDepartment = useMemo(
 		() => async () => {
@@ -241,7 +240,8 @@ const PhoneDirectoryPage = () => {
 					pageSize,
 					keyword,
 					departmentIds,
-					orderBy
+					orderBy,
+					toggleSort
 				);
 
 				if (data) {
@@ -250,7 +250,7 @@ const PhoneDirectoryPage = () => {
 				}
 			}
 		},
-		[currentPage, pageSize, keyword, departmentIds, orderBy]
+		[currentPage, pageSize, keyword, departmentIds, orderBy, toggleSort]
 	);
 
 	useEffect(() => {
@@ -306,15 +306,15 @@ const PhoneDirectoryPage = () => {
 	};
 
 	const tableSortHandler = (columnId: string, isSortedDesc: boolean) => {
-		let orderByParam = "";
+		// let orderByParam = "";
 		setToggleSort(!toggleSort);
-		if (toggleSort) {
-			orderByParam = `&OrderBy=${columnId}`;
-		} else {
-			orderByParam = `&OrderByDesc=${columnId}`;
-		}
+		// if (toggleSort) {
+		// 	orderByParam = `&OrderBy=${columnId}`;
+		// } else {
+		// 	orderByParam = `&OrderByDesc=${columnId}`;
+		// }
 
-		setOrderBy(orderByParam);
+		setOrderBy(columnId);
 		// fetchData(currentPage, orderByParam);
 		setCurrentPage(1);
 	};

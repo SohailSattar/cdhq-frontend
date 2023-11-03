@@ -79,8 +79,7 @@ const NewsCreatePage = () => {
 		if (error) {
 			toast.error(error.ErrorMessage);
 		}
-
-		if (data) {
+		if (data?.success) {
 			toast.success(t("message.newsAdded", { framework: "React" }).toString());
 			navigate(`${RoutePath.NEWS}/${data.id}`);
 		}

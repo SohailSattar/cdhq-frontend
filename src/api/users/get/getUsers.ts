@@ -41,8 +41,6 @@ export async function getUsers(
 		const url =
 			`/users?page=${currentPage}&postsperpage=${pageSize}` + queryParam!;
 
-		console.log(url);
-
 		const response = await instance.get<APIPaginatedUser>(url, config);
 		const data = response.data;
 		return { data };

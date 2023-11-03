@@ -7,7 +7,8 @@ export async function getPhoneDirectoryByDepartment(
 	pageSize: number = 50,
 	keyword: string = "",
 	deptIds: string[],
-	orderBy?: string
+	orderBy?: string,
+	isDescending: boolean = false
 ): Promise<APIResponse<APIPagedPhoneDirectory>> {
 	try {
 		const config = getConfig();
@@ -19,7 +20,7 @@ export async function getPhoneDirectoryByDepartment(
 		}
 
 		if (orderBy) {
-			queryParam += `${orderBy}`;
+			queryParam += `&orderBy=${orderBy}&isDescending=${isDescending}`;
 		}
 
 		const response = await instance.post<APIPagedPhoneDirectory>(
@@ -30,7 +31,6 @@ export async function getPhoneDirectoryByDepartment(
 			config
 		);
 
-		console.log(deptIds);
 		const data = response.data;
 		return { data };
 	} catch (err: any) {

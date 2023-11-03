@@ -54,8 +54,6 @@ const UserNewPage = () => {
 				Project.UserManagement
 			);
 
-			console.log(privilege);
-
 			setPrivileges(privilege);
 			if (!privilege?.insertPrivilege) {
 				setCanView(false);

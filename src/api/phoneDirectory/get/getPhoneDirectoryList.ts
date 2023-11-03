@@ -6,7 +6,8 @@ export async function getPhoneDirectoryList(
 	currentPage: number = 1,
 	pageSize: number = 20,
 	keyword: string = "",
-	orderBy?: string
+	orderBy?: string,
+	isDescending: boolean = false
 ): Promise<APIResponse<APIPagedPhoneDirectory>> {
 	try {
 		const config = getConfig();
@@ -18,13 +19,12 @@ export async function getPhoneDirectoryList(
 		}
 
 		if (orderBy) {
-			queryParam += `${orderBy}`;
+			queryParam += `&orderBy=${orderBy}&isDescending=${isDescending}`;
 		}
 
-		const response = await instance.get<APIPagedPhoneDirectory>(
-			`/phone-directory?page=${currentPage}&postsperpage=${pageSize}${queryParam}`,
-			config
-		);
+		const url = `/phone-directory?page=${currentPage}&postsperpage=${pageSize}${queryParam}`;
+
+		const response = await instance.get<APIPagedPhoneDirectory>(url, config);
 		const data = response.data;
 		return { data };
 	} catch (err: any) {

@@ -62,9 +62,8 @@ const HonorNewPage = () => {
 			toast.success(
 				t("message.honorCreated", { framework: "React" }).toString()
 			);
-			navigate(
-				RoutePath.HONORS_EDIT.replace(RoutePath.ID, data?.id!.toString())
-			);
+			// navigate(				RoutePath.HONORS_EDIT.replace(RoutePath.ID, data?.id!.toString()));
+			navigate(RoutePath.HONORS);
 		} else {
 			toast.error(error?.ErrorMessage);
 		}

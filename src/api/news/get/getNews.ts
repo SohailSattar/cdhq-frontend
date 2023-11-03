@@ -29,8 +29,6 @@ export async function getNews(
 
 		const url = `/news?page=${currentPage}&postsperpage=${pageSize}&keyword=${keyword}${queryParam}`;
 
-		console.log(url);
-
 		const response = await instance.get<APIPaginatedNews>(url, config);
 		const data = response.data;
 		return { data };

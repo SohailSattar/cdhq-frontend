@@ -130,12 +130,12 @@ const UserAccountPage = () => {
 					/>
 				),
 			},
-			{
-				Header: id,
-				id: "id",
-				accessor: (p) => p.id,
-				Cell: ({ value }: any) => <div className={styles.cell}>{value}</div>,
-			},
+			// {
+			// 	Header: id,
+			// 	id: "id",
+			// 	accessor: (p) => p.id,
+			// 	Cell: ({ value }: any) => <div className={styles.cell}>{value}</div>,
+			// },
 			{
 				Header: employeeNo,
 				id: "employeeNo",
@@ -207,7 +207,7 @@ const UserAccountPage = () => {
 				),
 			},
 		],
-		[department, employeeNo, fullName, id, language, logName, rank, status]
+		[department, employeeNo, fullName, language, logName, rank, status]
 	);
 
 	// New maybe
