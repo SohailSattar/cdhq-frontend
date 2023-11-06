@@ -54,6 +54,9 @@ export { default as Modal } from "./Modal";
 export * from "./Nav";
 export { default as NotAuthorized } from "./NotAuthorized";
 export * from "./News";
+export { default as OffcanvasNavbar } from "./OffcanvasNavbar";
+export { default as OffcanvasNavbarMenuList } from "./OffcanvasNavbarMenuList";
+
 export { default as PageContainer } from "./PageContainer";
 export { default as PaginatedTable } from "./PaginatedTable";
 export { default as Pagination } from "./Pagination";

@@ -2,7 +2,14 @@ import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useNavigate } from "react-router-dom";
 
-import { Footer, Header, Loader, Loading, NotAuthorized } from "..";
+import {
+	Footer,
+	Header,
+	Loader,
+	Loading,
+	NotAuthorized,
+	OffcanvasNavbar,
+} from "..";
 import { getMyDetail } from "../../api/users/get/getMyDetail";
 import { useStore } from "../../utils/store";
 // import { getMyRole } from "../../api/users/get/getMyRole";
@@ -374,7 +381,8 @@ const Layout: FC<Props> = ({
 					onReset={() => {
 						// reset the state of your app so the error doesn't happen again
 					}}>
-					<Header hideLoginButton={hideLoginButton} />
+					{/* <Header hideLoginButton={hideLoginButton} /> */}
+					<OffcanvasNavbar />
 					<div className={styles.layout}>
 						{isLoading ? (
 							<Loader />

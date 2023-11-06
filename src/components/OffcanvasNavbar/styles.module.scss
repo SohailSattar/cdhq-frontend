@@ -1,0 +1,38 @@
+@import "../../assets/css/colors.scss";
+@import "../../assets/css/variable.scss";
+@import "../../assets/css/mixins.scss";
+
+$title-background-color: $background-red;
+$title-color: $color_white;
+$menu-item-font-weight: bold;
+
+.navbar {
+	font-family: "Cinzel", serif;
+	background-color: red;
+}
+
+.offcanvas {
+	// background-color: $PRIMARY !important;
+}
+
+// .menuItem {
+// 	font-size: $menu-list-item-size !important;
+// }
+
+.actionDiv {
+	margin-top: auto;
+	justify-content: center;
+	display: flex;
+	flex-direction: column;
+}
+.configDiv {
+	display: flex;
+	margin-bottom: 15px;
+	justify-content: space-between;
+
+	.setting {
+		align-items: center;
+		display: flex;
+	}
+	// flex-direction: column;
+}

@@ -1,0 +1,12 @@
+@import "../../assets/css/variable.scss";
+@import "../../assets/css/mixins.scss";
+
+.navbar-toggler.collapsed:focus-visible {
+	outline: none;
+}
+
+.navbar-toggler:focus {
+	text-decoration: none;
+	outline: 0;
+	box-shadow: none !important; //0 0 0 var(--bs-navbar-toggler-focus-width);
+}
