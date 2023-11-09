@@ -45,7 +45,8 @@ export { default as Loader } from "./Loader";
 export { default as Loading } from "./Loading";
 export { default as LoadingButton } from "./LoadingButton";
 export { default as LoggedUser } from "./LoggedUser";
-export { default as MainHeader } from "./MainHeader";
+export { default as LogoHeader } from "./LogoHeader";
+
 export { default as MainLayout } from "./MainLayout";
 export { default as Menu } from "./Menu";
 export { default as MessageBox } from "./MessageBox";

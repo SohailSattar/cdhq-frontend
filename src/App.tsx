@@ -100,9 +100,9 @@ function App() {
 						<Route
 							path={RoutePath.ROOT}
 							element={
-								<MainLayout>
+								<Layout noChecks={true}>
 									<LandingPage />
-								</MainLayout>
+								</Layout>
 							}
 						/>
 						<Route

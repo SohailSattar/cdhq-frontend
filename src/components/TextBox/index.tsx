@@ -28,6 +28,7 @@ export interface Props {
 	onChange?: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 	onKeyDown?: any;
 	reference?: any;
+	autocomplete?: string;
 }
 
 const TextBox: FC<Props> = ({
@@ -42,6 +43,7 @@ const TextBox: FC<Props> = ({
 	onChange,
 	onKeyDown,
 	reference,
+	autocomplete = "",
 }) => {
 	const language = useStore((state) => state.language);
 	const theme = createTheme({
@@ -77,6 +79,7 @@ const TextBox: FC<Props> = ({
 							onKeyDown={onKeyDown}
 							disabled={disabled}
 							ref={reference}
+							autoComplete={autocomplete}
 						/>
 						{/* <FormHelperText id='component-error-text' className={styles.error}>
 					Error

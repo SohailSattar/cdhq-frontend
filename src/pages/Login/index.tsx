@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { ImageLogo } from "./containers";
 
-import logo from "../../assets/logos/moi-logo.svg";
 import { loginUser } from "../../api/login/post/loginUser";
 import localStorageService from "../../network/localStorageService";
 import { useStore } from "../../utils/store";
