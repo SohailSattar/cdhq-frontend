@@ -1,32 +1,37 @@
 import clsx from "clsx";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { Container, Nav, Navbar, Offcanvas } from "react-bootstrap";
 import {
 	ChangeLanguage,
-	HeaderLogo,
 	LoggedUser,
+	LogoHeader,
 	Logout,
+	NavMenuList,
 	OffcanvasNavbarMenuList,
+	RedirectButton,
 } from "..";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { faBars, faGear } from "@fortawesome/free-solid-svg-icons";
 
 import headerLinks from "../../data/header-link";
 
-import logoEn from "../../assets/logos/logo.png";
-import logoAr from "../../assets/logos/logo-ar.png";
-
 import { useStore } from "../../utils/store";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
-import { Button, makeStyles } from "@material-ui/core";
+import Button from "react-bootstrap/Button";
 
 import * as RoutePath from "../../RouteConfig";
 
-import styles from "./styles.module.scss";
-import "./styles.scss";
+import HouseLogo from "../../assets/icons/white-home-icon.png";
+
 import { ROLE } from "../../utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { APIMenuListItem } from "../../api/menu/types";
+import { getMenuList } from "../../api/menu/get/getMenuList";
+
+import styles from "./styles.module.scss";
+import "./styles.scss";
+import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles(() => ({
 	header: {
@@ -45,11 +50,19 @@ const useStyles = makeStyles(() => ({
 	},
 }));
 
-const OffcanvasNavbar = () => {
+interface Props {
+	hideLoginButton?: boolean;
+}
+
+const OffcanvasNavbar: FC<Props> = ({ hideLoginButton }) => {
 	const [t, i18n] = useTranslation("common");
 	const navigate = useNavigate();
 	const toggleLanguage = useStore((state) => state.language);
 	const loggedUser = useStore((state) => state.loggedInUser);
+
+	const [isLogged, setIsLogged] = useState<boolean>(false);
+
+	const [menuList, setMenuList] = useState<APIMenuListItem[]>([]);
 	const [menuOpen, setMenuOpen] = useState(false);
 
 	const { header, menuButton, toolbar } = useStyles();
@@ -64,25 +77,19 @@ const OffcanvasNavbar = () => {
 		}
 	}, [toggleLanguage]);
 
-	const getMenuButtons = () => {
-		return headerLinks
-			.filter((x) => x.displayFor?.includes(loggedUser.role))
-			.map(({ short, url }) => {
-				return (
-					<div>
-						<Button
-							{...{
-								key: short,
-								to: url,
-								component: RouterLink,
-								className: clsx(styles.menuItem, menuButton),
-							}}>
-							{t(`header.menu.${short}`, { framework: "React" })}
-						</Button>
-					</div>
-				);
-			});
-	};
+	const fetchMenuItems = useMemo(
+		() => async () => {
+			const { data } = await getMenuList();
+			if (data) {
+				setMenuList(data!);
+			}
+		},
+		[]
+	);
+
+	useEffect(() => {
+		fetchMenuItems();
+	}, [fetchMenuItems]);
 
 	const toggleMenu = () => {
 		setMenuOpen(!menuOpen);
@@ -104,6 +111,10 @@ const OffcanvasNavbar = () => {
 		navigate(RoutePath.SETTINGS);
 	};
 
+	const loginClickHandler = () => {
+		navigate(RoutePath.LOGIN);
+	};
+
 	const logoutClickHandler = () => {
 		navigate(RoutePath.LOGIN);
 	};
@@ -119,84 +130,115 @@ const OffcanvasNavbar = () => {
 						};}`}</style>
 					</Helmet>
 				</HelmetProvider>
+				<LogoHeader />
 				<Navbar
-					bg="light"
 					expand={size}
-					className={clsx("mb-3", styles.navbar)}>
+					className={clsx("mb-3", "navbar", styles.navbar)}
+					id="basic-navbar-nav">
 					<Container fluid>
-						<HeaderLogo
-							isLoggedIn
-							src={toggleLanguage === "en" ? logoAr : logoEn}
-						/>
-						{/* <ChangeLanguage /> */}
-						<Navbar.Toggle
-							aria-controls={`offcanvasNavbar-expand-${size}`}
-							onClick={toggleMenu}
-						/>
-						<Navbar.Offcanvas
-							id={`offcanvasNavbar-expand-${size}`}
-							aria-labelledby={`offcanvasNavbarLabel-expand-${size}`}
-							placement={placement}
-							className={styles.offcanvas}
-							show={menuOpen}
-							onHide={handleClose}>
-							<Offcanvas.Header
-								closeButton
-								closeVariant="white">
-								<Offcanvas.Title id={`offcanvasNavbarLabel-expand-${size}`}>
-									{loggedUser.userName && (
-										<LoggedUser
-											fullName={
-												toggleLanguage !== "ar"
-													? loggedUser.name!
-													: loggedUser.nameEnglish
-											}
-											userName={loggedUser.userName}
-											className={clsx(styles.menuItem, menuButton)}
-											onClick={userNameClickHandler}
-										/>
-									)}
-								</Offcanvas.Title>
-							</Offcanvas.Header>
-							<Offcanvas.Body>
-								{/* <Nav
+						<div className={styles.navCat}>
+							<Nav.Link
+								as={RouterLink}
+								to={isLogged ? RoutePath.HOME : RoutePath.ROOT}>
+								<img
+									alt="home"
+									className={styles.NavDropdownHome}
+									style={{ width: "30px" }}
+									src={HouseLogo}
+								/>
+							</Nav.Link>
+						</div>
+						<div className={styles.navCat}>
+							<NavMenuList data={menuList} />
+						</div>
+						{hideLoginButton && <ChangeLanguage />}
+
+						{loggedUser.userName ? (
+							<>
+								<Navbar.Toggle
+									aria-controls={`offcanvasNavbar-expand-${size}`}
+									onClick={toggleMenu}
+								/>
+								<Navbar.Offcanvas
+									id={`offcanvasNavbar-expand-${size}`}
+									aria-labelledby={`offcanvasNavbarLabel-expand-${size}`}
+									placement={placement}
+									className={styles.offcanvas}
+									show={menuOpen}
+									onHide={handleClose}>
+									<Offcanvas.Header
+										closeButton
+										closeVariant="white">
+										<Offcanvas.Title id={`offcanvasNavbarLabel-expand-${size}`}>
+											{loggedUser.userName && (
+												<LoggedUser
+													fullName={
+														toggleLanguage !== "ar"
+															? loggedUser.name!
+															: loggedUser.nameEnglish
+													}
+													userName={loggedUser.userName}
+													className={clsx(styles.menuItem, menuButton)}
+													onClick={userNameClickHandler}
+												/>
+											)}
+										</Offcanvas.Title>
+									</Offcanvas.Header>
+									<Offcanvas.Body>
+										{/* <Nav
 									className="justify-content-end flex-grow-1 pe-3"
 									onClick={toggleMenu}
 								/> */}
-								<OffcanvasNavbarMenuList role={loggedUser.role} />
-								{/* {getMenuButtons()} */}
-								<div className={styles.actionDiv}>
-									<div className={styles.configDiv}>
-										<ChangeLanguage
-											className={clsx(styles.menuItem, menuButton)}
-										/>
-										{loggedUser.role === ROLE.SUPERADMIN && (
-											<div className={styles.setting}>
-												<FontAwesomeIcon
-													icon={faGear}
-													style={{ color: "black", cursor: "pointer" }}
-													onClick={gearClickHandler}
-													className={clsx(
-														styles.menuItem,
-														styles.actionBtn,
-														menuButton
-													)}
+										<OffcanvasNavbarMenuList role={loggedUser.role} />
+										{/* {getMenuButtons()} */}
+										<div className={styles.actionDiv}>
+											<div className={styles.configDiv}>
+												<ChangeLanguage
+													className={clsx(styles.menuItem, menuButton)}
 												/>
+												{loggedUser.role === ROLE.SUPERADMIN && (
+													<div className={styles.setting}>
+														<FontAwesomeIcon
+															icon={faGear}
+															style={{ color: "black", cursor: "pointer" }}
+															onClick={gearClickHandler}
+															className={clsx(
+																styles.menuItem,
+																styles.actionBtn,
+																menuButton
+															)}
+														/>
+													</div>
+												)}
 											</div>
-										)}
-									</div>
-									<Logout
-										label={t("account.logout", { framework: "React" })}
-										onClick={logoutClickHandler}
-										className={clsx(
-											styles.menuItem,
-											styles.actionBtn,
-											menuButton
-										)}
-									/>
-								</div>
-							</Offcanvas.Body>
-						</Navbar.Offcanvas>
+											<Logout
+												label={t("account.logout", { framework: "React" })}
+												onClick={logoutClickHandler}
+												className={clsx(
+													styles.menuItem,
+													styles.actionBtn,
+													menuButton
+												)}
+											/>
+										</div>
+									</Offcanvas.Body>
+								</Navbar.Offcanvas>
+							</>
+						) : (
+							hideLoginButton !== true && (
+								// <RedirectButton
+								// 	label={t("account.login", { framework: "React" })}
+								// 	redirectTo={RoutePath.LOGIN}
+								// 	// className={clsx(styles.menuItem, styles.actionBtn, menuButton)}
+								// />
+								<Button
+									variant="outline-dark"
+									onClick={loginClickHandler}
+									className={styles.loginButton}>
+									{t("account.login", { framework: "React" })}
+								</Button>
+							)
+						)}
 					</Container>
 				</Navbar>
 			</header>

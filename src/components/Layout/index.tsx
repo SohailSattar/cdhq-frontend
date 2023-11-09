@@ -248,9 +248,10 @@ const Layout: FC<Props> = ({
 						if (data) {
 							setLoggedUser(data);
 						}
-					} else {
-						navigate(RoutePath.LOGIN);
 					}
+					// else {
+					// 	navigate(RoutePath.LOGIN);
+					// }
 				}
 			} else {
 				if (!noChecks) {
@@ -295,7 +296,7 @@ const Layout: FC<Props> = ({
 						if (loggedUser.id !== 0) {
 							removeLocalData();
 						}
-						navigate(RoutePath.LOGIN);
+						// navigate(RoutePath.LOGIN);
 					}
 				}
 			} catch (error) {
@@ -382,7 +383,7 @@ const Layout: FC<Props> = ({
 						// reset the state of your app so the error doesn't happen again
 					}}>
 					{/* <Header hideLoginButton={hideLoginButton} /> */}
-					<OffcanvasNavbar />
+					<OffcanvasNavbar hideLoginButton={hideLoginButton} />
 					<div className={styles.layout}>
 						{isLoading ? (
 							<Loader />

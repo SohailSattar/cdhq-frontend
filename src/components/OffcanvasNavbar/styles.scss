@@ -1,8 +1,12 @@
 @import "../../assets/css/variable.scss";
 @import "../../assets/css/mixins.scss";
 
+.navbar-toggler {
+	margin-right: unset !important;
+}
+
 .navbar-toggler.collapsed:focus-visible {
-	outline: none;
+	outline: none !important;
 }
 
 .navbar-toggler:focus {
