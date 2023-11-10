@@ -1,3 +1,4 @@
+export { default as NewsBar } from "./Bar";
 export { default as NewsCarousel } from "./Carousel";
 export { default as NewsContent } from "./Content";
 export { default as NewsDetail } from "./Detail";

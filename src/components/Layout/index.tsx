@@ -26,12 +26,14 @@ import styles from "./styles.module.scss";
 import { Id } from "../../utils";
 import { checkLoginStatus } from "../../api/login/get/checkLoginStatus";
 import { useCookies } from "react-cookie";
+import { boolean } from "yargs";
 
 interface Props {
 	// projectId?: number;
 	privilegeType?: PrivilegeType;
 	hideLoginButton?: boolean;
 	noChecks?: boolean;
+	displayLanguageChange?: boolean;
 	children: any;
 }
 
@@ -40,6 +42,7 @@ const Layout: FC<Props> = ({
 	privilegeType = "All",
 	hideLoginButton = false,
 	noChecks = false,
+	displayLanguageChange,
 	children,
 }) => {
 	const navigate = useNavigate();
@@ -88,143 +91,6 @@ const Layout: FC<Props> = ({
 		removeCookies();
 	}, [clearLoggedInUserState, removeCookies]);
 
-	// const fetchProjectPrivilege = useCallback(
-	// 	async (id: Id) => {
-	// 		setIsLoading(true);
-	// 		const { data: privilege } = await getProjectPrivilege(id!);
-
-	// 		switch (privilegeType) {
-	// 			case "All":
-	// 				setCanView(true);
-	// 				break;
-	// 			case "Read":
-	// 				setCanView(privilege?.readPrivilege!);
-	// 				break;
-	// 			case "Write":
-	// 				setCanView(privilege?.insertPrivilege!);
-	// 				break;
-	// 			case "Update":
-	// 				setCanView(privilege?.updatePrivilege!);
-	// 				break;
-	// 			case "None":
-	// 				setCanView(false);
-	// 				break;
-	// 		}
-
-	// 		setIsLoading(false);
-	// 	},
-	// 	[privilegeType]
-	// );
-
-	// const fetchContent = useCallback(async () => {
-	// 	setIsLoading(true);
-	// 	const token = localStorageService.getJwtToken();
-	// 	if (token) {
-	// 		const { data: myRole } = await getMyRole();
-	// 		const role = myRole?.role.name!;
-
-	// 		if (role !== loggedUser?.role!) {
-	// 			setLoggedUser({ ...loggedUser, role: role });
-	// 		}
-
-	// 		if (loggedUser.userName === "") {
-	// 			const { data, error } = await getMyDetail();
-	// 			if (error) {
-	// 				if (error.response.status === 401) {
-	// 					navigate(RoutePath.LOGIN);
-	// 				}
-	// 			}
-	// 			if (data) {
-	// 				setLoggedUser(data);
-	// 			}
-	// 		}
-	// 	} else {
-	// 		if (!noChecks) {
-	// 			navigate(RoutePath.ROOT);
-	// 		}
-	// 	}
-
-	// 	if (canView === undefined || canView === false) {
-	// 		setContent(<NotAuthorized />);
-	// 	} else {
-	// 		setContent(children);
-	// 	}
-	// 	setIsLoading(false);
-	// }, [canView, children, loggedUser, navigate, noChecks, setLoggedUser]); //canView, children, loggedUser, navigate, noChecks
-
-	// const fetchContent = useMemo(
-	// 	() => async () => {
-	// 		setIsLoading(true);
-	// 		const token = localStorageService.getJwtToken();
-	// 		if (token) {
-	// 			const { data: myRole } = await getMyRole();
-	// 			const role = myRole?.role.name!;
-
-	// 			if (role !== loggedUser?.role!) {
-	// 				setLoggedUser({ ...loggedUser, role: role });
-	// 			}
-
-	// 			if (loggedUser.userName === "") {
-	// 				const { data, error } = await getMyDetail();
-	// 				if (error) {
-	// 					if (error.response.status === 401) {
-	// 						navigate(RoutePath.LOGIN);
-	// 					}
-	// 				}
-	// 				if (data) {
-	// 					setLoggedUser(data);
-	// 				}
-	// 			}
-	// 		} else {
-	// 			navigate(RoutePath.ROOT);
-	// 		}
-	// 		// console.log(canView);
-	// 		if (!canView) {
-	// 			setContent(<NotAuthorized />);
-	// 		} else {
-	// 			setContent(children);
-	// 		}
-
-	// 		setIsLoading(false);
-	// 	},
-	// 	[canView, children, loggedUser, navigate, setLoggedUser]
-	// );
-
-	// const fetch = useCallback(async () => {
-	// 	console.log(loggedUser);
-	// 	// if (loggedUser.id !== 0) {
-	// 	const { data } = await checkLoginStatus();
-	// 	console.log(data);
-	// 	if (data?.isLoggedIn) {
-	// 		if (projectId) {
-	// 			fetchProjectPrivilege(projectId);
-	// 		} else {
-	// 			setCanView(true);
-	// 			setIsLoading(true);
-	// 		}
-	// 		fetchContent();
-	// 	} else {
-	// 		if (data?.isLoggedIn === false) {
-	// 			setContent(children);
-
-	// 			if (loggedUser.id !== 0) {
-	// 				removeLocalData();
-	// 			}
-	// 			//
-	// 			navigate(RoutePath.LOGIN);
-	// 			console.log(data?.isLoggedIn);
-	// 		}
-	// 	}
-	// 	// }
-	// }, [
-	// 	children,
-	// 	fetchContent,
-	// 	fetchProjectPrivilege,
-	// 	loggedUser,
-	// 	navigate,
-	// 	projectId,
-	// ]);
-
 	useEffect(() => {
 		const fetch = async () => {
 			const token = localStorageService.getJwtToken();
@@ -242,6 +108,7 @@ const Layout: FC<Props> = ({
 
 						if (error) {
 							if (error.response.status === 401) {
+								console.log("adasdsa");
 								navigate(RoutePath.LOGIN);
 							}
 						}
@@ -303,7 +170,7 @@ const Layout: FC<Props> = ({
 				// Handle error
 			}
 		},
-		[canView, children, loggedUser.id, navigate, removeLocalData] // , loggedUser.id, navigate, removeLocalData
+		[canView, children, loggedUser.id, removeLocalData] // , loggedUser.id, navigate, removeLocalData
 	);
 
 	useEffect(() => {
@@ -383,7 +250,10 @@ const Layout: FC<Props> = ({
 						// reset the state of your app so the error doesn't happen again
 					}}>
 					{/* <Header hideLoginButton={hideLoginButton} /> */}
-					<OffcanvasNavbar hideLoginButton={hideLoginButton} />
+					<OffcanvasNavbar
+						hideLoginButton={hideLoginButton}
+						displayLanguageChange={displayLanguageChange}
+					/>
 					<div className={styles.layout}>
 						{isLoading ? (
 							<Loader />

@@ -1,0 +1,25 @@
+// .carousel {
+// 	display: flex;
+// 	// border: 1px solid black;
+// 	.child {
+// 		display: flex;
+// 		justify-content: center;
+// 	}
+// }
+
+.carousel {
+	display: flex;
+	overflow: hidden;
+	.carousel-inner {
+		display: flex;
+		flex-direction: row;
+	}
+	.child {
+		flex: 0 0 100%;
+		display: flex;
+		justify-content: center;
+	}
+	.card {
+		border: unset;
+	}
+}

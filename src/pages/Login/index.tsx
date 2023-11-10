@@ -12,7 +12,7 @@ import { Footer, Header } from "../../components";
 import * as RoutePath from "../../RouteConfig";
 
 import styles from "./styles.module.scss";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { checkLoginStatus } from "../../api/login/get/checkLoginStatus";
 
 const LoginPage = () => {
@@ -24,11 +24,19 @@ const LoginPage = () => {
 	const setUserRole = useStore((state) => state.setUserRole);
 	const setPasswordValidity = useStore((state) => state.setPasswordValidity);
 
-	useEffect(() => {
-		if (loggedInUser.id !== 0) {
-			navigate(RoutePath.HOME);
+	const stableNavigate = useCallback(navigate, []);
+
+	const checkStatus = useCallback(async () => {
+		const { data } = await checkLoginStatus();
+
+		if (data?.isLoggedIn === true) {
+			stableNavigate(RoutePath.HOME);
 		}
-	}, [loggedInUser, loggedInUser.id, navigate]);
+	}, [stableNavigate]);
+
+	useEffect(() => {
+		checkStatus();
+	}, [checkStatus, loggedInUser.id, stableNavigate]);
 
 	const submitHandler = async (values: ILoginFormInputs) => {
 		const { data, error } = await loginUser(values);

@@ -93,7 +93,7 @@ const HomePage = () => {
 		};
 
 		fetchData();
-	}, [loggedInUser]);
+	}, [loggedInUser.role]);
 
 	return (
 		<motion.div
