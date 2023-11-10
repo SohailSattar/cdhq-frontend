@@ -2,7 +2,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import localStorageService from "../../network/localStorageService";
 
 import { PrivilegeType } from "../types";
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { useStore } from "../../utils/store";
 import * as Routerpath from "../../RouteConfig";
 import { checkLoginStatus } from "../../api/login/get/checkLoginStatus";
@@ -13,29 +13,41 @@ interface Props {
 }
 
 const ProtectedRoute: FC<Props> = ({ projectId, privilegeType }) => {
-	const [isLoggedin, setIsLoggedIn] = useState<boolean>();
+	const [isLoggedIn, setIsLoggedIn] = useState<boolean | undefined>(undefined);
+	const [renderedComponent, setRenderedComponent] =
+		useState<React.ReactElement | null>(null);
+
+	// const [];
+
 	let token = localStorageService?.getJwtToken();
 
-	const checkLogin = useCallback(async () => {
-		const { data } = await checkLoginStatus();
-		if (data) {
-			setIsLoggedIn(data?.isLoggedIn);
+	const fetchLoginStatus = useCallback(async () => {
+		try {
+			const { data } = await checkLoginStatus();
+			if (data) {
+				setIsLoggedIn(data?.isLoggedIn);
+			}
+		} catch (error) {
+			// Handle errors if needed
 		}
-	}, []);
+	}, []); // Empty dependency array as there are no external dependencies
 
 	useEffect(() => {
-		checkLogin();
-	}, [checkLogin]);
+		fetchLoginStatus();
+	}, [fetchLoginStatus]);
 
-	console.log("token", token);
-	console.log("!(token && token !== )", !(token && token !== ""));
-	console.log("isLoggedin !== true", isLoggedin !== true);
-	console.log(
-		"!(token && token !== ) && isLoggedin !== true",
-		!(token && token !== "") && isLoggedin !== true
-	);
+	useEffect(() => {
+		if (isLoggedIn !== undefined) {
+			if (isLoggedIn) {
+				setRenderedComponent(<Outlet />);
+			} else {
+				setRenderedComponent(<Navigate to={Routerpath.LOGIN} />);
+			}
+			setIsLoggedIn(isLoggedIn);
+		}
+	}, [isLoggedIn]);
 
-	return isLoggedin !== true ? <Navigate to={Routerpath.LOGIN} /> : <Outlet />;
+	return renderedComponent ?? null;
 };
 
 export default ProtectedRoute;

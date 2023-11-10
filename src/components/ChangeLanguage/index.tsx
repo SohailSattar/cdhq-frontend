@@ -4,6 +4,9 @@ import { useTranslation } from "react-i18next";
 import localStorageService from "../../network/localStorageService";
 import { useStore } from "../../utils/store";
 
+import styles from "./styles.module.scss";
+import clsx from "clsx";
+
 interface Props {
 	className?: string;
 }
@@ -46,7 +49,7 @@ const ChangeLanguage: FC<Props> = ({ className }) => {
 	return (
 		<Button
 			onClick={changeLanguageHandler}
-			className={className}>
+			className={clsx(styles.changeLanguage, className)}>
 			{toggleLanguage === "ar" ? "العربية" : "EN"}
 		</Button>
 	);

@@ -1,9 +1,6 @@
 // Arrows
 export * from "./Arrow";
 
-// Bars
-export * from "./Bars";
-
 // Details
 export * from "./Detail";
 

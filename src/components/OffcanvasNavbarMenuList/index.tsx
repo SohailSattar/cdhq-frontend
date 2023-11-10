@@ -9,9 +9,10 @@ import { useTranslation } from "react-i18next";
 
 interface Props {
 	role: string;
+	onClick: () => void;
 }
 
-const OffcanvasNavbarMenuList: FC<Props> = ({ role }) => {
+const OffcanvasNavbarMenuList: FC<Props> = ({ role, onClick }) => {
 	const [t] = useTranslation("common");
 
 	return (
@@ -27,6 +28,7 @@ const OffcanvasNavbarMenuList: FC<Props> = ({ role }) => {
 									to: url,
 									component: RouterLink,
 									className: clsx(styles.menuItem),
+									onClick: onClick,
 								}}>
 								{t(`header.menu.${short}`, { framework: "React" })}
 							</Button>

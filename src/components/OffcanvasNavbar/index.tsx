@@ -52,9 +52,13 @@ const useStyles = makeStyles(() => ({
 
 interface Props {
 	hideLoginButton?: boolean;
+	displayLanguageChange?: boolean;
 }
 
-const OffcanvasNavbar: FC<Props> = ({ hideLoginButton }) => {
+const OffcanvasNavbar: FC<Props> = ({
+	hideLoginButton,
+	displayLanguageChange = false,
+}) => {
 	const [t, i18n] = useTranslation("common");
 	const navigate = useNavigate();
 	const toggleLanguage = useStore((state) => state.language);
@@ -105,9 +109,11 @@ const OffcanvasNavbar: FC<Props> = ({ hideLoginButton }) => {
 			loggedUser.id.toString()
 		);
 		navigate(detailPath);
+		handleClose();
 	};
 
 	const gearClickHandler = () => {
+		handleClose();
 		navigate(RoutePath.SETTINGS);
 	};
 
@@ -116,6 +122,7 @@ const OffcanvasNavbar: FC<Props> = ({ hideLoginButton }) => {
 	};
 
 	const logoutClickHandler = () => {
+		handleClose();
 		navigate(RoutePath.LOGIN);
 	};
 	// const userName = "Sohail Abdul Sattar";
@@ -151,7 +158,7 @@ const OffcanvasNavbar: FC<Props> = ({ hideLoginButton }) => {
 						<div className={styles.navCat}>
 							<NavMenuList data={menuList} />
 						</div>
-						{hideLoginButton && <ChangeLanguage />}
+						{displayLanguageChange && <ChangeLanguage />}
 
 						{loggedUser.userName ? (
 							<>
@@ -189,12 +196,19 @@ const OffcanvasNavbar: FC<Props> = ({ hideLoginButton }) => {
 									className="justify-content-end flex-grow-1 pe-3"
 									onClick={toggleMenu}
 								/> */}
-										<OffcanvasNavbarMenuList role={loggedUser.role} />
+										<OffcanvasNavbarMenuList
+											role={loggedUser.role}
+											onClick={handleClose}
+										/>
 										{/* {getMenuButtons()} */}
 										<div className={styles.actionDiv}>
 											<div className={styles.configDiv}>
 												<ChangeLanguage
-													className={clsx(styles.menuItem, menuButton)}
+													className={clsx(
+														styles.menuItem,
+														menuButton,
+														styles.languageChange
+													)}
 												/>
 												{loggedUser.role === ROLE.SUPERADMIN && (
 													<div className={styles.setting}>

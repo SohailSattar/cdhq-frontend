@@ -37,6 +37,8 @@ const HomePage = () => {
 			// 	loggedInUser.id!
 			// );
 
+			console.log("dsadadsa");
+
 			setIsVisible(true);
 			//Getting all projects
 			const { data } = await getAllProjectsList();
@@ -93,7 +95,8 @@ const HomePage = () => {
 		};
 
 		fetchData();
-	}, [loggedInUser]);
+		console.log("testttt ");
+	}, [loggedInUser.role]);
 
 	return (
 		<motion.div
