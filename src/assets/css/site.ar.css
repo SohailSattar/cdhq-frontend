@@ -4837,7 +4837,7 @@ fieldset:disabled .btn {
 .card-footer,
 .card-header {
 	padding: 0.5rem 1rem;
-	background-color: rgba(0, 0, 0, 0.03);
+	/* background-color: rgba(0, 0, 0, 0.03); */
 }
 
 .card-title {

@@ -125,7 +125,7 @@ const OffcanvasNavbar: FC<Props> = ({
 		handleClose();
 		navigate(RoutePath.LOGIN);
 	};
-	// const userName = "Sohail Abdul Sattar";
+
 	const size = false;
 	return (
 		<>
