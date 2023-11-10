@@ -4,7 +4,7 @@ import { Card } from "..";
 
 import { ICard } from "../Card";
 
-import styles from "./srtles.module.scss";
+import styles from "./styles.module.scss";
 
 interface Props {
 	data: ICard[];
@@ -20,6 +20,7 @@ const CardsCarousel: FC<Props> = ({ data, showRating = false }) => {
 						<Card
 							data={x}
 							showRating={showRating}
+							className={styles.card}
 						/>
 					</div>
 				</Carousel.Item>

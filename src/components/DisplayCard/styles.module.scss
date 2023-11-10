@@ -1,13 +1,39 @@
+// .card {
+// 	.title {
+// 		border-radius: 5px;
+// 		margin-top: 5px;
+// 		height: 2.5rem;
+// 		background-color: rgb(20, 31, 51); // #b58934;
+// 		color: white;
+// 	}
+
+// 	.container {
+// 		margin-top: 0.938rem;
+// 	}
+// }
+
 .card {
+	padding: 0;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	overflow: hidden;
+	transition: transform 0.3s;
+	&:hover {
+		transform: scale(1.02);
+	}
 	.title {
 		border-radius: 5px;
-		margin-top: 5px;
-		height: 2.5rem;
-		background-color: rgb(20, 31, 51); // #b58934;
+		background-color: rgb(20, 31, 51);
+		padding: 12px 15px; /* Adjust padding for a more elegant look */
 		color: white;
+		border-bottom: 1px solid #ddd;
+		h4 {
+			margin: 0;
+			font-size: 18px; /* Adjust font size for a more elegant look */
+			font-weight: bold;
+		}
 	}
-
 	.container {
-		margin-top: 0.938rem;
+		padding: 15px;
 	}
 }
