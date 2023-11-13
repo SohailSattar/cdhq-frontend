@@ -7,13 +7,15 @@ import styles from "./styles.module.scss";
 import { FC, useEffect, useState } from "react";
 import Button from "../Button";
 import ShadowedContainer from "../ShadowedContainer";
+import clsx from "clsx";
 
 export interface Props {
 	label?: string;
 	onClick: (value: string) => void;
+	className?: string;
 }
 
-const SearchBox: FC<Props> = ({ label, onClick }) => {
+const SearchBox: FC<Props> = ({ label, onClick, className }) => {
 	const [value, setValue] = useState<string>("");
 
 	const [hideClearButton, setHideClearButton] = useState(true);
@@ -50,7 +52,7 @@ const SearchBox: FC<Props> = ({ label, onClick }) => {
 	};
 
 	return (
-		<ShadowedContainer className={styles.container}>
+		<ShadowedContainer className={clsx(styles.container, className)}>
 			<div className={styles.searchBox}>
 				<div className={styles.searchIcon}>
 					<Button

@@ -131,6 +131,8 @@ const MenuForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 
 			if (selectedType?.value !== 4) {
 				setValue("isExternalLink", false);
+			} else {
+				setValue("isExternalLink", isExternalPath);
 			}
 
 			if (selectedType) {
@@ -147,8 +149,6 @@ const MenuForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 					setIsLinkPathDisabled(false);
 				}
 			}
-
-			// setValue("isExternalLink", isExternalPath);
 		}
 	}, [data, menuOptions, register, setValue, typesOptions]);
 

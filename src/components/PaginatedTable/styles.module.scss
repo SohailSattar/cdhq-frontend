@@ -2,12 +2,21 @@
 	margin-bottom: 15px;
 
 	.searchContainer {
+		margin-top: 0;
 		display: flex;
+		padding: unset;
+
+		.noShadow {
+			box-shadow: unset;
+			margin-bottom: unset;
+		}
 
 		.search {
 			display: flex;
 			flex: 1;
 			width: 100%;
+			box-shadow: unset;
+			align-items: center;
 		}
 
 		.bar {
@@ -26,6 +35,7 @@
 	}
 	.selectionContainer {
 		display: flex;
+		padding: 15px;
 	}
 
 	.detailBar {
