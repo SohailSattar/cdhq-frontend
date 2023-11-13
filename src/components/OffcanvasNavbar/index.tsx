@@ -86,6 +86,7 @@ const OffcanvasNavbar: FC<Props> = ({
 			const { data } = await getMenuList();
 			if (data) {
 				setMenuList(data!);
+				console.log(data);
 			}
 		},
 		[]
