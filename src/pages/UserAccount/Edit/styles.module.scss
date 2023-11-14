@@ -1,38 +1,37 @@
 .editUser {
-    display: flex;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
 
-    .container {
-        overflow: scroll;
-    }
+	.container {
+		overflow: scroll;
+	}
 
-    .field {
-        width: 100%;
-        margin-bottom: 5px;
-    }
+	.field {
+		width: 100%;
+		margin-bottom: 5px;
+	}
 
-    .dropDownContainer {
-        width: 100%;
-        padding: 5px;
-    }
+	.dropDownContainer {
+		width: 100%;
+		padding: 5px;
+	}
 
-    .section {
-        // width: 100%;
-        display: flex;
-        // flex-direction: row;
-    }
+	.section {
+		// width: 100%;
+		display: flex;
+		// flex-direction: row;
+	}
 
-    .buttonSection {
-        margin-top: 15px;
-        display: flex;
+	.buttonSection {
+		margin-top: 15px;
+		display: flex;
 
-        .btn {
-            margin-left: 5px;
-        }
-    }
-
+		.btn {
+			margin-left: 5px;
+		}
+	}
 }
 
 .container {
-    overflow: scroll;
+	overflow: scroll;
 }

@@ -108,7 +108,6 @@ const LoginPage = () => {
 						role="main"
 						className="pb-3">
 						<div className="container container-custom-width">
-							{/* <ImageLogo imagePath={logo} /> */}
 							<LoginForm onSubmit={submitHandler} />
 						</div>
 					</main>
