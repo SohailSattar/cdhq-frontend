@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { Tree } from "..";
+import { ShadowedContainer, Tree } from "..";
 
 // import { Node } from '../';
 
@@ -100,20 +100,24 @@ const DepartmentTree: FC<Props> = ({
 		});
 	};
 
-	return showCheckbox ? (
-		<CheckboxedTree
-			nodes={hierarchies!}
-			direction={language !== "ar" ? "rtl" : "ltr"}
-			onNodeCheck={onNodeCheck}
-			isExpanded
-		/>
-	) : (
-		<Tree
-			nodes={hierarchies!}
-			direction={language !== "ar" ? "rtl" : "ltr"}
-			onNodeCheck={onNodeCheck}
-			isExpanded
-		/>
+	return (
+		<ShadowedContainer>
+			{showCheckbox ? (
+				<CheckboxedTree
+					nodes={hierarchies!}
+					direction={language !== "ar" ? "rtl" : "ltr"}
+					onNodeCheck={onNodeCheck}
+					isExpanded
+				/>
+			) : (
+				<Tree
+					nodes={hierarchies!}
+					direction={language !== "ar" ? "rtl" : "ltr"}
+					onNodeCheck={onNodeCheck}
+					isExpanded
+				/>
+			)}
+		</ShadowedContainer>
 	);
 };
 

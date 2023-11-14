@@ -19,7 +19,8 @@
 
 	&:hover {
 		cursor: pointer;
-		background-color: rgba(20, 31, 51, 0.5); //rgba(188, 148, 72, 0.5);
+		background-color: rgba(20, 31, 51, 0.6); //rgba(188, 148, 72, 0.5);
+		transform: scale(1.02);
 	}
 
 	.icon {
