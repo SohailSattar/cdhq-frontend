@@ -1,157 +1,156 @@
+@import "../../../assets/css/colors.scss";
+
 .loginMain {
-    box-shadow: 0 0 15px #e4e4e4;
-    margin-bottom: .4rem;
-    min-height: 540px;
-    display: grid;
-    display: -ms-grid;
-    grid-template-columns: auto 130px 0px
+	box-shadow: 0 0 15px #e4e4e4;
+	margin-bottom: 0.4rem;
+	min-height: 540px;
+	display: grid;
+	display: -ms-grid;
+	grid-template-columns: auto 130px 0px;
 }
 
-@media only screen and (max-width:1024px) {
-    .loginMain {
-        grid-template-columns: 2fr 130px !important;
-        max-width: 690px;
-        margin: 0 auto
-    }
+@media only screen and (max-width: 1024px) {
+	.loginMain {
+		grid-template-columns: 2fr 130px !important;
+		max-width: 690px;
+		margin: 0 auto;
+	}
 }
 
-@media only screen and (max-width:766px) {
-    .loginMain {
-        grid-template-columns: auto !important
-    }
+@media only screen and (max-width: 766px) {
+	.loginMain {
+		grid-template-columns: auto !important;
+	}
 }
 
-@media all and (-ms-high-contrast:none),
-(-ms-high-contrast:active) {
-    .loginMain {
-        background-color: #fff
-    }
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+	.loginMain {
+		background-color: #fff;
+	}
 }
 
 .signinWrapper {
-    background-color: var(--whiteClr);
-    padding: 2.2rem;
-    position: relative
+	background-color: var(--whiteClr);
+	padding: 2.2rem;
+	position: relative;
 }
 
-@media only screen and (max-width:1024px) {
-    .signinWrapper .loginDetail {
-        padding: 0
-    }
+@media only screen and (max-width: 1024px) {
+	.signinWrapper .loginDetail {
+		padding: 0;
+	}
 }
 
-@media only screen and (min-width:1024px) {
-    .signinWrapper .loginDetail {
-        padding: 0 1rem
-    }
+@media only screen and (min-width: 1024px) {
+	.signinWrapper .loginDetail {
+		padding: 0 1rem;
+	}
 }
 
 .signinWrapper .loginDetail .custom-control-label::after,
 .signinWrapper .loginDetail .custom-control-label::before {
-    width: 1.2rem;
-    height: 1.2rem;
-    top: .1rem
+	width: 1.2rem;
+	height: 1.2rem;
+	top: 0.1rem;
 }
 
 .signinWrapper .loginDetail .custom-control-label::after {
-    background-size: 70%
+	background-size: 70%;
 }
 
 .signinWrapper .loginDetail .custom-control-label {
-    font-size: .85em;
-    line-height: 1.9em;
-    height: 20px
+	font-size: 0.85em;
+	line-height: 1.9em;
+	height: 20px;
 }
 
 .signinWrapper .loginDetail .rememberWrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    padding-top: 20px
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	padding-top: 20px;
 }
 
 .signinWrapper .loginDetail .rememberWrapper a.forgotPass {
-    font-size: .85em;
-    text-decoration: none;
-    border-bottom: 1px solid #bebebe;
-    color: #333
+	font-size: 0.85em;
+	text-decoration: none;
+	border-bottom: 1px solid #bebebe;
+	color: #333;
 }
 
 .signinWrapper .loginDetail .rememberWrapper a.forgotPass:hover {
-    color: #B68A35
+	color: $PRIMARY;
 }
 
 .signinWrapper p {
-    margin-bottom: .8rem
+	margin-bottom: 0.8rem;
 }
 
 .signupWrapper {
-    background: #B68A35;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 30px 10px;
-    grid-row: 1;
-    grid-column: 2;
-    -ms-grid-row: 1;
-    -ms-grid-column: 2
+	background: $PRIMARY;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 30px 10px;
+	grid-row: 1;
+	grid-column: 2;
+	-ms-grid-row: 1;
+	-ms-grid-column: 2;
 }
 
 .regBtn,
 .signupWrapper .signupDetail .userIcon {
-    background: #fff;
-    box-shadow: 0 0 20px rgba(0, 0, 0, .3)
+	background: #fff;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
 }
 
-@media all and (-ms-high-contrast:none),
-(-ms-high-contrast:active) {
-    .signupWrapper {
-        width: 130px
-    }
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+	.signupWrapper {
+		width: 130px;
+	}
 }
 
-@media only screen and (max-width:600px) {
-    .signupWrapper {
-        grid-row: 2;
-        grid-column: 1;
-        -ms-grid-row: 2;
-        -ms-grid-column: 1
-    }
+@media only screen and (max-width: 600px) {
+	.signupWrapper {
+		grid-row: 2;
+		grid-column: 1;
+		-ms-grid-row: 2;
+		-ms-grid-column: 1;
+	}
 }
 
 .signupWrapper .signupDetail {
-    text-align: center
+	text-align: center;
 }
 
 .signupWrapper .signupDetail .userIcon {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    font-size: 30px;
-    text-align: center;
-    vertical-align: middle;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: #B68A35
+	width: 80px;
+	height: 80px;
+	border-radius: 50%;
+	font-size: 30px;
+	text-align: center;
+	vertical-align: middle;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	color: #b68a35;
 }
 
 .signupWrapper .signupDetail h2 {
-    font-family: sans-serif;
-    color: #fff;
-    margin: .8rem 0 2rem;
-    font-size: 1.6rem
+	font-family: sans-serif;
+	color: #fff;
+	margin: 0.8rem 0 2rem;
+	font-size: 1.6rem;
 }
 
 .signupDetailText {
-    color: #fff;
-    margin-bottom: 20px;
-    font-size: 18px
+	color: #fff;
+	margin-bottom: 20px;
+	font-size: 18px;
 }
 
-
 .loginBtnBox {
-    text-align: center;
-    margin-top: 18px;
-    margin-bottom: 22px
+	text-align: center;
+	margin-top: 18px;
+	margin-bottom: 22px;
 }

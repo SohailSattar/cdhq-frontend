@@ -152,7 +152,7 @@ const PageContainer: FC<Props> = ({
 								animate={{ opacity: isVisible ? 1 : 0 }}
 								exit={{ opacity: 0 }}
 								transition={{ duration: 0.2 }}>
-								<ShadowedContainer className={styles.btnSection}>
+								<div className={styles.btnSection}>
 									<div
 										className={language !== "ar" ? styles.btn : styles.btnLTR}>
 										<RedirectButton
@@ -164,7 +164,7 @@ const PageContainer: FC<Props> = ({
 											redirectTo={btnBackUrlLink!}
 										/>
 									</div>
-								</ShadowedContainer>
+								</div>
 							</motion.div>
 						)}
 						{(showEditButton || showAddButton || showChangeStatusButton) && (
@@ -174,7 +174,7 @@ const PageContainer: FC<Props> = ({
 								animate={{ opacity: isVisible ? 1 : 0 }}
 								exit={{ opacity: 0 }}
 								transition={{ duration: 0.2 }}>
-								<ShadowedContainer className={styles.btnSection}>
+								<div className={styles.btnSection}>
 									{showEditButton && (
 										<div
 											className={
@@ -221,7 +221,7 @@ const PageContainer: FC<Props> = ({
 											)}
 										</div>
 									)}
-								</ShadowedContainer>
+								</div>
 							</motion.div>
 						)}
 					</motion.div>
