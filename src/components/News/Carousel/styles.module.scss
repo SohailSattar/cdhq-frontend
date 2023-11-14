@@ -2,6 +2,8 @@
 	max-height: 1200px;
 	position: relative;
 	overflow: hidden;
+	cursor: pointer;
+	padding: unset;
 	// max-height: unset;
 	transition: 3ms;
 	// border: 1px solid black;
@@ -14,6 +16,6 @@
 	}
 
 	.item {
-		margin: 5px 0;
+		margin: 0 20px;
 	}
 }

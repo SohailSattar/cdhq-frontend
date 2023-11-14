@@ -1,7 +1,8 @@
 {
 	"common": {
 		"created": "Created by",
-		"updated": "Updated by"
+		"updated": "Updated by",
+		"dated": "Dated"
 	},
 	"header": {
 		"title": "Ministry of Interior",

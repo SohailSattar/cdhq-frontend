@@ -1,9 +1,6 @@
 // Arrows
 export * from "./Arrow";
 
-// Bars
-export * from "./Bars";
-
 // Details
 export * from "./Detail";
 
@@ -45,7 +42,8 @@ export { default as Loader } from "./Loader";
 export { default as Loading } from "./Loading";
 export { default as LoadingButton } from "./LoadingButton";
 export { default as LoggedUser } from "./LoggedUser";
-export { default as MainHeader } from "./MainHeader";
+export { default as LogoHeader } from "./LogoHeader";
+
 export { default as MainLayout } from "./MainLayout";
 export { default as Menu } from "./Menu";
 export { default as MessageBox } from "./MessageBox";
@@ -54,6 +52,9 @@ export { default as Modal } from "./Modal";
 export * from "./Nav";
 export { default as NotAuthorized } from "./NotAuthorized";
 export * from "./News";
+export { default as OffcanvasNavbar } from "./OffcanvasNavbar";
+export { default as OffcanvasNavbarMenuList } from "./OffcanvasNavbarMenuList";
+
 export { default as PageContainer } from "./PageContainer";
 export { default as PaginatedTable } from "./PaginatedTable";
 export { default as Pagination } from "./Pagination";

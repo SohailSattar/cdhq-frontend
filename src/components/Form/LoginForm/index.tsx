@@ -78,6 +78,7 @@ const LoginForm: FC<Props> = ({ onSubmit }) => {
 											label={t("form.password", { framework: "React" })}
 											value={value}
 											onChange={onChange}
+											autocomplete="current-password"
 										/>
 									)}
 									name="password"

@@ -227,22 +227,27 @@ const PaginatedTable: FC<Props> = ({
 
 	return (
 		<div className={styles.paginatedTable}>
-			<div
+			<ShadowedContainer
 				className={styles.searchContainer}
-				style={{ marginTop: 0 }}>
+				// style={{ marginTop: 0 }}
+			>
 				<div className={styles.search}>
-					<SearchBox onClick={onSearch} />
+					<SearchBox
+						onClick={onSearch}
+						className={styles.noShadow}
+					/>
 				</div>
 				<div className={styles.bar}>
 					<div className={language !== "ar" ? styles.info : styles.infoLTR}>
 						<TotalCount
 							label={totalCountText}
 							count={totalCount}
+							className={styles.noShadow}
 						/>
 					</div>
 				</div>
-			</div>
-			<div className={styles.selectionContainer}>
+			</ShadowedContainer>
+			<ShadowedContainer className={styles.selectionContainer}>
 				{/* <div className={styles.detailBar}>
 					<div className={language !== "ar" ? styles.info : styles.infoLTR}>
 						<TotalCount
@@ -256,15 +261,15 @@ const PaginatedTable: FC<Props> = ({
 						className={
 							language !== "ar" ? styles.selection : styles.selectionLTR
 						}>
-						<ShadowedContainer>
-							<Dropdown
-								options={pageViewOptions}
-								onSelect={pageViewSelectionChangeHandler}
-								placeholder={t("pagination.recordPerPage", {
-									framework: "React",
-								})}
-							/>
-						</ShadowedContainer>
+						{/* <ShadowedContainer> */}
+						<Dropdown
+							options={pageViewOptions}
+							onSelect={pageViewSelectionChangeHandler}
+							placeholder={t("pagination.recordPerPage", {
+								framework: "React",
+							})}
+						/>
+						{/* </ShadowedContainer> */}
 					</div>
 				</div>
 				{myRole?.role.name === ROLE.SUPERADMIN && showRoleOption && (
@@ -273,15 +278,15 @@ const PaginatedTable: FC<Props> = ({
 							className={
 								language !== "ar" ? styles.selection : styles.selectionLTR
 							}>
-							<ShadowedContainer>
-								<Dropdown
-									options={roleOptions}
-									onSelect={roleSelectHandler}
-									placeholder={t("role.name", {
-										framework: "React",
-									})}
-								/>{" "}
-							</ShadowedContainer>
+							{/* <ShadowedContainer> */}
+							<Dropdown
+								options={roleOptions}
+								onSelect={roleSelectHandler}
+								placeholder={t("role.name", {
+									framework: "React",
+								})}
+							/>{" "}
+							{/* </ShadowedContainer> */}
 						</div>
 					</div>
 				)}
@@ -291,15 +296,15 @@ const PaginatedTable: FC<Props> = ({
 							className={
 								language !== "ar" ? styles.selection : styles.selectionLTR
 							}>
-							<ShadowedContainer>
-								<Dropdown
-									options={projectsOptions}
-									onSelect={projectSelectHandler}
-									placeholder={t("project.name", {
-										framework: "React",
-									})}
-								/>{" "}
-							</ShadowedContainer>
+							{/* <ShadowedContainer> */}
+							<Dropdown
+								options={projectsOptions}
+								onSelect={projectSelectHandler}
+								placeholder={t("project.name", {
+									framework: "React",
+								})}
+							/>{" "}
+							{/* </ShadowedContainer> */}
 						</div>
 					</div>
 				)}
@@ -309,15 +314,15 @@ const PaginatedTable: FC<Props> = ({
 							className={
 								language !== "ar" ? styles.selection : styles.selectionLTR
 							}>
-							<ShadowedContainer>
-								<Dropdown
-									options={statusOptions}
-									onSelect={workflowStatusOptionChangeHandler}
-									placeholder={t("global.workflowStatus", {
-										framework: "React",
-									})}
-								/>{" "}
-							</ShadowedContainer>
+							{/* <ShadowedContainer> */}
+							<Dropdown
+								options={statusOptions}
+								onSelect={workflowStatusOptionChangeHandler}
+								placeholder={t("global.workflowStatus", {
+									framework: "React",
+								})}
+							/>{" "}
+							{/* </ShadowedContainer> */}
 						</div>
 					</div>
 				)}
@@ -327,17 +332,17 @@ const PaginatedTable: FC<Props> = ({
 							className={
 								language !== "ar" ? styles.selection : styles.selectionLTR
 							}>
-							<ShadowedContainer>
-								<Dropdown
-									options={activeStatusOptions}
-									onSelect={activeStatusOptionChangeHandler}
-									placeholder={activeStatusText}
-								/>{" "}
-							</ShadowedContainer>
+							{/* <ShadowedContainer> */}
+							<Dropdown
+								options={activeStatusOptions}
+								onSelect={activeStatusOptionChangeHandler}
+								placeholder={activeStatusText}
+							/>{" "}
+							{/* </ShadowedContainer> */}
 						</div>
 					</div>
 				)}
-			</div>
+			</ShadowedContainer>
 			<Table
 				reference={tableRef}
 				columns={columns}

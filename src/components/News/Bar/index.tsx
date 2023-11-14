@@ -27,21 +27,21 @@ const NewsBar: FC<Props> = ({
 
 	return (
 		<Card className={styles.newsBar}>
-			<Card.Header>{title}</Card.Header>
-			<Card.Body>
-				<Card.Img
-					src={src}
-					className={styles.image}
-				/>
-				<Card.Text>{body}</Card.Text>
-
-				<Button onClick={() => infoClickHandler(id)}>المزيد</Button>
-
-				{/* <RedirectButton
-					label={"المزيد"}
-					redirectTo={RoutePath.NEWS_DETAIL.replace(":id", id.toString())}
-				/> */}
-			</Card.Body>
+			<div className={styles.content}>
+				<div className={styles.textContainer}>
+					<Card.Header className={styles.header}>{title}</Card.Header>
+					<Card.Body className={styles.cardBody}>
+						<Card.Text className={styles.text}>{body}</Card.Text>
+						<Button onClick={() => infoClickHandler(id)}>المزيد</Button>
+					</Card.Body>
+				</div>
+				<div className={styles.imageContainer}>
+					<Card.Img
+						src={src}
+						className={styles.image}
+					/>
+				</div>
+			</div>
 		</Card>
 	);
 };

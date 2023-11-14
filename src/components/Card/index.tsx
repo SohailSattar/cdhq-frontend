@@ -11,13 +11,16 @@ export interface ICard {
 export interface Props {
 	data: ICard;
 	showRating?: boolean;
+	className?: string;
 }
 
-const Card: FC<Props> = ({ data, showRating = false }) => {
+const Card: FC<Props> = ({ data, showRating = false, className }) => {
 	const { title, image, rating } = data;
 
 	return (
-		<ReactCard style={{ width: "18rem", textAlign: "center" }}>
+		<ReactCard
+			className={className}
+			style={{ width: "18rem", textAlign: "center" }}>
 			<ReactCard.Img
 				variant="top"
 				src={image}

@@ -48,13 +48,6 @@ const TableList: FC<Props> = ({ onViewClick }) => {
 				accessor: (p) => p,
 				Cell: ({ value }: any) => (
 					<Button onClick={() => onViewClick(value.id)}>{view}</Button>
-					// <ActionButtons
-					// 	id={value.id}
-					// 	detailPageLink={`${value.id}`}
-					// 	showView={true}
-					// 	showEdit={false}
-					// 	showDelete={false}
-					// />
 				),
 			},
 		],
@@ -126,8 +119,6 @@ const TableList: FC<Props> = ({ onViewClick }) => {
 			onPageChange={pageChangeHandler}
 			onPageViewSelectionChange={pageViewSelectionHandler}
 			noRecordText={t("table.noNews", { framework: "React" })}
-			onActiveStatusOptionSelectionChange={() => {}}
-			onWorkflowStatusOptionSelectionChange={() => {}}
 			hideActiveStatusDropdown
 			hideWorkflowStatusDropdown
 		/>

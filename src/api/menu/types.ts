@@ -8,6 +8,7 @@ export interface APIMenuListItem {
 	nameEnglish: string;
 	linkPath?: string;
 	linkType?: APILinkTypeDetail;
+	isExternalPath: boolean;
 	children: APIMenuListItem[];
 }
 

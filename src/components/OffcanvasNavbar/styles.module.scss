@@ -1,0 +1,65 @@
+@import "../../assets/css/colors.scss";
+@import "../../assets/css/variable.scss";
+@import "../../assets/css/mixins.scss";
+
+$title-background-color: $background-red;
+$title-color: $color_white;
+$menu-item-font-weight: bold;
+
+.navbar {
+	background-color: rgb(20, 31, 51) !important;
+	box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+	// position: fixed;
+}
+
+// .navBar {
+// 	background-color: red !important;
+// }
+
+.navCat {
+	display: flex;
+}
+
+.offcanvas {
+	margin-right: unset;
+	// background-color: $PRIMARY !important;
+}
+
+// .menuItem {
+// 	font-size: $menu-list-item-size !important;
+// }
+
+.actionDiv {
+	margin-top: auto;
+	justify-content: center;
+	display: flex;
+	flex-direction: column;
+}
+.configDiv {
+	display: flex;
+	margin-bottom: 15px;
+	justify-content: space-between;
+
+	.setting {
+		align-items: center;
+		display: flex;
+	}
+
+	.languageChange {
+		color: $PRIMARY !important;
+	}
+	// flex-direction: column;
+}
+
+.loginButton {
+	// background-color: white;
+	white-space: nowrap;
+	color: white !important;
+	border: 1px solid white;
+	border: 1px solid white !important;
+	&:hover {
+		color: white;
+		background-color: $PRIMARY !important;
+		border: 1px solid white !important;
+	}
+}

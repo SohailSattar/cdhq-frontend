@@ -100,9 +100,11 @@ function App() {
 						<Route
 							path={RoutePath.ROOT}
 							element={
-								<MainLayout>
+								<Layout
+									noChecks={true}
+									displayLanguageChange={true}>
 									<LandingPage />
-								</MainLayout>
+								</Layout>
 							}
 						/>
 						<Route
@@ -110,6 +112,7 @@ function App() {
 							element={
 								<Layout
 									hideLoginButton={true}
+									displayLanguageChange={true}
 									noChecks={true}>
 									<LoginPage />
 								</Layout>
