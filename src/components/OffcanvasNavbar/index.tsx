@@ -32,6 +32,7 @@ import { getMenuList } from "../../api/menu/get/getMenuList";
 import styles from "./styles.module.scss";
 import "./styles.scss";
 import { makeStyles } from "@material-ui/core";
+import { checkLoginStatus } from "../../api/login/get/checkLoginStatus";
 
 const useStyles = makeStyles(() => ({
 	header: {
@@ -81,12 +82,25 @@ const OffcanvasNavbar: FC<Props> = ({
 		}
 	}, [toggleLanguage]);
 
+	const checkIfIsLogged = useMemo(
+		() => async () => {
+			const { data } = await checkLoginStatus();
+			if (data) {
+				setIsLogged(data.isLoggedIn!);
+			}
+		},
+		[]
+	);
+
+	useEffect(() => {
+		checkIfIsLogged();
+	}, []);
+
 	const fetchMenuItems = useMemo(
 		() => async () => {
 			const { data } = await getMenuList();
 			if (data) {
 				setMenuList(data!);
-				console.log(data);
 			}
 		},
 		[setMenuList]

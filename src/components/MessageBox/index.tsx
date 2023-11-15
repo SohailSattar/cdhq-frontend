@@ -38,7 +38,7 @@ const MessageBox: FC<Props> = ({
 			initial={{ opacity: 0, y: -50 }}
 			animate={{ opacity: 1, y: 0 }}
 			exit={{ opacity: 0, y: -50 }}
-			transition={{ type: "spring", damping: 10, stiffness: 100 }}>
+			transition={{ type: "spring", damping: 20, stiffness: 150 }}>
 			<div>{message}</div>
 			{url && (
 				<div>
