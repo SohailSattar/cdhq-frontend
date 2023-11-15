@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { Container, Nav, Navbar, Offcanvas } from "react-bootstrap";
 import {
 	ChangeLanguage,
@@ -89,12 +89,12 @@ const OffcanvasNavbar: FC<Props> = ({
 				console.log(data);
 			}
 		},
-		[]
+		[setMenuList]
 	);
 
 	useEffect(() => {
 		fetchMenuItems();
-	}, [fetchMenuItems]);
+	}, []);
 
 	const toggleMenu = () => {
 		setMenuOpen(!menuOpen);
@@ -105,7 +105,7 @@ const OffcanvasNavbar: FC<Props> = ({
 	};
 
 	const userNameClickHandler = () => {
-		const detailPath = RoutePath.USER_DETAIL.replace(
+		const detailPath = RoutePath.USER_EDIT.replace(
 			RoutePath.ID,
 			loggedUser.id.toString()
 		);

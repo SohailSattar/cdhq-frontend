@@ -6,7 +6,7 @@
 	}
 
 	.basic {
-		width: 70%;
+		width: 100%;
 		.row {
 			display: flex;
 			margin-bottom: 15px;
@@ -44,6 +44,12 @@
 
 		.image {
 			margin-bottom: 15px;
+			width: 2in; /* or use width: 51mm; */
+			height: 2in; /* or use height: 51mm; */
+			object-fit: cover; /* or object-fit: contain; depending on your preference */
+			border: 1px solid #000; /* optional: add a border */
+			border-radius: 4px; /* optional: add border radius for a rounded look */
+			margin-bottom: 15px;
 		}
 
 		.browse {
@@ -77,8 +83,19 @@
 	.thumbnailContainerLTR {
 		width: 40rem; //25rem
 		margin-left: 15px;
+		display: flex;
+		justify-content: center;
 
 		.image {
+			display: flex;
+			justify-content: center;
+			margin-bottom: 15px;
+			max-width: 4in; /* or use max-width: 51mm; */
+			max-height: 4in; /* or use max-height: 51mm; */
+			// width: 100%; /* Ensures the image takes up 100% of the available width within the specified max-width */
+			height: auto; /* Allows the height to adjust automatically based on the width, maintaining aspect ratio */
+			object-fit: cover; /* or object-fit: contain; depending on your preference */
+			border-radius: 4px; /* optional: add border radius for a rounded look */
 			margin-bottom: 15px;
 		}
 

@@ -27,6 +27,7 @@ import { Id } from "../../utils";
 import { checkLoginStatus } from "../../api/login/get/checkLoginStatus";
 import { useCookies } from "react-cookie";
 import { boolean } from "yargs";
+import clsx from "clsx";
 
 interface Props {
 	// projectId?: number;
@@ -35,6 +36,7 @@ interface Props {
 	noChecks?: boolean;
 	displayLanguageChange?: boolean;
 	children: any;
+	className?: string;
 }
 
 const Layout: FC<Props> = ({
@@ -44,6 +46,7 @@ const Layout: FC<Props> = ({
 	noChecks = false,
 	displayLanguageChange,
 	children,
+	className,
 }) => {
 	const navigate = useNavigate();
 
@@ -254,7 +257,7 @@ const Layout: FC<Props> = ({
 						hideLoginButton={hideLoginButton}
 						displayLanguageChange={displayLanguageChange}
 					/>
-					<div className={styles.layout}>
+					<div className={clsx(styles.layout, className)}>
 						{isLoading ? (
 							<Loader />
 						) : content === undefined ? (
