@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { Container, Nav, Navbar, Offcanvas } from "react-bootstrap";
 import {
 	ChangeLanguage,
@@ -32,6 +32,7 @@ import { getMenuList } from "../../api/menu/get/getMenuList";
 import styles from "./styles.module.scss";
 import "./styles.scss";
 import { makeStyles } from "@material-ui/core";
+import { checkLoginStatus } from "../../api/login/get/checkLoginStatus";
 
 const useStyles = makeStyles(() => ({
 	header: {
@@ -81,20 +82,33 @@ const OffcanvasNavbar: FC<Props> = ({
 		}
 	}, [toggleLanguage]);
 
-	const fetchMenuItems = useMemo(
+	const checkIfIsLogged = useMemo(
 		() => async () => {
-			const { data } = await getMenuList();
+			const { data } = await checkLoginStatus();
 			if (data) {
-				setMenuList(data!);
-				console.log(data);
+				setIsLogged(data.isLoggedIn!);
 			}
 		},
 		[]
 	);
 
 	useEffect(() => {
+		checkIfIsLogged();
+	}, []);
+
+	const fetchMenuItems = useMemo(
+		() => async () => {
+			const { data } = await getMenuList();
+			if (data) {
+				setMenuList(data!);
+			}
+		},
+		[setMenuList]
+	);
+
+	useEffect(() => {
 		fetchMenuItems();
-	}, [fetchMenuItems]);
+	}, []);
 
 	const toggleMenu = () => {
 		setMenuOpen(!menuOpen);
@@ -105,7 +119,7 @@ const OffcanvasNavbar: FC<Props> = ({
 	};
 
 	const userNameClickHandler = () => {
-		const detailPath = RoutePath.USER_DETAIL.replace(
+		const detailPath = RoutePath.USER_EDIT.replace(
 			RoutePath.ID,
 			loggedUser.id.toString()
 		);

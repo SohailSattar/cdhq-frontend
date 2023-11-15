@@ -14,6 +14,10 @@ export { default as Accordian } from "./Accordian";
 export { default as ActionButtons } from "./ActionButtons";
 export { default as ActiveStatus } from "./ActiveStatus";
 export { default as AllocatedUsers } from "./AllocatedUsers";
+
+// Animations
+export * from "./Animation";
+
 export { default as AuthorizedContainer } from "./AuthorizedContainer";
 export { default as Button } from "./Button";
 export { default as Card } from "./Card";

@@ -1,5 +1,27 @@
+@import "../../../assets/css/mixins.scss";
+
 .navMenuItem {
 	margin-left: 30px;
+
+	// @include respond-to("mobile") {
+	// 	/* Mobile-specific styles here */
+	// 	margin-left: 10px;
+	// }
+
+	// @include respond-to("tablet") {
+	// 	/* Tablet-specific styles here */
+	// 	margin-left: 20px;
+	// }
+
+	// @include respond-to("desktop") {
+	// 	/* Desktop-specific styles here */
+	// 	margin-left: 30px;
+	// }
+
+	// @include respond-to("large-desktop") {
+	// 	/* Large Desktop-specific styles here */
+	// 	margin-left: 40px;
+	// }
 }
 
 .modal {

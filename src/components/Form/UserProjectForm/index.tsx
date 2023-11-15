@@ -1010,9 +1010,9 @@ const UserProjectForm: FC<Props> = ({
 	return (
 		<div className={styles.assignProject}>
 			{title && (
-				<div className={styles.title}>
+				<ShadowedContainer className={styles.title}>
 					<h4>{title}</h4>
-				</div>
+				</ShadowedContainer>
 			)}
 			<ShadowedContainer>
 				<form onSubmit={handleSubmit(submitHandler)}>

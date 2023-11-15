@@ -343,6 +343,7 @@ const PaginatedTable: FC<Props> = ({
 					</div>
 				)}
 			</ShadowedContainer>
+
 			<Table
 				reference={tableRef}
 				columns={columns}

@@ -6,7 +6,7 @@ import cross from "../../assets/icons/cross.svg";
 import styles from "./styles.module.scss";
 import "./style.scss";
 import clsx from "clsx";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 
 interface Props {
 	hideXButton?: boolean;
@@ -57,7 +57,7 @@ export const Modal: FC<Props> = ({
 				initial={{ opacity: 0, y: -50 }}
 				animate={{ opacity: 1, y: 0 }}
 				exit={{ opacity: 0, y: -50 }}
-				transition={{ type: "spring", damping: 10, stiffness: 100 }}>
+				transition={{ type: "spring", damping: 10, stiffness: 50 }}>
 				{!hideXButton && (
 					<div className={styles.closeLine}>
 						<img

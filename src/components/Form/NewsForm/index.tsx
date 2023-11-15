@@ -179,7 +179,7 @@ const NewsForm: FC<Props> = ({
 	return (
 		<form onSubmit={handleSubmit(submitHandler)}>
 			<div className={styles.newForm}>
-				<div className={styles.row}>
+				<ShadowedContainer className={styles.row}>
 					<div className={styles.basic}>
 						<div className={styles.ddlField}>
 							<Controller
@@ -308,7 +308,7 @@ const NewsForm: FC<Props> = ({
 							</div>
 						)}
 					</div>
-				</div>
+				</ShadowedContainer>
 
 				<div>
 					{Object.keys(errors).length > 0 && (

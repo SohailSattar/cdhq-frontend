@@ -102,7 +102,8 @@ function App() {
 							element={
 								<Layout
 									noChecks={true}
-									displayLanguageChange={true}>
+									displayLanguageChange={true}
+									className={styles.unpadded}>
 									<LandingPage />
 								</Layout>
 							}
@@ -292,14 +293,17 @@ function App() {
 							/>
 						</Route>
 						{/* PROJECT */}
-						<Route
-							path={RoutePath.PROJECT}
-							element={
-								<Layout>
-									<ProjectManagementHomePage />
-								</Layout>
-							}
-						/>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={RoutePath.PROJECT}
+								element={
+									<Layout>
+										<ProjectManagementHomePage />
+									</Layout>
+								}
+							/>
+						</Route>
+
 						<Route element={<ProtectedRoute />}>
 							<Route
 								path={RoutePath.PROJECT_NEW}

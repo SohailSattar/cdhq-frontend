@@ -1,5 +1,8 @@
+@import "../../../assets/css/colors.scss";
+
 .marquee {
 	direction: ltr;
-	background-color: lightgray;
+	background-color: $PRIMARY;
+	// background-color: lightgray;
 	margin-bottom: 30px;
 }

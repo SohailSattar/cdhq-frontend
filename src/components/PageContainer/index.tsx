@@ -140,7 +140,14 @@ const PageContainer: FC<Props> = ({
 						{isVisible ? "Visible" : "Hidden"}
 					</motion.div> */}
 					<motion.div
-						className={styles.actionContainer}
+						className={
+							showBackButton ||
+							showEditButton ||
+							showAddButton ||
+							showChangeStatusButton
+								? styles.actionContainer
+								: ""
+						}
 						initial={{ opacity: 0, visibility: "hidden" }}
 						animate={{ opacity: isVisible ? 1 : 0, visibility: "visible" }}
 						exit={{ opacity: 0 }}
@@ -152,7 +159,7 @@ const PageContainer: FC<Props> = ({
 								animate={{ opacity: isVisible ? 1 : 0 }}
 								exit={{ opacity: 0 }}
 								transition={{ duration: 0.2 }}>
-								<ShadowedContainer className={styles.btnSection}>
+								<div className={styles.btnSection}>
 									<div
 										className={language !== "ar" ? styles.btn : styles.btnLTR}>
 										<RedirectButton
@@ -164,7 +171,7 @@ const PageContainer: FC<Props> = ({
 											redirectTo={btnBackUrlLink!}
 										/>
 									</div>
-								</ShadowedContainer>
+								</div>
 							</motion.div>
 						)}
 						{(showEditButton || showAddButton || showChangeStatusButton) && (
@@ -174,7 +181,7 @@ const PageContainer: FC<Props> = ({
 								animate={{ opacity: isVisible ? 1 : 0 }}
 								exit={{ opacity: 0 }}
 								transition={{ duration: 0.2 }}>
-								<ShadowedContainer className={styles.btnSection}>
+								<div className={styles.btnSection}>
 									{showEditButton && (
 										<div
 											className={
@@ -221,144 +228,10 @@ const PageContainer: FC<Props> = ({
 											)}
 										</div>
 									)}
-								</ShadowedContainer>
+								</div>
 							</motion.div>
 						)}
 					</motion.div>
-					{/* {showBackButton && (
-						<ShadowedContainer className={styles.btnSection}>
-							<div className={language !== "ar" ? styles.btn : styles.btnLTR}>
-								<RedirectButton
-									label={
-										btnBackLabel!
-											? btnBackLabel
-											: t("button.backToHome", { framework: "React" })
-									}
-									redirectTo={btnBackUrlLink!}
-								/>
-							</div>
-						</ShadowedContainer>
-					)}
-					{(showEditButton || showAddButton || showChangeStatusButton) && (
-						<ShadowedContainer className={styles.btnSection}>
-							{showEditButton && (
-								<div className={language !== "ar" ? styles.btn : styles.btnLTR}>
-									<RedirectButton
-										label={t("button.edit", { framework: "React" })}
-										redirectTo={btnEditUrlLink!}
-									/>
-								</div>
-							)}
-
-							{showAddButton && (
-								<div className={language !== "ar" ? styles.btn : styles.btnLTR}>
-									<RedirectButton
-										label={
-											btnAddLabel
-												? btnAddLabel
-												: t("button.add", { framework: "React" })
-										}
-										redirectTo={btnAddUrlLink!}
-									/>
-								</div>
-							)}
-
-							{showChangeStatusButton && (
-								<div className={language !== "ar" ? styles.btn : styles.btnLTR}>
-									{currentStatus === "ACTIVE" ? (
-										<Button
-											onClick={onDectivate}
-											isCritical>
-											{t("button.deactivate", { framework: "React" })}
-										</Button>
-									) : (
-										<Button onClick={onActivate}>
-											{t("button.activate", { framework: "React" })}
-										</Button>
-									)}
-								</div>
-							)}
-						</ShadowedContainer>
-					)} */}
-
-					{/* <table style={{ width: "100%" }}>
-						<tr>
-							<td>
-								{" "}
-								{showBackButton && (
-									<ShadowedContainer className={styles.btnSection}>
-										<div
-											className={
-												language !== "ar" ? styles.btn : styles.btnLTR
-											}>
-											<RedirectButton
-												label={
-													btnBackLabel!
-														? btnBackLabel
-														: t("button.backToHome", { framework: "React" })
-												}
-												redirectTo={btnBackUrlLink!}
-											/>
-										</div>
-									</ShadowedContainer>
-								)}
-							</td>
-							<td>
-								{(showEditButton ||
-									showAddButton ||
-									showChangeStatusButton) && (
-									<ShadowedContainer className={styles.btnSection}>
-										{showEditButton && (
-											<div
-												className={
-													language !== "ar" ? styles.btn : styles.btnLTR
-												}>
-												<RedirectButton
-													label={t("button.edit", { framework: "React" })}
-													redirectTo={btnEditUrlLink!}
-												/>
-											</div>
-										)}
-
-										{showAddButton && (
-											<div
-												className={
-													language !== "ar" ? styles.btn : styles.btnLTR
-												}>
-												<RedirectButton
-													label={
-														btnAddLabel
-															? btnAddLabel
-															: t("button.add", { framework: "React" })
-													}
-													redirectTo={btnAddUrlLink!}
-												/>
-											</div>
-										)}
-
-										{showChangeStatusButton && (
-											<div
-												className={
-													language !== "ar" ? styles.btn : styles.btnLTR
-												}>
-												{currentStatus === "ACTIVE" ? (
-													<Button
-														onClick={onDectivate}
-														isCritical>
-														{t("button.deactivate", { framework: "React" })}
-													</Button>
-												) : (
-													<Button onClick={onActivate}>
-														{t("button.activate", { framework: "React" })}
-													</Button>
-												)}
-											</div>
-										)}
-									</ShadowedContainer>
-								)}
-							</td>
-						</tr>
-					</table> */}
 					<motion.div
 						className={className}
 						initial={{ opacity: 0 }}

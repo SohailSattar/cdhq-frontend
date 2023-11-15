@@ -377,9 +377,6 @@ const HonorForm: FC<Props> = ({
 											className={styles.image}
 										/>
 									)}
-									{/* <div className={styles.actionContainer}>
-										<FontAwesomeIcon icon={faXmark} />
-									</div> */}
 									<input
 										type="file"
 										name="thumbnail"
@@ -402,45 +399,6 @@ const HonorForm: FC<Props> = ({
 							defaultValue={""}
 						/>
 					</div>
-					{/* <ShadowedContainer
-						className={
-							language !== "ar"
-								? styles.thumbnailContainer
-								: styles.thumbnailContainerLTR
-						}>
-						<div className={styles.browse}>
-							<input
-								type="file"
-								name="thumbnail"
-								onChange={imageChangeHandler}
-								accept="image/*"
-							/>
-						</div>
-						<div className={styles.imageContainer}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<ShadowedContainer className={styles.thumbnail}>
-										<PhotoThumbnailImage src={value} />
-										<div className={styles.actionContainer}>
-											<FontAwesomeIcon icon={faXmark} />
-										</div>
-									</ShadowedContainer>
-								)}
-								name="imageName"
-								control={control}
-								defaultValue={""}
-							/>
-						</div>
-						{!hideUploadButton && (
-							<div className={styles.uploadSection}>
-								<Button
-									type="button"
-									onClick={imageUpdateHandler}>
-									{t("button.update", { framework: "React" })}
-								</Button>
-							</div>
-						)}
-					</ShadowedContainer> */}
 				</div>
 				<div>
 					{Object.keys(errors).length > 0 && (

@@ -15,6 +15,7 @@ import { useStore } from "../../utils/store";
 // import { Tooltip } from '..';
 
 import styles from "./styles.module.scss";
+import ShadowedContainer from "../ShadowedContainer";
 interface TableProps<T extends object> {
 	columns: Column<any>[];
 	data: T[];
@@ -96,7 +97,7 @@ export function Table<T extends object>(props: Props<T>): ReactElement {
 	const maxColCount = Math.max(...columnHeadersLength);
 
 	return (
-		<div className={clsx(styles.tableWrapper, props.className)}>
+		<ShadowedContainer className={clsx(styles.tableWrapper, props.className)}>
 			<table
 				{...getTableProps()}
 				className={styles.table}
@@ -213,7 +214,7 @@ export function Table<T extends object>(props: Props<T>): ReactElement {
 					})}
 				</tbody>
 			</table>
-		</div>
+		</ShadowedContainer>
 	);
 }
 
