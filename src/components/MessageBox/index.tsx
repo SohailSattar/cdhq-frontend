@@ -1,9 +1,11 @@
 import clsx from "clsx";
 import { FC } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+
+import { Button } from "..";
 
 import styles from "./styles.module.scss";
-import { Button } from "..";
 
 interface Props {
 	message: any;
@@ -31,7 +33,12 @@ const MessageBox: FC<Props> = ({
 	}
 
 	return (
-		<div className={clsx(styles.messageBox, stylingClass)}>
+		<motion.div
+			className={clsx(styles.messageBox, stylingClass)}
+			initial={{ opacity: 0, y: -50 }}
+			animate={{ opacity: 1, y: 0 }}
+			exit={{ opacity: 0, y: -50 }}
+			transition={{ type: "spring", damping: 10, stiffness: 100 }}>
 			<div>{message}</div>
 			{url && (
 				<div>
@@ -39,7 +46,7 @@ const MessageBox: FC<Props> = ({
 				</div>
 			)}
 			{btnText && <Button onClick={onClick}>{btnText}</Button>}
-		</div>
+		</motion.div>
 	);
 };
 

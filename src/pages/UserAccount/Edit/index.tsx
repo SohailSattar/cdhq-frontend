@@ -493,7 +493,7 @@ const UserEditPage = () => {
 					)}
 				</TabList>
 				<TabPanel>
-					<ShadowedContainer>
+					<ShadowedContainer className={styles.noPadding}>
 						<UserForm
 							isExistingEmployee={false}
 							hideActionButton={
