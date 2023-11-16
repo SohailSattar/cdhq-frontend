@@ -34,7 +34,6 @@ interface Props {
 	privilegeType?: PrivilegeType;
 	hideLoginButton?: boolean;
 	noChecks?: boolean;
-	displayLanguageChange?: boolean;
 	children: any;
 	className?: string;
 }
@@ -44,7 +43,6 @@ const Layout: FC<Props> = ({
 	privilegeType = "All",
 	hideLoginButton = false,
 	noChecks = false,
-	displayLanguageChange,
 	children,
 	className,
 }) => {
@@ -253,10 +251,7 @@ const Layout: FC<Props> = ({
 						// reset the state of your app so the error doesn't happen again
 					}}>
 					{/* <Header hideLoginButton={hideLoginButton} /> */}
-					<OffcanvasNavbar
-						hideLoginButton={hideLoginButton}
-						displayLanguageChange={displayLanguageChange}
-					/>
+					<OffcanvasNavbar hideLoginButton={hideLoginButton} />
 					<div className={clsx(styles.layout, className)}>
 						{isLoading ? (
 							<Loader />

@@ -15,6 +15,7 @@ export interface APINewsDetail {
 	title: string;
 	shortSummary: string;
 	imageName: string;
+	videoName: string;
 	newsType: APINewsType;
 	department: APIDepartmentItem;
 	fullNews: string;
@@ -31,6 +32,7 @@ export interface APINewNews {
 	shortSummary: string;
 	// imageName: string;
 	thumbnail: File;
+	videoFile: File;
 	newsTypeId: number;
 	fullNews: string;
 }
@@ -47,6 +49,11 @@ export interface APIUpdateNews {
 export interface APIUpdateNewsImage {
 	id: string;
 	thumbnail: File;
+}
+
+export interface APIUpdateNewsVideo {
+	id: string;
+	videoFile: File;
 }
 
 export interface APINewsType {

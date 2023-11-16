@@ -19,11 +19,10 @@ import { Project } from "../../../data/projects";
 
 const NewsDetailPage = () => {
 	const { id } = useParams<{ id: string }>();
-	const loggedInUser = useStore((state) => state.loggedInUser);
 
 	const [detail, setDetail] = useState<APINewsDetail>();
 
-	const [canGoBack, setCanGoBack] = useState<boolean>();
+	// const [canGoBack, setCanGoBack] = useState<boolean>();
 
 	const checkPrivilege = useMemo(
 		() => async () => {
@@ -32,7 +31,7 @@ const NewsDetailPage = () => {
 			if (privilege) {
 				const { readPrivilege } = privilege;
 
-				setCanGoBack(readPrivilege);
+				// setCanGoBack(readPrivilege);
 			}
 		},
 		[]
@@ -66,6 +65,7 @@ const NewsDetailPage = () => {
 			<ShadowedContainer className={styles.container}>
 				<NewsContent
 					imagePath={detail?.imageName}
+					videoPath={detail?.videoName}
 					data={detail?.fullNews!}
 				/>
 			</ShadowedContainer>

@@ -113,9 +113,11 @@ export interface INewsFormInputs {
 	title: string;
 	shortSummary: string;
 	imageName: string;
+	videoName: string;
 	newsType: DropdownOption;
 	fullNews: string;
 	thumbnail: File;
+	video: File;
 }
 
 // Phone Directory

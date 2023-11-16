@@ -53,13 +53,9 @@ const useStyles = makeStyles(() => ({
 
 interface Props {
 	hideLoginButton?: boolean;
-	displayLanguageChange?: boolean;
 }
 
-const OffcanvasNavbar: FC<Props> = ({
-	hideLoginButton,
-	displayLanguageChange = false,
-}) => {
+const OffcanvasNavbar: FC<Props> = ({ hideLoginButton }) => {
 	const [t, i18n] = useTranslation("common");
 	const navigate = useNavigate();
 	const toggleLanguage = useStore((state) => state.language);
@@ -174,7 +170,7 @@ const OffcanvasNavbar: FC<Props> = ({
 							<NavMenuList data={menuList} />
 						</div>
 						<div>
-							{displayLanguageChange && <ChangeLanguage />}
+							<ChangeLanguage />
 
 							{loggedUser.userName ? (
 								<>

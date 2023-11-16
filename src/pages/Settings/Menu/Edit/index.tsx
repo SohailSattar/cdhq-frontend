@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getMenuDetails } from "../../../../api/menu/get/getMenuDetails";
 
 import {
@@ -25,18 +25,28 @@ const MenuEditSettingsPage = () => {
 
 	const [details, setDetails] = useState<APIMenuItemDetail>();
 
-	useEffect(() => {
-		const fetch = async () => {
-			if (id) {
-				const { data } = await getMenuDetails(id!);
-				if (data) {
-					setDetails(data!);
-				}
+	const fetchDetails = useCallback(async () => {
+		if (id) {
+			const { data } = await getMenuDetails(id!);
+			if (data) {
+				setDetails(data!);
 			}
-		};
-
-		fetch();
+		}
 	}, [id]);
+
+	useEffect(() => {
+		// const fetch = async () => {
+		// 	if (id) {
+		// 		const { data } = await getMenuDetails(id!);
+		// 		if (data) {
+		// 			setDetails(data!);
+		// 		}
+		// 	}
+		// };
+
+		// fetch();
+		fetchDetails();
+	}, [fetchDetails]);
 
 	const submitHandler = async (values: IMenuFormInputs) => {
 		const {
@@ -76,6 +86,7 @@ const MenuEditSettingsPage = () => {
 			toast.success(
 				t("message.menuItemUpdated", { framework: "React" }).toString()
 			);
+			fetchDetails();
 		}
 
 		if (error) {

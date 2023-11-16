@@ -234,7 +234,7 @@ const LandingPage = () => {
 					{news.length > 0 && (
 						<NewsCarousel
 							list={news}
-							intervalInMiliseconds={5000}
+							intervalInMiliseconds={10000}
 							onViewClick={newsDetailClickHandler}
 							onTableViewClick={newsListButtonClickHandler!}
 						/>

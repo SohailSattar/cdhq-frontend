@@ -102,7 +102,6 @@ function App() {
 							element={
 								<Layout
 									noChecks={true}
-									displayLanguageChange={true}
 									className={styles.unpadded}>
 									<LandingPage />
 								</Layout>
@@ -113,7 +112,6 @@ function App() {
 							element={
 								<Layout
 									hideLoginButton={true}
-									displayLanguageChange={true}
 									noChecks={true}>
 									<LoginPage />
 								</Layout>

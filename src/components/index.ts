@@ -94,4 +94,5 @@ export { default as UserForm } from "./Form/UserForm";
 export { default as UserProjectForm } from "./Form/UserProjectForm";
 export { default as UserProjectTable } from "./UserProjectTable";
 export { default as UserTable } from "./UserTable";
+export { default as VideoModal } from "./VideoModal";
 export { default as Welcome } from "./Welcome";

@@ -62,6 +62,7 @@ const NewsDetail: FC<Props> = ({ detail }) => {
 						exit={{ opacity: 0, y: 10 }}>
 						<NewsContent
 							imagePath={detail?.imageName}
+							videoPath={detail?.videoName}
 							data={detail?.fullNews!}
 						/>
 					</motion.div>

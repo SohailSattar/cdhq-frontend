@@ -51,8 +51,10 @@
 			"fireDepartment": "Fire Departments",
 			"servicesDepartment": "Service Department",
 			"creation": "Innovations"
-		}
+		},
+		"thumbnail": "Thumbnail"
 	},
+	"video": { "upload": "Video Upload" },
 	"page": {
 		"userHome": "User Account",
 		"userDetail": "User Details",
@@ -236,7 +238,8 @@
 				"employee": "No Employee has been selected"
 			},
 			"validation": {
-				"passwordMismatch": "The passwords do not match"
+				"passwordMismatch": "The passwords do not match",
+				"fileSize": "Image size should not exceed 50 MB"
 			}
 		}
 	},
@@ -304,6 +307,7 @@
 		"imageActivated": "Image has been reactivated",
 		"imageDeleted": "Image has been deactivated",
 		"imageUpdated": "Image has been updated",
+		"videoUpdated": "Video has been updated",
 		"newsAdded": "News has been added",
 		"newsUpdated": "News has been updated",
 		"newsActivated": "News has been activated",

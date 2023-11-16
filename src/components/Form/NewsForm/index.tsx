@@ -20,12 +20,15 @@ import { getFullPath } from "../../../utils";
 import { useStore } from "../../../utils/store";
 
 import styles from "./styles.module.scss";
+import ReactPlayer from "react-player";
 
 interface Props {
 	data?: APINewsDetail;
 	actionButtonText: string;
 	onSubmit: (data: INewsFormInputs) => void;
 	onImageUpload?: (image: File) => void;
+	onVideoUpload?: (video: File) => void;
+	serverErrors?: string[];
 }
 
 const NewsForm: FC<Props> = ({
@@ -33,6 +36,8 @@ const NewsForm: FC<Props> = ({
 	actionButtonText,
 	onSubmit,
 	onImageUpload = () => {},
+	onVideoUpload = () => {},
+	serverErrors = [],
 }) => {
 	const [t] = useTranslation("common");
 	const language = useStore((state) => state.language);
@@ -125,9 +130,30 @@ const NewsForm: FC<Props> = ({
 			required: t("error.form.required.image", { framework: "React" }),
 		});
 
+		// Video
+		register("video", {
+			validate: {
+				fileSize: (file) => {
+					if (file) {
+						return (
+							file.size <= 50 * 1024 * 1024 ||
+							t("error.form.validation.fileSize", { framework: "React" })
+						);
+					}
+				},
+			},
+		});
+
 		if (data) {
-			const { title, shortSummary, newsType, department, fullNews, imageName } =
-				data;
+			const {
+				title,
+				shortSummary,
+				newsType,
+				department,
+				fullNews,
+				imageName,
+				videoName,
+			} = data;
 
 			setHideUploadButton(false);
 
@@ -147,6 +173,7 @@ const NewsForm: FC<Props> = ({
 			setValue("newsType", selectedNewsType!);
 			setValue("fullNews", fullNews);
 			setValue("imageName", imageName);
+			setValue("videoName", videoName);
 		}
 	}, [
 		data,
@@ -167,6 +194,15 @@ const NewsForm: FC<Props> = ({
 		}
 	};
 
+	const newsVideoChangeHandler = (evnt: ChangeEvent<HTMLInputElement>) => {
+		if (evnt.target.files) {
+			const file = evnt.target.files[0];
+			const x = getFullPath(file);
+			setValue("video", file);
+			setValue("videoName", x);
+		}
+	};
+
 	const submitHandler = (values: INewsFormInputs) => {
 		onSubmit(values);
 	};
@@ -176,11 +212,16 @@ const NewsForm: FC<Props> = ({
 		onImageUpload(image!)!;
 	};
 
+	const videoUpdateHandler = () => {
+		const video = getValues("video");
+		onVideoUpload(video!)!;
+	};
+
 	return (
 		<form onSubmit={handleSubmit(submitHandler)}>
 			<div className={styles.newForm}>
-				<ShadowedContainer className={styles.row}>
-					<div className={styles.basic}>
+				<div className={styles.row}>
+					<ShadowedContainer className={styles.basic}>
 						<div className={styles.ddlField}>
 							<Controller
 								render={({ field: { onChange, value } }) => (
@@ -266,49 +307,103 @@ const NewsForm: FC<Props> = ({
 								</div>
 							</div>
 						</div>
-					</div>
-					<div
-						className={
-							language !== "ar"
-								? styles.thumbnailContainer
-								: styles.thumbnailContainerLTR
-						}>
-						{/* <ImageUploader/> */}
-						<div className={styles.browse}>
-							<input
-								type="file"
-								name="thumbnail"
-								onChange={imageChangeHandler}
-								accept="image/*"
-							/>
-						</div>
-						<div>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<ShadowedContainer>
-										<img
-											src={value}
-											alt=""
-											className={styles.image}
-										/>
-									</ShadowedContainer>
-								)}
-								name="imageName"
-								control={control}
-								defaultValue={""}
-							/>
-						</div>
-						{!hideUploadButton && (
-							<div className={styles.uploadSection}>
-								<Button
-									type="button"
-									onClick={imageUpdateHandler}>
-									{t("button.update", { framework: "React" })}
-								</Button>
+					</ShadowedContainer>
+					<div>
+						<ShadowedContainer
+							className={
+								language !== "ar"
+									? styles.thumbnailContainer
+									: styles.thumbnailContainerLTR
+							}>
+							<h4>{t("image.thumbnail", { framework: "React" })}</h4>
+							{/* <ImageUploader/> */}
+							<div className={styles.browse}>
+								<input
+									type="file"
+									name="thumbnail"
+									onChange={imageChangeHandler}
+									accept="image/*"
+								/>
 							</div>
-						)}
+							<div>
+								<Controller
+									render={({ field: { value, onChange } }) =>
+										value ? (
+											<ShadowedContainer>
+												<img
+													src={value}
+													alt=""
+													className={styles.image}
+												/>
+											</ShadowedContainer>
+										) : (
+											<></>
+										)
+									}
+									name="imageName"
+									control={control}
+									defaultValue={""}
+								/>
+							</div>
+							{!hideUploadButton && (
+								<div className={styles.uploadSection}>
+									<Button
+										type="button"
+										onClick={imageUpdateHandler}>
+										{t("button.update", { framework: "React" })}
+									</Button>
+								</div>
+							)}
+						</ShadowedContainer>
+						<ShadowedContainer
+							className={
+								language !== "ar"
+									? styles.thumbnailContainer
+									: styles.thumbnailContainerLTR
+							}>
+							<h4>{t("video.upload", { framework: "React" })}</h4>
+							{/* <ImageUploader/> */}
+							<div className={styles.browse}>
+								<input
+									type="file"
+									name="video"
+									onChange={newsVideoChangeHandler}
+									accept="video/mp4"
+								/>
+							</div>
+							<div>
+								<Controller
+									render={({ field: { value, onChange } }) =>
+										value ? (
+											<ShadowedContainer>
+												<ReactPlayer
+													url={value}
+													alt=""
+													className={styles.image}
+													controls={true}
+												/>
+											</ShadowedContainer>
+										) : (
+											<></>
+										)
+									}
+									name="videoName"
+									control={control}
+									defaultValue={""}
+								/>
+							</div>
+							{!hideUploadButton && (
+								<div className={styles.uploadSection}>
+									<Button
+										type="button"
+										onClick={videoUpdateHandler}>
+										{t("button.update", { framework: "React" })}
+									</Button>
+								</div>
+							)}
+						</ShadowedContainer>
 					</div>
-				</ShadowedContainer>
+				</div>
 
 				<div>
 					{Object.keys(errors).length > 0 && (
@@ -413,6 +508,17 @@ const NewsForm: FC<Props> = ({
 						</ShadowedContainer>
 					)}
 				</div>
+				{serverErrors.length > 0 && (
+					<ShadowedContainer>
+						{serverErrors.map((error, index) => (
+							<div
+								className="error"
+								key={index}>
+								{error}
+							</div>
+						))}
+					</ShadowedContainer>
+				)}
 			</div>
 		</form>
 	);

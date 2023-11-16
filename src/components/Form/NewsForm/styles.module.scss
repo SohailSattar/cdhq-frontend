@@ -6,6 +6,7 @@
 
 	.basic {
 		width: 70%;
+
 		.row {
 			display: flex;
 			margin-bottom: 15px;
@@ -62,7 +63,7 @@
 		}
 		.image {
 			max-height: 300px;
-			max-width: 500px;
+			max-width: 440px //500px;;
 		}
 
 		.uploadSection {

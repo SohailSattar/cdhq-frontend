@@ -7,6 +7,7 @@ import {
 	APINewsDetail,
 	APIUpdateNews,
 	APIUpdateNewsImage,
+	APIUpdateNewsVideo,
 } from "../../../api/news/types";
 import { updateNews } from "../../../api/news/update/updateNews";
 import { updateNewsImage } from "../../../api/news/update/updateNewsImage";
@@ -16,6 +17,7 @@ import * as RoutePath from "../../../RouteConfig";
 import { APIPrivileges } from "../../../api/privileges/type";
 import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPrivilege";
 import { Project } from "../../../data/projects";
+import { updateNewsVideo } from "../../../api/news/update/updateNewsVideo";
 
 const NewsEditPage = () => {
 	const { id } = useParams<{ id: string }>();
@@ -24,6 +26,8 @@ const NewsEditPage = () => {
 
 	const [news, setNews] = useState<APINewsDetail>();
 	const [privileges, setPrivileges] = useState<APIPrivileges>();
+
+	const [serverErrors, setServerErrors] = useState<string[]>([]);
 
 	const fetch = useMemo(
 		() => async () => {
@@ -99,6 +103,22 @@ const NewsEditPage = () => {
 			);
 		}
 	};
+	const videoUploadHandler = async (video: File) => {
+		const params: APIUpdateNewsVideo = {
+			id: id!,
+			videoFile: video,
+		};
+
+		const { data, error } = await updateNewsVideo(params);
+		if (data) {
+			toast.success(
+				t("message.videoUpdated", { framework: "React" }).toString()
+			);
+		}
+		if (error) {
+			setServerErrors(error);
+		}
+	};
 
 	return (
 		<PageContainer
@@ -112,6 +132,8 @@ const NewsEditPage = () => {
 				actionButtonText={t("button.update", { framework: "React" })}
 				onSubmit={editNewsHandler}
 				onImageUpload={imageUploadHandler}
+				onVideoUpload={videoUploadHandler}
+				serverErrors={serverErrors}
 			/>
 			<hr />
 			<MetaDataDetails

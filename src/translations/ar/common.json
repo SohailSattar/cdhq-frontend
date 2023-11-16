@@ -51,8 +51,10 @@
 			"fireDepartment": "أفضل مراكز إطفاء",
 			"servicesDepartment": "أفضل مراكز خدمة",
 			"creation": "الابتكارات"
-		}
+		},
+		"thumbnail": "thumbnail"
 	},
+	"video": { "upload": "Video Upload" },
 	"page": {
 		"userHome": "حسابات المستخدمين",
 		"userDetail": "تفاصيل حساب المستخدم",
@@ -236,7 +238,8 @@
 				"employee": " لم يتم اختيار الموظف"
 			},
 			"validation": {
-				"passwordMismatch": "الرمز السري لا يتطابق"
+				"passwordMismatch": "الرمز السري لا يتطابق",
+				"fileSize": "Image size should not exceed 50 MB"
 			}
 		}
 	},
@@ -304,6 +307,7 @@
 		"imageActivated": "تم  تفعيل الأيقونة",
 		"imageDeleted": "تم الغاء تفعيل الأيقونة",
 		"imageUpdated": "تم تحديث الصورة",
+		"videoUpdated": "Video has been updated",
 		"newsAdded": "تمت إضافة الخبر",
 		"newsUpdated": "تم تحديث الخبر",
 		"newsActivated": " تم تفعيل الخبر",
