@@ -4304,7 +4304,7 @@ fieldset:disabled .btn {
 
 .nav-link {
 	display: block;
-	padding: 0.5rem 1rem;
+	padding: 0.5rem 0.25rem;
 	color: #fff;
 	text-decoration: none;
 	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
