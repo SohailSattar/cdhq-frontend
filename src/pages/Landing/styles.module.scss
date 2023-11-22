@@ -12,10 +12,15 @@
 		background-color: white;
 
 		border-radius: 2px;
+
+		display: flex;
+		flex-direction: column;
 	}
 
 	.sideBarCard {
-		margin-bottom: 25px;
+		flex: 1;
+		// margin-bottom: 10px;
+		overflow: hidden; /* Ensure content doesn't overflow */
 	}
 
 	.centerContainer {

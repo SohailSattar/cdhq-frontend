@@ -102,7 +102,9 @@ function App() {
 							element={
 								<Layout
 									noChecks={true}
-									className={styles.unpadded}>
+									className={styles.unpadded}
+									showQRCodes={true}
+									showLinks={true}>
 									<LandingPage />
 								</Layout>
 							}

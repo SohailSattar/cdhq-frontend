@@ -4,24 +4,24 @@ import {
 	IImageFormInputs,
 	ImageForm,
 	PageContainer,
-} from "../../../components";
+} from "../../../../components";
 import { useTranslation } from "react-i18next";
-import { useStore } from "../../../utils/store";
+import { useStore } from "../../../../utils/store";
 
-import * as RoutePath from "../../../RouteConfig";
+import * as RoutePath from "../../../../RouteConfig";
 import { useEffect, useMemo, useState } from "react";
-import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPrivilege";
-import { getImageDetail } from "../../../api/images/get/getImageDetail";
-import { Project } from "../../../data/projects";
+import { getProjectPrivilege } from "../../../../api/userProjects/get/getProjectPrivilege";
+import { getImageDetail } from "../../../../api/images/get/getImageDetail";
+import { Project } from "../../../../data/projects";
 import {
 	APIImageDetail,
 	APIUpdateImage,
 	APIUpdateImageDetail,
-} from "../../../api/images/types";
-import { APIPrivileges } from "../../../api/privileges/type";
-import { updateImageDetail } from "../../../api/images/update/updateImageDetail";
-import { ROLE } from "../../../utils";
-import { updateImage } from "../../../api/images/update/updateImage";
+} from "../../../../api/images/types";
+import { APIPrivileges } from "../../../../api/privileges/type";
+import { updateImageDetail } from "../../../../api/images/update/updateImageDetail";
+import { ROLE } from "../../../../utils";
+import { updateImage } from "../../../../api/images/update/updateImage";
 
 const ImageEditPage = () => {
 	const { id } = useParams<{ id: string }>();

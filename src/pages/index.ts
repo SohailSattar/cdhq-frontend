@@ -21,10 +21,12 @@ export { default as HonorsHomePage } from "./Honors/Home";
 export { default as HonorEditPage } from "./Honors/Edit";
 export { default as HonorNewPage } from "./Honors/New";
 
+// Content Management
+
 // Image Management
-export { default as ImageManagementHomePage } from "./ImageManagement/Home";
-export { default as ImageManagementEditPage } from "./ImageManagement/Edit";
-export { default as ImageManagementNewPage } from "./ImageManagement/New";
+export { default as ImageManagementHomePage } from "./ContentManagement/ImageManagement/Home";
+export { default as ImageManagementEditPage } from "./ContentManagement/ImageManagement/Edit";
+export { default as ImageManagementNewPage } from "./ContentManagement/ImageManagement/New";
 
 // News
 export { default as NewsCreatePage } from "./News/New";

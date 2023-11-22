@@ -36,6 +36,8 @@ interface Props {
 	noChecks?: boolean;
 	children: any;
 	className?: string;
+	showQRCodes?: boolean;
+	showLinks?: boolean;
 }
 
 const Layout: FC<Props> = ({
@@ -45,6 +47,8 @@ const Layout: FC<Props> = ({
 	noChecks = false,
 	children,
 	className,
+	showQRCodes = false,
+	showLinks = false,
 }) => {
 	const navigate = useNavigate();
 
@@ -265,7 +269,10 @@ const Layout: FC<Props> = ({
 						<br />
 						<br />
 					</div>
-					<Footer />
+					<Footer
+						showQRCodes={showQRCodes}
+						showLinks={showLinks}
+					/>
 				</ErrorBoundary>
 			)}
 		</>

@@ -4,28 +4,28 @@ import {
 	ActiveStatus,
 	PageContainer,
 	PaginatedTable,
-} from "../../../components";
+} from "../../../../components";
 
 import { useNavigate } from "react-router";
 import { useEffect, useMemo, useState } from "react";
-import { APIPrivileges } from "../../../api/privileges/type";
-import { DropdownOption } from "../../../components/Dropdown";
+import { APIPrivileges } from "../../../../api/privileges/type";
+import { DropdownOption } from "../../../../components/Dropdown";
 import { Column } from "react-table";
-import { ImageColumn } from "../../../components/PaginatedTable/types";
-import { useStore } from "../../../utils/store";
-import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPrivilege";
-import { Project } from "../../../data/projects";
-import { Id } from "../../../utils";
+import { ImageColumn } from "../../../../components/PaginatedTable/types";
+import { useStore } from "../../../../utils/store";
+import { getProjectPrivilege } from "../../../../api/userProjects/get/getProjectPrivilege";
+import { Project } from "../../../../data/projects";
+import { Id } from "../../../../utils";
 import { Rating } from "@mui/material";
 import { toast } from "react-toastify";
-import { APIStatus } from "../../../api";
-import { APIRole } from "../../../api/roles/types";
-import { APIImage } from "../../../api/images/types";
-import { getImagesList } from "../../../api/images/get/getImagesList";
-import { deleteImage } from "../../../api/images/delete/deleteImage";
-import { updateImageStatus } from "../../../api/images/update/updateImageStatus";
+import { APIStatus } from "../../../../api";
+import { APIRole } from "../../../../api/roles/types";
+import { APIImage } from "../../../../api/images/types";
+import { getImagesList } from "../../../../api/images/get/getImagesList";
+import { deleteImage } from "../../../../api/images/delete/deleteImage";
+import { updateImageStatus } from "../../../../api/images/update/updateImageStatus";
 
-import * as RoutePath from "../../../RouteConfig";
+import * as RoutePath from "../../../../RouteConfig";
 
 import styles from "./styles.module.scss";
 

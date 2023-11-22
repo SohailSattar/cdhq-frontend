@@ -32,6 +32,8 @@ export { default as DepartmentTree } from "./DepartmentTree";
 export { default as DisplayCard } from "./DisplayCard";
 export { default as Dropdown } from "./Dropdown";
 export { default as Footer } from "./Footer";
+export { default as FooterExternalLinks } from "./FooterExternalLinks";
+export { default as FooterQRTable } from "./FooterQRTable";
 export { default as GlobalErrorSnackbar } from "./GlobalErrorSnackbar";
 export { default as Header } from "./Header";
 export { default as HeaderLogo } from "./HeaderLogo";

@@ -3,13 +3,13 @@ import {
 	IImageFormInputs,
 	ImageForm,
 	PageContainer,
-} from "../../../components";
+} from "../../../../components";
 import { useTranslation } from "react-i18next";
-import { useStore } from "../../../utils/store";
+import { useStore } from "../../../../utils/store";
 
-import * as RoutePath from "../../../RouteConfig";
-import { APINewImage } from "../../../api/images/types";
-import { addImage } from "../../../api/images/add/addImage";
+import * as RoutePath from "../../../../RouteConfig";
+import { APINewImage } from "../../../../api/images/types";
+import { addImage } from "../../../../api/images/add/addImage";
 import { toast } from "react-toastify";
 
 const ImageNewPage = () => {

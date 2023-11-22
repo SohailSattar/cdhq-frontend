@@ -89,7 +89,8 @@ const NavMenuItem: FC<Props> = ({ title, urlPath, items }) => {
 						}
 						onClick={() =>
 							linkClickHandler(subMenu.linkPath! ?? "", subMenu.linkType!)
-						}>
+						}
+						key={index}>
 						{language !== "ar" ? subMenu.name : subMenu.nameEnglish}
 					</Link>
 
