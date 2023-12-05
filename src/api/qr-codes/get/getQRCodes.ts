@@ -1,12 +1,36 @@
 import { APIResponse } from "../..";
 import { instance } from "../../../network";
-import { APIQRCodeItem } from "../types";
+import { Id } from "../../../utils";
+import { APIPaginatedQRCodeItem } from "../types";
+import { QR_CODE } from "../../ROUTES";
 
-export async function getQRCodes(): Promise<APIResponse<APIQRCodeItem[]>> {
+export async function getQRCodes(
+	currentPage: number,
+	pageSize: number,
+	keyword?: string,
+	statusCode?: Id,
+	orderBy?: string,
+	isDescending: boolean = false
+): Promise<APIResponse<APIPaginatedQRCodeItem>> {
 	try {
-		const url = `/qr-codes`;
+		let queryParam = "";
 
-		const response = await instance.get<APIQRCodeItem[]>(url);
+		if (keyword) {
+			queryParam += `&keyword=${keyword}`;
+		}
+
+		if (statusCode) {
+			queryParam += `&statusCode=${statusCode}`;
+		}
+
+		if (orderBy) {
+			queryParam += `&orderBy=${orderBy}&isDescending=${isDescending}`;
+		}
+
+		const url =
+			`${QR_CODE}?page=${currentPage}&postsperpage=${pageSize}` + queryParam!;
+
+		const response = await instance.get<APIPaginatedQRCodeItem>(url);
 		const data = response.data;
 		return { data };
 	} catch (err: any) {

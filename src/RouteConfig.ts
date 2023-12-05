@@ -20,16 +20,26 @@ export const PROJECT_NEW = `${PROJECT}/new`;
 
 export const CHANGE_PASSWORD = `/change-password`;
 
-// Settings
-export const SETTINGS = "/settings";
+//////////////////////////////////////////////// CONTENT MANAGEMENT ////////////////////////////////////////////////
+export const CONTENT_MANAGEMENT = `/content-management`;
 
-export const SETTINGS_MENU = `${SETTINGS}/menu`;
-export const SETTINGS_MENU_EDIT = `${SETTINGS_MENU}/${ID}/edit`;
-export const SETTINGS_MENU_NEW = `${SETTINGS_MENU}/new`;
+export const CONTENT_MANAGEMENT_LINK_TYPES = `${CONTENT_MANAGEMENT}/link-types`;
+export const CONTENT_MANAGEMENT_LINK_TYPES_EDIT = `${CONTENT_MANAGEMENT_LINK_TYPES}/${ID}/edit`;
+export const CONTENT_MANAGEMENT_LINK_TYPES_NEW = `${CONTENT_MANAGEMENT_LINK_TYPES}/new`;
 
-export const SETTINGS_LINK_TYPES = `${SETTINGS}/link-types`;
-export const SETTINGS_LINK_TYPES_EDIT = `${SETTINGS_LINK_TYPES}/${ID}/edit`;
-export const SETTINGS_LINK_TYPES_NEW = `${SETTINGS_LINK_TYPES}/new`;
+export const CONTENT_MANAGEMENT_MENU = `${CONTENT_MANAGEMENT}/menu`;
+export const CONTENT_MANAGEMENT_MENU_EDIT = `${CONTENT_MANAGEMENT_MENU}/${ID}/edit`;
+export const CONTENT_MANAGEMENT_MENU_NEW = `${CONTENT_MANAGEMENT_MENU}/new`;
+
+export const CONTENT_MANAGEMENT_IMAGE = `${CONTENT_MANAGEMENT}/image`;
+export const CONTENT_MANAGEMENT_IMAGE_EDIT = `${CONTENT_MANAGEMENT_IMAGE}/${ID}/edit`;
+export const CONTENT_MANAGEMENT_IMAGE_NEW = `${CONTENT_MANAGEMENT_IMAGE}/new`;
+
+export const CONTENT_MANAGEMENT_QR_CODE = `${CONTENT_MANAGEMENT}/qr-code`;
+export const CONTENT_MANAGEMENT_QR_CODE_EDIT = `${CONTENT_MANAGEMENT_QR_CODE}/${ID}/edit`;
+export const CONTENT_MANAGEMENT_QR_CODE_NEW = `${CONTENT_MANAGEMENT_QR_CODE}/new`;
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Projects
 
@@ -37,11 +47,6 @@ export const SETTINGS_LINK_TYPES_NEW = `${SETTINGS_LINK_TYPES}/new`;
 export const HONORS = `/honors`;
 export const HONORS_EDIT = HONORS + "/" + ID + "/edit";
 export const HONORS_NEW = HONORS + "/new";
-
-// Image Managing
-export const IMAGE_MANAGING = `/image-management`;
-export const IMAGE_MANAGING_EDIT = IMAGE_MANAGING + "/" + ID + "/edit";
-export const IMAGE_MANAGING_NEW = `${IMAGE_MANAGING}/new`;
 
 // News
 export const NEWS = "/news";

@@ -9,7 +9,10 @@ import {
 import { useNavigate } from "react-router";
 import { useEffect, useMemo, useState } from "react";
 import { APIPrivileges } from "../../../../api/privileges/type";
-import { DropdownOption } from "../../../../components/Dropdown";
+import {
+	DropdownOption,
+	Props as DropdownProps,
+} from "../../../../components/Dropdown";
 import { Column } from "react-table";
 import { ImageColumn } from "../../../../components/PaginatedTable/types";
 import { useStore } from "../../../../utils/store";
@@ -28,6 +31,7 @@ import { updateImageStatus } from "../../../../api/images/update/updateImageStat
 import * as RoutePath from "../../../../RouteConfig";
 
 import styles from "./styles.module.scss";
+import ImagesTable from "../../../../components/Tables/ImagesTable";
 
 const ImageManagementHomePage = () => {
 	const [t] = useTranslation("common");
@@ -51,11 +55,13 @@ const ImageManagementHomePage = () => {
 
 	const [privileges, setPrivileges] = useState<APIPrivileges>();
 
+	const [typeOptions, setTypeOptions] = useState<DropdownOption[]>([]);
+
 	// check if authorized to access
 	useEffect(() => {
 		const fetch = async () => {
 			const { data: privilege } = await getProjectPrivilege(
-				Project.ImageManagement
+				Project.ContentManagement
 			);
 			if (privilege) {
 				const {
@@ -129,7 +135,7 @@ const ImageManagementHomePage = () => {
 
 	const editClickHandler = useMemo(
 		() => (id: string) => {
-			navigate(`${RoutePath.IMAGE_MANAGING}/${id}/edit`);
+			navigate(`${RoutePath.CONTENT_MANAGEMENT_IMAGE}/${id}/edit`);
 		},
 		[navigate]
 	);
@@ -342,12 +348,25 @@ const ImageManagementHomePage = () => {
 		[]
 	);
 
+	const menuTypeSelectHandler = (option: DropdownOption) => {};
+
+	const dropdowns: { [key: string]: DropdownProps } = {
+		typeDropdown: {
+			options: typeOptions,
+			onSelect: menuTypeSelectHandler,
+		},
+		// linkTypeDropdown: {
+		// 	options: linkTypeOptions,
+		// 	onSelect: () => {},
+		// },
+	};
+
 	return (
 		<PageContainer
 			displayContent={privileges?.readPrivilege}
 			className={styles.imageManagement}
 			showAddButton
-			btnAddUrlLink={RoutePath.IMAGE_MANAGING_NEW}>
+			btnAddUrlLink={RoutePath.CONTENT_MANAGEMENT_IMAGE_NEW}>
 			{/* {privileges?.insertPrivilege && (
 				<ShadowedContainer className={styles.section}>
 					<RedirectButton
@@ -356,22 +375,7 @@ const ImageManagementHomePage = () => {
 					/>
 				</ShadowedContainer>
 			)} */}
-
-			<div>
-				<PaginatedTable
-					totalCountText={t("news.count", { framework: "React" })}
-					totalCount={totalCount}
-					pageSize={pageSize}
-					data={images}
-					columns={columns}
-					onSearch={searchHandler}
-					onTableSort={() => {}}
-					onPageChange={pageChangeHandler}
-					onPageViewSelectionChange={pageViewSelectionHandler}
-					noRecordText={t("table.noNews", { framework: "React" })}
-					onActiveStatusOptionSelectionChange={statusSelectHandler}
-				/>
-			</div>
+			<ImagesTable />
 		</PageContainer>
 	);
 };

@@ -7,16 +7,12 @@ import styles from "./styles.module.scss";
 
 const LogoHeader = () => {
 	return (
-		<div
-			// style={{
-			// 	backgroundImage:
-			// 		"url()",
-			// }}
-			className={styles.navLogo}>
+		<div className={styles.navLogo}>
 			<Link to={RoutePath.ROOT}>
 				<img
 					src={HeaderLogo}
 					alt="text"
+					className={styles.image}
 				/>
 			</Link>
 		</div>

@@ -1,0 +1,26 @@
+.cell {
+	display: flex;
+	// justify-content: center;
+
+	.thumbnail {
+		// height: 250px;
+		width: 250px;
+	}
+}
+
+.name {
+	display: flex;
+	flex-direction: column;
+
+	.arabic {
+		display: flex;
+		justify-content: center;
+		// justify-content: right;
+	}
+
+	.english {
+		display: flex;
+		justify-content: center;
+		// justify-content: left;
+	}
+}

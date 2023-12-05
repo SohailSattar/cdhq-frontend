@@ -6,7 +6,7 @@ export { default as DepartmentHierarchyPage } from "./Department/Hierarchy";
 export { default as ChangePasswordPage } from "./ChangePassword";
 export { default as HomePage } from "./Home";
 export { default as LoginPage } from "./Login";
-export * from "./Settings";
+export * from "./ContentManagement";
 
 export { default as PageNotFound } from "./PageNotFound";
 
@@ -24,9 +24,9 @@ export { default as HonorNewPage } from "./Honors/New";
 // Content Management
 
 // Image Management
-export { default as ImageManagementHomePage } from "./ContentManagement/ImageManagement/Home";
-export { default as ImageManagementEditPage } from "./ContentManagement/ImageManagement/Edit";
-export { default as ImageManagementNewPage } from "./ContentManagement/ImageManagement/New";
+// export { default as ImageManagementHomePage } from "./ContentManagement/ImageManagement/Home";
+// export { default as ImageManagementEditPage } from "./ContentManagement/ImageManagement/Edit";
+// export { default as ImageManagementNewPage } from "./ContentManagement/ImageManagement/New";
 
 // News
 export { default as NewsCreatePage } from "./News/New";

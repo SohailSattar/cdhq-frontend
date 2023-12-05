@@ -123,10 +123,10 @@ const OffcanvasNavbar: FC<Props> = ({ hideLoginButton }) => {
 		handleClose();
 	};
 
-	const gearClickHandler = () => {
-		handleClose();
-		navigate(RoutePath.SETTINGS);
-	};
+	// const gearClickHandler = () => {
+	// 	handleClose();
+	// 	navigate(RoutePath.SETTINGS);
+	// };
 
 	const loginClickHandler = () => {
 		navigate(RoutePath.LOGIN);
@@ -223,7 +223,7 @@ const OffcanvasNavbar: FC<Props> = ({ hideLoginButton }) => {
 															styles.languageChange
 														)}
 													/>
-													{loggedUser.role === ROLE.SUPERADMIN && (
+													{/* {loggedUser.role === ROLE.SUPERADMIN && (
 														<div className={styles.setting}>
 															<FontAwesomeIcon
 																icon={faGear}
@@ -236,7 +236,7 @@ const OffcanvasNavbar: FC<Props> = ({ hideLoginButton }) => {
 																)}
 															/>
 														</div>
-													)}
+													)} */}
 												</div>
 												<Logout
 													label={t("account.logout", { framework: "React" })}

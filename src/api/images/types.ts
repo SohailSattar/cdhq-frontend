@@ -8,6 +8,7 @@ export interface APIImage {
 	name: string;
 	nameEnglish: string;
 	imageName: string;
+	videoName: string;
 	imageType: APIType;
 	stars?: number;
 	activeStatus?: APIActiveStatus;
@@ -17,8 +18,17 @@ export interface APIImageDetail {
 	name: string;
 	nameEnglish: string;
 	imageName: string;
+	videoName: string;
 	imageType: APIType;
 	stars?: number;
+}
+
+export interface APIVideo {
+	id: Id;
+	name: string;
+	nameEnglish: string;
+	imageName: string;
+	videoName: string;
 }
 
 // export interface APIItem {
@@ -40,6 +50,7 @@ export interface APINewImage {
 	imageTypeId: Id;
 	stars?: number;
 	thumbnail: File;
+	videoFile: File;
 }
 
 export interface APIUpdateImageDetail {

@@ -51,7 +51,7 @@ const LinkTypeForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 			setValue("nameEnglish", nameEnglish);
 			setValue("isFile", isFile);
 		}
-	}, [data, setValue]);
+	}, [data, register, setValue]);
 
 	const submitHandler = (values: ILinkTypeFormInputs) => {
 		onSubmit(values);

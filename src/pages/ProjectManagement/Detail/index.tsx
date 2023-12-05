@@ -171,7 +171,7 @@ const ProjectDetailPage = () => {
 						groupName={project?.group?.nameArabic!}
 						groupNameEnglish={project?.group?.nameEnglish!}
 					/>
-					{/* <AllocatedUsers projectId={id!} /> */}
+					<AllocatedUsers projectId={id!} />
 					<hr />
 					<MetaDataDetails
 						createdBy={project?.createdBy!}

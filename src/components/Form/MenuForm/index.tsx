@@ -3,16 +3,16 @@ import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useStore } from "../../../utils/store";
 import { IMenuFormInputs } from "../types";
-import { APIMenuItem, APIMenuItemDetail } from "../../../api/menu/types";
+import { APIMenuItemDetail } from "../../../api/menu/types";
 
 import styles from "./styles.module.scss";
-import { ChangeEvent, FC, useEffect, useState } from "react";
+import { ChangeEvent, FC, useCallback, useEffect, useState } from "react";
 import { Button, Checkbox, Dropdown, ShadowedContainer, TextBox } from "../..";
 import { ErrorMessage } from "@hookform/error-message";
 import { DropdownOption } from "../../Dropdown";
-import { getAllMenuList } from "../../../api/menu/get/getAllMenuList";
 import { getLinkTypes } from "../../../api/linkTypes/get/getLinkTypes";
-import { getFullPath } from "../../../utils";
+import { getParentMenuItems } from "../../../api/menu/get/getParentMenuItems";
+import { getAllMenuTypes } from "../../../api/menuTypes/get/getAllMenuTypes";
 
 interface Props {
 	data?: APIMenuItemDetail;
@@ -25,7 +25,13 @@ const MenuForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 	const language = useStore((state) => state.language);
 
 	const [menuOptions, setMenuOptions] = useState<DropdownOption[]>([]);
-	const [typesOptions, setTypesOptions] = useState<DropdownOption[]>([]);
+
+	const [menuTypesOptions, setMenuTypesOptions] = useState<DropdownOption[]>(
+		[]
+	);
+	const [linkTypesOptions, setLinkTypesOptions] = useState<DropdownOption[]>(
+		[]
+	);
 
 	const [isFile, setIsFile] = useState<boolean>(false);
 
@@ -41,7 +47,7 @@ const MenuForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const { data } = await getAllMenuList();
+			const { data } = await getParentMenuItems();
 			if (data) {
 				setMenuOptions(
 					data?.map((d) => {
@@ -57,11 +63,30 @@ const MenuForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 		fetchData();
 	}, []);
 
+	// Menu Types
+	const fetchMenuTypes = useCallback(async () => {
+		const { data } = await getAllMenuTypes();
+		if (data) {
+			setMenuTypesOptions(
+				data?.map((d) => {
+					return {
+						label: language !== "ar" ? d.name : d.nameEnglish,
+						value: d.id,
+					};
+				})
+			);
+		}
+	}, [language]);
+
+	useEffect(() => {
+		fetchMenuTypes();
+	}, [fetchMenuTypes]);
+
 	useEffect(() => {
 		const fetch = async () => {
 			const { data } = await getLinkTypes();
 			if (data) {
-				setTypesOptions(
+				setLinkTypesOptions(
 					data?.map((d) => {
 						return {
 							label: language !== "ar" ? d.name : d.nameEnglish,
@@ -95,6 +120,24 @@ const MenuForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 		});
 
 		// Menu Name [English]
+		register("menuType", {
+			required: "Menu Type is required.",
+			// pattern: {
+			// 	value: /[\u0621-\u064As]+$/,
+			// 	message: 'Name should only be in alphabets.',
+			// }
+		});
+
+		// Menu Name [English]
+		register("menuType", {
+			required: "Menu Type is required.",
+			// pattern: {
+			// 	value: /[\u0621-\u064As]+$/,
+			// 	message: 'Name should only be in alphabets.',
+			// }
+		});
+
+		// Menu Name [English]
 		register("linkType", {
 			required: "Link Type is required.",
 			// pattern: {
@@ -111,6 +154,7 @@ const MenuForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 				linkPath,
 				isVisible,
 				orderNo,
+				menuType,
 				linkType,
 				isExternalPath,
 			} = data;
@@ -125,18 +169,28 @@ const MenuForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 			setValue("isVisible", isVisible);
 			setValue("orderNo", orderNo ?? "");
 
-			const selectedType = typesOptions.find((x) => x.value === linkType?.id);
+			// Menu Type
+			const selectedMenuType = menuTypesOptions.find(
+				(x) => x.value === menuType?.id
+			);
 
-			setValue("linkType", selectedType!);
+			setValue("menuType", selectedMenuType!);
 
-			if (selectedType?.value !== 4) {
+			// Link Type
+			const selectedLinkType = linkTypesOptions.find(
+				(x) => x.value === linkType?.id
+			);
+
+			setValue("linkType", selectedLinkType!);
+
+			if (selectedLinkType?.value !== 4) {
 				setValue("isExternalLink", false);
 			} else {
 				setValue("isExternalLink", isExternalPath);
 			}
 
-			if (selectedType) {
-				const { isFile } = selectedType.meta;
+			if (selectedLinkType) {
+				const { isFile } = selectedLinkType.meta;
 
 				setIsFile(isFile);
 
@@ -150,7 +204,14 @@ const MenuForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 				}
 			}
 		}
-	}, [data, menuOptions, register, setValue, typesOptions]);
+	}, [
+		data,
+		menuOptions,
+		register,
+		setValue,
+		linkTypesOptions,
+		menuTypesOptions,
+	]);
 
 	const linkTypeChangeHandler = (option: DropdownOption) => {
 		setIsLinkPathDisabled(false);
@@ -240,12 +301,29 @@ const MenuForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 							defaultValue={{ label: "", value: "" }}
 						/>
 					</div>
+				</div>
+				<div className={styles.section}>
+					<div className={styles.dropDownContainer}>
+						<Controller
+							render={({ field: { value, onChange } }) => (
+								<Dropdown
+									label={t("menu.menuType", { framework: "React" })}
+									options={menuTypesOptions}
+									onSelect={onChange}
+									value={value}
+								/>
+							)}
+							name="menuType"
+							control={control}
+							defaultValue={{ label: "", value: "" }}
+						/>
+					</div>
 					<div className={styles.dropDownContainer}>
 						<Controller
 							render={({ field: { value } }) => (
 								<Dropdown
 									label={t("menu.linkType", { framework: "React" })}
-									options={typesOptions}
+									options={linkTypesOptions}
 									onSelect={linkTypeChangeHandler}
 									value={value}
 								/>
@@ -351,6 +429,21 @@ const MenuForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 						<ErrorMessage
 							errors={errors}
 							name="nameEnglish"
+							render={({ messages }) => {
+								return messages
+									? _.entries(messages).map(([type, message]) => (
+											<p
+												key={type}
+												className="error">
+												{message}
+											</p>
+									  ))
+									: null;
+							}}
+						/>
+						<ErrorMessage
+							errors={errors}
+							name="menuType"
 							render={({ messages }) => {
 								return messages
 									? _.entries(messages).map(([type, message]) => (

@@ -8,6 +8,9 @@ export async function getMenuListPaginated(
 	pageSize: number,
 	keyword?: string,
 	parentId?: Id,
+	menuTypeId?: Id,
+	categoryId?: Id,
+	statusCode?: Id,
 	orderBy?: string
 ): Promise<APIResponse<PaginatedMenuItem>> {
 	try {
@@ -19,6 +22,18 @@ export async function getMenuListPaginated(
 
 		if (parentId) {
 			queryParam += `&parentId=${parentId}`;
+		}
+
+		if (menuTypeId) {
+			queryParam += `&type=${menuTypeId}`;
+		}
+
+		if (categoryId) {
+			queryParam += `&categoryId=${categoryId}`;
+		}
+
+		if (statusCode) {
+			queryParam += `&statusCode=${statusCode}`;
 		}
 
 		if (orderBy) {

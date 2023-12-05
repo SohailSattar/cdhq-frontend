@@ -1,36 +1,21 @@
-import { FC, useCallback, useEffect, useMemo, useState } from "react";
+import React, { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useNavigate } from "react-router-dom";
-
-import {
-	Footer,
-	Header,
-	Loader,
-	Loading,
-	NotAuthorized,
-	OffcanvasNavbar,
-} from "..";
-import { getMyDetail } from "../../api/users/get/getMyDetail";
-import { useStore } from "../../utils/store";
-// import { getMyRole } from "../../api/users/get/getMyRole";
-import { APILoggedUser } from "../../api/users/types";
-import { getProjectPrivilege } from "../../api/userProjects/get/getProjectPrivilege";
-
-import localStorageService from "../../network/localStorageService";
-
-import { PrivilegeType } from "../types";
-
-import * as RoutePath from "../../RouteConfig";
-
-import styles from "./styles.module.scss";
-import { Id } from "../../utils";
-import { checkLoginStatus } from "../../api/login/get/checkLoginStatus";
 import { useCookies } from "react-cookie";
-import { boolean } from "yargs";
 import clsx from "clsx";
 
+import { Footer, Loader, NotAuthorized, OffcanvasNavbar } from "..";
+
+import { getMyDetail } from "../../api/users/get/getMyDetail";
+import { useStore } from "../../utils/store";
+import { APILoggedUser } from "../../api/users/types";
+import localStorageService from "../../network/localStorageService";
+import { checkLoginStatus } from "../../api/login/get/checkLoginStatus";
+import * as RoutePath from "../../RouteConfig";
+import styles from "./styles.module.scss";
+import { PrivilegeType } from "../types";
+
 interface Props {
-	// projectId?: number;
 	privilegeType?: PrivilegeType;
 	hideLoginButton?: boolean;
 	noChecks?: boolean;
@@ -38,10 +23,10 @@ interface Props {
 	className?: string;
 	showQRCodes?: boolean;
 	showLinks?: boolean;
+	showCounter?: boolean;
 }
 
 const Layout: FC<Props> = ({
-	// projectId,
 	privilegeType = "All",
 	hideLoginButton = false,
 	noChecks = false,
@@ -49,12 +34,10 @@ const Layout: FC<Props> = ({
 	className,
 	showQRCodes = false,
 	showLinks = false,
+	showCounter = false,
 }) => {
 	const navigate = useNavigate();
-
-	const loggedUser: APILoggedUser = useStore(
-		(state: { loggedInUser: any }) => state.loggedInUser
-	);
+	const loggedUser: APILoggedUser = useStore((state) => state.loggedInUser);
 	const setLoggedUser = useStore((state) => state.setLoggedInUser);
 	const [, , removeCookie] = useCookies([
 		"id",
@@ -65,7 +48,7 @@ const Layout: FC<Props> = ({
 	]);
 
 	const [isLoading, setIsLoading] = useState<boolean>(false);
-	const [content, setContent] = useState<any>();
+	const [content, setContent] = useState<React.ReactNode | undefined>();
 	const [canView, setCanView] = useState<boolean>();
 
 	const clearLoggedInUserState = useCallback(() => {
@@ -78,9 +61,9 @@ const Layout: FC<Props> = ({
 		});
 	}, [setLoggedUser]);
 
-	const removeLocalStorageData = () => {
+	const removeLocalStorageData = useCallback(() => {
 		localStorageService.clearToken();
-	};
+	}, []);
 
 	const removeCookies = useCallback(() => {
 		removeCookie("id", { path: "/" });
@@ -94,145 +77,74 @@ const Layout: FC<Props> = ({
 		clearLoggedInUserState();
 		removeLocalStorageData();
 		removeCookies();
-	}, [clearLoggedInUserState, removeCookies]);
+	}, [clearLoggedInUserState, removeLocalStorageData, removeCookies]);
 
 	useEffect(() => {
-		const fetch = async () => {
+		const fetchUserData = async () => {
 			const token = localStorageService.getJwtToken();
-			if (token) {
-				// const { data: myStatus } = await checkLoginStatus();
-				// const role = myStatus?.role!;
-				// if (role !== loggedUser?.role!) {
-				// 	setLoggedUser({ ...loggedUser, role: role });
-				// }
-				if (loggedUser.userName === "") {
-					const { data: myStatus } = await checkLoginStatus();
+			if (token && loggedUser.userName === "") {
+				const { data: myStatus } = await checkLoginStatus();
 
-					if (myStatus?.isLoggedIn === true) {
-						const { data, error } = await getMyDetail();
+				if (myStatus?.isLoggedIn === true) {
+					const { data, error } = await getMyDetail();
 
-						if (error) {
-							if (error.response.status === 401) {
-								console.log("adasdsa");
-								navigate(RoutePath.LOGIN);
-							}
-						}
-						if (data) {
-							setLoggedUser(data);
-						}
+					if (error && error.response.status === 401) {
+						navigate(RoutePath.LOGIN);
 					}
-					// else {
-					// 	navigate(RoutePath.LOGIN);
-					// }
+
+					if (data) {
+						setLoggedUser(data);
+					}
 				}
-			} else {
-				if (!noChecks) {
-					navigate(RoutePath.ROOT);
-				}
+			} else if (!token && !noChecks) {
+				navigate(RoutePath.ROOT);
 			}
 		};
 
-		fetch();
-	}, [loggedUser, navigate, noChecks, setLoggedUser]);
+		fetchUserData();
+	}, [loggedUser.userName, navigate, noChecks, setLoggedUser]);
 
-	const fetch = useMemo(
-		() => async () => {
-			try {
-				const { data } = await checkLoginStatus();
-				if (data?.isLoggedIn) {
-					// if (projectId) {
-					// 	await fetchProjectPrivilege(projectId);
-					// } else {
-					setCanView(true);
-					setIsLoading(true);
-					// }
-					// await fetchContent();
+	const fetchData = useCallback(async () => {
+		try {
+			const { data } = await checkLoginStatus();
 
-					///////////////////////////// fetch Content
-
-					if (canView === undefined) {
-						setContent(<Loader />);
-					}
-
-					if (canView === false) {
-						setContent(<NotAuthorized />);
-					} else {
-						setContent(children);
-					}
-					setIsLoading(false);
-
-					//////////////////////////////
-				} else {
-					if (data?.isLoggedIn === false) {
-						setContent(children);
-						if (loggedUser.id !== 0) {
-							removeLocalData();
-						}
-						// navigate(RoutePath.LOGIN);
-					}
-				}
-			} catch (error) {
-				// Handle error
+			if (data?.isLoggedIn) {
+				setCanView(true);
+			} else if (data?.isLoggedIn === false) {
+				setCanView(false);
 			}
-		},
-		[canView, children, loggedUser.id, removeLocalData] // , loggedUser.id, navigate, removeLocalData
-	);
+		} catch (error) {
+			// Handle error
+		}
+	}, []);
+
+	const fetchContent = useCallback(() => {
+		if (canView === undefined) {
+			setContent(<Loader />);
+		} else if (canView === false) {
+			setContent(<NotAuthorized />);
+		} else {
+			setContent(children);
+		}
+	}, [canView, children]);
+
+	const fetch = useCallback(async () => {
+		try {
+			setIsLoading(true); // Set loading state to true before fetching data
+			await fetchData();
+			fetchContent();
+		} catch (error) {
+			// Handle error
+		} finally {
+			setIsLoading(false); // Set loading state to false after fetching, whether successful or not
+		}
+	}, [fetchData, fetchContent]);
 
 	useEffect(() => {
 		fetch();
 	}, [fetch]);
 
-	// useEffect(() => {
-	// 	const fetchData = async () => {
-	// 		setIsLoading(true);
-	// 		const token = localStorageService.getJwtToken();
-	// 		if (token) {
-	// 			const { data: myRole } = await getMyRole();
-	// 			const role = myRole?.role.name!;
-
-	// 			if (role !== loggedUser?.role!) {
-	// 				setLoggedUser({ ...loggedUser, role: role });
-	// 			}
-
-	// 			if (loggedUser.userName === "") {
-	// 				const { data, error } = await getMyDetail();
-	// 				if (error) {
-	// 					if (error.response.status === 401) {
-	// 						navigate(RoutePath.LOGIN);
-	// 					}
-	// 				}
-	// 				if (data) {
-	// 					setLoggedUser(data);
-	// 				}
-	// 			}
-	// 		} else {
-	// 			navigate(RoutePath.ROOT);
-	// 		}
-
-	// 		if (canView) {
-	// 			console.log("xxx");
-	// 			setContent(<NotAuthorized />);
-	// 		} else {
-	// 			console.log("ccc");
-	// 			setContent(children);
-	// 		}
-
-	// 		setIsLoading(false);
-	// 	};
-
-	// 	console.log(isLoading);
-	// 	fetchData();
-	// }, [
-	// 	loggedUser,
-	// 	navigate,
-	// 	setLoggedUser,
-	// 	setIsLoading,
-	// 	isLoading,
-	// 	canView,
-	// 	children,
-	// ]);
-
-	const ErrorFallback = ({ error, resetErrorBoundary }: any) => {
+	const ErrorFallback = useCallback(({ error, resetErrorBoundary }: any) => {
 		return (
 			<div role="alert">
 				<p>Something went wrong:</p>
@@ -240,9 +152,7 @@ const Layout: FC<Props> = ({
 				<button onClick={resetErrorBoundary}>Try again</button>
 			</div>
 		);
-	};
-
-	// console.log(content);
+	}, []);
 
 	return (
 		<>
@@ -254,7 +164,6 @@ const Layout: FC<Props> = ({
 					onReset={() => {
 						// reset the state of your app so the error doesn't happen again
 					}}>
-					{/* <Header hideLoginButton={hideLoginButton} /> */}
 					<OffcanvasNavbar hideLoginButton={hideLoginButton} />
 					<div className={clsx(styles.layout, className)}>
 						{isLoading ? (
@@ -272,6 +181,7 @@ const Layout: FC<Props> = ({
 					<Footer
 						showQRCodes={showQRCodes}
 						showLinks={showLinks}
+						showCounter={showCounter}
 					/>
 				</ErrorBoundary>
 			)}
@@ -279,4 +189,4 @@ const Layout: FC<Props> = ({
 	);
 };
 
-export default Layout;
+export default React.memo(Layout);

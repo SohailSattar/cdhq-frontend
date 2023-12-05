@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import QRCard from "../Cards/QR";
-import { getQRCodes } from "../../api/qr-codes/get/getQRCodes";
+import { getAllQRCodes } from "../../api/qr-codes/get/getAllQRCodes";
 import { APIQRCodeItem } from "../../api/qr-codes/types";
 
 import styles from "./styles.module.scss";
@@ -9,7 +9,7 @@ const FootQRTable = () => {
 	const [codes, setCodes] = useState<APIQRCodeItem[]>([]);
 
 	const fetchDetails = useCallback(async () => {
-		const { data } = await getQRCodes();
+		const { data } = await getAllQRCodes();
 
 		if (data) {
 			setCodes(data);
@@ -22,11 +22,12 @@ const FootQRTable = () => {
 
 	return (
 		<div className={styles.qrCodes}>
-			{codes.map((code) => (
+			{codes.map((code, index) => (
 				<QRCard
 					imageName={code.imageName}
 					name={code.name}
 					iconName={code.iconName}
+					key={index}
 				/>
 			))}
 			{/* <QRCard />

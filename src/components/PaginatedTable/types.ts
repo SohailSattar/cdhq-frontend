@@ -84,5 +84,15 @@ export interface MenuItemColumns {
 	isVisible: boolean;
 	orderNo: number;
 	linkType?: APIType;
+	menuType?: APIType;
 	isExternalPath: boolean;
+}
+
+export interface QRCodeItemColumns {
+	id: number;
+	name: string;
+	nameEnglish: string;
+	imageName: string;
+	iconName: string;
+	activeStatus: APIActiveStatus;
 }

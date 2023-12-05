@@ -14,12 +14,15 @@ import { getFullPath } from "../../../utils";
 import { DropdownOption } from "../../Dropdown";
 import { getImageTypes } from "../../../api/imageType/get/getImageTypes";
 import { ErrorMessage } from "@hookform/error-message";
+import ReactPlayer from "react-player";
 
 interface Props {
 	data?: APIImage;
 	actionButtonText: string;
 	onSubmit: (data: IImageFormInputs) => void;
 	onImageUpload?: (image: File) => void;
+	onVideoUpload?: (video: File) => void;
+	serverErrors?: string[];
 }
 
 const ImageForm: FC<Props> = ({
@@ -27,6 +30,8 @@ const ImageForm: FC<Props> = ({
 	actionButtonText,
 	onSubmit,
 	onImageUpload = () => {},
+	onVideoUpload = () => {},
+	serverErrors = [],
 }) => {
 	const [t] = useTranslation("common");
 	const language = useStore((state) => state.language);
@@ -39,8 +44,11 @@ const ImageForm: FC<Props> = ({
 
 	const [hideUploadButton, setHideUploadButton] = useState<boolean>(true);
 
+	const [isVideo, setIsVideo] = useState<boolean>(false);
+
 	const {
 		register,
+		unregister,
 		formState: { errors },
 		handleSubmit,
 		setValue,
@@ -75,11 +83,13 @@ const ImageForm: FC<Props> = ({
 		});
 
 		if (data) {
-			const { name, nameEnglish, imageName, imageType, stars } = data;
+			const { name, nameEnglish, imageName, videoName, imageType, stars } =
+				data;
 
 			setValue("name", name);
 			setValue("nameEnglish", nameEnglish);
 			setValue("imageName", imageName);
+			setValue("videoName", videoName);
 
 			const type = imageTypeOptions.find((x) => x.value === imageType?.id!);
 
@@ -88,6 +98,8 @@ const ImageForm: FC<Props> = ({
 			if (imageType!.id === 2) {
 				setHideRatingField(false);
 				setValue("stars", stars?.toString());
+			} else if (imageType!.id === 4) {
+				setIsVideo(true);
 			}
 		}
 	}, [data, imageTypeOptions, register, setValue, t]);
@@ -119,8 +131,44 @@ const ImageForm: FC<Props> = ({
 				setHideRatingField(true);
 			}
 
+			if (option.value === 4) {
+				setIsVideo(true);
+				// Set validation rule for videoFile when imageType is 4
+				// register("video", {
+				// 	required: t("error.form.required.video", { framework: "React" }),
+				// 	validate: (value) => {
+				// 		if (value) {
+				// 			// Check if the file size is less than 50 MB
+				// 			return (
+				// 				value.size <= 50 * 1024 * 1024 || t("error.form.videoSize")
+				// 			);
+				// 		}
+				// 		return true; // If no file is selected, consider it valid
+				// 	},
+				// });
+				register("videoFile", {
+					required: t("error.form.required.video", { framework: "React" }),
+					validate: (value) => {
+						if (value) {
+							// Check if the file size is less than 50 MB
+							return (
+								value.size <= 50 * 1024 * 1024 ||
+								t("error.form.validation.fileSize")
+							);
+						}
+						return true; // If no file is selected, consider it valid
+					},
+				});
+			} else {
+				setIsVideo(false);
+
+				// Unset validation rule for videoFile when imageType is not 4
+				unregister("videoFile");
+			}
+
 			setValue("imageType", option);
 		}
+		setValue("imageType", option);
 	};
 
 	const imageChangeHandler = (evnt: ChangeEvent<HTMLInputElement>) => {
@@ -139,6 +187,23 @@ const ImageForm: FC<Props> = ({
 	const imageUpdateHandler = () => {
 		const image = getValues("thumbnail");
 		onImageUpload(image!)!;
+	};
+
+	const videoChangeHandler = (evnt: ChangeEvent<HTMLInputElement>) => {
+		if (evnt.target.files) {
+			const file = evnt.target.files[0];
+			const x = getFullPath(file);
+			setValue("videoFile", file);
+			setValue("videoName", x);
+
+			if (data) {
+				setHideUploadButton(false);
+			}
+		}
+	};
+	const videoUpdateHandler = () => {
+		const video = getValues("videoFile");
+		onVideoUpload(video!)!;
 	};
 
 	const submitHandler = (values: IImageFormInputs) => {
@@ -217,77 +282,6 @@ const ImageForm: FC<Props> = ({
 								<Button type="submit">{actionButtonText}</Button>
 							</div>
 						</ShadowedContainer>
-						{Object.keys(errors).length > 0 && (
-							<ShadowedContainer>
-								{/* Name*/}
-								<ErrorMessage
-									errors={errors}
-									name="name"
-									render={({ messages }) => {
-										return messages
-											? _.entries(messages).map(([type, message]) => (
-													<p
-														key={type}
-														className="error">
-														{message}
-													</p>
-											  ))
-											: null;
-									}}
-								/>
-
-								{/* Name English */}
-								<ErrorMessage
-									errors={errors}
-									name="nameEnglish"
-									render={({ messages }) => {
-										return messages
-											? _.entries(messages).map(([type, message]) => (
-													<p
-														key={type}
-														className="error">
-														{message}
-													</p>
-											  ))
-											: null;
-									}}
-								/>
-
-								{/* Image type */}
-								<ErrorMessage
-									errors={errors}
-									name="imageType"
-									render={({ messages }) => {
-										return messages
-											? _.entries(messages).map(([type, message]) => (
-													<p
-														key={type}
-														className="error">
-														{message}
-													</p>
-											  ))
-											: null;
-									}}
-								/>
-
-								{/* Image  */}
-								<ErrorMessage
-									errors={errors}
-									name="imageName"
-									render={({ messages }) => {
-										return messages
-											? _.entries(messages).map(([type, message]) => (
-													<p
-														key={type}
-														className="error">
-														{message}
-													</p>
-											  ))
-											: null;
-									}}
-								/>
-							</ShadowedContainer>
-						)}
 					</div>
 					<div
 						className={
@@ -329,7 +323,162 @@ const ImageForm: FC<Props> = ({
 							control={control}
 							defaultValue={""}
 						/>
+
+						{isVideo && (
+							<Controller
+								render={({ field: { value, onChange } }) => (
+									<ShadowedContainer className={styles.thumbnail}>
+										{value && (
+											<ReactPlayer
+												url={value}
+												alt=""
+												className={styles.image}
+												controls={true}
+											/>
+										)}
+										{/* <div className={styles.actionContainer}>
+										<FontAwesomeIcon icon={faXmark} />
+									</div> */}
+										<input
+											type="file"
+											name="videoFile"
+											onChange={videoChangeHandler}
+											accept="video/mp4"
+										/>
+										{!hideUploadButton && (
+											<div className={styles.uploadSection}>
+												<Button
+													type="button"
+													onClick={videoUpdateHandler}>
+													{t("button.update", { framework: "React" })}
+												</Button>
+											</div>
+										)}
+									</ShadowedContainer>
+								)}
+								name="videoName"
+								control={control}
+								defaultValue={""}
+							/>
+						)}
 					</div>
+				</div>
+				<div>
+					{Object.keys(errors).length > 0 && (
+						<ShadowedContainer>
+							{/* Name*/}
+							<ErrorMessage
+								errors={errors}
+								name="name"
+								render={({ messages }) => {
+									return messages
+										? _.entries(messages).map(([type, message]) => (
+												<p
+													key={type}
+													className="error">
+													{message}
+												</p>
+										  ))
+										: null;
+								}}
+							/>
+
+							{/* Name English */}
+							<ErrorMessage
+								errors={errors}
+								name="nameEnglish"
+								render={({ messages }) => {
+									return messages
+										? _.entries(messages).map(([type, message]) => (
+												<p
+													key={type}
+													className="error">
+													{message}
+												</p>
+										  ))
+										: null;
+								}}
+							/>
+
+							{/* Image type */}
+							<ErrorMessage
+								errors={errors}
+								name="imageType"
+								render={({ messages }) => {
+									return messages
+										? _.entries(messages).map(([type, message]) => (
+												<p
+													key={type}
+													className="error">
+													{message}
+												</p>
+										  ))
+										: null;
+								}}
+							/>
+
+							{/* Image  */}
+							<ErrorMessage
+								errors={errors}
+								name="imageName"
+								render={({ messages }) => {
+									return messages
+										? _.entries(messages).map(([type, message]) => (
+												<p
+													key={type}
+													className="error">
+													{message}
+												</p>
+										  ))
+										: null;
+								}}
+							/>
+
+							{/* Image  */}
+							<ErrorMessage
+								errors={errors}
+								name="videoFile"
+								render={({ messages }) => {
+									return messages
+										? _.entries(messages).map(([type, message]) => (
+												<p
+													key={type}
+													className="error">
+													{message}
+												</p>
+										  ))
+										: null;
+								}}
+							/>
+							{/* Image  */}
+							{/* <ErrorMessage
+								errors={errors}
+								name="videoFile"
+								render={({ messages }) => {
+									return messages
+										? _.entries(messages).map(([type, message]) => (
+												<p
+													key={type}
+													className="error">
+													{message}
+												</p>
+										  ))
+										: null;
+								}}
+							/> */}
+						</ShadowedContainer>
+					)}{" "}
+					{serverErrors.length > 0 && (
+						<ShadowedContainer>
+							{serverErrors.map((error, index) => (
+								<div
+									className="error"
+									key={index}>
+									{error}
+								</div>
+							))}
+						</ShadowedContainer>
+					)}
 				</div>
 			</form>
 		</div>

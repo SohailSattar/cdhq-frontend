@@ -19,7 +19,7 @@ export async function getImagesList(
 		}
 
 		if (typeId) {
-			queryParam += `&typeId=${statusCode}`;
+			queryParam += `&type=${typeId}`;
 		}
 
 		if (statusCode) {

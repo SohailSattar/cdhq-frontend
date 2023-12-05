@@ -15,7 +15,7 @@ export async function addImage(
 		);
 		const data = response.data;
 		return { data };
-	} catch (error) {
+	} catch (error: any) {
 		return { error };
 	}
 }

@@ -38,7 +38,7 @@ const ImageEditPage = () => {
 	useEffect(() => {
 		const fetch = async () => {
 			const { data: privilege } = await getProjectPrivilege(
-				Project.ImageManagement
+				Project.ContentManagement
 			);
 			if (privilege) {
 				const {
@@ -62,7 +62,7 @@ const ImageEditPage = () => {
 	const fetch = useMemo(
 		() => async () => {
 			const { data: privilege } = await getProjectPrivilege(
-				Project.ImageManagement
+				Project.ContentManagement
 			);
 			if (privilege) {
 				const {
@@ -140,7 +140,7 @@ const ImageEditPage = () => {
 			title={t("page.imageEdit", { framework: "React" })}
 			showBackButton
 			btnBackLabel={t("button.backToHome", { framework: "React" })}
-			btnBackUrlLink={`${RoutePath.IMAGE_MANAGING}`}>
+			btnBackUrlLink={`${RoutePath.CONTENT_MANAGEMENT_IMAGE}`}>
 			<ImageForm
 				data={imageDetail}
 				actionButtonText={t("button.update", { framework: "React" })}

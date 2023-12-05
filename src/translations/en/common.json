@@ -18,6 +18,7 @@
 		}
 	},
 	"dashboard": {
+		"videos": "Videos",
 		"talented": "Talented",
 		"employeeOfMonth": "Employee of the month"
 	},
@@ -29,7 +30,8 @@
 		"parentEnglish": "Parent [English]",
 		"pathLink": "Path Url",
 		"isVisible": "Is Visible?",
-		"linkType": "Type",
+		"linkType": "Link Type",
+		"menuType": "Menu Type",
 		"count": "Total Items",
 		"list": "Menu List",
 		"orderNo": "Order No",
@@ -52,9 +54,22 @@
 			"servicesDepartment": "Service Department",
 			"creation": "Innovations"
 		},
-		"thumbnail": "Thumbnail"
+		"thumbnail": "Thumbnail",
+		"icon": "Icon"
 	},
-	"video": { "upload": "Video Upload" },
+	"video": {
+		"upload": "Video Upload"
+	},
+	"qrCode": {
+		"name": "Name",
+		"nameEnglish": "Name [English]",
+		"icon": "Icon"
+	},
+	"tab": {
+		"imagesVideos": "Images & Videos",
+		"menuList": "Menu List",
+		"qrCodes": "QR Codes"
+	},
 	"page": {
 		"userHome": "User Account",
 		"userDetail": "User Details",
@@ -73,7 +88,10 @@
 		"honorNew": "New Honor",
 		"imagesHome": "Images List",
 		"imageEdit": "Edit Image",
-		"imageNew": "New Image"
+		"imageNew": "New Image",
+		"qrCodeHome": "QR Codes List",
+		"qrCodeEdit": "Edit QR Code",
+		"qrCodeNew": "New QR Code"
 	},
 	"account": {
 		"login": "Login",
@@ -229,6 +247,7 @@
 				"workflowStart": "Workflow starts from is required.",
 				"workflowEnd": "Workflow ends at is required.",
 				"image": "Image is required",
+				"video": "Video is required",
 				"imageType": "Image type is required.",
 				"honorType": "Honor type is required.",
 				"shortSummary": "Short summary is required.",
@@ -240,7 +259,7 @@
 			},
 			"validation": {
 				"passwordMismatch": "The passwords do not match",
-				"fileSize": "Image size should not exceed 50 MB"
+				"fileSize": "File size should not exceed 50 MB"
 			}
 		}
 	},
@@ -275,6 +294,11 @@
 		"byDepartment": "Filter by Department"
 	},
 	"message": {
+		"fail": "There was an error while prcoessing, please contact the IT department",
+		"recordCreated": "Record has been created",
+		"recordUpdated": "Record has been updated",
+		"recordActivated": "Record has been activated",
+		"recordDeactivated": "Record has been deactivated",
 		"unauthorized": "You are not authorized to view this page",
 		"noAccountContact": "Don't have an account? Contact the electronic services department",
 		"employeeNotExists": "No employee with this employee number exists! Please contact the Ministry of Interior.",
@@ -327,6 +351,7 @@
 		"select": "Select..."
 	},
 	"table": {
+		"noResult": "No result found",
 		"noProject": "No project found",
 		"noUser": "No user found",
 		"noEmployee": "No employee found",

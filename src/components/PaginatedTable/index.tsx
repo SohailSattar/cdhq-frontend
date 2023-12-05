@@ -17,7 +17,7 @@ import {
 	TotalCount,
 } from "..";
 import { useStore } from "../../utils/store";
-import { DropdownOption } from "../Dropdown";
+import { DropdownOption, Props as DropdownProps } from "../Dropdown";
 
 import { getAccessRoles } from "../../api/roles/get/getAccessRoles";
 import { getMyRole } from "../../api/users/get/getMyRole";
@@ -47,6 +47,9 @@ interface Props {
 	hideWorkflowStatusDropdown?: boolean;
 	activeStatusPlaceHolder?: string;
 	hideActiveStatusDropdown?: boolean;
+	dropdowns?: {
+		[key: string]: DropdownProps;
+	};
 	onRoleOptonSelectionHandler?: (option: DropdownOption) => void;
 	onProjectOptonSelectionHandler?: (option: DropdownOption) => void;
 	onActiveStatusOptionSelectionChange?: (option: DropdownOption) => void;
@@ -73,6 +76,7 @@ const PaginatedTable: FC<Props> = ({
 	hideActiveStatusDropdown = false,
 	activeStatusPlaceHolder,
 	hideWorkflowStatusDropdown = true,
+	dropdowns = {},
 	onRoleOptonSelectionHandler = () => {},
 	onProjectOptonSelectionHandler = () => {},
 	onActiveStatusOptionSelectionChange = () => {},
@@ -341,7 +345,25 @@ const PaginatedTable: FC<Props> = ({
 							{/* </ShadowedContainer> */}
 						</div>
 					</div>
-				)}
+				)}{" "}
+				{Object.entries(dropdowns).map(([key, dropdownProps]) => (
+					<div
+						key={key}
+						className={styles.detailBar}>
+						<div
+							className={
+								language !== "ar" ? styles.selection : styles.selectionLTR
+							}>
+							<Dropdown
+								// options={dropdownProps.options || []}
+								// onSelect={function (option: DropdownOption): void {
+								// 	throw new Error("Function not implemented.");
+								// }}
+								{...dropdownProps}
+							/>
+						</div>
+					</div>
+				))}
 			</ShadowedContainer>
 
 			<Table

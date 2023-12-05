@@ -33,11 +33,14 @@ import {
 	SettingsHomePage,
 	MenuHomeSettingsPage,
 	MenuNewSettingsPage,
-	LinkTypesNewSettingsPage,
-	LinkTypesEditSettingsPage,
-	ImageManagementHomePage,
-	ImageManagementNewPage,
-	ImageManagementEditPage,
+	LinkTypesNewContentManagementPage,
+	LinkTypesEditContentManagementPage,
+	ImageHomeContentManagementPage,
+	ImageEditContentManagementPage,
+	ImageNewContentManagementPage,
+	QRCodeHomeContentManagementPage,
+	QRCodeNewContentManagementPage,
+	QRCodeEditContentManagementPage,
 } from "./pages";
 
 import * as RoutePath from "./RouteConfig";
@@ -104,7 +107,8 @@ function App() {
 									noChecks={true}
 									className={styles.unpadded}
 									showQRCodes={true}
-									showLinks={true}>
+									showLinks={true}
+									showCounter={true}>
 									<LandingPage />
 								</Layout>
 							}
@@ -152,7 +156,7 @@ function App() {
 						{/* SETTING */}
 						<Route element={<ProtectedRoute />}>
 							<Route
-								path={`${RoutePath.SETTINGS}`}
+								path={`${RoutePath.CONTENT_MANAGEMENT}`}
 								element={
 									<Layout>
 										<SettingsHomePage />
@@ -162,7 +166,7 @@ function App() {
 						</Route>
 						<Route element={<ProtectedRoute />}>
 							<Route
-								path={`${RoutePath.SETTINGS_MENU}`}
+								path={`${RoutePath.CONTENT_MANAGEMENT_MENU}`}
 								element={
 									<Layout>
 										<MenuHomeSettingsPage />
@@ -172,7 +176,7 @@ function App() {
 						</Route>
 						<Route element={<ProtectedRoute />}>
 							<Route
-								path={`${RoutePath.SETTINGS_MENU_EDIT}`}
+								path={`${RoutePath.CONTENT_MANAGEMENT_MENU_EDIT}`}
 								element={
 									<Layout>
 										<MenuEditSettingsPage />
@@ -182,7 +186,7 @@ function App() {
 						</Route>
 						<Route element={<ProtectedRoute />}>
 							<Route
-								path={`${RoutePath.SETTINGS_MENU_NEW}`}
+								path={`${RoutePath.CONTENT_MANAGEMENT_MENU_NEW}`}
 								element={
 									<Layout>
 										<MenuNewSettingsPage />
@@ -190,10 +194,10 @@ function App() {
 								}
 							/>
 						</Route>
-						{/* SETTINGS - LINK TYPES */}
+						{/* CONTENT MANAGEMENT - LINK TYPES */}
 						<Route element={<ProtectedRoute />}>
 							<Route
-								path={`${RoutePath.SETTINGS_LINK_TYPES}`}
+								path={`${RoutePath.CONTENT_MANAGEMENT_LINK_TYPES}`}
 								element={
 									<Layout>
 										<MenuHomeSettingsPage />
@@ -203,20 +207,88 @@ function App() {
 						</Route>
 						<Route element={<ProtectedRoute />}>
 							<Route
-								path={`${RoutePath.SETTINGS_LINK_TYPES_EDIT}`}
+								path={`${RoutePath.CONTENT_MANAGEMENT_LINK_TYPES_EDIT}`}
 								element={
 									<Layout>
-										<LinkTypesEditSettingsPage />
+										<LinkTypesEditContentManagementPage />
 									</Layout>
 								}
 							/>
 						</Route>
 						<Route element={<ProtectedRoute />}>
 							<Route
-								path={`${RoutePath.SETTINGS_LINK_TYPES_NEW}`}
+								path={`${RoutePath.CONTENT_MANAGEMENT_LINK_TYPES_NEW}`}
 								element={
 									<Layout>
-										<LinkTypesNewSettingsPage />
+										<LinkTypesNewContentManagementPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						{/* CONTENT MANAGEMENT - IMAGE */}
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.CONTENT_MANAGEMENT_IMAGE}`}
+								element={
+									<Layout
+									// projectId={Project.ImageManagement}  TODO: Fix this
+									// privilegeType={"Read"}
+									>
+										<ImageHomeContentManagementPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.CONTENT_MANAGEMENT_IMAGE_NEW}`}
+								element={
+									<Layout>
+										<ImageNewContentManagementPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.CONTENT_MANAGEMENT_IMAGE_EDIT}`}
+								element={
+									<Layout>
+										<ImageEditContentManagementPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						{/* CONTENT MANAGEMENT - QR Code */}
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.CONTENT_MANAGEMENT_QR_CODE}`}
+								element={
+									<Layout
+									// projectId={Project.ImageManagement}  TODO: Fix this
+									// privilegeType={"Read"}
+									>
+										<QRCodeHomeContentManagementPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.CONTENT_MANAGEMENT_QR_CODE_NEW}`}
+								element={
+									<Layout>
+										<QRCodeNewContentManagementPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.CONTENT_MANAGEMENT_QR_CODE_EDIT}`}
+								element={
+									<Layout>
+										<QRCodeEditContentManagementPage />
 									</Layout>
 								}
 							/>
@@ -450,40 +522,6 @@ function App() {
 									// projectId={Project.Honors}   TODO: Fix this
 									>
 										<HonorEditPage />
-									</Layout>
-								}
-							/>
-						</Route>
-						{/* Image Management */}
-						<Route element={<ProtectedRoute />}>
-							<Route
-								path={`${RoutePath.IMAGE_MANAGING}`}
-								element={
-									<Layout
-									// projectId={Project.ImageManagement}  TODO: Fix this
-									// privilegeType={"Read"}
-									>
-										<ImageManagementHomePage />
-									</Layout>
-								}
-							/>
-						</Route>
-						<Route element={<ProtectedRoute />}>
-							<Route
-								path={`${RoutePath.IMAGE_MANAGING_NEW}`}
-								element={
-									<Layout>
-										<ImageManagementNewPage />
-									</Layout>
-								}
-							/>
-						</Route>
-						<Route element={<ProtectedRoute />}>
-							<Route
-								path={`${RoutePath.IMAGE_MANAGING_EDIT}`}
-								element={
-									<Layout>
-										<ImageManagementEditPage />
 									</Layout>
 								}
 							/>

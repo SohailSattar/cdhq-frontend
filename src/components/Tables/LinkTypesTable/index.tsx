@@ -107,7 +107,7 @@ const LinkTypesTable = () => {
 					<div className={styles.btnDiv}>
 						<RedirectButton
 							label={edit}
-							redirectTo={`${RoutePath.SETTINGS_LINK_TYPES_EDIT.replace(
+							redirectTo={`${RoutePath.CONTENT_MANAGEMENT_LINK_TYPES_EDIT.replace(
 								RoutePath.ID,
 								value
 							)}`}

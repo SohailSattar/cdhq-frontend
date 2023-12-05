@@ -1,8 +1,8 @@
-import { Story } from '@storybook/react';
-import PasswordBox, { Props as PasswordBoxProps } from '.';
+import { Story } from "@storybook/react";
+import PasswordBox, { Props as PasswordBoxProps } from ".";
 
 export default {
-	title: 'Components/PasswordBox',
+	title: "Components/PasswordBox",
 	component: PasswordBox,
 };
 

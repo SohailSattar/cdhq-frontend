@@ -26,6 +26,7 @@ export { default as CarouselActions } from "./CarouselActions";
 export { default as ChangeLanguage } from "./ChangeLanguage";
 export { default as Checkbox } from "./Checkbox";
 export { default as CheckboxedTree } from "./CheckboxedTree";
+export { default as Counter } from "./Counter";
 export { default as DeleteConfirmation } from "./DeleteConfirmation";
 export { default as DepartmentForm } from "./Form/DepartmentForm";
 export { default as DepartmentTree } from "./DepartmentTree";
