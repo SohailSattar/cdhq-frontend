@@ -219,7 +219,6 @@ const Layout: FC<Props> = ({
 		} catch (error) {
 			// Handle error
 		}
-		console.log("xd");
 	}, [
 		canView,
 		children,
