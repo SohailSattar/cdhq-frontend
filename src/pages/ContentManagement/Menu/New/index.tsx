@@ -59,6 +59,7 @@ const MenuNewSettingsPage = () => {
 			linkPath,
 			isVisible,
 			orderNo,
+			menuType,
 			linkType,
 			file,
 			isExternalLink,
@@ -69,6 +70,7 @@ const MenuNewSettingsPage = () => {
 
 		const orderNum = orderNo !== "" ? +orderNo : undefined;
 
+		const menuTypeId = menuType?.value;
 		const linkTypeId = linkType?.value;
 
 		const params: APINewMenuItem = {
@@ -78,6 +80,7 @@ const MenuNewSettingsPage = () => {
 			linkPath: linkPath,
 			isVisible: isVisible,
 			orderNo: orderNum,
+			menuTypeId: menuTypeId,
 			linkTypeId: linkTypeId,
 			file: file,
 			isExternalPath: isExternalLink!,
@@ -85,7 +88,7 @@ const MenuNewSettingsPage = () => {
 
 		const { data, error } = await addMenuItem(params);
 
-		if (data) {
+		if (data?.success) {
 			toast.success(
 				t("message.menuItemAdded", { framework: "React" }).toString()
 			);
