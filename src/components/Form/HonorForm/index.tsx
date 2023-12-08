@@ -122,7 +122,7 @@ const HonorForm: FC<Props> = ({
 		// });
 
 		register("notes", {
-			required: "Reason is required",
+			required: t("error.form.required.reason", { framework: "React" }),
 		});
 
 		// Image Name

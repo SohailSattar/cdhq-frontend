@@ -79,7 +79,7 @@ const ImagesTable = () => {
 		};
 
 		fetch();
-	}, [role?.name, setPrivileges]);
+	}, [setPrivileges]);
 
 	const fetchLinkTypes = useCallback(async () => {
 		const { data } = await getImageTypes();
@@ -270,30 +270,6 @@ const ImagesTable = () => {
 			{
 				id: "actions",
 				accessor: (p) => p,
-				// Cell: ({ value }: any) => (
-				// 	<div className={language !== "ar" ? styles.action : styles.actionLTR}>
-				// 		<div className={styles.btnDiv}>
-				// 			<Button onClick={(id) => editClickHandler(value.id)}>
-				// 				{edit}
-				// 			</Button>
-				// 		</div>
-				// 		{value.activeStatus !== 1 ? (
-				// 			<div className={styles.btnDiv}>
-				// 				<Button onClick={(id) => activateClickHandler(value.id)}>
-				// 					{activate}
-				// 				</Button>
-				// 			</div>
-				// 		) : (
-				// 			<div>
-				// 				<Button
-				// 					isCritical
-				// 					onClick={(id) => deleteClickHandler(value.id)}>
-				// 					{deleteBtn}
-				// 				</Button>
-				// 			</div>
-				// 		)}
-				// 	</div>
-				// ),
 				Cell: ({ value }: any) => (
 					<ActionButtons
 						id={value.id}

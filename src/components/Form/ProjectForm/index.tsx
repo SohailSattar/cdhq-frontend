@@ -80,7 +80,7 @@ const ProjectForm: FC<Props> = ({
 		};
 
 		fetchData();
-	}, [language]);
+	}, [getValues, language, setValue]);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -113,7 +113,7 @@ const ProjectForm: FC<Props> = ({
 		};
 
 		fetchData();
-	}, [language]);
+	}, [getValues, language, setValue]);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -145,22 +145,22 @@ const ProjectForm: FC<Props> = ({
 		};
 
 		fetchData();
-	}, [language]);
+	}, [getValues, language, setValue]);
 
 	useEffect(() => {
 		// Project Name
 		register("name", {
-			required: "Name is required.",
+			required: t("error.form.required.nameArabic", { framework: "React" }),
 		});
 
 		// Employee Name
 		register("nameEnglish", {
-			required: "Name [English] is required.",
+			required: t("error.form.required.nameEnglish", { framework: "React" }),
 		});
 
 		// Project Group
 		register("projectGroup", {
-			required: "Project group is required.",
+			required: t("error.form.required.projectGroup", { framework: "React" }),
 		});
 
 		if (data) {

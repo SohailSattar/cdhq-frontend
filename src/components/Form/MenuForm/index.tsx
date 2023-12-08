@@ -107,12 +107,12 @@ const MenuForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 	useEffect(() => {
 		// Menu Name
 		register("name", {
-			required: "Name is required.",
+			required: t("error.form.required.nameArabic", { framework: "React" }),
 		});
 
 		// Menu Name [English]
 		register("nameEnglish", {
-			required: "Name [English] is required.",
+			required: t("error.form.required.nameEnglish", { framework: "React" }),
 			// pattern: {
 			// 	value: /[\u0621-\u064As]+$/,
 			// 	message: 'Name should only be in alphabets.',
@@ -121,16 +121,7 @@ const MenuForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 
 		// Menu Name [English]
 		register("menuType", {
-			required: "Menu Type is required.",
-			// pattern: {
-			// 	value: /[\u0621-\u064As]+$/,
-			// 	message: 'Name should only be in alphabets.',
-			// }
-		});
-
-		// Menu Name [English]
-		register("menuType", {
-			required: "Menu Type is required.",
+			required: t("error.form.required.menuType", { framework: "React" }),
 			// pattern: {
 			// 	value: /[\u0621-\u064As]+$/,
 			// 	message: 'Name should only be in alphabets.',
@@ -139,7 +130,7 @@ const MenuForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 
 		// Menu Name [English]
 		register("linkType", {
-			required: "Link Type is required.",
+			required: t("error.form.required.linkType", { framework: "React" }),
 			// pattern: {
 			// 	value: /[\u0621-\u064As]+$/,
 			// 	message: 'Name should only be in alphabets.',
@@ -211,6 +202,7 @@ const MenuForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 		setValue,
 		linkTypesOptions,
 		menuTypesOptions,
+		t,
 	]);
 
 	const linkTypeChangeHandler = (option: DropdownOption) => {
@@ -315,7 +307,6 @@ const MenuForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 							)}
 							name="menuType"
 							control={control}
-							defaultValue={{ label: "", value: "" }}
 						/>
 					</div>
 					<div className={styles.dropDownContainer}>
@@ -330,7 +321,6 @@ const MenuForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 							)}
 							name="linkType"
 							control={control}
-							defaultValue={{ label: "", value: "" }}
 						/>
 					</div>
 				</div>

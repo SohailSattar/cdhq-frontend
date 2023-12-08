@@ -5,26 +5,29 @@ import { APICount } from "../../api/visistors/types";
 import { getVisitorsCounter } from "../../api/visistors/get/getVisitorsCounter";
 import React from "react";
 
-interface Props {}
+interface Props {
+	initialCounter: APICount;
+}
 
-const Counter: FC<Props> = ({}) => {
-	const [counter, setCounter] = useState<APICount | undefined>(undefined);
+const Counter: FC<Props> = ({ initialCounter }) => {
+	const [counter, setCounter] = useState<APICount>();
 
-	const fetchCount = useCallback(async () => {
-		const { data } = await getVisitorsCounter();
-		if (data) {
+	const retrieveVisitorCount = useCallback(async () => {
+		try {
+			const { data } = await getVisitorsCounter();
 			setCounter(data);
+		} catch (error) {
+			console.error("Error fetching visitor counter:", error);
 		}
 	}, []);
 
 	useEffect(() => {
-		fetchCount();
-	}, []);
+		const timeoutId = setTimeout(() => {
+			retrieveVisitorCount();
+		}, 1000); // Adjust the delay time as needed (in milliseconds)
 
-	// useEffect(() => {
-	// 	// Simulate a page visit by incrementing the count on component mount
-	// 	setCount((prevCount) => prevCount + 1);
-	// }, []);
+		return () => clearTimeout(timeoutId);
+	}, [retrieveVisitorCount]);
 
 	// Convert the count to an array of individual digits
 	const countDigits = Array.from(String(counter?.count || 0), Number);

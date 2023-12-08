@@ -1,4 +1,5 @@
 import { Id } from "../../utils";
+import { APIActiveStatus } from "../activeStatus/types";
 import { APILinkTypeDetail, APIType } from "../linkTypes/types";
 import { APIPaginate } from "../types";
 
@@ -35,6 +36,7 @@ export interface APIMenuItemDetail {
 	linkType: APIType;
 	menuType: APIType;
 	isExternalPath: boolean;
+	activeStatus: APIActiveStatus;
 }
 
 export interface APIUpdateMenuItem {

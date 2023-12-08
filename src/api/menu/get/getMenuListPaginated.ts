@@ -11,7 +11,8 @@ export async function getMenuListPaginated(
 	menuTypeId?: Id,
 	categoryId?: Id,
 	statusCode?: Id,
-	orderBy?: string
+	orderBy?: string,
+	isDescending: boolean = false
 ): Promise<APIResponse<PaginatedMenuItem>> {
 	try {
 		let queryParam = "";
@@ -37,7 +38,7 @@ export async function getMenuListPaginated(
 		}
 
 		if (orderBy) {
-			queryParam += `${orderBy}`;
+			queryParam += `&orderBy=${orderBy}&isDescending=${isDescending}`;
 		}
 
 		const url =

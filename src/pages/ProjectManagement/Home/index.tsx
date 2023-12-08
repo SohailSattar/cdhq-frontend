@@ -102,7 +102,7 @@ const ProjectManagementPage = () => {
 					<div className={styles.btnDiv}>
 						<RedirectButton
 							label={detail}
-							redirectTo={`${RoutePath.PROJECT_EDIT.replace(
+							redirectTo={`${RoutePath.PROJECT_DETAIL.replace(
 								RoutePath.ID,
 								value
 							)}`}

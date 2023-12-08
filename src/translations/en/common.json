@@ -243,6 +243,7 @@
 				"class": "Class is required",
 				"rank": "Rank is required",
 				"project": "Project is required.",
+				"projectGroup": "Project group is required.",
 				"privilege": "Privilege is required.",
 				"workflowStart": "Workflow starts from is required.",
 				"workflowEnd": "Workflow ends at is required.",
@@ -250,9 +251,12 @@
 				"video": "Video is required",
 				"imageType": "Image type is required.",
 				"honorType": "Honor type is required.",
+				"reason": "Reason is required",
 				"shortSummary": "Short summary is required.",
 				"newsType": "Short summary is required.",
-				"news": "News is required."
+				"news": "News is required.",
+				"menuType": "Menu Type is required.",
+				"linkType": "Link Type is required."
 			},
 			"selection": {
 				"employee": "No Employee has been selected"

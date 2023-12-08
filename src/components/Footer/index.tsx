@@ -6,6 +6,7 @@ import { FC, useEffect, useState } from "react";
 import { Counter, FooterExternalLinks, FooterQRTable, Hr } from "..";
 import clsx from "clsx";
 import React from "react";
+import { APICount } from "../../api/visistors/types";
 
 const useStyles = makeStyles(() => ({
 	menuButton: {
@@ -17,12 +18,14 @@ interface Props {
 	showQRCodes?: boolean;
 	showLinks?: boolean;
 	showCounter?: boolean;
+	counter: APICount;
 }
 
 const Footer: FC<Props> = ({
 	showQRCodes = false,
 	showLinks = false,
 	showCounter = false,
+	counter = { count: 0 },
 }) => {
 	const [t] = useTranslation("common");
 
@@ -43,7 +46,7 @@ const Footer: FC<Props> = ({
 
 			{showCounter && (
 				<>
-					<Counter />
+					<Counter initialCounter={counter} />
 					<Hr />
 				</>
 			)}

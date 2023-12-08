@@ -12,47 +12,59 @@ const localStorageService = (() => {
 		access_token: string;
 		refresh_token: string;
 	}) => {
-		localStorage.setItem('access_token', tokenObj?.access_token);
-		localStorage.setItem('refresh_token', tokenObj?.refresh_token);
+		localStorage.setItem("access_token", tokenObj?.access_token);
+		localStorage.setItem("refresh_token", tokenObj?.refresh_token);
 	};
 
 	const _setJwtToken = (token: string) => {
-		localStorage.setItem('token', token);
+		localStorage.setItem("token", token);
 	};
 
 	const _getJwtToken = () => {
-		return localStorage.getItem('token');
+		return localStorage.getItem("token");
 	};
 
 	const _setLanguage = (language: string) => {
-		localStorage.setItem('language', language);
+		localStorage.setItem("language", language);
 	};
 
 	const _getLanguage = () => {
-		return localStorage.getItem('language');
+		return localStorage.getItem("language");
 	};
 
 	const _setUserInfo = (info: any) => {
-		localStorage.setItem('info', JSON.stringify(info));
+		localStorage.setItem("info", JSON.stringify(info));
 	};
 
 	const _getUserInfo = () => {
-		return JSON.parse(localStorage.getItem('info')!);
+		return JSON.parse(localStorage.getItem("info")!);
 	};
 
 	const _getAccessToken = () => {
-		return localStorage.getItem('access_token');
+		return localStorage.getItem("access_token");
 	};
 	const _getRefreshToken = () => {
-		return localStorage.getItem('refresh_token');
+		return localStorage.getItem("refresh_token");
 	};
+
+	// Session Token
+
+	const _setSessionToken = (token: any) => {
+		localStorage.setItem("sessionToken", JSON.stringify(token));
+	};
+
+	const _getSessionToken = () => {
+		return JSON.parse(localStorage.getItem("sessionToken")!);
+	};
+
 	const _clearToken = () => {
-		localStorage.removeItem('access_token');
-		localStorage.removeItem('refresh_token');
-		localStorage.removeItem('token');
-		localStorage.removeItem('info');
-		localStorage.removeItem('state');
-		localStorage.removeItem('language');
+		localStorage.removeItem("access_token");
+		localStorage.removeItem("refresh_token");
+		localStorage.removeItem("token");
+		localStorage.removeItem("info");
+		localStorage.removeItem("state");
+		localStorage.removeItem("language");
+		localStorage.removeItem("sessionToken");
 	};
 
 	return {
@@ -67,6 +79,8 @@ const localStorageService = (() => {
 		setUserInfo: _setUserInfo,
 		setLanguage: _setLanguage,
 		getLanguage: _getLanguage,
+		getSessionToken: _getSessionToken,
+		setSessionToken: _setSessionToken,
 	};
 })();
 

@@ -13,7 +13,6 @@ export * from "./Preview";
 export { default as Accordian } from "./Accordian";
 export { default as ActionButtons } from "./ActionButtons";
 export { default as ActiveStatus } from "./ActiveStatus";
-export { default as AllocatedUsers } from "./AllocatedUsers";
 
 // Animations
 export * from "./Animation";

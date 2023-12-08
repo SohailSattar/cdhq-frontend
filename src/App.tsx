@@ -56,41 +56,24 @@ import { Project } from "./data/projects";
 import { Worker } from "@react-pdf-viewer/core";
 
 import styles from "./styles.module.scss";
-import { useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
+import { generateSessionToken } from "./api/sessions/add/generateSessionToken";
+import React from "react";
 
 function App() {
 	const language = useStore((state) => state.language);
 
-	// // Your token storage key (e.g., 'authToken')
-	// const tokenKey = "token";
+	// const createSessionToken = useCallback(async () => {
+	// 	await generateSessionToken();
+	// }, []);
 
 	// useEffect(() => {
-	// 	// Check if the token is stored in sessionStorage
-	// 	const sessionToken = sessionStorage.getItem(tokenKey);
+	// 	const timeoutId = setTimeout(() => {
+	// 		createSessionToken();
+	// 	}, 1000); // Adjust the delay time as needed (in milliseconds)
 
-	// 	console.log(sessionToken);
-
-	// 	if (sessionToken) {
-	// 		// If the token exists in sessionStorage, copy it to localStorage
-	// 		localStorage.setItem(tokenKey, sessionToken);
-
-	// 		// Clear the token from sessionStorage
-	// 		sessionStorage.removeItem(tokenKey);
-	// 	}
-
-	// 	// Function to clear the token from local storage
-	// 	const clearToken = () => {
-	// 		localStorage.removeItem(tokenKey);
-	// 	};
-
-	// 	// Add an event listener for beforeunload
-	// 	window.addEventListener("beforeunload", clearToken);
-
-	// 	// Clean up the event listener when the component unmounts
-	// 	return () => {
-	// 		window.removeEventListener("beforeunload", clearToken);
-	// 	};
-	// }, []); // Empty dependency array to ensure the effect runs once
+	// 	return () => clearTimeout(timeoutId);
+	// }, [createSessionToken]);
 
 	return (
 		<div className={styles.app}>
@@ -604,4 +587,4 @@ function App() {
 	);
 }
 
-export default App;
+export default React.memo(App);

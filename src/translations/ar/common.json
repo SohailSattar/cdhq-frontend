@@ -243,6 +243,7 @@
 				"class": "الملاك حقل اجباري",
 				"rank": "حقل الرتبة اجباري",
 				"project": "حقل النظام اجباري",
+				"projectGroup": "Project group is required.",
 				"privilege": "الصلاحية حقل اجباري",
 				"workflowStart": "بداية التمرير",
 				"workflowEnd": "نهاية التمرير",
@@ -250,9 +251,12 @@
 				"video": "Video is required",
 				"imageType": "نوع الصورة حقل اجباري",
 				"honorType": "الفئة اجبارية",
+				"reason": "Reason is required",
 				"shortSummary": " مقدمة الخبر حقل اجباري",
 				"newsType": " نوع الخبر اجباري",
-				"news": "  الخبر حقل اجباري"
+				"news": "  الخبر حقل اجباري",
+				"menuType": "Menu Type is required.",
+				"linkType": "Link Type is required."
 			},
 			"selection": {
 				"employee": " لم يتم اختيار الموظف"
