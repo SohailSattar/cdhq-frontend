@@ -31,7 +31,7 @@
 		"pathLink": "الرابط",
 		"isVisible": "ظاهر",
 		"linkType": "نوع الرابط",
-		"menuType": "Menu Type",
+		"menuType": "نوع القائمة",
 		"count": "المجموع",
 		"list": "اللائحة",
 		"orderNo": "الترتيب",
@@ -54,21 +54,21 @@
 			"servicesDepartment": "أفضل مراكز خدمة",
 			"creation": "الابتكارات"
 		},
-		"thumbnail": "thumbnail",
-		"icon": "Icon"
+		"thumbnail": "خلفية",
+		"icon": "أيقونة"
 	},
 	"video": {
-		"upload": "Video Upload"
+		"upload": "رفع فيديو "
 	},
 	"qrCode": {
-		"name": "Name",
-		"nameEnglish": "Name [English]",
-		"icon": "Icon"
+		"name": "اسم الرمز",
+		"nameEnglish": "اسم الرمز [English]",
+		"icon": "أيقونة الرمز"
 	},
 	"tab": {
-		"imagesVideos": "Images & Videos",
+		"imagesVideos": "صور و فيديوهات",
 		"menuList": "Menu List",
-		"qrCodes": "QR Codes"
+		"qrCodes": "رموز الاستجابة السريعة "
 	},
 	"page": {
 		"userHome": "حسابات المستخدمين",
@@ -89,9 +89,9 @@
 		"imagesHome": " سجل الصور",
 		"imageEdit": "تعديل الصور ",
 		"imageNew": " اضافة صورة",
-		"qrCodeHome": "QR Codes List",
-		"qrCodeEdit": "Edit QR Code",
-		"qrCodeNew": "New QR Code"
+		"qrCodeHome": "سجلات رمز الاستجابة السريعة",
+		"qrCodeEdit": "تعديل رمز الاستجابة السريعة",
+		"qrCodeNew": " رمز الاستجابة السريعة جديد"
 	},
 	"account": {
 		"login": "تسجيل الدخول",
@@ -123,7 +123,7 @@
 		"activate": "تفعيل",
 		"deactivate": "الغاء التفعيل",
 		"synchronize": "سحب البيانات المحدثة",
-		"changePassword": "Change",
+		"changePassword": "تغيير كلمة المرور",
 		"addNewDepartment": "اضافة ادارة ",
 		"addNewUser": "اضافة مستخدم جديد",
 		"addNewProject": "اضافة نظام جديد ",
@@ -248,22 +248,22 @@
 				"workflowStart": "بداية التمرير",
 				"workflowEnd": "نهاية التمرير",
 				"image": "الصورة اجبارية",
-				"video": "Video is required",
+				"video": "الفيديو اجباري ",
 				"imageType": "نوع الصورة حقل اجباري",
-				"honorType": "الفئة اجبارية",
-				"reason": "Reason is required",
+				"honorType": "الفئة  حقل اجبارية",
+				"reason": "السبب حقل اجباري ",
 				"shortSummary": " مقدمة الخبر حقل اجباري",
 				"newsType": " نوع الخبر اجباري",
 				"news": "  الخبر حقل اجباري",
-				"menuType": "Menu Type is required.",
-				"linkType": "Link Type is required."
+				"menuType": "نوع القائمة اجباري",
+				"linkType": "نوع الرابط اجباري"
 			},
 			"selection": {
 				"employee": " لم يتم اختيار الموظف"
 			},
 			"validation": {
 				"passwordMismatch": "الرمز السري لا يتطابق",
-				"fileSize": "File size should not exceed 50 MB"
+				"fileSize": " حجم الملف أن لا يتجاوز 50 MB"
 			}
 		}
 	},
@@ -298,11 +298,11 @@
 		"byDepartment": "تصفية حسب الأقسام و الأفرع"
 	},
 	"message": {
-		"fail": "There was an error while prcoessing, please contact the IT department",
-		"recordCreated": "Record has been created",
-		"recordUpdated": "Record has been updated",
-		"recordActivated": "Record has been activated",
-		"recordDeactivated": "Record has been deactivated",
+		"fail": "حدث خطأ أثناء المعالجة، يرجى الاتصال بقسم الخدمات الالكترونية",
+		"recordCreated": "تم اضافة السجل",
+		"recordUpdated": "تم تعديل السجل",
+		"recordActivated": "تم تفعيل السجل",
+		"recordDeactivated": "تم الغاء تفعيل السجل",
 		"unauthorized": "ليس لديك صلاحية على الصفحة",
 		"noAccountContact": "ليس لديك حساب؟ اتصل بقسم الخدمات الألكترونية",
 		"employeeNotExists": "لا يوجد موظف بهذا الرقم ! الرجاء الاتصال بوزارة الداخلية",
@@ -315,7 +315,7 @@
 		"userDetailUpdated": "تم تحديث تفاصيل حساب المستخدم",
 		"passwordUpdated": "تم تحديث كلمة السر",
 		"passwordNotMatched": "كلمات السر لا تتطابق",
-		"passwordExpiring": "Password is expiring in _EXPIRINGIN_ days. Please change your password by clicking here",
+		"passwordExpiring": "تنتهي صلاحية كلمة المرور خلال _EXPIRINGIN_ يومًا. يرجى تغيير كلمة المرور الخاصة بك  بالضغط هنا",
 		"signatureUpdated": "تم تحديث التوقيع",
 		"roleUpdated": "تم تحديث الدور",
 		"privilegeUpdated": "تم تحديث الامتياز",
@@ -337,7 +337,7 @@
 		"imageActivated": "تم  تفعيل الأيقونة",
 		"imageDeleted": "تم الغاء تفعيل الأيقونة",
 		"imageUpdated": "تم تحديث الصورة",
-		"videoUpdated": "Video has been updated",
+		"videoUpdated": "تم تحديث الفيديو",
 		"newsAdded": "تمت إضافة الخبر",
 		"newsUpdated": "تم تحديث الخبر",
 		"newsActivated": " تم تفعيل الخبر",
@@ -355,7 +355,7 @@
 		"select": "اختر"
 	},
 	"table": {
-		"noResult": "No result found",
+		"noResult": "لم يتم العثور على نتائج",
 		"noProject": "لم يتم العثور على النظام",
 		"noUser": "لم يتم العثور على المستخدم",
 		"noEmployee": "لم يتم العثور على الموظف",
