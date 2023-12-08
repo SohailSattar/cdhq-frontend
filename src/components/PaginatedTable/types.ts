@@ -68,6 +68,14 @@ export interface ProjectColumns {
 	activeStatus: string;
 }
 
+export interface APIProjectUserTable {
+	id: number;
+	userName: string;
+	department: string;
+	privilege: string;
+	userId: number;
+}
+
 export interface LinkTypeColumns {
 	id: number;
 	name: string;
@@ -84,5 +92,16 @@ export interface MenuItemColumns {
 	isVisible: boolean;
 	orderNo: number;
 	linkType?: APIType;
+	menuType?: APIType;
 	isExternalPath: boolean;
+	activeStatus: string;
+}
+
+export interface QRCodeItemColumns {
+	id: number;
+	name: string;
+	nameEnglish: string;
+	imageName: string;
+	iconName: string;
+	activeStatus: APIActiveStatus;
 }

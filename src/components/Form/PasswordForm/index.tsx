@@ -19,7 +19,7 @@ const PasswordForm: FC<Props> = ({ onSubmit }) => {
 		formState: { errors },
 		handleSubmit,
 		getValues,
-		control
+		control,
 	} = useForm<IPasswordFormInputs>({ criteriaMode: "all" });
 
 	useEffect(() => {
@@ -27,15 +27,15 @@ const PasswordForm: FC<Props> = ({ onSubmit }) => {
 			required: "Password is required.",
 			minLength: {
 				value: 12,
-				message: "Password should be 12 characters long"
-			}
+				message: "Password should be 12 characters long",
+			},
 		});
 		register("password2", {
-			required: "You have to retype the password",
+			required: t("error.form.required.nameArabic", { framework: "React" }),
 			validate: (value) =>
-				value === getValues("password") || "The passwords do not match"
+				value === getValues("password") || "The passwords do not match",
 		});
-	}, [register, getValues]);
+	}, [register, getValues, t]);
 
 	return (
 		<div className={styles.passwordForm}>
@@ -83,7 +83,9 @@ const PasswordForm: FC<Props> = ({ onSubmit }) => {
 							render={({ messages }) => {
 								return messages
 									? _.entries(messages).map(([type, message]) => (
-											<p key={type} className="error">
+											<p
+												key={type}
+												className="error">
 												{message}
 											</p>
 									  ))
@@ -96,7 +98,9 @@ const PasswordForm: FC<Props> = ({ onSubmit }) => {
 							render={({ messages }) => {
 								return messages
 									? _.entries(messages).map(([type, message]) => (
-											<p key={type} className="error">
+											<p
+												key={type}
+												className="error">
 												{message}
 											</p>
 									  ))

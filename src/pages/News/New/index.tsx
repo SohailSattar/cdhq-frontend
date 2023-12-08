@@ -63,14 +63,22 @@ const NewsCreatePage = () => {
 	const addNewsHandler = async () => {
 		setIsOpen(false);
 
-		const { department, newsType, thumbnail, title, shortSummary, fullNews } =
-			details!;
+		const {
+			department,
+			newsType,
+			thumbnail,
+			video,
+			title,
+			shortSummary,
+			fullNews,
+		} = details!;
 
 		const params: APINewNews = {
 			departmentId: department.value!,
 			title: title!,
 			shortSummary: shortSummary,
 			thumbnail: thumbnail,
+			videoFile: video,
 			newsTypeId: +newsType.value!,
 			fullNews: fullNews,
 		};

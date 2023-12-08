@@ -102,9 +102,9 @@ const Header: FC<Props> = ({ hideLoginButton = false }) => {
 			});
 	};
 
-	const gearClickHandler = () => {
-		navigate(RoutePath.SETTINGS);
-	};
+	// const gearClickHandler = () => {
+	// 	navigate(RoutePath.SETTINGS);
+	// };
 
 	const displayDesktop = () => {
 		return (
@@ -130,14 +130,14 @@ const Header: FC<Props> = ({ hideLoginButton = false }) => {
 						/>
 					)}
 					<ChangeLanguage className={clsx(styles.menuItem, menuButton)} />
-					{loggedUser.role === ROLE.SUPERADMIN && (
+					{/* {loggedUser.role === ROLE.SUPERADMIN && (
 						<FontAwesomeIcon
 							icon={faGear}
 							style={{ color: "black", cursor: "pointer" }}
 							onClick={gearClickHandler}
 							className={clsx(styles.menuItem, styles.actionBtn, menuButton)}
 						/>
-					)}
+					)} */}
 					{loggedUser.userName ? (
 						<Logout
 							label={t("account.logout", { framework: "React" })}

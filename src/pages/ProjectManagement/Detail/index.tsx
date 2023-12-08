@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-	AllocatedUsers,
-	Button,
+	AllocatedUsersTable,
 	DeleteConfirmation,
 	MetaDataDetails,
 	PageContainer,
@@ -128,7 +127,8 @@ const ProjectDetailPage = () => {
 			title={t("page.projectDetail", { framework: "React" })}
 			showBackButton
 			btnBackUrlLink={RoutePath.PROJECT}
-			lockFor={[ROLE.USER, ROLE.ADMIN]}>
+			lockFor={[ROLE.USER, ROLE.ADMIN]}
+			currentStatus={status?.id === 1 ? "ACTIVE" : "DEACTIVE"}>
 			<div className={styles.project}>
 				<div>
 					<ProjectTree onNodeClick={projectTreeNodeClickHandler} />
@@ -161,9 +161,9 @@ const ProjectDetailPage = () => {
 						</ShadowedContainer>
 					)}
 
-					<div>
+					<ShadowedContainer className={styles.statusDiv}>
 						<Status status={status!} />
-					</div>
+					</ShadowedContainer>
 					<ProjectDetail
 						imageSrc={project?.iconName}
 						name={project?.name!}
@@ -171,7 +171,7 @@ const ProjectDetailPage = () => {
 						groupName={project?.group?.nameArabic!}
 						groupNameEnglish={project?.group?.nameEnglish!}
 					/>
-					{/* <AllocatedUsers projectId={id!} /> */}
+					<AllocatedUsersTable projectId={id!} />
 					<hr />
 					<MetaDataDetails
 						createdBy={project?.createdBy!}

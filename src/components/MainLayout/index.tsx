@@ -10,7 +10,7 @@ const MainLayout: FC<Props> = ({ children }) => {
 			<Menu title={"tess"} />
 			<div>{children}</div>
 
-			<Footer />
+			{/* <Footer /> */}
 		</>
 	);
 };

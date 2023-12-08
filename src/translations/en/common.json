@@ -18,7 +18,8 @@
 		}
 	},
 	"dashboard": {
-		"honors": "Honors",
+		"videos": "Videos",
+		"talented": "Talented",
 		"employeeOfMonth": "Employee of the month"
 	},
 	"menu": {
@@ -29,7 +30,8 @@
 		"parentEnglish": "Parent [English]",
 		"pathLink": "Path Url",
 		"isVisible": "Is Visible?",
-		"linkType": "Type",
+		"linkType": "Link Type",
+		"menuType": "Menu Type",
 		"count": "Total Items",
 		"list": "Menu List",
 		"orderNo": "Order No",
@@ -51,7 +53,22 @@
 			"fireDepartment": "Fire Departments",
 			"servicesDepartment": "Service Department",
 			"creation": "Innovations"
-		}
+		},
+		"thumbnail": "Thumbnail",
+		"icon": "Icon"
+	},
+	"video": {
+		"upload": "Video Upload"
+	},
+	"qrCode": {
+		"name": "Name",
+		"nameEnglish": "Name [English]",
+		"icon": "Icon"
+	},
+	"tab": {
+		"imagesVideos": "Images & Videos",
+		"menuList": "Menu List",
+		"qrCodes": "QR Codes"
 	},
 	"page": {
 		"userHome": "User Account",
@@ -71,7 +88,10 @@
 		"honorNew": "New Honor",
 		"imagesHome": "Images List",
 		"imageEdit": "Edit Image",
-		"imageNew": "New Image"
+		"imageNew": "New Image",
+		"qrCodeHome": "QR Codes List",
+		"qrCodeEdit": "Edit QR Code",
+		"qrCodeNew": "New QR Code"
 	},
 	"account": {
 		"login": "Login",
@@ -103,6 +123,7 @@
 		"activate": "Activate",
 		"deactivate": "Deactivate",
 		"synchronize": "Synchronize",
+		"changePassword": "Change",
 		"addNewDepartment": "New Department",
 		"addNewUser": "New User",
 		"addNewProject": "New Project",
@@ -222,21 +243,27 @@
 				"class": "Class is required",
 				"rank": "Rank is required",
 				"project": "Project is required.",
+				"projectGroup": "Project group is required.",
 				"privilege": "Privilege is required.",
 				"workflowStart": "Workflow starts from is required.",
 				"workflowEnd": "Workflow ends at is required.",
 				"image": "Image is required",
+				"video": "Video is required",
 				"imageType": "Image type is required.",
 				"honorType": "Honor type is required.",
+				"reason": "Reason is required",
 				"shortSummary": "Short summary is required.",
 				"newsType": "Short summary is required.",
-				"news": "News is required."
+				"news": "News is required.",
+				"menuType": "Menu Type is required.",
+				"linkType": "Link Type is required."
 			},
 			"selection": {
 				"employee": "No Employee has been selected"
 			},
 			"validation": {
-				"passwordMismatch": "The passwords do not match"
+				"passwordMismatch": "The passwords do not match",
+				"fileSize": "File size should not exceed 50 MB"
 			}
 		}
 	},
@@ -271,6 +298,11 @@
 		"byDepartment": "Filter by Department"
 	},
 	"message": {
+		"fail": "There was an error while prcoessing, please contact the IT department",
+		"recordCreated": "Record has been created",
+		"recordUpdated": "Record has been updated",
+		"recordActivated": "Record has been activated",
+		"recordDeactivated": "Record has been deactivated",
 		"unauthorized": "You are not authorized to view this page",
 		"noAccountContact": "Don't have an account? Contact the electronic services department",
 		"employeeNotExists": "No employee with this employee number exists! Please contact the Ministry of Interior.",
@@ -283,6 +315,7 @@
 		"userDetailUpdated": "User detail has been updated",
 		"passwordUpdated": "Password updated",
 		"passwordNotMatched": "Passwords don't match",
+		"passwordExpiring": "Password is expiring in _EXPIRINGIN_ days. Please change your password by clicking here",
 		"signatureUpdated": "New signature has been updated",
 		"roleUpdated": "Role updated",
 		"privilegeUpdated": "Privilege Updated",
@@ -304,6 +337,7 @@
 		"imageActivated": "Image has been reactivated",
 		"imageDeleted": "Image has been deactivated",
 		"imageUpdated": "Image has been updated",
+		"videoUpdated": "Video has been updated",
 		"newsAdded": "News has been added",
 		"newsUpdated": "News has been updated",
 		"newsActivated": "News has been activated",
@@ -321,6 +355,7 @@
 		"select": "Select..."
 	},
 	"table": {
+		"noResult": "No result found",
 		"noProject": "No project found",
 		"noUser": "No user found",
 		"noEmployee": "No employee found",

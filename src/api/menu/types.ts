@@ -1,4 +1,5 @@
 import { Id } from "../../utils";
+import { APIActiveStatus } from "../activeStatus/types";
 import { APILinkTypeDetail, APIType } from "../linkTypes/types";
 import { APIPaginate } from "../types";
 
@@ -19,6 +20,11 @@ export interface APIMenuItem {
 	linkPath?: string;
 }
 
+export interface APIParentMenuItem {
+	id: number;
+	name: string;
+	nameEnglish: string;
+}
 export interface APIMenuItemDetail {
 	id: number;
 	name: string;
@@ -28,7 +34,9 @@ export interface APIMenuItemDetail {
 	isVisible: boolean;
 	orderNo: string;
 	linkType: APIType;
+	menuType: APIType;
 	isExternalPath: boolean;
+	activeStatus: APIActiveStatus;
 }
 
 export interface APIUpdateMenuItem {

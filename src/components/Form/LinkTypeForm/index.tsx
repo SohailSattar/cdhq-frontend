@@ -32,12 +32,12 @@ const LinkTypeForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 	useEffect(() => {
 		// Link type Name
 		register("name", {
-			required: "Name is required.",
+			required: t("error.form.required.nameArabic", { framework: "React" }),
 		});
 
 		// Link type Name [English]
 		register("nameEnglish", {
-			required: "Name [English] is required.",
+			required: t("error.form.required.nameEnglish", { framework: "React" }),
 			// pattern: {
 			// 	value: /[\u0621-\u064As]+$/,
 			// 	message: 'Name should only be in alphabets.',
@@ -51,7 +51,7 @@ const LinkTypeForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 			setValue("nameEnglish", nameEnglish);
 			setValue("isFile", isFile);
 		}
-	}, [data, setValue]);
+	}, [data, register, setValue, t]);
 
 	const submitHandler = (values: ILinkTypeFormInputs) => {
 		onSubmit(values);

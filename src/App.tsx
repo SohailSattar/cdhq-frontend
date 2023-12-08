@@ -33,11 +33,14 @@ import {
 	SettingsHomePage,
 	MenuHomeSettingsPage,
 	MenuNewSettingsPage,
-	LinkTypesNewSettingsPage,
-	LinkTypesEditSettingsPage,
-	ImageManagementHomePage,
-	ImageManagementNewPage,
-	ImageManagementEditPage,
+	LinkTypesNewContentManagementPage,
+	LinkTypesEditContentManagementPage,
+	ImageHomeContentManagementPage,
+	ImageEditContentManagementPage,
+	ImageNewContentManagementPage,
+	QRCodeHomeContentManagementPage,
+	QRCodeNewContentManagementPage,
+	QRCodeEditContentManagementPage,
 } from "./pages";
 
 import * as RoutePath from "./RouteConfig";
@@ -53,41 +56,24 @@ import { Project } from "./data/projects";
 import { Worker } from "@react-pdf-viewer/core";
 
 import styles from "./styles.module.scss";
-import { useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
+import { generateSessionToken } from "./api/sessions/add/generateSessionToken";
+import React from "react";
 
 function App() {
 	const language = useStore((state) => state.language);
 
-	// // Your token storage key (e.g., 'authToken')
-	// const tokenKey = "token";
+	// const createSessionToken = useCallback(async () => {
+	// 	await generateSessionToken();
+	// }, []);
 
 	// useEffect(() => {
-	// 	// Check if the token is stored in sessionStorage
-	// 	const sessionToken = sessionStorage.getItem(tokenKey);
+	// 	const timeoutId = setTimeout(() => {
+	// 		createSessionToken();
+	// 	}, 1000); // Adjust the delay time as needed (in milliseconds)
 
-	// 	console.log(sessionToken);
-
-	// 	if (sessionToken) {
-	// 		// If the token exists in sessionStorage, copy it to localStorage
-	// 		localStorage.setItem(tokenKey, sessionToken);
-
-	// 		// Clear the token from sessionStorage
-	// 		sessionStorage.removeItem(tokenKey);
-	// 	}
-
-	// 	// Function to clear the token from local storage
-	// 	const clearToken = () => {
-	// 		localStorage.removeItem(tokenKey);
-	// 	};
-
-	// 	// Add an event listener for beforeunload
-	// 	window.addEventListener("beforeunload", clearToken);
-
-	// 	// Clean up the event listener when the component unmounts
-	// 	return () => {
-	// 		window.removeEventListener("beforeunload", clearToken);
-	// 	};
-	// }, []); // Empty dependency array to ensure the effect runs once
+	// 	return () => clearTimeout(timeoutId);
+	// }, [createSessionToken]);
 
 	return (
 		<div className={styles.app}>
@@ -102,8 +88,10 @@ function App() {
 							element={
 								<Layout
 									noChecks={true}
-									displayLanguageChange={true}
-									className={styles.unpadded}>
+									className={styles.unpadded}
+									showQRCodes={true}
+									showLinks={true}
+									showCounter={true}>
 									<LandingPage />
 								</Layout>
 							}
@@ -113,7 +101,6 @@ function App() {
 							element={
 								<Layout
 									hideLoginButton={true}
-									displayLanguageChange={true}
 									noChecks={true}>
 									<LoginPage />
 								</Layout>
@@ -152,7 +139,7 @@ function App() {
 						{/* SETTING */}
 						<Route element={<ProtectedRoute />}>
 							<Route
-								path={`${RoutePath.SETTINGS}`}
+								path={`${RoutePath.CONTENT_MANAGEMENT}`}
 								element={
 									<Layout>
 										<SettingsHomePage />
@@ -162,7 +149,7 @@ function App() {
 						</Route>
 						<Route element={<ProtectedRoute />}>
 							<Route
-								path={`${RoutePath.SETTINGS_MENU}`}
+								path={`${RoutePath.CONTENT_MANAGEMENT_MENU}`}
 								element={
 									<Layout>
 										<MenuHomeSettingsPage />
@@ -172,7 +159,7 @@ function App() {
 						</Route>
 						<Route element={<ProtectedRoute />}>
 							<Route
-								path={`${RoutePath.SETTINGS_MENU_EDIT}`}
+								path={`${RoutePath.CONTENT_MANAGEMENT_MENU_EDIT}`}
 								element={
 									<Layout>
 										<MenuEditSettingsPage />
@@ -182,7 +169,7 @@ function App() {
 						</Route>
 						<Route element={<ProtectedRoute />}>
 							<Route
-								path={`${RoutePath.SETTINGS_MENU_NEW}`}
+								path={`${RoutePath.CONTENT_MANAGEMENT_MENU_NEW}`}
 								element={
 									<Layout>
 										<MenuNewSettingsPage />
@@ -190,10 +177,10 @@ function App() {
 								}
 							/>
 						</Route>
-						{/* SETTINGS - LINK TYPES */}
+						{/* CONTENT MANAGEMENT - LINK TYPES */}
 						<Route element={<ProtectedRoute />}>
 							<Route
-								path={`${RoutePath.SETTINGS_LINK_TYPES}`}
+								path={`${RoutePath.CONTENT_MANAGEMENT_LINK_TYPES}`}
 								element={
 									<Layout>
 										<MenuHomeSettingsPage />
@@ -203,20 +190,88 @@ function App() {
 						</Route>
 						<Route element={<ProtectedRoute />}>
 							<Route
-								path={`${RoutePath.SETTINGS_LINK_TYPES_EDIT}`}
+								path={`${RoutePath.CONTENT_MANAGEMENT_LINK_TYPES_EDIT}`}
 								element={
 									<Layout>
-										<LinkTypesEditSettingsPage />
+										<LinkTypesEditContentManagementPage />
 									</Layout>
 								}
 							/>
 						</Route>
 						<Route element={<ProtectedRoute />}>
 							<Route
-								path={`${RoutePath.SETTINGS_LINK_TYPES_NEW}`}
+								path={`${RoutePath.CONTENT_MANAGEMENT_LINK_TYPES_NEW}`}
 								element={
 									<Layout>
-										<LinkTypesNewSettingsPage />
+										<LinkTypesNewContentManagementPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						{/* CONTENT MANAGEMENT - IMAGE */}
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.CONTENT_MANAGEMENT_IMAGE}`}
+								element={
+									<Layout
+									// projectId={Project.ImageManagement}  TODO: Fix this
+									// privilegeType={"Read"}
+									>
+										<ImageHomeContentManagementPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.CONTENT_MANAGEMENT_IMAGE_NEW}`}
+								element={
+									<Layout>
+										<ImageNewContentManagementPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.CONTENT_MANAGEMENT_IMAGE_EDIT}`}
+								element={
+									<Layout>
+										<ImageEditContentManagementPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						{/* CONTENT MANAGEMENT - QR Code */}
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.CONTENT_MANAGEMENT_QR_CODE}`}
+								element={
+									<Layout
+									// projectId={Project.ImageManagement}  TODO: Fix this
+									// privilegeType={"Read"}
+									>
+										<QRCodeHomeContentManagementPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.CONTENT_MANAGEMENT_QR_CODE_NEW}`}
+								element={
+									<Layout>
+										<QRCodeNewContentManagementPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.CONTENT_MANAGEMENT_QR_CODE_EDIT}`}
+								element={
+									<Layout>
+										<QRCodeEditContentManagementPage />
 									</Layout>
 								}
 							/>
@@ -454,40 +509,6 @@ function App() {
 								}
 							/>
 						</Route>
-						{/* Image Management */}
-						<Route element={<ProtectedRoute />}>
-							<Route
-								path={`${RoutePath.IMAGE_MANAGING}`}
-								element={
-									<Layout
-									// projectId={Project.ImageManagement}  TODO: Fix this
-									// privilegeType={"Read"}
-									>
-										<ImageManagementHomePage />
-									</Layout>
-								}
-							/>
-						</Route>
-						<Route element={<ProtectedRoute />}>
-							<Route
-								path={`${RoutePath.IMAGE_MANAGING_NEW}`}
-								element={
-									<Layout>
-										<ImageManagementNewPage />
-									</Layout>
-								}
-							/>
-						</Route>
-						<Route element={<ProtectedRoute />}>
-							<Route
-								path={`${RoutePath.IMAGE_MANAGING_EDIT}`}
-								element={
-									<Layout>
-										<ImageManagementEditPage />
-									</Layout>
-								}
-							/>
-						</Route>
 						{/* News */}
 						<Route element={<ProtectedRoute />}>
 							<Route
@@ -566,4 +587,4 @@ function App() {
 	);
 }
 
-export default App;
+export default React.memo(App);

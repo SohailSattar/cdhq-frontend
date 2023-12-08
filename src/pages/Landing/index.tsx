@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { APINews, APINewsDetail } from "../../api/news/types";
 import {
 	DisplayCard,
@@ -21,10 +21,13 @@ import { getNewsDetail } from "../../api/news/get/getNewsDetail";
 import { useTranslation } from "react-i18next";
 import { useStore } from "../../utils/store";
 import { getLatest10ImagesList } from "../../api/images/get/getLatest10ImagesList";
+import { getEmployeesOfTheMonth } from "../../api/honors/get/getEmployeesOfTheMonth";
+import { getVideosList } from "../../api/images/get/getVideosList";
 
 const LandingPage = () => {
 	const [t] = useTranslation("common");
 	const language = useStore((state) => state.language);
+
 	const [news, setNews] = useState<APINews[]>([]);
 
 	// Honors
@@ -32,6 +35,7 @@ const LandingPage = () => {
 	const [skilledEmpsCardsList, setSkilledEmpsCardsList] = useState<ICard[]>([]);
 
 	// Creations
+	const [videosCardsList, setVideosCardsList] = useState<ICard[]>([]);
 	const [fireDeptCardsList, setFireDeptCardsList] = useState<ICard[]>([]);
 	const [servicesDeptCardsList, setServicesDeptCardsList] = useState<ICard[]>(
 		[]
@@ -75,20 +79,12 @@ const LandingPage = () => {
 					?.filter((x) => x.type === "موهوب")
 					.map((x) => {
 						return {
+							id: x.id,
 							image: x.imageName,
 							title: language !== "ar" ? x.name : x.nameEnglish,
 						};
 					});
 
-				// Employee of the month
-				const em: ICard[] = data?.map((x) => {
-					return {
-						image: x.imageName,
-						title: language !== "ar" ? x.name : x.nameEnglish,
-					};
-				});
-
-				setEmpOfMonthCardsList(em);
 				setSkilledEmpsCardsList(se);
 			}
 		};
@@ -96,12 +92,53 @@ const LandingPage = () => {
 		fetch();
 	}, [language, setEmpOfMonthCardsList]);
 
+	const fetchVideos = useCallback(async () => {
+		const { data } = await getVideosList();
+		if (data!) {
+			// Employee of the month
+			const vdo: ICard[] = data?.map((x) => {
+				return {
+					id: x.id,
+					image: x.imageName,
+					title: language !== "ar" ? x.name : x.nameEnglish,
+					video: x.videoName,
+				};
+			});
+			setVideosCardsList(vdo);
+		}
+	}, [language]);
+
+	useEffect(() => {
+		fetchVideos();
+	}, [fetchVideos]);
+
+	const fetchEmployeeOfTheMonth = useCallback(async () => {
+		const { data } = await getEmployeesOfTheMonth();
+
+		if (data!) {
+			// Employee of the month
+			const em: ICard[] = data?.map((x) => {
+				return {
+					id: x.id,
+					image: x.imageName,
+					title: language !== "ar" ? x.name : x.nameEnglish,
+				};
+			});
+			setEmpOfMonthCardsList(em);
+		}
+	}, [language]);
+
+	useEffect(() => {
+		fetchEmployeeOfTheMonth();
+	}, [fetchEmployeeOfTheMonth]);
+
 	useEffect(() => {
 		const fetch = async () => {
 			const { data } = await getLatest10ImagesList(1);
 			if (data!) {
 				const fd: ICard[] = data?.map((x) => {
 					return {
+						id: x.id,
 						image: x.imageName,
 						title: language !== "ar" ? x.name : x.nameEnglish,
 					};
@@ -122,6 +159,7 @@ const LandingPage = () => {
 					?.filter((x) => x.imageType.id === 2)
 					.map((x) => {
 						return {
+							id: x.id,
 							image: x.imageName,
 							title: language !== "ar" ? x.name : x.nameEnglish,
 							rating: x.stars!,
@@ -143,6 +181,7 @@ const LandingPage = () => {
 					?.filter((x) => x.imageType.id === 3)
 					.map((x) => {
 						return {
+							id: x.id,
 							image: x.imageName,
 							title: language !== "ar" ? x.name : x.nameEnglish,
 						};
@@ -201,20 +240,23 @@ const LandingPage = () => {
 			<div className={clsx("row", styles.container)}>
 				<div className={clsx("col-2", styles.sideBar)}>
 					{empOfMonthCardsList.length > 0 && (
-						<DisplayCard
-							title={t("dashboard.employeeOfMonth", { framework: "React" })}
-							className={styles.sideBarCard}>
-							<CardsCarousel data={empOfMonthCardsList} />
-						</DisplayCard>
+						<div className={styles.sideBarCard}>
+							<DisplayCard
+								title={t("dashboard.employeeOfMonth", { framework: "React" })}>
+								<CardsCarousel data={empOfMonthCardsList} />
+							</DisplayCard>
+						</div>
 					)}
 					{fireDeptCardsList.length > 0 && (
-						<DisplayCard
-							title={t("image.imageType.fireDepartment", {
-								framework: "React",
-							})}
-							className={styles.sideBarCard}>
-							<CardsCarousel data={fireDeptCardsList} />
-						</DisplayCard>
+						<div className={styles.sideBarCard}>
+							<DisplayCard
+								title={t("image.imageType.fireDepartment", {
+									framework: "React",
+								})}
+								className={styles.sideBarCard}>
+								<CardsCarousel data={fireDeptCardsList} />
+							</DisplayCard>
+						</div>
 					)}
 					{servicesDeptCardsList.length > 0 && (
 						<DisplayCard
@@ -234,7 +276,7 @@ const LandingPage = () => {
 					{news.length > 0 && (
 						<NewsCarousel
 							list={news}
-							intervalInMiliseconds={5000}
+							intervalInMiliseconds={10000}
 							onViewClick={newsDetailClickHandler}
 							onTableViewClick={newsListButtonClickHandler!}
 						/>
@@ -242,21 +284,34 @@ const LandingPage = () => {
 				</div>
 
 				<div className={clsx("col-2", styles.sideBar)}>
+					{videosCardsList.length > 0 && (
+						<div className={styles.sideBarCard}>
+							<DisplayCard
+								title={t("dashboard.videos", { framework: "React" })}>
+								<CardsCarousel
+									data={videosCardsList}
+									isScrollable={true}
+								/>
+							</DisplayCard>
+						</div>
+					)}
 					{skilledEmpsCardsList.length > 0 && (
-						<DisplayCard
-							title={t("dashboard.honors", { framework: "React" })}
-							className={styles.sideBarCard}>
-							<CardsCarousel data={skilledEmpsCardsList} />
-						</DisplayCard>
+						<div className={styles.sideBarCard}>
+							<DisplayCard
+								title={t("dashboard.talented", { framework: "React" })}>
+								<CardsCarousel data={skilledEmpsCardsList} />
+							</DisplayCard>
+						</div>
 					)}
 					{creationsCardsList.length > 0 && (
-						<DisplayCard
-							title={t("image.imageType.creation", {
-								framework: "React",
-							})}
-							className={styles.sideBarCard}>
-							<CardsCarousel data={creationsCardsList} />
-						</DisplayCard>
+						<div className={styles.sideBarCard}>
+							<DisplayCard
+								title={t("image.imageType.creation", {
+									framework: "React",
+								})}>
+								<CardsCarousel data={creationsCardsList} />
+							</DisplayCard>
+						</div>
 					)}
 				</div>
 			</div>

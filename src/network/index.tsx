@@ -8,12 +8,12 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 
-import defaultRequest from './Interceptors/defaultRequest';
-import defaultResponse from './Interceptors/defaultResponse';
-import defaultResponseError from './Interceptors/defaultResponseError';
-import defaultRequestError from './Interceptors/defaultRequestError';
-import axios, { AxiosRequestConfig, AxiosResponse, AxiosInstance } from 'axios';
-import property from './property';
+import defaultRequest from "./Interceptors/defaultRequest";
+import defaultResponse from "./Interceptors/defaultResponse";
+import defaultResponseError from "./Interceptors/defaultResponseError";
+import defaultRequestError from "./Interceptors/defaultRequestError";
+import axios, { AxiosRequestConfig, AxiosResponse, AxiosInstance } from "axios";
+import property from "./property";
 // import * as Endpoint from "./Endpoints";
 
 const { isCancel, CancelToken } = axios;
@@ -36,7 +36,7 @@ const defaultInterceptors: interceptorType = {
 };
 
 const defaultConfig: AxiosRequestConfig = {
-	baseURL: '',
+	baseURL: "",
 	timeout: 240000,
 };
 
@@ -48,7 +48,7 @@ const createInstance = (
 
 	instance.defaults.baseURL = property.BASE_URL;
 
-	instance.defaults.headers.post['Content-Type'] =
+	instance.defaults.headers.post["Content-Type"] =
 		property.Default_Content_Type;
 
 	const interceptorToSet = { ...defaultInterceptors, ...interceptors };

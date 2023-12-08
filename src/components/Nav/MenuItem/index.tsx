@@ -6,7 +6,10 @@ import styles from "./styles.module.scss";
 import { APIMenuListItem } from "../../../api/menu/types";
 import { useStore } from "../../../utils/store";
 import { Link, useNavigate } from "react-router-dom";
-import { Modal } from "../..";
+import { Modal, VideoModal } from "../..";
+import { APILinkTypeDetail } from "../../../api/linkTypes/types";
+
+import * as Routepath from "../../../RouteConfig";
 
 interface Props {
 	title: string;
@@ -20,8 +23,9 @@ const NavMenuItem: FC<Props> = ({ title, urlPath, items }) => {
 
 	const [show, setShow] = useState(false);
 	const [showModal, setShowModal] = useState(false);
+	const [isVideo, setIsVideo] = useState<boolean>(false);
 
-	const [selectedPath, setSelectedPath] = useState<string>();
+	const [selectedPath, setSelectedPath] = useState<string>("");
 
 	const rootPath = "";
 
@@ -31,8 +35,9 @@ const NavMenuItem: FC<Props> = ({ title, urlPath, items }) => {
 		}
 	};
 
-	const linkClickHandler = (path: string, isFile: boolean) => {
-		if (isFile) {
+	const linkClickHandler = (path: string, linkType: APILinkTypeDetail) => {
+		if (linkType?.isFile! && linkType.id === 1) {
+			setIsVideo(true);
 			setSelectedPath(path);
 			setShowModal(true);
 		}
@@ -53,6 +58,16 @@ const NavMenuItem: FC<Props> = ({ title, urlPath, items }) => {
 		setShow(false);
 	};
 
+	const processLink = (menuItem: APIMenuListItem) => {
+		if (menuItem.linkPath!) {
+			if (menuItem.linkPath! && menuItem.linkType?.id !== 1) {
+				return menuItem.linkPath;
+			}
+		}
+
+		return "";
+	};
+
 	return (
 		<>
 			<NavDropdown
@@ -64,32 +79,57 @@ const NavMenuItem: FC<Props> = ({ title, urlPath, items }) => {
 				onMouseLeave={hideDropdown}
 				onClick={dropdownClickHandler}>
 				{items?.map((subMenu, index) => (
-					<NavDropdown.Item
-						href={!subMenu.linkType?.isFile! ? subMenu.linkPath! ?? `` : ""}
-						key={index}
-						target={subMenu.isExternalPath ? "_blank" : ""}
+					<Link
+						to={processLink(subMenu)}
+						className={"nav-link"}
+						target={
+							subMenu.isExternalPath || subMenu.linkType?.id === 2
+								? "_blank"
+								: ""
+						}
 						onClick={() =>
-							linkClickHandler(
-								subMenu.linkPath! ?? ``,
-								subMenu.linkType?.isFile!
-							)
-						}>
+							linkClickHandler(subMenu.linkPath! ?? "", subMenu.linkType!)
+						}
+						key={index}>
 						{language !== "ar" ? subMenu.name : subMenu.nameEnglish}
-					</NavDropdown.Item>
+					</Link>
+
+					// <NavDropdown.Item
+					// 	href={processLink(subMenu)}
+					// 	key={index}
+					// 	target={
+					// 		subMenu.isExternalPath || subMenu.linkType?.id === 2
+					// 			? "_blank"
+					// 			: ""
+					// 	}
+					// 	onClick={() =>
+					// 		linkClickHandler(subMenu.linkPath! ?? ``, subMenu.linkType!)
+					// 	}>
+					// 	{language !== "ar" ? subMenu.name : subMenu.nameEnglish}
+					// </NavDropdown.Item>
 				))}
 			</NavDropdown>
-			<Modal
-				isOpen={showModal}
-				onClose={closeModal}
-				className={styles.modal}>
-				<iframe
-					title={title}
-					src={selectedPath}
-					width="100%"
-					height="600"
-					frameBorder="0"
-				/>
-			</Modal>
+			{showModal &&
+				(isVideo ? (
+					<VideoModal
+						isOpen={showModal}
+						onClose={closeModal}
+						selectedPath={selectedPath!}
+					/>
+				) : (
+					<Modal
+						isOpen={showModal}
+						onClose={closeModal}
+						className={styles.modal}>
+						<iframe
+							title={title}
+							src={selectedPath}
+							width="100%"
+							height="600px"
+							frameBorder="0"
+						/>
+					</Modal>
+				))}
 		</>
 	);
 };

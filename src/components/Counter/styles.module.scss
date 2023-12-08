@@ -1,0 +1,25 @@
+.visitorCounter {
+	text-align: center;
+	margin: 20px;
+	direction: ltr;
+	display: flex;
+	justify-content: center;
+}
+
+.counter {
+	display: flex;
+	gap: 10px;
+	font-size: 1.5em;
+	font-weight: bold;
+	color: white;
+}
+
+.digitBox {
+	width: 2em;
+	height: 2em;
+	border: 2px solid white;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 5px;
+}

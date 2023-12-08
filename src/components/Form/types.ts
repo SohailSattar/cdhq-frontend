@@ -15,6 +15,8 @@ export interface IPasswordFormInputs {
 	password2: string;
 }
 
+//////////////// CONTENT MANAGEMENT ////////////////
+
 export interface ILinkTypeFormInputs {
 	name: string;
 	nameEnglish: string;
@@ -25,6 +27,7 @@ export interface IMenuFormInputs {
 	name: string;
 	nameEnglish: string;
 	parentProject?: DropdownOption;
+	menuType: DropdownOption;
 	linkType: DropdownOption;
 	file?: File;
 	linkPath: string;
@@ -32,6 +35,30 @@ export interface IMenuFormInputs {
 	orderNo: string;
 	isExternalLink?: boolean;
 }
+
+// Image
+export interface IImageFormInputs {
+	name: string;
+	nameEnglish: string;
+	imageName: string;
+	thumbnail: File;
+	videoName: string;
+	videoFile: File;
+	imageType: DropdownOption;
+	stars?: string;
+}
+
+// QR Code
+export interface IQRCodeFormInputs {
+	name: string;
+	nameEnglish: string;
+	image: File;
+	imageName: string;
+	icon: File;
+	iconName: string;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 
 export interface IEmployeeSignatureFormInputs {
 	thumbnail?: File;
@@ -97,25 +124,17 @@ export interface IHonorFormInputs {
 	notes: string;
 }
 
-// Image
-export interface IImageFormInputs {
-	name: string;
-	nameEnglish: string;
-	imageName: string;
-	thumbnail: File;
-	imageType: DropdownOption;
-	stars?: string;
-}
-
 // News
 export interface INewsFormInputs {
 	department: DropdownOption;
 	title: string;
 	shortSummary: string;
 	imageName: string;
+	videoName: string;
 	newsType: DropdownOption;
 	fullNews: string;
 	thumbnail: File;
+	video: File;
 }
 
 // Phone Directory

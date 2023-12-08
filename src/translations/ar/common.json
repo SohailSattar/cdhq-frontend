@@ -18,8 +18,9 @@
 		}
 	},
 	"dashboard": {
-		"honors": "الموظف الموهوب",
-		"employeeOfMonth": "الموهوبين و المتميزين"
+		"videos": "الفيديوهات",
+		"talented": "الموظف الموهوب",
+		"employeeOfMonth": "الموظف المتميز"
 	},
 	"menu": {
 		"id": "رمز القائمة",
@@ -30,6 +31,7 @@
 		"pathLink": "الرابط",
 		"isVisible": "ظاهر",
 		"linkType": "نوع الرابط",
+		"menuType": "Menu Type",
 		"count": "المجموع",
 		"list": "اللائحة",
 		"orderNo": "الترتيب",
@@ -51,7 +53,22 @@
 			"fireDepartment": "أفضل مراكز إطفاء",
 			"servicesDepartment": "أفضل مراكز خدمة",
 			"creation": "الابتكارات"
-		}
+		},
+		"thumbnail": "thumbnail",
+		"icon": "Icon"
+	},
+	"video": {
+		"upload": "Video Upload"
+	},
+	"qrCode": {
+		"name": "Name",
+		"nameEnglish": "Name [English]",
+		"icon": "Icon"
+	},
+	"tab": {
+		"imagesVideos": "Images & Videos",
+		"menuList": "Menu List",
+		"qrCodes": "QR Codes"
 	},
 	"page": {
 		"userHome": "حسابات المستخدمين",
@@ -71,7 +88,10 @@
 		"honorNew": " اضافة موظف متميز أو موهوب",
 		"imagesHome": " سجل الصور",
 		"imageEdit": "تعديل الصور ",
-		"imageNew": " اضافة صورة"
+		"imageNew": " اضافة صورة",
+		"qrCodeHome": "QR Codes List",
+		"qrCodeEdit": "Edit QR Code",
+		"qrCodeNew": "New QR Code"
 	},
 	"account": {
 		"login": "تسجيل الدخول",
@@ -103,6 +123,7 @@
 		"activate": "تفعيل",
 		"deactivate": "الغاء التفعيل",
 		"synchronize": "سحب البيانات المحدثة",
+		"changePassword": "Change",
 		"addNewDepartment": "اضافة ادارة ",
 		"addNewUser": "اضافة مستخدم جديد",
 		"addNewProject": "اضافة نظام جديد ",
@@ -222,21 +243,27 @@
 				"class": "الملاك حقل اجباري",
 				"rank": "حقل الرتبة اجباري",
 				"project": "حقل النظام اجباري",
+				"projectGroup": "Project group is required.",
 				"privilege": "الصلاحية حقل اجباري",
 				"workflowStart": "بداية التمرير",
 				"workflowEnd": "نهاية التمرير",
 				"image": "الصورة اجبارية",
+				"video": "Video is required",
 				"imageType": "نوع الصورة حقل اجباري",
 				"honorType": "الفئة اجبارية",
+				"reason": "Reason is required",
 				"shortSummary": " مقدمة الخبر حقل اجباري",
 				"newsType": " نوع الخبر اجباري",
-				"news": "  الخبر حقل اجباري"
+				"news": "  الخبر حقل اجباري",
+				"menuType": "Menu Type is required.",
+				"linkType": "Link Type is required."
 			},
 			"selection": {
 				"employee": " لم يتم اختيار الموظف"
 			},
 			"validation": {
-				"passwordMismatch": "الرمز السري لا يتطابق"
+				"passwordMismatch": "الرمز السري لا يتطابق",
+				"fileSize": "File size should not exceed 50 MB"
 			}
 		}
 	},
@@ -271,6 +298,11 @@
 		"byDepartment": "تصفية حسب الأقسام و الأفرع"
 	},
 	"message": {
+		"fail": "There was an error while prcoessing, please contact the IT department",
+		"recordCreated": "Record has been created",
+		"recordUpdated": "Record has been updated",
+		"recordActivated": "Record has been activated",
+		"recordDeactivated": "Record has been deactivated",
 		"unauthorized": "ليس لديك صلاحية على الصفحة",
 		"noAccountContact": "ليس لديك حساب؟ اتصل بقسم الخدمات الألكترونية",
 		"employeeNotExists": "لا يوجد موظف بهذا الرقم ! الرجاء الاتصال بوزارة الداخلية",
@@ -283,6 +315,7 @@
 		"userDetailUpdated": "تم تحديث تفاصيل حساب المستخدم",
 		"passwordUpdated": "تم تحديث كلمة السر",
 		"passwordNotMatched": "كلمات السر لا تتطابق",
+		"passwordExpiring": "Password is expiring in _EXPIRINGIN_ days. Please change your password by clicking here",
 		"signatureUpdated": "تم تحديث التوقيع",
 		"roleUpdated": "تم تحديث الدور",
 		"privilegeUpdated": "تم تحديث الامتياز",
@@ -304,6 +337,7 @@
 		"imageActivated": "تم  تفعيل الأيقونة",
 		"imageDeleted": "تم الغاء تفعيل الأيقونة",
 		"imageUpdated": "تم تحديث الصورة",
+		"videoUpdated": "Video has been updated",
 		"newsAdded": "تمت إضافة الخبر",
 		"newsUpdated": "تم تحديث الخبر",
 		"newsActivated": " تم تفعيل الخبر",
@@ -321,6 +355,7 @@
 		"select": "اختر"
 	},
 	"table": {
+		"noResult": "No result found",
 		"noProject": "لم يتم العثور على النظام",
 		"noUser": "لم يتم العثور على المستخدم",
 		"noEmployee": "لم يتم العثور على الموظف",

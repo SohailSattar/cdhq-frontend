@@ -28,15 +28,18 @@ import { checkLoginStatus } from "../../api/login/get/checkLoginStatus";
 import { useCookies } from "react-cookie";
 import { boolean } from "yargs";
 import clsx from "clsx";
+import React from "react";
 
 interface Props {
 	// projectId?: number;
 	privilegeType?: PrivilegeType;
 	hideLoginButton?: boolean;
 	noChecks?: boolean;
-	displayLanguageChange?: boolean;
 	children: any;
 	className?: string;
+	showQRCodes?: boolean;
+	showLinks?: boolean;
+	showCounter?: boolean;
 }
 
 const Layout: FC<Props> = ({
@@ -44,9 +47,11 @@ const Layout: FC<Props> = ({
 	privilegeType = "All",
 	hideLoginButton = false,
 	noChecks = false,
-	displayLanguageChange,
 	children,
 	className,
+	showQRCodes = false,
+	showLinks = false,
+	showCounter = false,
 }) => {
 	const navigate = useNavigate();
 
@@ -111,7 +116,6 @@ const Layout: FC<Props> = ({
 
 						if (error) {
 							if (error.response.status === 401) {
-								console.log("adasdsa");
 								navigate(RoutePath.LOGIN);
 							}
 						}
@@ -133,52 +137,106 @@ const Layout: FC<Props> = ({
 		fetch();
 	}, [loggedUser, navigate, noChecks, setLoggedUser]);
 
-	const fetch = useMemo(
-		() => async () => {
-			try {
-				const { data } = await checkLoginStatus();
-				if (data?.isLoggedIn) {
-					// if (projectId) {
-					// 	await fetchProjectPrivilege(projectId);
-					// } else {
-					setCanView(true);
-					setIsLoading(true);
-					// }
-					// await fetchContent();
+	// const fetch = useMemo(
+	// 	() => async () => {
+	// 		try {
+	// 			const { data } = await checkLoginStatus();
+	// 			if (data?.isLoggedIn) {
+	// 				// if (projectId) {
+	// 				// 	await fetchProjectPrivilege(projectId);
+	// 				// } else {
+	// 				setCanView(true);
+	// 				setIsLoading(true);
+	// 				// }
+	// 				// await fetchContent();
 
-					///////////////////////////// fetch Content
+	// 				///////////////////////////// fetch Content
 
-					if (canView === undefined) {
-						setContent(<Loader />);
-					}
+	// 				if (canView === undefined) {
+	// 					setContent(<Loader />);
+	// 				}
 
-					if (canView === false) {
-						setContent(<NotAuthorized />);
-					} else {
-						setContent(children);
-					}
-					setIsLoading(false);
+	// 				if (canView === false) {
+	// 					setContent(<NotAuthorized />);
+	// 				} else {
+	// 					setContent(children);
+	// 				}
+	// 				setIsLoading(false);
 
-					//////////////////////////////
-				} else {
-					if (data?.isLoggedIn === false) {
-						setContent(children);
-						if (loggedUser.id !== 0) {
-							removeLocalData();
-						}
-						// navigate(RoutePath.LOGIN);
-					}
+	// 				//////////////////////////////
+	// 			} else {
+	// 				if (data?.isLoggedIn === false) {
+	// 					setContent(children);
+	// 					if (loggedUser.id !== 0) {
+	// 						removeLocalData();
+	// 					}
+	// 					// navigate(RoutePath.LOGIN);
+	// 				}
+	// 			}
+	// 		} catch (error) {
+	// 			// Handle error
+	// 		}
+	// 		console.log("xd");
+	// 	},
+	// 	[canView, children, loggedUser.id, removeLocalData] // , loggedUser.id, navigate, removeLocalData
+	// );
+
+	const fetch = useCallback(async () => {
+		try {
+			const { data } = await checkLoginStatus();
+			if (data?.isLoggedIn) {
+				// if (projectId) {
+				//   await fetchProjectPrivilege(projectId);
+				// } else {
+				setCanView(true);
+				setIsLoading(true);
+				// }
+				// await fetchContent();
+
+				///////////////////////////// fetch Content
+
+				if (canView === undefined) {
+					setContent(<Loader />);
 				}
-			} catch (error) {
-				// Handle error
+
+				if (canView === false) {
+					setContent(<NotAuthorized />);
+				} else {
+					setContent(children);
+				}
+				setIsLoading(false);
+
+				//////////////////////////////
+			} else {
+				if (data?.isLoggedIn === false) {
+					setContent(children);
+					if (loggedUser.id !== 0) {
+						removeLocalData();
+					}
+					// navigate(RoutePath.LOGIN);
+				}
 			}
-		},
-		[canView, children, loggedUser.id, removeLocalData] // , loggedUser.id, navigate, removeLocalData
-	);
+		} catch (error) {
+			// Handle error
+		}
+	}, [
+		canView,
+		children,
+		loggedUser.id,
+		removeLocalData,
+		setIsLoading,
+		setContent,
+	]);
+
+	// useEffect(() => {
+	// 	fetch();
+	// }, [fetch]);
+
+	const memoizedFetch = useMemo(() => fetch, [fetch]);
 
 	useEffect(() => {
-		fetch();
-	}, [fetch]);
+		memoizedFetch();
+	}, [memoizedFetch]);
 
 	// useEffect(() => {
 	// 	const fetchData = async () => {
@@ -230,15 +288,19 @@ const Layout: FC<Props> = ({
 	// 	children,
 	// ]);
 
-	const ErrorFallback = ({ error, resetErrorBoundary }: any) => {
-		return (
-			<div role="alert">
-				<p>Something went wrong:</p>
-				<pre>{error.message}</pre>
-				<button onClick={resetErrorBoundary}>Try again</button>
-			</div>
-		);
-	};
+	const ErrorFallback = useMemo(
+		() =>
+			({ error, resetErrorBoundary }: any) => {
+				return (
+					<div role="alert">
+						<p>Something went wrong:</p>
+						<pre>{error.message}</pre>
+						<button onClick={resetErrorBoundary}>Try again</button>
+					</div>
+				);
+			},
+		[]
+	);
 
 	// console.log(content);
 
@@ -253,10 +315,7 @@ const Layout: FC<Props> = ({
 						// reset the state of your app so the error doesn't happen again
 					}}>
 					{/* <Header hideLoginButton={hideLoginButton} /> */}
-					<OffcanvasNavbar
-						hideLoginButton={hideLoginButton}
-						displayLanguageChange={displayLanguageChange}
-					/>
+					<OffcanvasNavbar hideLoginButton={hideLoginButton} />
 					<div className={clsx(styles.layout, className)}>
 						{isLoading ? (
 							<Loader />
@@ -270,11 +329,16 @@ const Layout: FC<Props> = ({
 						<br />
 						<br />
 					</div>
-					<Footer />
+					<Footer
+						showQRCodes={showQRCodes}
+						showLinks={showLinks}
+						showCounter={showCounter}
+						counter={{ count: 0 }}
+					/>
 				</ErrorBoundary>
 			)}
 		</>
 	);
 };
 
-export default Layout;
+export default React.memo(Layout);

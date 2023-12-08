@@ -1,0 +1,23 @@
+.linksContainer {
+	display: flex;
+	flex-wrap: wrap;
+	padding: 0 15px;
+}
+
+.itemContainer {
+	flex: 1;
+	flex-basis: calc(
+		25% - 20px
+	); /* 25% width with 20px spacing (adjust as needed) */
+	box-sizing: border-box;
+	margin: 0 10px 10px 0; /* Adjust the spacing among items and between rows */
+}
+
+.item {
+	color: white;
+	font-size: 16px;
+	border-bottom: 1px solid white;
+	padding: 10px; /* Adjust the spacing inside each item container */
+	display: block;
+	width: 100%; /* Ensure the link takes the full width of the container */
+}
