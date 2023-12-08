@@ -243,7 +243,7 @@
 				"class": "الملاك حقل اجباري",
 				"rank": "حقل الرتبة اجباري",
 				"project": "حقل النظام اجباري",
-				"projectGroup": "Project group is required.",
+				"projectGroup": " مجموعة النظام حقل اجباري",
 				"privilege": "الصلاحية حقل اجباري",
 				"workflowStart": "بداية التمرير",
 				"workflowEnd": "نهاية التمرير",
