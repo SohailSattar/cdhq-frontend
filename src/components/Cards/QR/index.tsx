@@ -1,8 +1,10 @@
 import { FC } from "react";
 import Card from "react-bootstrap/Card";
 
-import styles from "./styles.module.scss";
 import ShadowedContainer from "../../ShadowedContainer";
+import styles from "./styles.module.scss";
+import { useStore } from "../../../utils/store";
+import clsx from "clsx";
 
 interface Props {
 	imageName: string;
@@ -11,6 +13,8 @@ interface Props {
 }
 
 const QRCard: FC<Props> = ({ imageName, name, iconName }) => {
+	const language = useStore((state) => state.language);
+
 	return (
 		<div className={styles.qrCode}>
 			<Card>
@@ -30,7 +34,14 @@ const QRCard: FC<Props> = ({ imageName, name, iconName }) => {
 									/>
 								</span>
 							)}
-							<span className={styles.text}>{name}</span>
+							<span
+								className={clsx(
+									styles.text,
+									language !== "ar" && styles.textRTL
+								)}>
+								{" "}
+								{name}
+							</span>
 						</Card.Text>
 					</Card.Body>
 				</ShadowedContainer>

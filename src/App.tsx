@@ -91,7 +91,8 @@ function App() {
 									className={styles.unpadded}
 									showQRCodes={true}
 									showLinks={true}
-									showCounter={true}>
+									showCounter={true}
+									defaultPosition={true}>
 									<LandingPage />
 								</Layout>
 							}

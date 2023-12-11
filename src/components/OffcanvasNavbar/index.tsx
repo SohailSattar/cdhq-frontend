@@ -157,7 +157,7 @@ const OffcanvasNavbar: FC<Props> = ({ hideLoginButton }) => {
 						<div className={styles.navCat}>
 							<Nav.Link
 								as={RouterLink}
-								to={isLogged ? RoutePath.HOME : RoutePath.ROOT}>
+								to={RoutePath.ROOT}>
 								<img
 									alt="home"
 									className={styles.NavDropdownHome}

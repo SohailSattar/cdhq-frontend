@@ -7,9 +7,10 @@ import { useStore } from "../../../utils/store";
 
 interface Props {
 	postedDate: string;
+	postedBy: string;
 }
 
-const NewsMeta: FC<Props> = ({ postedDate }) => {
+const NewsMeta: FC<Props> = ({ postedDate, postedBy }) => {
 	const [t] = useTranslation("common");
 	const language = useStore((state) => state.language);
 
@@ -19,7 +20,12 @@ const NewsMeta: FC<Props> = ({ postedDate }) => {
 				styles.container,
 				language === "ar" && styles.containerLTR
 			)}>
-			{t("common.dated", { framework: "React" })}: {postedDate}{" "}
+			<div>
+				{t("common.dated", { framework: "React" })}: {postedDate}{" "}
+			</div>
+			<div>
+				{t("common.created", { framework: "React" })}: {postedBy}{" "}
+			</div>
 		</div>
 	);
 };

@@ -4,8 +4,10 @@ import { getAllQRCodes } from "../../api/qr-codes/get/getAllQRCodes";
 import { APIQRCodeItem } from "../../api/qr-codes/types";
 
 import styles from "./styles.module.scss";
+import { useStore } from "../../utils/store";
 
 const FootQRTable = () => {
+	const language = useStore((state) => state.language);
 	const [codes, setCodes] = useState<APIQRCodeItem[]>([]);
 
 	const fetchDetails = useCallback(async () => {
@@ -25,7 +27,7 @@ const FootQRTable = () => {
 			{codes.map((code, index) => (
 				<QRCard
 					imageName={code.imageName}
-					name={code.name}
+					name={language !== "ar" ? code.name : code.nameEnglish}
 					iconName={code.iconName}
 					key={index}
 				/>

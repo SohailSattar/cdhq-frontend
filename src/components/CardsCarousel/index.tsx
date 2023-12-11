@@ -10,12 +10,14 @@ interface Props {
 	data: ICard[];
 	showRating?: boolean;
 	isScrollable?: boolean;
+	displayeModal?: boolean;
 }
 
 const CardsCarousel: FC<Props> = ({
 	data,
 	showRating = false,
 	isScrollable = false,
+	displayeModal = false,
 }) => {
 	const [activeIndex, setActiveIndex] = useState(0);
 
@@ -27,8 +29,10 @@ const CardsCarousel: FC<Props> = ({
 	};
 
 	const cardClickHandler = (path: string) => {
-		setFilePath(path);
-		setIsOpen(true);
+		if (displayeModal) {
+			setFilePath(path);
+			setIsOpen(true);
+		}
 	};
 
 	const closeModal = () => {

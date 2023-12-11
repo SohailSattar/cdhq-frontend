@@ -60,7 +60,10 @@ const NewsDetailPage = () => {
 				<NewsHeading title={detail?.title!} />
 			</ShadowedContainer>
 			<div className={styles.container}>
-				<NewsMeta postedDate={new Date(detail?.newsDate!).toDateString()} />
+				<NewsMeta
+					postedDate={new Date(detail?.newsDate!).toDateString()}
+					postedBy={detail?.createdBy!}
+				/>
 			</div>
 			<ShadowedContainer className={styles.container}>
 				<NewsContent

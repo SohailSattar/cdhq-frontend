@@ -40,6 +40,7 @@ interface Props {
 	showQRCodes?: boolean;
 	showLinks?: boolean;
 	showCounter?: boolean;
+	defaultPosition?: boolean;
 }
 
 const Layout: FC<Props> = ({
@@ -52,6 +53,7 @@ const Layout: FC<Props> = ({
 	showQRCodes = false,
 	showLinks = false,
 	showCounter = false,
+	defaultPosition = false,
 }) => {
 	const navigate = useNavigate();
 
@@ -325,10 +327,12 @@ const Layout: FC<Props> = ({
 							content
 						)}
 					</div>
-					<div>
-						<br />
-						<br />
-					</div>
+					{!defaultPosition && (
+						<div>
+							<br />
+							<br />
+						</div>
+					)}
 					<Footer
 						showQRCodes={showQRCodes}
 						showLinks={showLinks}

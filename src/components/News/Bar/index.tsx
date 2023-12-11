@@ -5,6 +5,7 @@ import { Id } from "../../../utils";
 import { Button } from "../..";
 
 import styles from "./styles.module.scss";
+import clsx from "clsx";
 
 export interface Props {
 	id: Id;
@@ -12,6 +13,7 @@ export interface Props {
 	body: string;
 	src: string;
 	onMoreClick?: (id: Id) => void;
+	className?: string;
 }
 
 const NewsBar: FC<Props> = ({
@@ -20,13 +22,14 @@ const NewsBar: FC<Props> = ({
 	body,
 	src,
 	onMoreClick = () => {},
+	className,
 }) => {
 	const infoClickHandler = (value: Id) => {
 		onMoreClick(value);
 	};
 
 	return (
-		<Card className={styles.newsBar}>
+		<Card className={clsx(styles.newsBar, className)}>
 			<div className={styles.content}>
 				<div className={styles.textContainer}>
 					<Card.Header className={styles.header}>{title}</Card.Header>

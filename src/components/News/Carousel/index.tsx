@@ -1,4 +1,5 @@
 import { FC, useEffect, useMemo, useState } from "react";
+import $ from "jquery";
 import { motion, useAnimationControls } from "framer-motion";
 
 import { APINews } from "../../../api/news/types";
@@ -7,7 +8,14 @@ import styles from "./styles.module.scss";
 import { Id, rotateRight } from "../../../utils";
 
 import "./styles.css";
-import { CarouselActions, Hr, NewsBar, ShadowedContainer } from "../..";
+import {
+	CarouselActions,
+	Hr,
+	NewsBar,
+	NewsTicker,
+	ShadowedContainer,
+} from "../..";
+import clsx from "clsx";
 
 export interface Props {
 	list: APINews[];
@@ -46,63 +54,79 @@ const NewsCarousel: FC<Props> = ({
 
 	useEffect(() => {
 		const interval = setInterval(() => {
-			rotateRight(newsList);
-			setNewsList((prevState) => [...prevState]);
-			controls.start({
-				y: [-100, 0, 0], // Keyframes for y: [-150, 0, -150, 0]
-				opacity: [0, 1, 1],
-				height: "100%",
-				transition: {
-					y: {
-						type: "tween",
-						duration: 1, // Total duration for the animation (e.g., 2 seconds)
-					},
-					opacity: { duration: 1 }, // Adjust the duration for opacity
-				},
-			});
+			const lastNewsDiv = $("#newsContainer .newsBar").last();
+			lastNewsDiv.hide().prependTo("#newsContainer").slideDown("slow");
 		}, intervalInMiliseconds);
 
 		return () => clearInterval(interval);
-	}, [controls, intervalInMiliseconds, newsList, setNewsList]);
+	}, [intervalInMiliseconds]);
+
+	// useEffect(() => {
+	// 	const interval = setInterval(() => {
+	// 		rotateRight(newsList);
+	// 		setNewsList((prevState) => [...prevState]);
+	// 		controls.start({
+	// 			y: [-100, 0, 0], // Keyframes for y: [-150, 0, -150, 0]
+	// 			opacity: [0, 1, 1],
+	// 			height: "100%",
+	// 			transition: {
+	// 				y: {
+	// 					type: "tween",
+	// 					duration: 1, // Total duration for the animation (e.g., 2 seconds)
+	// 				},
+	// 				opacity: { duration: 1 }, // Adjust the duration for opacity
+	// 			},
+	// 		});
+	// 	}, intervalInMiliseconds);
+
+	// 	return () => clearInterval(interval);
+	// }, [controls, intervalInMiliseconds, newsList, setNewsList]);
 
 	const upArrowClickHandler = useMemo(
 		() => async () => {
-			newsList.push(newsList?.shift()!);
-			setNewsList((prevState) => [...prevState]);
-			controls.start({
-				y: [100, 0, 0], // Keyframes for y: [-150, 0, -150, 0]
-				// opacity: [1, 0.5, 0],
-				height: "100%",
-				transition: {
-					y: {
-						type: "tween",
-						duration: 1, // Total duration for the animation (e.g., 2 seconds)
-					},
-					opacity: { duration: 1 }, // Adjust the duration for opacity
-				},
+			// newsList.push(newsList?.shift()!);
+			// setNewsList((prevState) => [...prevState]);
+			// controls.start({
+			// 	y: [100, 0, 0], // Keyframes for y: [-150, 0, -150, 0]
+			// 	// opacity: [1, 0.5, 0],
+			// 	height: "100%",
+			// 	transition: {
+			// 		y: {
+			// 			type: "tween",
+			// 			duration: 1, // Total duration for the animation (e.g., 2 seconds)
+			// 		},
+			// 		opacity: { duration: 1 }, // Adjust the duration for opacity
+			// 	},
+			// });
+			const firstNewsDiv = $("#newsContainer .newsBar").first();
+
+			firstNewsDiv.slideUp("slow", function () {
+				$(this).appendTo("#newsContainer").show("slow");
 			});
 		},
-		[controls, newsList]
+		[]
 	);
 
 	const downArrowClickHandler = useMemo(
 		() => async () => {
-			rotateRight(newsList);
-			setNewsList((prevState) => [...prevState]);
-			controls.start({
-				y: [-100, 0, 0],
-				opacity: [0, 1, 1],
-				height: "100%",
-				transition: {
-					y: {
-						type: "tween",
-						duration: 1, // Total duration for the animation (e.g., 2 seconds)
-					},
-					opacity: { duration: 1 }, // Adjust the duration for opacity
-				},
-			});
+			// rotateRight(newsList);
+			// setNewsList((prevState) => [...prevState]);
+			// controls.start({
+			// 	y: [-100, 0, 0],
+			// 	opacity: [0, 1, 1],
+			// 	height: "100%",
+			// 	transition: {
+			// 		y: {
+			// 			type: "tween",
+			// 			duration: 1, // Total duration for the animation (e.g., 2 seconds)
+			// 		},
+			// 		opacity: { duration: 1 }, // Adjust the duration for opacity
+			// 	},
+			// });
+			const lastNewsDiv = $("#newsContainer .newsBar").last();
+			lastNewsDiv.hide().prependTo("#newsContainer").slideDown("slow");
 		},
-		[controls, newsList]
+		[]
 	);
 
 	return (
@@ -113,20 +137,21 @@ const NewsCarousel: FC<Props> = ({
 				onUpBtnClick={upArrowClickHandler}
 			/>
 			<Hr />
-			{newsList?.map((item: APINews, index) => (
-				<motion.div
-					className={styles.item}
-					key={index}
-					animate={index === 0 && controls}>
-					<NewsBar
-						id={item?.id}
-						src={item?.imageName}
-						title={item?.title}
-						body={item?.shortSummary}
-						onMoreClick={onViewClick}
-					/>
-				</motion.div>
-			))}
+			<div id="newsContainer">
+				{newsList?.map((item: APINews, index) => (
+					<div
+						className={clsx(styles.item, "newsBar")}
+						key={index}>
+						<NewsBar
+							id={item?.id}
+							src={item?.imageName}
+							title={item?.title}
+							body={item?.shortSummary}
+							onMoreClick={onViewClick}
+						/>
+					</div>
+				))}
+			</div>
 		</ShadowedContainer>
 	);
 };
