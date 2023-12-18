@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { motion, useAnimationControls } from "framer-motion";
 import {
 	Hr,
@@ -17,14 +17,21 @@ import * as RoutePath from "../../RouteConfig";
 import styles from "./styles.module.scss";
 import { getAccessibleProjects } from "../../api/userProjects/get/getAccessibleProjects";
 import { ROLE } from "../../utils";
+import { getPasswordValidity } from "../../api/users/get/getPasswordValidity";
+import { useNavigate } from "react-router-dom";
+import { APIPasswordValidity } from "../../api/users/types";
 
 const HomePage = () => {
 	const language = useStore((state) => state.language);
 	const [isVisible, setIsVisible] = useState(false);
-
-	const passwordValidity = useStore((state) => state.passwordValidity);
+	const navigate = useNavigate();
 
 	const loggedInUser = useStore((state) => state.loggedInUser);
+
+	// Password Validity
+	const [passwordValidity, setPasswordValidity] = useState<APIPasswordValidity>(
+		{ expiringInDays: 999 }
+	);
 
 	const [isLoading, setIsLoading] = useState(true);
 
@@ -94,6 +101,25 @@ const HomePage = () => {
 
 		fetchData();
 	}, [loggedInUser.role]);
+
+	const fetchPasswordValidity = useCallback(async () => {
+		const { data: validity } = await getPasswordValidity();
+
+		if (validity) {
+			if (validity?.expiringInDays! > 0 && validity?.expiringInDays! <= 10) {
+				setPasswordValidity(validity!);
+			}
+
+			if (validity?.expiringInDays! <= 0) {
+				setPasswordValidity(validity!);
+				navigate(RoutePath.CHANGE_PASSWORD);
+			}
+		}
+	}, [navigate, setPasswordValidity]);
+
+	useEffect(() => {
+		fetchPasswordValidity();
+	}, [fetchPasswordValidity]);
 
 	return (
 		<motion.div

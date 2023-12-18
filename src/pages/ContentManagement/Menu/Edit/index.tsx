@@ -90,6 +90,7 @@ const MenuEditSettingsPage = () => {
 			linkPath,
 			isVisible,
 			orderNo,
+			menuType,
 			linkType,
 			file,
 			isExternalLink,
@@ -100,6 +101,7 @@ const MenuEditSettingsPage = () => {
 
 		const orderNum = orderNo !== "" ? +orderNo : undefined;
 
+		const menuTypeId = menuType?.value;
 		const linkTypeId = linkType?.value;
 
 		const params: APIUpdateMenuItem = {
@@ -110,6 +112,7 @@ const MenuEditSettingsPage = () => {
 			linkPath: linkPath,
 			isVisible: isVisible,
 			orderNo: orderNum,
+			menuTypeId: menuTypeId,
 			linkTypeId: linkTypeId,
 			file: file,
 			isExternalPath: isExternalLink!,

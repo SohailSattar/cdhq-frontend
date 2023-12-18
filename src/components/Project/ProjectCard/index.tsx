@@ -21,8 +21,7 @@ const ProjectCard: FC<Props> = ({ name, icon, isLocked = true }) => {
 				styles.card,
 				isLocked && styles.locked,
 				language === "ar" && styles.cardLTR
-			)}
-		>
+			)}>
 			<div style={{ float: "right" }}>
 				<div className={styles.icon}>
 					{!isLocked ? (
@@ -32,12 +31,19 @@ const ProjectCard: FC<Props> = ({ name, icon, isLocked = true }) => {
 							className={styles.blink}
 						/>
 					) : (
-						<FontAwesomeIcon color="#fd1f32" icon={faLock} />
+						<FontAwesomeIcon
+							color="#fd1f32"
+							icon={faLock}
+						/>
 					)}
 				</div>
 			</div>
 			<div className={styles.container}>
-				<img src={icon} alt="Avatar" className={styles.imgIcon} />
+				<img
+					src={icon}
+					alt="Avatar"
+					className={styles.imgIcon}
+				/>
 				<div>{name}</div>
 			</div>
 		</div>

@@ -7,6 +7,7 @@ import {
 	Modal,
 	NewsDetail,
 	NewsList,
+	NewsTicker,
 } from "../../components";
 
 import { getLatest20News } from "../../api/news/get/getLatest20News";
@@ -284,6 +285,14 @@ const LandingPage = () => {
 				</div>
 
 				<div className={clsx("col-2", styles.sideBar)}>
+					{skilledEmpsCardsList.length > 0 && (
+						<div className={styles.sideBarCard}>
+							<DisplayCard
+								title={t("dashboard.talented", { framework: "React" })}>
+								<CardsCarousel data={skilledEmpsCardsList} />
+							</DisplayCard>
+						</div>
+					)}{" "}
 					{videosCardsList.length > 0 && (
 						<div className={styles.sideBarCard}>
 							<DisplayCard
@@ -291,15 +300,8 @@ const LandingPage = () => {
 								<CardsCarousel
 									data={videosCardsList}
 									isScrollable={true}
+									displayeModal={true}
 								/>
-							</DisplayCard>
-						</div>
-					)}
-					{skilledEmpsCardsList.length > 0 && (
-						<div className={styles.sideBarCard}>
-							<DisplayCard
-								title={t("dashboard.talented", { framework: "React" })}>
-								<CardsCarousel data={skilledEmpsCardsList} />
 							</DisplayCard>
 						</div>
 					)}
@@ -315,8 +317,8 @@ const LandingPage = () => {
 					)}
 				</div>
 			</div>
-			<br />
-			<br />
+			{/* <br />
+			<br /> */}
 			<Modal
 				isOpen={isNewsTableModalOpen}
 				onClose={modalNewsListCloseHandler}

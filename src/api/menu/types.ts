@@ -47,6 +47,7 @@ export interface APIUpdateMenuItem {
 	linkPath?: string;
 	isVisible?: boolean;
 	orderNo?: number;
+	menuTypeId?: Id;
 	linkTypeId?: Id;
 	file?: File;
 	isExternalPath: boolean;
@@ -59,6 +60,7 @@ export interface APINewMenuItem {
 	linkPath?: string;
 	isVisible?: boolean;
 	orderNo?: number;
+	menuTypeId?: Id;
 	linkTypeId?: Id;
 	file?: File;
 	isExternalPath: boolean;

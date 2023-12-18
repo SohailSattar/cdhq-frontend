@@ -170,6 +170,7 @@ const HonorsHomePage = () => {
 	const name = t("honor.name", { framework: "React" });
 	const rank = t("rank.name", { framework: "React" });
 	const department = t("department.name", { framework: "React" });
+	const honorType = t("honor.type.name", { framework: "React" });
 
 	//Actions
 	const actions = t("global.actions", { framework: "React" });
@@ -230,6 +231,11 @@ const HonorsHomePage = () => {
 							: value.department?.name!}
 					</div>
 				),
+			},
+			{
+				Header: honorType,
+				id: "type",
+				accessor: (p) => p.type,
 			},
 			{
 				Header: status,

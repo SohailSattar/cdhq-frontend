@@ -58,6 +58,17 @@ export interface IQRCodeFormInputs {
 	iconName: string;
 }
 
+// Request Forms
+export interface IRequestFormInputs {
+	name: string;
+	nameEnglish: string;
+	formFile: File;
+	formName: string;
+	isExternalPath: boolean;
+	// icon: File;
+	// iconName: string;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 
 export interface IEmployeeSignatureFormInputs {

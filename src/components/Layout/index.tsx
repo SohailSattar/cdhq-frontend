@@ -29,6 +29,7 @@ import { useCookies } from "react-cookie";
 import { boolean } from "yargs";
 import clsx from "clsx";
 import React from "react";
+import { getPasswordValidity } from "../../api/users/get/getPasswordValidity";
 
 interface Props {
 	// projectId?: number;
@@ -40,6 +41,7 @@ interface Props {
 	showQRCodes?: boolean;
 	showLinks?: boolean;
 	showCounter?: boolean;
+	defaultPosition?: boolean;
 }
 
 const Layout: FC<Props> = ({
@@ -52,6 +54,7 @@ const Layout: FC<Props> = ({
 	showQRCodes = false,
 	showLinks = false,
 	showCounter = false,
+	defaultPosition = false,
 }) => {
 	const navigate = useNavigate();
 
@@ -325,10 +328,12 @@ const Layout: FC<Props> = ({
 							content
 						)}
 					</div>
-					<div>
-						<br />
-						<br />
-					</div>
+					{!defaultPosition && (
+						<div>
+							<br />
+							<br />
+						</div>
+					)}
 					<Footer
 						showQRCodes={showQRCodes}
 						showLinks={showLinks}

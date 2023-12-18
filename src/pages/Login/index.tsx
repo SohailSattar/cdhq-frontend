@@ -22,7 +22,6 @@ const LoginPage = () => {
 
 	const setLoggedInUser = useStore((state) => state.setLoggedInUser);
 	const setUserRole = useStore((state) => state.setUserRole);
-	const setPasswordValidity = useStore((state) => state.setPasswordValidity);
 
 	const stableNavigate = useCallback(navigate, []);
 
@@ -84,18 +83,18 @@ const LoginPage = () => {
 
 			setUserRole(data?.role! !== "" ? data?.role! : "USER");
 
-			const { data: validity } = await getPasswordValidity();
+			// const { data: validity } = await getPasswordValidity();
 
-			if (validity) {
-				if (validity?.expiringInDays! > 0 && validity?.expiringInDays! <= 10) {
-					setPasswordValidity(validity!);
-				}
+			// if (validity) {
+			// 	if (validity?.expiringInDays! > 0 && validity?.expiringInDays! <= 10) {
+			// 		setPasswordValidity(validity!);
+			// 	}
 
-				if (validity?.expiringInDays! <= 0) {
-					setPasswordValidity(validity!);
-					navigate(RoutePath.CHANGE_PASSWORD);
-				}
-			}
+			// 	if (validity?.expiringInDays! <= 0) {
+			// 		setPasswordValidity(validity!);
+			// 		navigate(RoutePath.CHANGE_PASSWORD);
+			// 	}
+			// }
 		}
 	};
 

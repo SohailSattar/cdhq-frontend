@@ -8,7 +8,8 @@ export async function getNews(
 	pageSize: number = 50,
 	keyword?: string,
 	statusCode?: Id,
-	orderBy?: string
+	orderBy?: string,
+	isDescending: boolean = false
 ): Promise<APIResponse<APIPaginatedNews>> {
 	try {
 		const config = getConfig();
@@ -20,11 +21,11 @@ export async function getNews(
 		}
 
 		if (statusCode) {
-			queryParam += `&statusCode=${statusCode}`;
+			queryParam += `&statusCode=${statusCode}&isDescending=${isDescending}`;
 		}
 
 		if (orderBy) {
-			queryParam += `${orderBy}`;
+			queryParam += `&orderBy=${orderBy}&isDescending=`;
 		}
 
 		const url = `/news?page=${currentPage}&postsperpage=${pageSize}&keyword=${keyword}${queryParam}`;

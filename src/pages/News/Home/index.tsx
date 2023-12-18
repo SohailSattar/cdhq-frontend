@@ -24,9 +24,11 @@ import styles from "./styles.module.scss";
 import { toast } from "react-toastify";
 import { APIStatus } from "../../../api";
 import { updateNewsStatus } from "../../../api/news/update/updateNewsStatus";
+import { useStore } from "../../../utils/store";
 
 const NewsHomePage = () => {
 	const [t] = useTranslation("common");
+	const language = useStore((state) => state.language);
 	const navigate = useNavigate();
 
 	const [currentPage, setCurrentPage] = useState(1);
@@ -43,7 +45,7 @@ const NewsHomePage = () => {
 
 	//Parameters
 	const [toggleSort, setToggleSort] = useState(false);
-	const [orderBy, setOrderBy] = useState<string>("&OrderByDesc=Id");
+	const [orderBy, setOrderBy] = useState<string>("Id");
 
 	const fetchData = useMemo(
 		() => async (currentPage: number, keyword?: string) => {
@@ -69,7 +71,8 @@ const NewsHomePage = () => {
 					pageSize,
 					keyword,
 					selectedStatusCode,
-					orderBy
+					orderBy,
+					toggleSort
 				);
 
 				if (data) {
@@ -80,7 +83,7 @@ const NewsHomePage = () => {
 				}
 			}
 		},
-		[orderBy, pageSize, selectedStatusCode]
+		[orderBy, pageSize, selectedStatusCode, toggleSort]
 	);
 
 	useEffect(() => {
@@ -187,6 +190,7 @@ const NewsHomePage = () => {
 
 	const txtId = t("news.id", { framework: "React" });
 	const title = t("news.title", { framework: "React" });
+	const department = t("department.name", { framework: "React" });
 
 	//Actions
 	const actions = t("global.actions", { framework: "React" });
@@ -207,6 +211,20 @@ const NewsHomePage = () => {
 				Header: title,
 				id: "title",
 				accessor: (p) => p.title,
+			},
+			{
+				Header: department,
+				id: "department",
+				accessor: (p) => p.department,
+				Cell: ({ value }: any) => (
+					<div>
+						{value
+							? language !== "ar"
+								? value?.name!
+								: value?.nameEnglish!
+							: "-"}
+					</div>
+				),
 			},
 			{
 				Header: actions,
@@ -231,6 +249,7 @@ const NewsHomePage = () => {
 		[
 			txtId,
 			title,
+			department,
 			actions,
 			activateClickHandler,
 			privileges?.updatePrivilege,
@@ -245,15 +264,10 @@ const NewsHomePage = () => {
 	};
 
 	const tableSortHandler = (columnId: string, isSortedDesc: boolean) => {
-		let orderByParam = "";
 		setToggleSort(!toggleSort);
-		if (toggleSort) {
-			orderByParam = `&OrderBy=${columnId}`;
-		} else {
-			orderByParam = `&OrderByDesc=${columnId}`;
-		}
 
-		setOrderBy(orderByParam);
+		setOrderBy(columnId);
+		console.log(columnId);
 		// fetchData(currentPage, orderByParam);
 		setCurrentPage(1);
 	};

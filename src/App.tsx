@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import { Layout, MainLayout, ProtectedRoute } from "./components";
+import { Layout, ProtectedRoute } from "./components";
 
 import {
 	UserNewPage,
@@ -91,7 +91,8 @@ function App() {
 									className={styles.unpadded}
 									showQRCodes={true}
 									showLinks={true}
-									showCounter={true}>
+									showCounter={true}
+									defaultPosition={true}>
 									<LandingPage />
 								</Layout>
 							}

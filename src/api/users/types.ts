@@ -12,8 +12,8 @@ import { APIRole } from "../roles/types";
 import { APIPaginate } from "../types";
 
 export interface APIPasswordValidity {
-	passwordSetOn: Date;
-	passwordExpiringOn: Date;
+	passwordSetOn?: Date;
+	passwordExpiringOn?: Date;
 	expiringInDays: number;
 }
 

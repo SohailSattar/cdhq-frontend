@@ -46,6 +46,7 @@ const NewsDetail: FC<Props> = ({ detail }) => {
 							  })
 							: ""
 					}
+					postedBy={detail?.createdBy}
 				/>
 			</div>
 			<Hr />

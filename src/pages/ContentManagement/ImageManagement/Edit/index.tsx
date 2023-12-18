@@ -114,7 +114,7 @@ const ImageEditPage = () => {
 
 		if (data?.success) {
 			toast.success(
-				t("message.detailsUpdated", { framework: "React" }).toString()
+				t("message.recordUpdated", { framework: "React" }).toString()
 			);
 		} else {
 			toast.error(error?.ErrorMessage);
