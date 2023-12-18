@@ -1,4 +1,6 @@
-import { FC } from "react";
+// Card.tsx
+
+import React, { FC } from "react";
 import ReactCard from "react-bootstrap/Card";
 import { Rating } from "@mui/material";
 
@@ -12,6 +14,7 @@ export interface ICard {
 	title: string;
 	rating?: number;
 	video?: string;
+	notes?: string;
 }
 
 export interface Props {
@@ -27,21 +30,32 @@ const Card: FC<Props> = ({
 	className,
 	onClick = () => {},
 }) => {
-	const { title, image, video, rating } = data;
+	const { title, image, video, rating, notes } = data;
 
 	return (
 		<ReactCard
 			className={clsx(styles.card, className)}
-			onClick={() => onClick(video!)}
-			// style={{ width: "18rem", maxWidth: "18rem", textAlign: "center" }}
-		>
+			onClick={() => onClick(video!)}>
 			<ReactCard.Img
 				variant="top"
 				src={image}
 			/>
 			<ReactCard.Body>
-				{/* <ReactCard.Title>{title}</ReactCard.Title> */}
-				<ReactCard.Text>{title}</ReactCard.Text>
+				{notes! && notes! !== "" ? (
+					<section className={styles.section}>
+						<div className={styles.textContainer}>
+							<h2>{title}</h2>
+							<p>
+								{
+									"Plenty of pools and activities to keep children smiling, plus comfy apartments that are tailored for families."
+								}
+							</p>
+							<a href="#">Learn more</a>
+						</div>
+					</section>
+				) : (
+					<ReactCard.Text>{title}</ReactCard.Text>
+				)}
 				{showRating && (
 					<Rating
 						value={rating}

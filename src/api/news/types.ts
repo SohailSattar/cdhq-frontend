@@ -8,6 +8,7 @@ export interface APINews {
 	shortSummary: string;
 	imageName: string;
 	newsDate: Date;
+	department?: APIDepartmentItem;
 }
 
 export interface APINewsDetail {

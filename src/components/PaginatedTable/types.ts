@@ -56,6 +56,7 @@ export interface NewsColumns {
 	id: number;
 	imageName: string;
 	title: string;
+	department: string;
 	activeStatus: APIActiveStatus;
 }
 

@@ -42,7 +42,10 @@ const ImageForm: FC<Props> = ({
 
 	const [hideRatingField, setHideRatingField] = useState<boolean>(true);
 
-	const [hideUploadButton, setHideUploadButton] = useState<boolean>(true);
+	const [hideImageUploadButton, setHideImageUploadButton] =
+		useState<boolean>(true);
+	const [hideVideoUploadButton, setHideVideoUploadButton] =
+		useState<boolean>(true);
 
 	const [isVideo, setIsVideo] = useState<boolean>(false);
 
@@ -179,7 +182,7 @@ const ImageForm: FC<Props> = ({
 			setValue("imageName", x);
 
 			if (data) {
-				setHideUploadButton(false);
+				setHideImageUploadButton(false);
 			}
 		}
 	};
@@ -197,7 +200,7 @@ const ImageForm: FC<Props> = ({
 			setValue("videoName", x);
 
 			if (data) {
-				setHideUploadButton(false);
+				setHideVideoUploadButton(false);
 			}
 		}
 	};
@@ -308,7 +311,7 @@ const ImageForm: FC<Props> = ({
 										onChange={imageChangeHandler}
 										accept="image/*"
 									/>
-									{!hideUploadButton && (
+									{!hideImageUploadButton && (
 										<div className={styles.uploadSection}>
 											<Button
 												type="button"
@@ -345,7 +348,7 @@ const ImageForm: FC<Props> = ({
 											onChange={videoChangeHandler}
 											accept="video/mp4"
 										/>
-										{!hideUploadButton && (
+										{!hideVideoUploadButton && (
 											<div className={styles.uploadSection}>
 												<Button
 													type="button"

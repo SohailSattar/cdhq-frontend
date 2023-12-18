@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { APILoggedUser, APIPasswordValidity } from "../api/users/types";
+import { APILoggedUser } from "../api/users/types";
 
 export const useStore = create((set: any) => ({
 	language: "",
@@ -21,13 +21,4 @@ export const useStore = create((set: any) => ({
 	userRole: "",
 	setUserRole: (userRole: string) =>
 		set((state: any) => ({ ...state, userRole })),
-
-	// Password Validity
-	passwordValidity: {
-		expiringInDays: 999,
-		passwordExpiringOn: new Date(),
-		passwordSetOn: new Date(),
-	},
-	setPasswordValidity: (passwordValidity: APIPasswordValidity) =>
-		set((state: any) => ({ ...state, passwordValidity })),
 }));

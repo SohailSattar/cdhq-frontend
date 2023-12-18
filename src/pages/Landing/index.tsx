@@ -317,8 +317,8 @@ const LandingPage = () => {
 					)}
 				</div>
 			</div>
-			<br />
-			<br />
+			{/* <br />
+			<br /> */}
 			<Modal
 				isOpen={isNewsTableModalOpen}
 				onClose={modalNewsListCloseHandler}

@@ -1,129 +1,93 @@
+@import "../../assets/css/colors.scss";
+
 .card {
-	/* Add shadows to create the "card" effect */
-	// box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 	transition: 0.3s;
 	border-radius: 5px;
+	position: relative;
+	overflow: hidden;
 
-	// width: 16rem;
+	.textContainer {
+		position: absolute;
+		// bottom: 0; /* Adjusted position to be initially below the image */
+		left: 0;
+		// left: 50%;
+		transform: translate(100%, 100%); /* Adjusted translateY value to 100% */
+		text-align: center;
+		color: whitesmoke;
+		transition: transform 0.3s ease-in-out;
+		// width: calc(100% - 2rem);
+		width: 100%;
+
+		h2 {
+			font-size: 18px;
+			// font-weight: bold;
+			margin-bottom: 0;
+			padding-top: 5px;
+		}
+
+		p {
+			line-height: 1.35;
+		}
+
+		a {
+			background-color: #ffa600;
+			color: rgba(0, 0, 0, 0.75);
+			padding: 0.75rem 1.5rem;
+			display: inline-block;
+			border-radius: 4px;
+			text-decoration: none;
+
+			&:hover {
+				background-color: #e69500;
+			}
+
+			&:focus {
+				outline: 1px dashed #e69500;
+				outline-offset: 3px;
+			}
+		}
+
+		// .card:hover & {
+		// 	transform: translateY(0); /* Adjusted translateY value */
+		// }
+
+		> *:not(h2) {
+			opacity: 0;
+			transform: translateY(1rem);
+			transition: all 700ms ease-in-out;
+		}
+	}
+
+	.textContainer:hover {
+		background-color: rgba(0, 0, 0, 0.75);
+	}
 }
 
-/* On mouse-over, add a deeper shadow */
-.card:hover {
-	// box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+@media (hover: hover) and (min-width: 700px) and (prefers-reduced-motion: no-preference) {
+	.section > .textContainer {
+		transform: translateY(calc(100% - 6.5rem)); /* Adjusted translateY value */
+		height: 5rem;
+		// overflow: hidden;
+		transition: all 700ms ease-in-out;
+		color: $PRIMARY;
+
+		> *:not(h2) {
+			opacity: 0;
+			transform: translateY(1rem);
+			transition: all 700ms ease-in-out;
+		}
+	}
+
+	.textContainer:hover,
+	.section:focus-within .textContainer {
+		transform: translateY(-92%);
+		height: calc(100% - 0rem);
+		left: 0;
+		color: white;
+
+		> *:not(h2) {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
 }
-
-/* Add some padding inside the card container */
-.container {
-	padding: 2px 16px;
-}
-
-// .card {
-// 	position: relative;
-// 	display: flex;
-// 	min-width: 0;
-// 	background-color: #fff;
-// 	background-clip: border-box;
-// 	border: 1px solid rgba(0, 0, 0, 0.125);
-// 	border-radius: 0.25rem;
-// }
-
-// .card > hr {
-// 	margin-left: 0;
-// }
-
-// .card > .list-group {
-// 	border-top: inherit;
-// 	border-bottom: inherit;
-// }
-
-// .card > .list-group:first-child {
-// 	border-top-width: 0;
-// 	border-top-right-radius: calc(0.25rem - 1px);
-// 	border-top-left-radius: calc(0.25rem - 1px);
-// }
-
-// .card > .list-group:last-child {
-// 	border-bottom-width: 0;
-// 	border-bottom-left-radius: calc(0.25rem - 1px);
-// 	border-bottom-right-radius: calc(0.25rem - 1px);
-// }
-
-// .card > .card-header + .list-group,
-// .card > .list-group + .card-footer {
-// 	border-top: 0;
-// }
-
-// .card-body {
-// 	flex: 1 1 auto;
-// 	padding: 1rem;
-// }
-
-// .card-footer,
-// .card-header {
-// 	padding: 0.5rem 1rem;
-// 	background-color: rgba(0, 0, 0, 0.03);
-// }
-
-// .card-title {
-// 	margin-bottom: 0.5rem;
-// }
-
-// .card-header,
-// .card-subtitle,
-// .card-text:last-child {
-// 	margin-bottom: 0;
-// }
-
-// .card-subtitle {
-// 	margin-top: -0.25rem;
-// }
-
-// .card-link:hover {
-// 	text-decoration: none;
-// }
-
-// .card-link + .card-link {
-// 	margin-right: 1rem;
-// }
-
-// .card-header-pills,
-// .card-header-tabs {
-// 	margin-left: -0.5rem;
-// 	margin-right: -0.5rem;
-// }
-
-// .card-header {
-// 	border-bottom: 1px solid rgba(0, 0, 0, 0.125);
-// }
-
-// .card-header:first-child {
-// 	border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
-// }
-
-// .card-footer {
-// 	border-top: 1px solid rgba(0, 0, 0, 0.125);
-// }
-
-// .card-footer:last-child {
-// 	border-radius: 0 0 calc(0.25rem - 1px) calc(0.25rem - 1px);
-// }
-
-// .card-header-tabs {
-// 	margin-bottom: -0.5rem;
-// 	border-bottom: 0;
-// }
-
-// .card-group > .card,
-// .toast-container > :not(:last-child) {
-// 	margin-bottom: 0.75rem;
-// }
-
-// .card-img-overlay {
-// 	position: absolute;
-// 	top: 0;
-// 	left: 0;
-// 	bottom: 0;
-// 	right: 0;
-// 	padding: 1rem;
-// 	border-radius: calc(0.25rem - 1px);
-// }
