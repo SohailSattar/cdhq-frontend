@@ -15,6 +15,7 @@ export interface Props
 	withIcon?: boolean;
 	isCritical?: boolean;
 	withIconTransparent?: boolean;
+	tooltip?: string;
 }
 
 const Button: FC<Props> = ({
@@ -27,6 +28,7 @@ const Button: FC<Props> = ({
 	isCritical = false,
 	withIconTransparent = false,
 	disabled = false,
+	tooltip,
 	...buttonProps
 }) => {
 	const classes = clsx(
@@ -43,7 +45,8 @@ const Button: FC<Props> = ({
 	return (
 		<button
 			className={classes}
-			{...buttonProps}>
+			{...buttonProps}
+			title={tooltip}>
 			{children}
 		</button>
 	);

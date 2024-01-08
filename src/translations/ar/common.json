@@ -7,8 +7,8 @@
 	"header": {
 		"title": "وزارة الداخلية",
 		"menu": {
-			"dashboard": "الأنظمة",
-			"projectManagement": " الأنظمة و البرامج",
+			"dashboard": " أنظمة القيادة",
+			"projectManagement": "  ادارة الأنظمة و البرامج",
 			"userAccount": "حسابات المستخدمين",
 			"departmentHierarchy": "الهيكل التنظيمي",
 			"department": "إِدَارَة"
@@ -52,7 +52,7 @@
 		"imageType": {
 			"fireDepartment": "أفضل مراكز إطفاء",
 			"servicesDepartment": "أفضل مراكز خدمة",
-			"creation": "الابتكارات"
+			"creation": "الإبتكارات"
 		},
 		"thumbnail": "خلفية",
 		"icon": "أيقونة"
@@ -105,6 +105,11 @@
 		"changePassword": "تغيير كلمة السر",
 		"signupText": "ليس لديك حساب؟ تواصل مع قسم الخدمات الإلكترونية.",
 		"userName": "اسم المستخدم"
+	},
+	"export": {
+		"toExcel": "To Excel [Arabic]",
+		"fieldsSelectTitle": "Select fields to be exported [Arabic]",
+		"useCurrentPage": "Use current page? [Arabic]"
 	},
 	"button": {
 		"view": "عرض",

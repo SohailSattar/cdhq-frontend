@@ -52,3 +52,23 @@ export interface APIStatus {
 }
 
 export type ContentType = "multipart/form-data" | "application/json";
+
+// Generic interface
+// export interface APIExportData<T> {
+// 	[key: string]: T;
+// }
+
+export interface APIExportData {
+	isPaged: boolean;
+	format: "xls" | "pdf";
+	selectedFields: string[];
+	queryParams?: APIQueryParams;
+}
+
+// Generic mapping for property names and their display names
+export type PropertyDisplayNames<T> = Record<keyof T, Record<string, string>>;
+
+export interface APIQueryParams {
+	page?: number;
+	postsPerPage?: number;
+}

@@ -17,7 +17,7 @@ import { DropdownOption } from "../../../components/Dropdown";
 import { useStore } from "../../../utils/store";
 
 import { getUsersByDepartments } from "../../../api/users/get/getUsersByDepartments";
-import { APIUserName } from "../../../api/users/types";
+import { APIExportUser, APIUserName } from "../../../api/users/types";
 
 import * as RoutePath from "../../../RouteConfig";
 
@@ -33,6 +33,8 @@ import { Project } from "../../../data/projects";
 import { APIRole } from "../../../api/roles/types";
 import { getRole } from "../../../api/users/get/getRole";
 import { getMyRole } from "../../../api/users/get/getMyRole";
+import { APIExportData } from "../../../api";
+import { exportUsers } from "../../../api/users/export/exportUsers";
 
 const UserAccountPage = () => {
 	const [t] = useTranslation("common");
@@ -106,6 +108,7 @@ const UserAccountPage = () => {
 	const employeeNo = t("user.employeeNumber", { framework: "React" });
 	const logName = t("user.logName", { framework: "React" });
 	const fullName = t("user.fullName", { framework: "React" });
+	const nameEnglish = t("user.nameEnglish", { framework: "React" });
 
 	const rank = t("rank.name", { framework: "React" });
 	const department = t("department.name", { framework: "React" });
@@ -377,6 +380,28 @@ const UserAccountPage = () => {
 		[]
 	);
 
+	// For Export
+	const propertyDisplayNames: Record<
+		keyof APIExportUser,
+		Record<string, string>
+	> = {
+		id: { value: "Id", text: id },
+		employeeNo: { value: "EmployeeNo", text: employeeNo },
+		nameEnglish: { value: "NameEnglish", text: nameEnglish },
+		name: { value: "Name", text: fullName },
+		logName: { value: "LogName", text: logName },
+	};
+
+	const exportDataHandler = async (data: APIExportData) => {
+		const dataValues: APIExportData = {
+			...data,
+			queryParams: { page: currentPage, postsPerPage: pageSize },
+		};
+
+		const d = await exportUsers(dataValues);
+		console.log(dataValues);
+	};
+
 	return (
 		<PageContainer
 			lockFor={[ROLE.USER]}
@@ -405,7 +430,7 @@ const UserAccountPage = () => {
 						/>
 					</div>
 				</div>
-				<div className={styles.table}>
+				<ShadowedContainer className={styles.table}>
 					<PaginatedTable
 						totalCountText={t("user.count", {
 							framework: "React",
@@ -429,8 +454,10 @@ const UserAccountPage = () => {
 						onWorkflowStatusOptionSelectionChange={() => {}}
 						showRoleOption
 						onRoleOptonSelectionHandler={roleSelectHandler}
+						exportDisplayNames={propertyDisplayNames}
+						onExcelExport={exportDataHandler}
 					/>
-				</div>
+				</ShadowedContainer>
 			</div>
 		</PageContainer>
 	);

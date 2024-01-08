@@ -7,7 +7,6 @@ import {
 	Modal,
 	NewsDetail,
 	NewsList,
-	NewsTicker,
 } from "../../components";
 
 import { getLatest20News } from "../../api/news/get/getLatest20News";

@@ -14,6 +14,7 @@ import * as RoutePath from "../../RouteConfig";
 import styles from "./styles.module.scss";
 import { useCallback, useEffect } from "react";
 import { checkLoginStatus } from "../../api/login/get/checkLoginStatus";
+import { loginUserPhp } from "../../api/login/post/loginUserPhp";
 
 const LoginPage = () => {
 	const navigate = useNavigate();
@@ -47,6 +48,8 @@ const LoginPage = () => {
 				transition: Flip,
 			});
 		}
+
+		console.log(data);
 
 		if (data) {
 			localStorageService?.setJwtToken(data?.token);
@@ -82,6 +85,10 @@ const LoginPage = () => {
 			// });
 
 			setUserRole(data?.role! !== "" ? data?.role! : "USER");
+
+			const { data: phpData } = await loginUserPhp(values);
+
+			console.log(phpData);
 
 			// const { data: validity } = await getPasswordValidity();
 

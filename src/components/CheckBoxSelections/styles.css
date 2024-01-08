@@ -1,0 +1,11 @@
+.checkbox-container {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr); /* Adjust the number as needed */
+	gap: 10px; /* Adjust the gap between items as needed */
+}
+
+.checkbox-item {
+	display: flex;
+	flex-direction: column;
+	/* align-items: center;  Center items horizontally */
+}

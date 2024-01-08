@@ -1,7 +1,6 @@
 import { APIResponse, getConfig } from "../..";
 import { instance } from "../../../network";
 import { Id } from "../../../utils";
-import { APIPaginatedUser } from "../../users/types";
 import { APIDepartmentItem } from "../types";
 
 export async function getCentersByDepartment(
