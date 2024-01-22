@@ -56,10 +56,10 @@ $menu-item-font-weight: bold;
 	white-space: nowrap;
 	color: white !important;
 	border: 1px solid white;
-	border: 1px solid white !important;
+	// border: 1px solid white !important;
 	&:hover {
 		color: white;
 		background-color: $PRIMARY !important;
-		border: 1px solid white !important;
+		// border: 1px solid white !important;
 	}
 }

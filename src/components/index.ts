@@ -48,6 +48,7 @@ export { default as ImageUploader } from "./ImageUploader";
 export { default as Layout } from "./Layout";
 export { default as Logout } from "./Logout";
 export { default as Loader } from "./Loader";
+export { default as LoaderOverlay } from "./LoaderOverlay";
 export { default as Loading } from "./Loading";
 export { default as LoadingButton } from "./LoadingButton";
 export { default as LoggedUser } from "./LoggedUser";

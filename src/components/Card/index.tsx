@@ -7,11 +7,13 @@ import { Rating } from "@mui/material";
 import styles from "./styles.module.scss";
 import clsx from "clsx";
 import { Id } from "../../utils";
+import Hr from "../Hr";
 
 export interface ICard {
 	id: Id;
 	image: string;
 	title: string;
+	department?: string;
 	rating?: number;
 	video?: string;
 	notes?: string;
@@ -30,7 +32,7 @@ const Card: FC<Props> = ({
 	className,
 	onClick = () => {},
 }) => {
-	const { title, image, video, rating, notes } = data;
+	const { title, department, image, video, rating, notes } = data;
 
 	return (
 		<ReactCard
@@ -54,7 +56,16 @@ const Card: FC<Props> = ({
 						</div>
 					</section>
 				) : (
-					<ReactCard.Text>{title}</ReactCard.Text>
+					<>
+						<ReactCard.Text>{title}</ReactCard.Text>
+
+						{department && (
+							<>
+								<Hr />
+								<ReactCard.Text>{department}</ReactCard.Text>
+							</>
+						)}
+					</>
 				)}
 				{showRating && (
 					<Rating

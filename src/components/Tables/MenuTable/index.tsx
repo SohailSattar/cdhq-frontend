@@ -227,11 +227,15 @@ const MenuTable = () => {
 	);
 
 	const id = t("menu.id", { framework: "React" });
+	const menuType = t("menu.menuType", { framework: "React" });
 	const menuName = t("menu.name", { framework: "React" });
 	const parent = t("menu.parent", { framework: "React" });
 	const linkPath = t("menu.pathLink", { framework: "React" });
 	const orderNo = t("menu.orderNo", { framework: "React" });
 	const linkType = t("menu.linkType", { framework: "React" });
+
+	const isVisible = t("menu.isVisible", { framework: "React" });
+
 	const isExternalPath = t("menu.isExternal", { framework: "React" });
 
 	const status = t("global.status", { framework: "React" });
@@ -247,7 +251,7 @@ const MenuTable = () => {
 			accessor: (p) => p.id,
 		},
 		{
-			Header: "menuType",
+			Header: menuType,
 			id: "menuType",
 			accessor: (p) =>
 				language !== "ar" ? p.menuType?.name : p.menuType?.nameEnglish,
@@ -279,7 +283,7 @@ const MenuTable = () => {
 				language !== "ar" ? p.linkType?.name : p.linkType?.nameEnglish,
 		},
 		{
-			Header: "Is Visible",
+			Header: isVisible,
 			accessor: (p) => <StatusIcon status={p.isVisible} />,
 		},
 		{

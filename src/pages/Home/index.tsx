@@ -51,24 +51,14 @@ const HomePage = () => {
 			if (data) {
 				const { data: accessibleProjects } = await getAccessibleProjects();
 
-				// const x: APIProjectItem[] = data?.map((x: APIProjectItem) => {
-				// 	// const isA = userProjects?.includes()
-
-				// 	return {
-				// 		id: x.id,
-				// 		name: x.name,
-				// 		nameEnglish: x.nameEnglish,
-				// 		isAvailable: true,
-				// 		iconName: x.iconName,
-				// 	};
-				// });
+				const uniqueParentIds = new Set<number>(
+					accessibleProjects?.map((project) => project.parent?.id!)
+				);
 
 				if (loggedInUser.role !== ROLE.SUPERADMIN) {
 					const projectsList = data
 						.map((project) => {
-							project.isAvailable = accessibleProjects?.find(
-								(x) => x.id === project.id
-							)
+							project.isAvailable = uniqueParentIds?.has(project.id)
 								? true
 								: false;
 							return project;

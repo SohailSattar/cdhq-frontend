@@ -32,8 +32,6 @@ const AllocatedUsersTable: FC<Props> = ({ projectId }) => {
 	const [keyword, setKeyword] = useState("");
 
 	const [departmentId, setDepartmentId] = useState<Id>("");
-	const [menuTypeId, setMenuTypeId] = useState<Id>("");
-	const [linkTypeId, setLinkTypeId] = useState<Id>("");
 
 	const [statusCode, setStatusCode] = useState<Id>("");
 
@@ -171,14 +169,6 @@ const AllocatedUsersTable: FC<Props> = ({ projectId }) => {
 			options: departmentOptions,
 			onSelect: departmentSelectHandler,
 		},
-		// menuTypeDropdown: {
-		// 	options: menuTypeOptions,
-		// 	onSelect: menuTypeSelectHandler,
-		// },
-		// linkTypeDropdown: {
-		// 	options: linkTypeOptions,
-		// 	onSelect: linkTypeSelectHandler,
-		// },
 	};
 
 	return (

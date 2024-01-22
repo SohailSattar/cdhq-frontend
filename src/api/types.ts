@@ -52,6 +52,7 @@ export interface APIStatus {
 }
 
 export type ContentType = "multipart/form-data" | "application/json";
+export type ResponseType = "json" | "blob";
 
 // Generic interface
 // export interface APIExportData<T> {
@@ -59,9 +60,10 @@ export type ContentType = "multipart/form-data" | "application/json";
 // }
 
 export interface APIExportData {
+	language?: string;
 	isPaged: boolean;
 	format: "xls" | "pdf";
-	selectedFields: string[];
+	selectedFields: { [key: string]: string };
 	queryParams?: APIQueryParams;
 }
 
@@ -71,4 +73,9 @@ export type PropertyDisplayNames<T> = Record<keyof T, Record<string, string>>;
 export interface APIQueryParams {
 	page?: number;
 	postsPerPage?: number;
+	keyword?: string;
+	projectId?: Id;
+	statusCode?: Id;
+	orderBy?: string;
+	isDescending?: boolean;
 }

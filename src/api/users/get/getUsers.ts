@@ -11,7 +11,8 @@ export async function getUsers(
 	projectId?: Id,
 	statusCode?: Id,
 	roleId?: Id,
-	orderBy?: string
+	orderBy?: string,
+	isDescending: boolean = false
 ): Promise<APIResponse<APIPaginatedUser>> {
 	try {
 		const config = getConfig();
@@ -35,7 +36,7 @@ export async function getUsers(
 		}
 
 		if (orderBy) {
-			queryParam += `${orderBy}`;
+			queryParam += `&orderBy=${orderBy}&isDescending=${isDescending}`;
 		}
 
 		const url =

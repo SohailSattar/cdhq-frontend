@@ -7,26 +7,30 @@ import { FC } from "react";
 import { useTranslation } from "react-i18next";
 
 interface Props {
+	showExport: boolean;
 	onExportClick: () => void;
 }
 
-const ActionsContainer: FC<Props> = ({ onExportClick }) => {
+const ActionsContainer: FC<Props> = ({ showExport = true, onExportClick }) => {
 	const [t] = useTranslation("common");
 	return (
 		<div className={styles.actionsContainer}>
-			<ShadowedContainer className={styles.exportContainer}>
-				<div>
-					<Button
-						withIcon
-						tooltip={t("export.recordPerPage", {
-							framework: "React",
-						})}
-						onClick={onExportClick}>
-						Export
-						{/* <FontAwesomeIcon icon={faFileExcel} /> */}
-					</Button>
-				</div>
-				{/* <div>
+			{showExport && (
+				<ShadowedContainer className={styles.exportContainer}>
+					{showExport && (
+						<div>
+							<Button
+								withIcon
+								tooltip={t("button.export", {
+									framework: "React",
+								})}
+								onClick={onExportClick}>
+								Export
+								{/* <FontAwesomeIcon icon={faFileExcel} /> */}
+							</Button>
+						</div>
+					)}
+					{/* <div>
 					<Button
 						withIcon
 						tooltip="Export to PDF"
@@ -34,7 +38,8 @@ const ActionsContainer: FC<Props> = ({ onExportClick }) => {
 						<FontAwesomeIcon icon={faFilePdf} />
 					</Button>
 				</div> */}
-			</ShadowedContainer>
+				</ShadowedContainer>
+			)}
 		</div>
 	);
 };

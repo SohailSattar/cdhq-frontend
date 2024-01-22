@@ -50,8 +50,8 @@
 		"nameEnglish": "Image Name [English]",
 		"ratings": "Ratings",
 		"imageType": {
-			"fireDepartment": "Fire Departments",
-			"servicesDepartment": "Service Department",
+			"fireDepartment": "Best Fire Stations",
+			"servicesDepartment": "Best Service Centers",
 			"creation": "Innovations"
 		},
 		"thumbnail": "Thumbnail",
@@ -108,6 +108,7 @@
 	},
 	"export": {
 		"toExcel": "To Excel",
+		"toPdf": "To PDF",
 		"fieldsSelectTitle": "Select fields to be exported",
 		"useCurrentPage": "Use current page?"
 	},
@@ -139,7 +140,8 @@
 		"yes": "Yes",
 		"cancel": "Cancel",
 		"assignToUser": "Assign to User",
-		"selectChild": "Select Child"
+		"selectChild": "Select Child",
+		"export": "Export"
 	},
 	"home": {
 		"welcome": "Welcome"
@@ -357,7 +359,9 @@
 		"honorDeactivated": "Honor has been deactivated"
 	},
 	"dropdown": {
-		"select": "Select..."
+		"select": "Select...",
+		"recordPerPage": "Records Per Page",
+		"project": "Project"
 	},
 	"table": {
 		"noResult": "No result found",

@@ -12,6 +12,7 @@ import {
 	ActionButtons,
 	PageContainer,
 	PhotoThumbnailImage,
+	ActiveStatus,
 } from "../../../components";
 import { DropdownOption } from "../../../components/Dropdown";
 import { NewsColumns } from "../../../components/PaginatedTable/types";
@@ -44,7 +45,7 @@ const NewsHomePage = () => {
 	const [selectedStatusCode, setSelectedStatusCode] = useState<Id>(1);
 
 	//Parameters
-	const [toggleSort, setToggleSort] = useState(false);
+	const [toggleSort, setToggleSort] = useState(true);
 	const [orderBy, setOrderBy] = useState<string>("Id");
 
 	const fetchData = useMemo(
@@ -193,6 +194,7 @@ const NewsHomePage = () => {
 	const department = t("department.name", { framework: "React" });
 
 	//Actions
+	const status = t("global.status", { framework: "React" });
 	const actions = t("global.actions", { framework: "React" });
 
 	const columns: Column<NewsColumns>[] = useMemo(
@@ -227,6 +229,21 @@ const NewsHomePage = () => {
 				),
 			},
 			{
+				Header: status,
+				id: "activeStatus",
+				accessor: (p) => p,
+				Cell: ({ value }: any) => (
+					<ActiveStatus
+						code={value.activeStatus.id === 1 ? 1 : 9}
+						text={
+							language !== "ar"
+								? value.activeStatus.nameArabic
+								: value.activeStatus.nameEnglish
+						}
+					/>
+				),
+			},
+			{
 				Header: actions,
 				accessor: (p) => p,
 				Cell: ({ value }: any) => (
@@ -250,7 +267,9 @@ const NewsHomePage = () => {
 			txtId,
 			title,
 			department,
+			status,
 			actions,
+			language,
 			activateClickHandler,
 			privileges?.updatePrivilege,
 			privileges?.deletePrivilege,
@@ -267,7 +286,6 @@ const NewsHomePage = () => {
 		setToggleSort(!toggleSort);
 
 		setOrderBy(columnId);
-		console.log(columnId);
 		// fetchData(currentPage, orderByParam);
 		setCurrentPage(1);
 	};

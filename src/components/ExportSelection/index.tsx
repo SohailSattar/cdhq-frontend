@@ -1,7 +1,13 @@
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileExcel, faFilePdf } from "@fortawesome/free-solid-svg-icons";
-import { Button, CheckBoxSelections, Checkbox, ShadowedContainer } from "..";
+import {
+	Button,
+	CheckBoxSelections,
+	Checkbox,
+	RadioButton,
+	ShadowedContainer,
+} from "..";
 import { APIExportData, PropertyDisplayNames } from "../../api";
 
 import styles from "./styles.module.scss";
@@ -17,8 +23,12 @@ const ExportSelection = <T extends Record<string, any>>({
 	onExcelExport,
 }: Props<T>) => {
 	const [t] = useTranslation("common");
+	const [dynamicObject, setDynamicObject] = useState<{ [key: string]: string }>(
+		{}
+	);
+
 	const [isSelectAll, setIsSelectAll] = useState<boolean>(true);
-	const [properties, setProperties] = useState<string[]>([]);
+	const [properties, setProperties] = useState<{ [key: string]: string }[]>([]);
 
 	const [isPaged, setIsPaged] = useState<boolean>(true);
 
@@ -27,27 +37,52 @@ const ExportSelection = <T extends Record<string, any>>({
 		setIsSelectAll(isChecked);
 
 		if (isChecked) {
-			console.log(displayNames);
 			setProperties([]);
 		}
 	};
 
 	const propertyChangeHandler = useMemo(
-		() => (x: string[]) => {
+		() => (x: { [key: string]: string }[]) => {
+			// setProperties((prevState) => [...prevState, ...x]);
 			setProperties(x);
 		},
-		[]
+		[setProperties]
 	);
+
+	console.log(properties);
 
 	const excelExportClickHandler = useMemo(
 		() => () => {
+			// // Convert the array to a dynamic object
+			// const newDynamicObject = properties.reduce((acc, obj) => {
+			// 	console.log("acc", acc);
+			// 	console.log("obj", obj);
+			// 	for (const key in obj) {
+			// 		console.log("key", key);
+			// 		if (obj.hasOwnProperty(key)) {
+			// 			acc[key] = obj[key];
+			// 		}
+			// 	}
+			// 	return acc;
+			// }, {});
+
+			const newDynamicObject = properties.reduce((acc, obj) => {
+				console.log(obj);
+				acc[obj.value] = obj.text;
+				return acc;
+			}, {});
+
+			console.log(properties);
+			console.log(newDynamicObject);
+
+			// Update the state with the new dynamic object
+			setDynamicObject(newDynamicObject);
+
 			const params: APIExportData = {
 				format: "xls",
-				selectedFields: properties,
+				selectedFields: newDynamicObject,
 				isPaged: isPaged,
 			};
-			// onExcelExport(params);
-			console.log(properties);
 
 			onExcelExport(params);
 		},
@@ -86,16 +121,22 @@ const ExportSelection = <T extends Record<string, any>>({
 					onChange={useCurrentPageCheckHandler}
 				/>
 			</ShadowedContainer>
-			<ShadowedContainer>
+			<ShadowedContainer className={styles.actions}>
 				<Button
 					onClick={excelExportClickHandler}
 					tooltip={t("export.toExcel", {
 						framework: "React",
-					})}>
+					})}
+					className={styles.action}>
 					<FontAwesomeIcon icon={faFileExcel} />
 				</Button>
-				{/* <Button>
-						<FontAwesomeIcon icon={faFilePdf} /></Button> */}
+				<Button
+					tooltip={t("export.toPdf", {
+						framework: "React",
+					})}
+					className={styles.action}>
+					<FontAwesomeIcon icon={faFilePdf} />
+				</Button>
 			</ShadowedContainer>
 		</div>
 	);

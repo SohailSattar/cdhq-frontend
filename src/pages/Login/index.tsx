@@ -49,24 +49,8 @@ const LoginPage = () => {
 			});
 		}
 
-		console.log(data);
-
 		if (data) {
 			localStorageService?.setJwtToken(data?.token);
-
-			// setCookie('id', data.id, { path: '/', expires: cookieExpiry });
-			// setCookie('name', data.name, { path: '/', expires: cookieExpiry });
-			// setCookie('nameEnglish', data.role, { path: '/', expires: cookieExpiry });
-			// setCookie('userName', data.userName, {
-			// 	path: '/',
-			// 	expires: cookieExpiry,
-			// });
-			// setCookie('role', data.role, { path: '/', expires: cookieExpiry });
-			// setCookie('token', data.token, {
-			// 	path: '/',
-			// 	expires: cookieExpiry,
-			// 	httpOnly: true,
-			// });
 
 			setLoggedInUser({
 				id: data.id,
@@ -76,19 +60,9 @@ const LoginPage = () => {
 				role: data.role,
 			});
 
-			// localStorageService?.setUserInfo({
-			// 	id: data.id,
-			// 	userName: data.userName,
-			// 	name: data.name,
-			// 	nameEnglish: data.nameEnglish,
-			// 	role: data.role,
-			// });
-
 			setUserRole(data?.role! !== "" ? data?.role! : "USER");
 
-			const { data: phpData } = await loginUserPhp(values);
-
-			console.log(phpData);
+			await loginUserPhp(values);
 
 			// const { data: validity } = await getPasswordValidity();
 

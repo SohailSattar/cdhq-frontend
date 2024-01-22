@@ -82,6 +82,10 @@ const LandingPage = () => {
 							id: x.id,
 							image: x.imageName,
 							title: language !== "ar" ? x.name : x.nameEnglish,
+							department:
+								language !== "ar"
+									? x.department?.name!
+									: x.department?.nameEnglish!,
 						};
 					});
 
@@ -122,6 +126,10 @@ const LandingPage = () => {
 					id: x.id,
 					image: x.imageName,
 					title: language !== "ar" ? x.name : x.nameEnglish,
+					department:
+						language !== "ar"
+							? x.department?.name!
+							: x.department?.nameEnglish!,
 				};
 			});
 			setEmpOfMonthCardsList(em);

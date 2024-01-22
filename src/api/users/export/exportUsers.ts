@@ -10,7 +10,7 @@ export async function exportUsers(
 	exportParams: APIExportData
 ): Promise<APIResponse<APIResponseStatus>> {
 	try {
-		const config = getConfig();
+		const config = getConfig("application/json", "blob");
 
 		const response = await instance.post<APIResponseStatus>(
 			"/users/export",

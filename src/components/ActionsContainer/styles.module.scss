@@ -4,6 +4,7 @@
 	.exportContainer {
 		display: flex;
 		justify-content: space-between; // This will create space between the divs
+		width: 100%;
 
 		// Add margins based on the direction
 		&:not([dir="rtl"]) {

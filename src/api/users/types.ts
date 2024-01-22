@@ -137,4 +137,8 @@ export interface APIExportUser {
 	name: string;
 	nameEnglish: string;
 	logName: string;
+	rank: string;
+	department: string;
+	phone: string;
+	email: string;
 }

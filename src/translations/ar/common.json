@@ -29,13 +29,13 @@
 		"parent": "العنوان الأم ",
 		"parentEnglish": "العنوان الأم بالانجليزي",
 		"pathLink": "الرابط",
-		"isVisible": "ظاهر",
+		"isVisible": "ظاهر؟",
 		"linkType": "نوع الرابط",
 		"menuType": "نوع القائمة",
 		"count": "المجموع",
 		"list": "اللائحة",
 		"orderNo": "الترتيب",
-		"isExternal": "الرابط خارجي ؟"
+		"isExternal": "الرابط خارجي؟"
 	},
 	"linkType": {
 		"id": "رمز الرابط",
@@ -108,6 +108,7 @@
 	},
 	"export": {
 		"toExcel": "To Excel [Arabic]",
+		"toPdf": "To PDF [Arabic]",
 		"fieldsSelectTitle": "Select fields to be exported [Arabic]",
 		"useCurrentPage": "Use current page? [Arabic]"
 	},
@@ -139,14 +140,15 @@
 		"yes": "نعم",
 		"cancel": "الغاء",
 		"assignToUser": "التعيين للمستخدم",
-		"selectChild": " مع الأقسام و الأفرع"
+		"selectChild": " مع الأقسام و الأفرع",
+		"export": "Export [Arabic]"
 	},
 	"home": {
 		"welcome": "مرحبا بك"
 	},
 	"user": {
 		"id": "رمز الموظف",
-		"logName": "اسم الحساب ",
+		"logName": "اسم الحساب",
 		"employeeNumber": "رقم الموظف",
 		"name": "اسم الموظف",
 		"nameEnglish": "اسم الموظف (انجليزي)",
@@ -357,7 +359,9 @@
 		"honorDeactivated": "تم الغاء تفعيل السجل"
 	},
 	"dropdown": {
-		"select": "اختر"
+		"select": "اختر",
+		"recordPerPage": "سجلات لكل صفحة",
+		"project": "[Arabic] برنامج"
 	},
 	"table": {
 		"noResult": "لم يتم العثور على نتائج",

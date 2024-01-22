@@ -6,4 +6,26 @@
 	.fieldsContainer {
 		display: flex;
 	}
+
+	.actions {
+		&:not([dir="rtl"]) {
+			.action {
+				margin-right: 10px; // Adjust the margin based on your preference
+			}
+
+			// div:first-of-type {
+			// 	margin-right: unset;
+			// }
+		}
+
+		&[dir="rtl"] {
+			.action {
+				margin-left: 10px; // Adjust the margin based on your preference
+			}
+
+			// div:last-of-type {
+			// 	margin-left: unset;
+			// }
+		}
+	}
 }
