@@ -305,6 +305,7 @@
 		"byDepartment": "تصفية حسب الأقسام و الأفرع"
 	},
 	"message": {
+		"downloaded": "File has been downloaded",
 		"fail": "حدث خطأ أثناء المعالجة، يرجى الاتصال بقسم الخدمات الالكترونية",
 		"recordCreated": "تم اضافة السجل",
 		"recordUpdated": "تم تعديل السجل",

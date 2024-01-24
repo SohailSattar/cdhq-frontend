@@ -305,6 +305,7 @@
 		"byDepartment": "Filter by Department"
 	},
 	"message": {
+		"downloaded": "File has been downloaded",
 		"fail": "There was an error while prcoessing, please contact the IT department",
 		"recordCreated": "Record has been created",
 		"recordUpdated": "Record has been updated",

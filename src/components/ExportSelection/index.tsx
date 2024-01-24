@@ -16,11 +16,13 @@ import { useTranslation } from "react-i18next";
 interface Props<T> {
 	displayNames: PropertyDisplayNames<T>;
 	onExcelExport: (data: APIExportData) => void;
+	onPdfExport: (data: APIExportData) => void;
 }
 
 const ExportSelection = <T extends Record<string, any>>({
 	displayNames,
 	onExcelExport,
+	onPdfExport,
 }: Props<T>) => {
 	const [t] = useTranslation("common");
 	const [dynamicObject, setDynamicObject] = useState<{ [key: string]: string }>(
@@ -43,43 +45,23 @@ const ExportSelection = <T extends Record<string, any>>({
 
 	const propertyChangeHandler = useMemo(
 		() => (x: { [key: string]: string }[]) => {
-			// setProperties((prevState) => [...prevState, ...x]);
 			setProperties(x);
 		},
 		[setProperties]
 	);
 
-	console.log(properties);
-
 	const excelExportClickHandler = useMemo(
 		() => () => {
-			// // Convert the array to a dynamic object
-			// const newDynamicObject = properties.reduce((acc, obj) => {
-			// 	console.log("acc", acc);
-			// 	console.log("obj", obj);
-			// 	for (const key in obj) {
-			// 		console.log("key", key);
-			// 		if (obj.hasOwnProperty(key)) {
-			// 			acc[key] = obj[key];
-			// 		}
-			// 	}
-			// 	return acc;
-			// }, {});
-
 			const newDynamicObject = properties.reduce((acc, obj) => {
-				console.log(obj);
 				acc[obj.value] = obj.text;
 				return acc;
 			}, {});
-
-			console.log(properties);
-			console.log(newDynamicObject);
 
 			// Update the state with the new dynamic object
 			setDynamicObject(newDynamicObject);
 
 			const params: APIExportData = {
-				format: "xls",
+				format: "xlsx",
 				selectedFields: newDynamicObject,
 				isPaged: isPaged,
 			};
@@ -87,6 +69,27 @@ const ExportSelection = <T extends Record<string, any>>({
 			onExcelExport(params);
 		},
 		[isPaged, onExcelExport, properties]
+	);
+
+	const pdfExportClickHandler = useMemo(
+		() => () => {
+			const newDynamicObject = properties.reduce((acc, obj) => {
+				acc[obj.value] = obj.text;
+				return acc;
+			}, {});
+
+			// Update the state with the new dynamic object
+			setDynamicObject(newDynamicObject);
+
+			const params: APIExportData = {
+				format: "pdf",
+				selectedFields: newDynamicObject,
+				isPaged: isPaged,
+			};
+
+			onPdfExport(params);
+		},
+		[isPaged, onPdfExport, properties]
 	);
 
 	const useCurrentPageCheckHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -131,6 +134,7 @@ const ExportSelection = <T extends Record<string, any>>({
 					<FontAwesomeIcon icon={faFileExcel} />
 				</Button>
 				<Button
+					onClick={pdfExportClickHandler}
 					tooltip={t("export.toPdf", {
 						framework: "React",
 					})}

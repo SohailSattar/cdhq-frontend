@@ -15,6 +15,7 @@ import { getUsersByKeyword } from "../../../api/users/get/getUsersByKeyword";
 import { DropdownOption } from "../../../components/Dropdown";
 
 import { useStore } from "../../../utils/store";
+import { enGB, ar } from "date-fns/locale";
 
 import { getUsersByDepartments } from "../../../api/users/get/getUsersByDepartments";
 import { APIExportUser, APIUserName } from "../../../api/users/types";
@@ -36,6 +37,7 @@ import { getMyRole } from "../../../api/users/get/getMyRole";
 import { APIExportData } from "../../../api";
 import { exportUsers } from "../../../api/users/export/exportUsers";
 import { toast } from "react-toastify";
+import { format } from "date-fns";
 
 const UserAccountPage = () => {
 	const [t] = useTranslation("common");
@@ -110,8 +112,8 @@ const UserAccountPage = () => {
 	const id = t("user.id", { framework: "React" });
 	const employeeNo = t("user.employeeNumber", { framework: "React" });
 	const logName = t("user.logName", { framework: "React" });
-	const fullName = t("user.fullName", { framework: "React" });
-	const nameEnglish = t("user.nameEnglish", { framework: "React" });
+	const fullName = t("global.name", { framework: "React" });
+	const nameEnglish = t("global.nameEnglish", { framework: "React" });
 
 	const rank = t("rank.name", { framework: "React" });
 	const department = t("department.name", { framework: "React" });
@@ -435,9 +437,13 @@ const UserAccountPage = () => {
 			},
 		};
 
-		console.log(dataValues);
+		const us = t("user.names", { framework: "React" });
+		const currentDate = format(new Date(), "ddMMyyyyhhmmss", {
+			locale: language !== "ar" ? ar : enGB,
+		});
+		const fileName = `${us}_${currentDate}.${data.format}`;
 
-		// const d = await exportUsers(dataValues);
+		const d = await exportUsers(dataValues, fileName);
 		toast.success(t("message.downloaded", { framework: "React" }).toString());
 		setIsExportLoading(false);
 	};
@@ -498,6 +504,7 @@ const UserAccountPage = () => {
 						displayExportButton={true}
 						exportDisplayNames={propertyDisplayNames}
 						onExcelExport={exportDataHandler}
+						onPdfExport={exportDataHandler}
 					/>
 				</ShadowedContainer>
 			</div>

@@ -29,7 +29,7 @@ import { getAccessRoles } from "../../api/roles/get/getAccessRoles";
 import { getMyRole } from "../../api/users/get/getMyRole";
 import { APIExportUser, APIUserRole } from "../../api/users/types";
 
-import { ROLE } from "../../utils";
+import { ROLE, emptyFunction } from "../../utils";
 
 import { getAllWorkflowStatus } from "../../api/activeStatus/get/getAllWorkflowStatus";
 
@@ -68,6 +68,7 @@ interface Props {
 	displayExportButton?: boolean;
 	exportDisplayNames?: any;
 	onExcelExport?: (data: APIExportData) => void;
+	onPdfExport?: (data: APIExportData) => void;
 }
 
 const PaginatedTable: FC<Props> = ({
@@ -98,7 +99,8 @@ const PaginatedTable: FC<Props> = ({
 	isExportSelectionLoading = false,
 	displayExportButton = false,
 	exportDisplayNames,
-	onExcelExport = () => {},
+	onExcelExport = emptyFunction,
+	onPdfExport = emptyFunction,
 }) => {
 	const [t] = useTranslation("common");
 
@@ -390,6 +392,7 @@ const PaginatedTable: FC<Props> = ({
 						<ExportSelection
 							displayNames={exportDisplayNames}
 							onExcelExport={onExcelExport}
+							onPdfExport={onPdfExport}
 						/>
 					</LoaderOverlay>
 				</Modal>

@@ -38,6 +38,10 @@ export interface APIResponseStatus {
 	errors?: string[];
 }
 
+export interface APIResponseData {
+	file: BlobPart;
+}
+
 //Pagination
 export interface APIPaginate {
 	currentPage: number;
@@ -62,7 +66,7 @@ export type ResponseType = "json" | "blob";
 export interface APIExportData {
 	language?: string;
 	isPaged: boolean;
-	format: "xls" | "pdf";
+	format: "xlsx" | "pdf";
 	selectedFields: { [key: string]: string };
 	queryParams?: APIQueryParams;
 }
