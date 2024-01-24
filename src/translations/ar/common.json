@@ -107,10 +107,10 @@
 		"userName": "اسم المستخدم"
 	},
 	"export": {
-		"toExcel": "To Excel [Arabic]",
-		"toPdf": "To PDF [Arabic]",
-		"fieldsSelectTitle": "Select fields to be exported [Arabic]",
-		"useCurrentPage": "Use current page? [Arabic]"
+		"toExcel": "الى اكسل",
+		"toPdf": "PDF الى",
+		"fieldsSelectTitle": "اختر الحقول",
+		"useCurrentPage": "استعمال الصفحة الحالية ؟"
 	},
 	"button": {
 		"view": "عرض",
@@ -141,7 +141,7 @@
 		"cancel": "الغاء",
 		"assignToUser": "التعيين للمستخدم",
 		"selectChild": " مع الأقسام و الأفرع",
-		"export": "Export [Arabic]"
+		"export": "تحميل"
 	},
 	"home": {
 		"welcome": "مرحبا بك"
@@ -305,7 +305,7 @@
 		"byDepartment": "تصفية حسب الأقسام و الأفرع"
 	},
 	"message": {
-		"downloaded": "File has been downloaded",
+		"downloaded": "تم تحميل الملف ",
 		"fail": "حدث خطأ أثناء المعالجة، يرجى الاتصال بقسم الخدمات الالكترونية",
 		"recordCreated": "تم اضافة السجل",
 		"recordUpdated": "تم تعديل السجل",
@@ -362,7 +362,7 @@
 	"dropdown": {
 		"select": "اختر",
 		"recordPerPage": "سجلات لكل صفحة",
-		"project": "[Arabic] برنامج"
+		"project": "برنامج"
 	},
 	"table": {
 		"noResult": "لم يتم العثور على نتائج",
