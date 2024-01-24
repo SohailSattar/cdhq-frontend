@@ -25,7 +25,7 @@ export async function getNews(
 		}
 
 		if (orderBy) {
-			queryParam += `&orderBy=${orderBy}&isDescending=`;
+			queryParam += `&orderBy=${orderBy}&isDescending=${isDescending}`;
 		}
 
 		const url = `/news?page=${currentPage}&postsperpage=${pageSize}&keyword=${keyword}${queryParam}`;

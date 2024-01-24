@@ -1,12 +1,6 @@
 import { APIActiveStatus } from "../activeStatus/types";
 import { APIClass } from "../classes/types";
-import {
-	APICategorizedDepartment,
-	APIDepartmentItem,
-} from "../departments/types";
-import { APIGender } from "../genders/type";
-import { APIPrivilegeItem, APIPrivileges } from "../privileges/type";
-import { APIProjectItem, APIProjectWithParentIdItem } from "../projects/types";
+import { APIDepartmentItem } from "../departments/types";
 import { APIRank } from "../ranks/types";
 import { APIRole } from "../roles/types";
 import { APIPaginate } from "../types";
@@ -134,4 +128,17 @@ export interface APIEmployeeUpdateStatus {
 
 export interface APISyncUser {
 	id: string;
+}
+
+//////////////////// EXPORT API ////////////////////////
+export interface APIExportUser {
+	id: number;
+	employeeNo: number;
+	name: string;
+	nameEnglish: string;
+	logName: string;
+	rank: string;
+	department: string;
+	phone: string;
+	email: string;
 }

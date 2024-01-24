@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Column } from "react-table";
@@ -10,12 +10,12 @@ import {
 	ActionButtons,
 	PhotoThumbnailImage,
 	PaginatedTable,
-	RedirectButton,
-	ShadowedContainer,
-	ActiveStatus,
 	PageContainer,
 } from "../../../components";
-import { DropdownOption } from "../../../components/Dropdown";
+import {
+	DropdownOption,
+	Props as DropdownProps,
+} from "../../../components/Dropdown";
 import { HonorColumn } from "../../../components/PaginatedTable/types";
 import { Project } from "../../../data/projects";
 import { enGB, ar } from "date-fns/locale";
@@ -29,6 +29,7 @@ import { updateHonorStatus } from "../../../api/honors/update/updateHonorStatus"
 import { toast } from "react-toastify";
 import { useStore } from "../../../utils/store";
 import { format } from "date-fns";
+import { getDepartmentsByProject } from "../../../api/departments/get/getDepartmentsByProject";
 
 const HonorsHomePage = () => {
 	const [t] = useTranslation("common");
@@ -44,6 +45,10 @@ const HonorsHomePage = () => {
 	const [honors, setHonors] = useState<APIHonor[]>([]);
 
 	const [keyword, setKeyword] = useState("");
+	const [departmentId, setDepartmentId] = useState<Id>("");
+	const [departmentOptions, setDepartmentOptions] = useState<DropdownOption[]>(
+		[]
+	);
 
 	// This variable is to set the status code which we can pass to the API
 	const [selectedStatusCode, setSelectedStatusCode] = useState<Id>(1);
@@ -238,25 +243,6 @@ const HonorsHomePage = () => {
 				accessor: (p) => p.type,
 			},
 			{
-				Header: status,
-				id: "activeStatus",
-				accessor: (p) => p,
-				Cell: ({ value }: any) => (
-					<div className={styles.name}>
-						<div className={styles.arabic}>
-							<ActiveStatus
-								code={value.activeStatus.id === 1 ? 1 : 9}
-								text={
-									language !== "ar"
-										? value.activeStatus.nameArabic
-										: value.activeStatus.nameEnglish
-								}
-							/>
-						</div>
-					</div>
-				),
-			},
-			{
 				Header: actions,
 				id: "actions",
 				accessor: (p) => p,
@@ -267,10 +253,6 @@ const HonorsHomePage = () => {
 						onActivate={(id) => activateClickHandler(id)}
 						showEdit={privileges?.updatePrivilege}
 						onEdit={(id) => editClickHandler(value.id)}
-						showDelete={
-							privileges?.deletePrivilege && value.activeStatus.id === 1
-						}
-						onDelete={deleteClickHandler}
 					/>
 				),
 			},
@@ -281,16 +263,34 @@ const HonorsHomePage = () => {
 			name,
 			rank,
 			department,
-			status,
+			honorType,
 			actions,
 			language,
 			privileges?.updatePrivilege,
-			privileges?.deletePrivilege,
-			deleteClickHandler,
 			activateClickHandler,
 			editClickHandler,
 		]
 	);
+
+	const fetchDepartments = useCallback(async () => {
+		const { data } = await getDepartmentsByProject(Project.Honors);
+		if (data) {
+			setDepartmentOptions(
+				data?.map((x) => {
+					return {
+						label: `${x.id} - ${
+							language !== "ar" ? x.longFullName : x.longFullNameEnglish
+						}`,
+						value: x.id,
+					};
+				})
+			);
+		}
+	}, [language]);
+
+	useEffect(() => {
+		fetchDepartments();
+	}, [fetchDepartments]);
 
 	const searchHandler = (keyword: string) => {
 		setKeyword(keyword);
@@ -329,6 +329,17 @@ const HonorsHomePage = () => {
 		setCurrentPage(1);
 	};
 
+	const departmentSelectHandler = (option: DropdownOption) => {
+		setDepartmentId(option?.value!);
+	};
+
+	const dropdowns: { [key: string]: DropdownProps } = {
+		department: {
+			options: departmentOptions,
+			onSelect: departmentSelectHandler,
+		},
+	};
+
 	return (
 		<PageContainer
 			// displayContent={privileges?.readPrivilege}
@@ -345,11 +356,13 @@ const HonorsHomePage = () => {
 				setCurrentPage={setCurrentPage}
 				data={honors}
 				columns={columns}
+				dropdowns={dropdowns}
 				onSearch={searchHandler}
 				onTableSort={tableSortHandler}
 				onPageChange={pageChangeHandler}
 				onPageViewSelectionChange={pageViewSelectionHandler}
 				noRecordText={t("table.noNews", { framework: "React" })}
+				hideActiveStatusDropdown
 				onActiveStatusOptionSelectionChange={statusSelectHandler}
 				columnsToHide={
 					privileges?.updatePrivilege || privileges?.deletePrivilege

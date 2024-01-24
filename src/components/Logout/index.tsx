@@ -6,6 +6,7 @@ import localStorageService from "../../network/localStorageService";
 
 import { useStore } from "../../utils/store";
 import styles from "./styles.module.scss";
+import { logoutPhp } from "../../api/logout/logoutPhp";
 
 interface Props {
 	label: string;
@@ -46,6 +47,7 @@ const Logout: FC<Props> = ({ label, onClick = () => {}, className }) => {
 	};
 
 	const logoutClickHandler = () => {
+		logoutPhp();
 		clearLoggedInUserState();
 		removeLocalStorageData();
 		removeCookies();

@@ -63,7 +63,7 @@ const SettingsHomePage = () => {
 			<Tabs>
 				<TabList>
 					<Tab>{t("tab.menuList", { framework: "React" })} </Tab>
-					<Tab>{t("linkType.name", { framework: "React" })}</Tab>
+					{/* <Tab>{t("linkType.name", { framework: "React" })}</Tab> */}
 					<Tab>{t("tab.imagesVideos", { framework: "React" })}</Tab>
 					<Tab>{t("tab.qrCodes", { framework: "React" })}</Tab>
 				</TabList>
@@ -72,11 +72,11 @@ const SettingsHomePage = () => {
 						<MenuHomeSettingsPage />
 					</ShadowedContainer>
 				</TabPanel>
-				<TabPanel>
+				{/* <TabPanel>
 					<ShadowedContainer className={styles.tabContainer}>
 						<LinkTypesHomeContentManagementPage />
 					</ShadowedContainer>
-				</TabPanel>
+				</TabPanel> */}
 				<TabPanel>
 					<ShadowedContainer className={styles.tabContainer}>
 						<ImageHomeContentManagementPage />

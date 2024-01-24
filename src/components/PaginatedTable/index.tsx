@@ -9,7 +9,13 @@ import {
 import { useTranslation } from "react-i18next";
 import { Column } from "react-table";
 import {
+	ActionsContainer,
+	CheckBoxSelections,
 	Dropdown,
+	ExportSelection,
+	Loader,
+	LoaderOverlay,
+	Modal,
 	Pagination,
 	SearchBox,
 	ShadowedContainer,
@@ -21,14 +27,16 @@ import { DropdownOption, Props as DropdownProps } from "../Dropdown";
 
 import { getAccessRoles } from "../../api/roles/get/getAccessRoles";
 import { getMyRole } from "../../api/users/get/getMyRole";
-import { APIUserRole } from "../../api/users/types";
+import { APIExportUser, APIUserRole } from "../../api/users/types";
 
-import { ROLE } from "../../utils";
+import { ROLE, emptyFunction } from "../../utils";
 
 import { getAllWorkflowStatus } from "../../api/activeStatus/get/getAllWorkflowStatus";
 
 import styles from "./styles.module.scss";
 import { getProjectsList } from "../../api/projects/get/getProjectsList";
+import { Portal } from "@mui/material";
+import { APIExportData, PropertyDisplayNames } from "../../api";
 interface Props {
 	totalCountText: string;
 	totalCount: number;
@@ -56,6 +64,11 @@ interface Props {
 	onWorkflowStatusOptionSelectionChange?: (option: DropdownOption) => void;
 	columnsToHide?: string[];
 	classNameTable?: string;
+	isExportSelectionLoading?: boolean;
+	displayExportButton?: boolean;
+	exportDisplayNames?: any;
+	onExcelExport?: (data: APIExportData) => void;
+	onPdfExport?: (data: APIExportData) => void;
 }
 
 const PaginatedTable: FC<Props> = ({
@@ -83,6 +96,11 @@ const PaginatedTable: FC<Props> = ({
 	onWorkflowStatusOptionSelectionChange = () => {},
 	columnsToHide = [],
 	classNameTable,
+	isExportSelectionLoading = false,
+	displayExportButton = false,
+	exportDisplayNames,
+	onExcelExport = emptyFunction,
+	onPdfExport = emptyFunction,
 }) => {
 	const [t] = useTranslation("common");
 
@@ -100,6 +118,8 @@ const PaginatedTable: FC<Props> = ({
 	]);
 
 	const [activeStatusText, setActiveStatusText] = useState<string>("");
+
+	const [isOpen, setIsOpen] = useState<boolean>(false);
 
 	useEffect(() => {
 		if (activeStatusPlaceHolder) {
@@ -230,161 +250,154 @@ const PaginatedTable: FC<Props> = ({
 	};
 
 	return (
-		<div className={styles.paginatedTable}>
-			<ShadowedContainer
-				className={styles.searchContainer}
-				// style={{ marginTop: 0 }}
-			>
-				<div className={styles.search}>
-					<SearchBox
-						onClick={onSearch}
-						className={styles.noShadow}
-					/>
-				</div>
-				<div className={styles.bar}>
-					<div className={language !== "ar" ? styles.info : styles.infoLTR}>
-						<TotalCount
-							label={totalCountText}
-							count={totalCount}
+		<>
+			<div className={styles.paginatedTable}>
+				<ShadowedContainer className={styles.searchContainer}>
+					<div className={styles.search}>
+						<SearchBox
+							onClick={onSearch}
 							className={styles.noShadow}
 						/>
 					</div>
-				</div>
-			</ShadowedContainer>
-			<ShadowedContainer className={styles.selectionContainer}>
-				{/* <div className={styles.detailBar}>
-					<div className={language !== "ar" ? styles.info : styles.infoLTR}>
-						<TotalCount
-							label={totalCountText}
-							count={totalCount}
-						/>
-					</div>
-				</div> */}
-				<div className={styles.detailBar}>
-					<div
-						className={
-							language !== "ar" ? styles.selection : styles.selectionLTR
-						}>
-						{/* <ShadowedContainer> */}
-						<Dropdown
-							options={pageViewOptions}
-							onSelect={pageViewSelectionChangeHandler}
-							placeholder={t("pagination.recordPerPage", {
-								framework: "React",
-							})}
-						/>
-						{/* </ShadowedContainer> */}
-					</div>
-				</div>
-				{myRole?.role.name === ROLE.SUPERADMIN && showRoleOption && (
-					<div className={styles.detailBar}>
-						<div
-							className={
-								language !== "ar" ? styles.selection : styles.selectionLTR
-							}>
-							{/* <ShadowedContainer> */}
-							<Dropdown
-								options={roleOptions}
-								onSelect={roleSelectHandler}
-								placeholder={t("role.name", {
-									framework: "React",
-								})}
-							/>{" "}
-							{/* </ShadowedContainer> */}
-						</div>
-					</div>
-				)}
-				{showProjectDropdown && (
-					<div className={styles.detailBar}>
-						<div
-							className={
-								language !== "ar" ? styles.selection : styles.selectionLTR
-							}>
-							{/* <ShadowedContainer> */}
-							<Dropdown
-								options={projectsOptions}
-								onSelect={projectSelectHandler}
-								placeholder={t("project.name", {
-									framework: "React",
-								})}
-							/>{" "}
-							{/* </ShadowedContainer> */}
-						</div>
-					</div>
-				)}
-				{!hideWorkflowStatusDropdown && (
-					<div className={styles.detailBar}>
-						<div
-							className={
-								language !== "ar" ? styles.selection : styles.selectionLTR
-							}>
-							{/* <ShadowedContainer> */}
-							<Dropdown
-								options={statusOptions}
-								onSelect={workflowStatusOptionChangeHandler}
-								placeholder={t("global.workflowStatus", {
-									framework: "React",
-								})}
-							/>{" "}
-							{/* </ShadowedContainer> */}
-						</div>
-					</div>
-				)}
-				{!hideActiveStatusDropdown && (
-					<div className={styles.detailBar}>
-						<div
-							className={
-								language !== "ar" ? styles.selection : styles.selectionLTR
-							}>
-							{/* <ShadowedContainer> */}
-							<Dropdown
-								options={activeStatusOptions}
-								onSelect={activeStatusOptionChangeHandler}
-								placeholder={activeStatusText}
-							/>{" "}
-							{/* </ShadowedContainer> */}
-						</div>
-					</div>
-				)}{" "}
-				{Object.entries(dropdowns).map(([key, dropdownProps]) => (
-					<div
-						key={key}
-						className={styles.detailBar}>
-						<div
-							className={
-								language !== "ar" ? styles.selection : styles.selectionLTR
-							}>
-							<Dropdown
-								// options={dropdownProps.options || []}
-								// onSelect={function (option: DropdownOption): void {
-								// 	throw new Error("Function not implemented.");
-								// }}
-								{...dropdownProps}
+					<div className={styles.bar}>
+						<div className={language !== "ar" ? styles.info : styles.infoLTR}>
+							<TotalCount
+								label={totalCountText}
+								count={totalCount}
+								className={styles.noShadow}
 							/>
 						</div>
 					</div>
-				))}
-			</ShadowedContainer>
 
-			<Table
-				reference={tableRef}
-				columns={columns}
-				data={data}
-				onSort={onTableSort}
-				noRecordsText={noRecordText}
-				columnsToHide={columnsToHide}
-				className={classNameTable}
-			/>
-			<div>
-				<Pagination
-					className={styles.paginationBar}
-					currentPage={currentPage}
-					totalCount={totalCount}
-					pageSize={pageSize}
-					onPageChange={(page) => pageChangeHandler(page)}
+					{/* <Loader /> */}
+				</ShadowedContainer>
+				<ShadowedContainer className={styles.selectionContainer}>
+					<div className={styles.detailBar}>
+						<div
+							className={
+								language !== "ar" ? styles.selection : styles.selectionLTR
+							}>
+							<Dropdown
+								options={pageViewOptions}
+								onSelect={pageViewSelectionChangeHandler}
+								placeholder={t("pagination.recordPerPage", {
+									framework: "React",
+								})}
+							/>
+						</div>
+					</div>
+					{myRole?.role.name === ROLE.SUPERADMIN && showRoleOption && (
+						<div className={styles.detailBar}>
+							<div
+								className={
+									language !== "ar" ? styles.selection : styles.selectionLTR
+								}>
+								<Dropdown
+									options={roleOptions}
+									onSelect={roleSelectHandler}
+									placeholder={t("role.name", {
+										framework: "React",
+									})}
+								/>{" "}
+							</div>
+						</div>
+					)}
+					{showProjectDropdown && (
+						<div className={styles.detailBar}>
+							<div
+								className={
+									language !== "ar" ? styles.selection : styles.selectionLTR
+								}>
+								<Dropdown
+									options={projectsOptions}
+									onSelect={projectSelectHandler}
+									placeholder={t("dropdown.project", {
+										framework: "React",
+									})}
+								/>{" "}
+							</div>
+						</div>
+					)}
+					{!hideWorkflowStatusDropdown && (
+						<div className={styles.detailBar}>
+							<div
+								className={
+									language !== "ar" ? styles.selection : styles.selectionLTR
+								}>
+								<Dropdown
+									options={statusOptions}
+									onSelect={workflowStatusOptionChangeHandler}
+									placeholder={t("global.workflowStatus", {
+										framework: "React",
+									})}
+								/>
+							</div>
+						</div>
+					)}
+					{Object.entries(dropdowns).map(([key, dropdownProps]) => (
+						<div
+							key={key}
+							className={styles.detailBar}>
+							<div
+								className={
+									language !== "ar" ? styles.selection : styles.selectionLTR
+								}>
+								<Dropdown {...dropdownProps} />
+							</div>
+						</div>
+					))}{" "}
+					{!hideActiveStatusDropdown && (
+						<div className={styles.detailBar}>
+							<div
+								className={
+									language !== "ar" ? styles.selection : styles.selectionLTR
+								}>
+								<Dropdown
+									options={activeStatusOptions}
+									onSelect={activeStatusOptionChangeHandler}
+									placeholder={activeStatusText}
+								/>{" "}
+							</div>
+						</div>
+					)}
+				</ShadowedContainer>
+				<ActionsContainer
+					showExport={displayExportButton}
+					onExportClick={() => setIsOpen(true)}
 				/>
+				<Table
+					reference={tableRef}
+					columns={columns}
+					data={data}
+					onSort={onTableSort}
+					noRecordsText={noRecordText}
+					columnsToHide={columnsToHide}
+					className={classNameTable}
+				/>
+				<div>
+					<Pagination
+						className={styles.paginationBar}
+						currentPage={currentPage}
+						totalCount={totalCount}
+						pageSize={pageSize}
+						onPageChange={(page) => pageChangeHandler(page)}
+					/>
+				</div>
 			</div>
-		</div>
+			<Portal>
+				<Modal
+					isOpen={isOpen}
+					onClose={() => setIsOpen(false)}>
+					<LoaderOverlay loading={isExportSelectionLoading}>
+						<ExportSelection
+							displayNames={exportDisplayNames}
+							onExcelExport={onExcelExport}
+							onPdfExport={onPdfExport}
+						/>
+					</LoaderOverlay>
+				</Modal>
+			</Portal>
+		</>
 	);
 };
 

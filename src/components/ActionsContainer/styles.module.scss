@@ -1,0 +1,37 @@
+.actionsContainer {
+	display: flex;
+
+	.exportContainer {
+		display: flex;
+		justify-content: space-between; // This will create space between the divs
+		width: 100%;
+
+		// Add margins based on the direction
+		&:not([dir="rtl"]) {
+			div {
+				margin-right: 10px; // Adjust the margin based on your preference
+			}
+
+			// div:first-of-type {
+			// 	margin-right: unset;
+			// }
+		}
+
+		&[dir="rtl"] {
+			div {
+				margin-left: 10px; // Adjust the margin based on your preference
+			}
+
+			// div:last-of-type {
+			// 	margin-left: unset;
+			// }
+		}
+	}
+
+	// Additional styling for the buttons
+	div {
+		button {
+			// Add your button styling here
+		}
+	}
+}

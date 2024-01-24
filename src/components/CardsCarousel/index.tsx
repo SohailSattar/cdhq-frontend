@@ -5,6 +5,7 @@ import { Card, VideoModal } from "..";
 import { ICard } from "../Card";
 
 import styles from "./styles.module.scss";
+import clsx from "clsx";
 
 interface Props {
 	data: ICard[];
@@ -48,7 +49,7 @@ const CardsCarousel: FC<Props> = ({
 				prevIcon={
 					isScrollable && (
 						<span
-							className="carousel-control-prev-icon"
+							className={clsx("carousel-control-prev-icon")}
 							aria-hidden="true"
 						/>
 					)
@@ -56,7 +57,7 @@ const CardsCarousel: FC<Props> = ({
 				nextIcon={
 					isScrollable && (
 						<span
-							className="carousel-control-next-icon"
+							className={clsx("carousel-control-next-icon", styles.arrowNext)}
 							aria-hidden="true"
 						/>
 					)

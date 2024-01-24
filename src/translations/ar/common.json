@@ -7,8 +7,8 @@
 	"header": {
 		"title": "وزارة الداخلية",
 		"menu": {
-			"dashboard": "الأنظمة",
-			"projectManagement": " الأنظمة و البرامج",
+			"dashboard": " أنظمة القيادة",
+			"projectManagement": "  ادارة الأنظمة و البرامج",
 			"userAccount": "حسابات المستخدمين",
 			"departmentHierarchy": "الهيكل التنظيمي",
 			"department": "إِدَارَة"
@@ -29,13 +29,13 @@
 		"parent": "العنوان الأم ",
 		"parentEnglish": "العنوان الأم بالانجليزي",
 		"pathLink": "الرابط",
-		"isVisible": "ظاهر",
+		"isVisible": "ظاهر؟",
 		"linkType": "نوع الرابط",
 		"menuType": "نوع القائمة",
 		"count": "المجموع",
 		"list": "اللائحة",
 		"orderNo": "الترتيب",
-		"isExternal": "الرابط خارجي ؟"
+		"isExternal": "الرابط خارجي؟"
 	},
 	"linkType": {
 		"id": "رمز الرابط",
@@ -52,7 +52,7 @@
 		"imageType": {
 			"fireDepartment": "أفضل مراكز إطفاء",
 			"servicesDepartment": "أفضل مراكز خدمة",
-			"creation": "الابتكارات"
+			"creation": "الإبتكارات"
 		},
 		"thumbnail": "خلفية",
 		"icon": "أيقونة"
@@ -106,6 +106,12 @@
 		"signupText": "ليس لديك حساب؟ تواصل مع قسم الخدمات الإلكترونية.",
 		"userName": "اسم المستخدم"
 	},
+	"export": {
+		"toExcel": "To Excel [Arabic]",
+		"toPdf": "To PDF [Arabic]",
+		"fieldsSelectTitle": "Select fields to be exported [Arabic]",
+		"useCurrentPage": "Use current page? [Arabic]"
+	},
 	"button": {
 		"view": "عرض",
 		"more": "المزيد",
@@ -134,14 +140,15 @@
 		"yes": "نعم",
 		"cancel": "الغاء",
 		"assignToUser": "التعيين للمستخدم",
-		"selectChild": " مع الأقسام و الأفرع"
+		"selectChild": " مع الأقسام و الأفرع",
+		"export": "Export [Arabic]"
 	},
 	"home": {
 		"welcome": "مرحبا بك"
 	},
 	"user": {
 		"id": "رمز الموظف",
-		"logName": "اسم الحساب ",
+		"logName": "اسم الحساب",
 		"employeeNumber": "رقم الموظف",
 		"name": "اسم الموظف",
 		"nameEnglish": "اسم الموظف (انجليزي)",
@@ -298,6 +305,7 @@
 		"byDepartment": "تصفية حسب الأقسام و الأفرع"
 	},
 	"message": {
+		"downloaded": "File has been downloaded",
 		"fail": "حدث خطأ أثناء المعالجة، يرجى الاتصال بقسم الخدمات الالكترونية",
 		"recordCreated": "تم اضافة السجل",
 		"recordUpdated": "تم تعديل السجل",
@@ -352,7 +360,9 @@
 		"honorDeactivated": "تم الغاء تفعيل السجل"
 	},
 	"dropdown": {
-		"select": "اختر"
+		"select": "اختر",
+		"recordPerPage": "سجلات لكل صفحة",
+		"project": "[Arabic] برنامج"
 	},
 	"table": {
 		"noResult": "لم يتم العثور على نتائج",

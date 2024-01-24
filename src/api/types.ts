@@ -38,6 +38,10 @@ export interface APIResponseStatus {
 	errors?: string[];
 }
 
+export interface APIResponseData {
+	file: BlobPart;
+}
+
 //Pagination
 export interface APIPaginate {
 	currentPage: number;
@@ -52,3 +56,30 @@ export interface APIStatus {
 }
 
 export type ContentType = "multipart/form-data" | "application/json";
+export type ResponseType = "json" | "blob";
+
+// Generic interface
+// export interface APIExportData<T> {
+// 	[key: string]: T;
+// }
+
+export interface APIExportData {
+	language?: string;
+	isPaged: boolean;
+	format: "xlsx" | "pdf";
+	selectedFields: { [key: string]: string };
+	queryParams?: APIQueryParams;
+}
+
+// Generic mapping for property names and their display names
+export type PropertyDisplayNames<T> = Record<keyof T, Record<string, string>>;
+
+export interface APIQueryParams {
+	page?: number;
+	postsPerPage?: number;
+	keyword?: string;
+	projectId?: Id;
+	statusCode?: Id;
+	orderBy?: string;
+	isDescending?: boolean;
+}

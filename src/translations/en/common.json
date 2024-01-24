@@ -50,8 +50,8 @@
 		"nameEnglish": "Image Name [English]",
 		"ratings": "Ratings",
 		"imageType": {
-			"fireDepartment": "Fire Departments",
-			"servicesDepartment": "Service Department",
+			"fireDepartment": "Best Fire Stations",
+			"servicesDepartment": "Best Service Centers",
 			"creation": "Innovations"
 		},
 		"thumbnail": "Thumbnail",
@@ -106,6 +106,12 @@
 		"signupText": "Don't have an account? Contact the electronic services department.",
 		"userName": "User Name"
 	},
+	"export": {
+		"toExcel": "To Excel",
+		"toPdf": "To PDF",
+		"fieldsSelectTitle": "Select fields to be exported",
+		"useCurrentPage": "Use current page?"
+	},
 	"button": {
 		"view": "View",
 		"more": "More",
@@ -134,7 +140,8 @@
 		"yes": "Yes",
 		"cancel": "Cancel",
 		"assignToUser": "Assign to User",
-		"selectChild": "Select Child"
+		"selectChild": "Select Child",
+		"export": "Export"
 	},
 	"home": {
 		"welcome": "Welcome"
@@ -298,6 +305,7 @@
 		"byDepartment": "Filter by Department"
 	},
 	"message": {
+		"downloaded": "File has been downloaded",
 		"fail": "There was an error while prcoessing, please contact the IT department",
 		"recordCreated": "Record has been created",
 		"recordUpdated": "Record has been updated",
@@ -352,7 +360,9 @@
 		"honorDeactivated": "Honor has been deactivated"
 	},
 	"dropdown": {
-		"select": "Select..."
+		"select": "Select...",
+		"recordPerPage": "Records Per Page",
+		"project": "Project"
 	},
 	"table": {
 		"noResult": "No result found",

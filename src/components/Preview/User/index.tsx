@@ -81,7 +81,9 @@ const UserPreview: FC<Props> = ({ data, onClick }) => {
 					</div>
 					<div className={styles.section}>
 						<div className={styles.content}>
-							<div className={styles.title}>Class</div>
+							<div className={styles.title}>
+								{t("class.name", { framework: "React" })}
+							</div>
 							<div>{userClass.label}</div>
 						</div>
 					</div>

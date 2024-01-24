@@ -16,6 +16,11 @@ export interface APIProjectItem {
 	pathLink?: string;
 	isExternalPath?: boolean;
 	departmentCategory?: APIDepartmentCategory;
+	parent: APIProjectIdItem;
+}
+
+export interface APIProjectIdItem {
+	id: number;
 }
 
 export interface APIProject extends APIProjectItem {

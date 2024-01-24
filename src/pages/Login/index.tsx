@@ -14,6 +14,7 @@ import * as RoutePath from "../../RouteConfig";
 import styles from "./styles.module.scss";
 import { useCallback, useEffect } from "react";
 import { checkLoginStatus } from "../../api/login/get/checkLoginStatus";
+import { loginUserPhp } from "../../api/login/post/loginUserPhp";
 
 const LoginPage = () => {
 	const navigate = useNavigate();
@@ -51,20 +52,6 @@ const LoginPage = () => {
 		if (data) {
 			localStorageService?.setJwtToken(data?.token);
 
-			// setCookie('id', data.id, { path: '/', expires: cookieExpiry });
-			// setCookie('name', data.name, { path: '/', expires: cookieExpiry });
-			// setCookie('nameEnglish', data.role, { path: '/', expires: cookieExpiry });
-			// setCookie('userName', data.userName, {
-			// 	path: '/',
-			// 	expires: cookieExpiry,
-			// });
-			// setCookie('role', data.role, { path: '/', expires: cookieExpiry });
-			// setCookie('token', data.token, {
-			// 	path: '/',
-			// 	expires: cookieExpiry,
-			// 	httpOnly: true,
-			// });
-
 			setLoggedInUser({
 				id: data.id,
 				userName: data.userName,
@@ -73,15 +60,9 @@ const LoginPage = () => {
 				role: data.role,
 			});
 
-			// localStorageService?.setUserInfo({
-			// 	id: data.id,
-			// 	userName: data.userName,
-			// 	name: data.name,
-			// 	nameEnglish: data.nameEnglish,
-			// 	role: data.role,
-			// });
-
 			setUserRole(data?.role! !== "" ? data?.role! : "USER");
+
+			await loginUserPhp(values);
 
 			// const { data: validity } = await getPasswordValidity();
 

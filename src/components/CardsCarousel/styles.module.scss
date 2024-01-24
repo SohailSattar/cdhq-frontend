@@ -10,6 +10,11 @@
 .carousel {
 	display: flex;
 	overflow: hidden;
+
+	.arrowNext {
+		color: red;
+	}
+
 	.carousel-inner {
 		display: flex;
 		flex-direction: row;

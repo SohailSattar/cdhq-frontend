@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import {
 	Button,
-	Loader,
+	LoaderOverlay,
 	NotAuthorized,
 	RedirectButton,
 	ShadowedContainer,
@@ -113,19 +113,21 @@ const PageContainer: FC<Props> = ({
 
 	return (
 		<>
-			{display === undefined ? (
-				<Loader />
-			) : display === false ? (
-				<NotAuthorized />
-			) : (
-				<div className={styles.container}>
-					{/* UNCOMMENT LATER ON */}
-					{title && (
-						<div className={styles.heading}>
-							<span className={styles.title}>{title}</span>
-						</div>
-					)}
-					{/* <button onClick={handleFadeIn}>Fade In</button>
+			{
+				// display === undefined ? (
+				// <Loader />
+				// ) :
+				display === false ? (
+					<NotAuthorized />
+				) : (
+					<div className={styles.container}>
+						{/* UNCOMMENT LATER ON */}
+						{title && (
+							<div className={styles.heading}>
+								<span className={styles.title}>{title}</span>
+							</div>
+						)}
+						{/* <button onClick={handleFadeIn}>Fade In</button>
 					<motion.div
 						initial={{ opacity: 0 }}
 						animate={{ opacity: isVisible ? 1 : 0 }}
@@ -139,109 +141,112 @@ const PageContainer: FC<Props> = ({
 						}}>
 						{isVisible ? "Visible" : "Hidden"}
 					</motion.div> */}
-					<motion.div
-						className={
-							showBackButton ||
-							showEditButton ||
-							showAddButton ||
-							showChangeStatusButton
-								? styles.actionContainer
-								: ""
-						}
-						initial={{ opacity: 0, visibility: "hidden" }}
-						animate={{ opacity: isVisible ? 1 : 0, visibility: "visible" }}
-						exit={{ opacity: 0 }}
-						transition={{ duration: 1 }}>
-						{showBackButton && (
-							<motion.div
-								className={styles.action}
-								initial={{ opacity: 0 }}
-								animate={{ opacity: isVisible ? 1 : 0 }}
-								exit={{ opacity: 0 }}
-								transition={{ duration: 0.2 }}>
-								<div className={styles.btnSection}>
-									<div
-										className={language !== "ar" ? styles.btn : styles.btnLTR}>
-										<RedirectButton
-											label={
-												btnBackLabel!
-													? btnBackLabel
-													: t("button.backToHome", { framework: "React" })
-											}
-											redirectTo={btnBackUrlLink!}
-										/>
-									</div>
-								</div>
-							</motion.div>
-						)}
-						{(showEditButton || showAddButton || showChangeStatusButton) && (
-							<motion.div
-								className={styles.action}
-								initial={{ opacity: 0 }}
-								animate={{ opacity: isVisible ? 1 : 0 }}
-								exit={{ opacity: 0 }}
-								transition={{ duration: 0.2 }}>
-								<div className={styles.btnSection}>
-									{showEditButton && (
-										<div
-											className={
-												language !== "ar" ? styles.btn : styles.btnLTR
-											}>
-											<RedirectButton
-												label={t("button.edit", { framework: "React" })}
-												redirectTo={btnEditUrlLink!}
-											/>
-										</div>
-									)}
-
-									{showAddButton && (
+						<motion.div
+							className={
+								showBackButton ||
+								showEditButton ||
+								showAddButton ||
+								showChangeStatusButton
+									? styles.actionContainer
+									: ""
+							}
+							initial={{ opacity: 0, visibility: "hidden" }}
+							animate={{ opacity: isVisible ? 1 : 0, visibility: "visible" }}
+							exit={{ opacity: 0 }}
+							transition={{ duration: 1 }}>
+							{showBackButton && (
+								<motion.div
+									className={styles.action}
+									initial={{ opacity: 0 }}
+									animate={{ opacity: isVisible ? 1 : 0 }}
+									exit={{ opacity: 0 }}
+									transition={{ duration: 0.2 }}>
+									<div className={styles.btnSection}>
 										<div
 											className={
 												language !== "ar" ? styles.btn : styles.btnLTR
 											}>
 											<RedirectButton
 												label={
-													btnAddLabel
-														? btnAddLabel
-														: t("button.add", { framework: "React" })
+													btnBackLabel!
+														? btnBackLabel
+														: t("button.backToHome", { framework: "React" })
 												}
-												redirectTo={btnAddUrlLink!}
+												redirectTo={btnBackUrlLink!}
 											/>
 										</div>
-									)}
+									</div>
+								</motion.div>
+							)}
+							{(showEditButton || showAddButton || showChangeStatusButton) && (
+								<motion.div
+									className={styles.action}
+									initial={{ opacity: 0 }}
+									animate={{ opacity: isVisible ? 1 : 0 }}
+									exit={{ opacity: 0 }}
+									transition={{ duration: 0.2 }}>
+									<div className={styles.btnSection}>
+										{showEditButton && (
+											<div
+												className={
+													language !== "ar" ? styles.btn : styles.btnLTR
+												}>
+												<RedirectButton
+													label={t("button.edit", { framework: "React" })}
+													redirectTo={btnEditUrlLink!}
+												/>
+											</div>
+										)}
 
-									{showChangeStatusButton && (
-										<div
-											className={
-												language !== "ar" ? styles.btn : styles.btnLTR
-											}>
-											{currentStatus === "ACTIVE" ? (
-												<Button
-													onClick={onDectivate}
-													isCritical>
-													{t("button.deactivate", { framework: "React" })}
-												</Button>
-											) : (
-												<Button onClick={onActivate}>
-													{t("button.activate", { framework: "React" })}
-												</Button>
-											)}
-										</div>
-									)}
-								</div>
-							</motion.div>
-						)}
-					</motion.div>
-					<motion.div
-						className={className}
-						initial={{ opacity: 0 }}
-						animate={{ opacity: isVisible ? 1 : 0 }}
-						exit={{ opacity: 0 }}
-						transition={{ duration: 0.5, delay: 0.1 }}>
-						{children}
-					</motion.div>
-				</div>
-			)}
+										{showAddButton && (
+											<div
+												className={
+													language !== "ar" ? styles.btn : styles.btnLTR
+												}>
+												<RedirectButton
+													label={
+														btnAddLabel
+															? btnAddLabel
+															: t("button.add", { framework: "React" })
+													}
+													redirectTo={btnAddUrlLink!}
+												/>
+											</div>
+										)}
+
+										{showChangeStatusButton && (
+											<div
+												className={
+													language !== "ar" ? styles.btn : styles.btnLTR
+												}>
+												{currentStatus === "ACTIVE" ? (
+													<Button
+														onClick={onDectivate}
+														isCritical>
+														{t("button.deactivate", { framework: "React" })}
+													</Button>
+												) : (
+													<Button onClick={onActivate}>
+														{t("button.activate", { framework: "React" })}
+													</Button>
+												)}
+											</div>
+										)}
+									</div>
+								</motion.div>
+							)}
+						</motion.div>
+						<motion.div
+							className={className}
+							initial={{ opacity: 0 }}
+							animate={{ opacity: isVisible ? 1 : 0 }}
+							exit={{ opacity: 0 }}
+							transition={{ duration: 0.5, delay: 0.1 }}>
+							{children}
+						</motion.div>
+					</div>
+				)
+			}
 		</>
 	);
 };

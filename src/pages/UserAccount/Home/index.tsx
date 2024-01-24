@@ -15,9 +15,10 @@ import { getUsersByKeyword } from "../../../api/users/get/getUsersByKeyword";
 import { DropdownOption } from "../../../components/Dropdown";
 
 import { useStore } from "../../../utils/store";
+import { enGB, ar } from "date-fns/locale";
 
 import { getUsersByDepartments } from "../../../api/users/get/getUsersByDepartments";
-import { APIUserName } from "../../../api/users/types";
+import { APIExportUser, APIUserName } from "../../../api/users/types";
 
 import * as RoutePath from "../../../RouteConfig";
 
@@ -33,6 +34,10 @@ import { Project } from "../../../data/projects";
 import { APIRole } from "../../../api/roles/types";
 import { getRole } from "../../../api/users/get/getRole";
 import { getMyRole } from "../../../api/users/get/getMyRole";
+import { APIExportData } from "../../../api";
+import { exportUsers } from "../../../api/users/export/exportUsers";
+import { toast } from "react-toastify";
+import { format } from "date-fns";
 
 const UserAccountPage = () => {
 	const [t] = useTranslation("common");
@@ -45,7 +50,7 @@ const UserAccountPage = () => {
 	const [keyword, setKeyword] = useState("");
 
 	const [currentPage, setCurrentPage] = useState(1);
-	const [pageSize, setPageSize] = useState<number>(10);
+	const [pageSize, setPageSize] = useState<number>(50);
 	const [totalCount, setTotalCount] = useState<number>(0);
 
 	const [users, setUsers] = useState<APIUserName[]>([]);
@@ -57,12 +62,14 @@ const UserAccountPage = () => {
 	const [selectedProject, setSelectedProject] = useState<Id>();
 	// This variable is to set the status code which we can pass to the API
 	const [selectedStatusCode, setSelectedStatusCode] = useState<Id>(1);
-	const [orderBy, setOrderBy] = useState<string>("&OrderBy=rankId");
+	const [orderBy, setOrderBy] = useState<string>("rankId");
 
 	const [privileges, setPrivileges] = useState<APIPrivileges>();
 
 	// const [departmentIdsTemp, setDepartmentIdsTemp] = useState<string[]>([]);
 	const [departmentIds, setDepartmentIds] = useState<string[]>([]);
+
+	const [isExportLoading, setIsExportLoading] = useState<boolean>(false);
 
 	useEffect(() => {
 		const fetch = async () => {
@@ -105,10 +112,14 @@ const UserAccountPage = () => {
 	const id = t("user.id", { framework: "React" });
 	const employeeNo = t("user.employeeNumber", { framework: "React" });
 	const logName = t("user.logName", { framework: "React" });
-	const fullName = t("user.fullName", { framework: "React" });
+	const fullName = t("global.name", { framework: "React" });
+	const nameEnglish = t("global.nameEnglish", { framework: "React" });
 
 	const rank = t("rank.name", { framework: "React" });
 	const department = t("department.name", { framework: "React" });
+
+	const phone = t("user.phone", { framework: "React" });
+	const email = t("user.email", { framework: "React" });
 
 	const status = t("global.status", { framework: "React" });
 
@@ -220,7 +231,8 @@ const UserAccountPage = () => {
 				selectedProject,
 				selectedStatusCode,
 				selectedRole,
-				orderBy
+				orderBy,
+				toggleSort
 			);
 
 			if (error?.response!.status! === 401) {
@@ -235,14 +247,15 @@ const UserAccountPage = () => {
 			}
 		},
 		[
-			navigate,
 			currentPage,
 			pageSize,
 			keyword,
-			selectedRole,
 			selectedProject,
 			selectedStatusCode,
+			selectedRole,
 			orderBy,
+			toggleSort,
+			navigate,
 		]
 	);
 
@@ -377,6 +390,64 @@ const UserAccountPage = () => {
 		[]
 	);
 
+	// For Export
+	const propertyDisplayNames: Record<
+		keyof APIExportUser,
+		Record<string, string>
+	> = {
+		id: { value: "Id", text: id },
+		employeeNo: { value: "EmployeeNo", text: employeeNo },
+		nameEnglish: { value: "NameEnglish", text: nameEnglish },
+		name: { value: "Name", text: fullName },
+		logName: { value: "LogName", text: logName },
+		rank: { value: "Rank", text: rank },
+		department: { value: "Department", text: department },
+		phone: { value: "Phone", text: phone },
+		email: { value: "Email", text: email },
+	};
+
+	// const propertyDisplayNames: Record<
+	// 	keyof APIExportUser,
+	// 	Record<string, string>
+	// > = {
+	// 	id: { Id: id },
+	// 	employeeNo: { EmployeeNo: employeeNo },
+	// 	nameEnglish: { NameEnglish: nameEnglish },
+	// 	name: { Name: fullName },
+	// 	logName: { LogName: logName },
+	// 	rank: { Rank: rank },
+	// 	department: { Department: department },
+	// 	phone: { Phone: phone },
+	// 	email: { Email: email },
+	// };
+
+	const exportDataHandler = async (data: APIExportData) => {
+		setIsExportLoading(true);
+		const dataValues: APIExportData = {
+			...data,
+			language: language === "ar" ? "en" : "ar",
+			queryParams: {
+				page: currentPage,
+				postsPerPage: pageSize,
+				keyword: keyword,
+				projectId: selectedProject,
+				statusCode: selectedStatusCode,
+				orderBy: orderBy,
+				isDescending: toggleSort,
+			},
+		};
+
+		const us = t("user.names", { framework: "React" });
+		const currentDate = format(new Date(), "ddMMyyyyhhmmss", {
+			locale: language !== "ar" ? ar : enGB,
+		});
+		const fileName = `${us}_${currentDate}.${data.format}`;
+
+		const d = await exportUsers(dataValues, fileName);
+		toast.success(t("message.downloaded", { framework: "React" }).toString());
+		setIsExportLoading(false);
+	};
+
 	return (
 		<PageContainer
 			lockFor={[ROLE.USER]}
@@ -405,7 +476,7 @@ const UserAccountPage = () => {
 						/>
 					</div>
 				</div>
-				<div className={styles.table}>
+				<ShadowedContainer className={styles.table}>
 					<PaginatedTable
 						totalCountText={t("user.count", {
 							framework: "React",
@@ -429,8 +500,13 @@ const UserAccountPage = () => {
 						onWorkflowStatusOptionSelectionChange={() => {}}
 						showRoleOption
 						onRoleOptonSelectionHandler={roleSelectHandler}
+						isExportSelectionLoading={isExportLoading}
+						displayExportButton={true}
+						exportDisplayNames={propertyDisplayNames}
+						onExcelExport={exportDataHandler}
+						onPdfExport={exportDataHandler}
 					/>
-				</div>
+				</ShadowedContainer>
 			</div>
 		</PageContainer>
 	);

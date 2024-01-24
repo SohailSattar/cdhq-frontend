@@ -24,8 +24,8 @@ const TableList: FC<Props> = ({ onViewClick }) => {
 	const txtId = t("news.id", { framework: "React" });
 	const title = t("news.title", { framework: "React" });
 
-	const [toggleSort, setToggleSort] = useState(false);
-	const [orderBy, setOrderBy] = useState<string>("&OrderByDesc=Id");
+	const [toggleSort, setToggleSort] = useState(true);
+	const [orderBy, setOrderBy] = useState<string>("Id");
 
 	//Actions
 	const actions = t("global.actions", { framework: "React" });
@@ -60,7 +60,8 @@ const TableList: FC<Props> = ({ onViewClick }) => {
 				pageSize,
 				keyword,
 				1,
-				orderBy
+				orderBy,
+				toggleSort
 			);
 
 			if (data) {
@@ -70,7 +71,7 @@ const TableList: FC<Props> = ({ onViewClick }) => {
 				// navigate(RoutePath.ROOT);
 			}
 		},
-		[orderBy, pageSize]
+		[orderBy, pageSize, toggleSort]
 	);
 
 	useEffect(() => {
@@ -95,13 +96,8 @@ const TableList: FC<Props> = ({ onViewClick }) => {
 	const tableSortHandler = (columnId: string, isSortedDesc: boolean) => {
 		let orderByParam = "";
 		setToggleSort(!toggleSort);
-		if (toggleSort) {
-			orderByParam = `&OrderBy=${columnId}`;
-		} else {
-			orderByParam = `&OrderByDesc=${columnId}`;
-		}
 
-		setOrderBy(orderByParam);
+		setOrderBy(columnId);
 		// fetchData(currentPage, orderByParam);
 		setCurrentPage(1);
 	};
