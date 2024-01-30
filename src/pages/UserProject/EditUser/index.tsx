@@ -77,6 +77,8 @@ const ProjectUserEditPage = () => {
 			workflowEnd,
 			structureType,
 			canGrant,
+			canExportExcel,
+			canExportPdf,
 		} = values;
 
 		const params: APIUpdateUserProjectDetail = {
@@ -87,6 +89,8 @@ const ProjectUserEditPage = () => {
 			workflowEndToId: workflowEnd.value,
 			departmentStructureType: structureType.value,
 			canGrant: canGrant,
+			canExportExcel: canExportExcel,
+			canExportPdf: canExportPdf,
 		};
 
 		const { data } = await updateUserProject(params);

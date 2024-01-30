@@ -23,7 +23,7 @@ import {
 import { deleteProject } from "../../api/users/delete/deleteProject";
 import { toast } from "react-toastify";
 import { APIProjectStatus } from "../../api/userProjects/types";
-import { DropdownOption } from "../Dropdown";
+import { DropdownOption, Props as DropdownProps } from "../Dropdown";
 import { Id } from "../../utils";
 
 interface Props {
@@ -56,6 +56,8 @@ const UserProjectTable: FC<Props> = ({
 
 	const [statusCode, setStatusCode] = useState<Id>(1);
 
+	const [orderBy, setOrderBy] = useState<string>("id");
+
 	// const pageSize = 50;
 
 	const fetchProjects = useMemo(
@@ -65,7 +67,8 @@ const UserProjectTable: FC<Props> = ({
 				currentPage,
 				pageSize,
 				keyword,
-				statusCode
+				statusCode,
+				orderBy
 			);
 
 			if (data) {
@@ -98,7 +101,7 @@ const UserProjectTable: FC<Props> = ({
 				);
 			}
 		},
-		[currentPage, keyword, language, pageSize, statusCode]
+		[currentPage, keyword, language, orderBy, pageSize, statusCode]
 	);
 
 	useEffect(() => {
@@ -335,6 +338,21 @@ const UserProjectTable: FC<Props> = ({
 		setCurrentPage(pageNumber);
 	};
 
+	// const departmenSelectHandler = (option: DropdownOption) => {
+	// 	setTypeId(option?.value);
+	// };
+
+	// const dropdowns: { [key: string]: DropdownProps } = {
+	// 	typeDropdown: {
+	// 		options: typeOptions,
+	// 		onSelect: departmenSelectHandler,
+	// 	},
+	// 	// linkTypeDropdown: {
+	// 	// 	options: linkTypeOptions,
+	// 	// 	onSelect: () => {},
+	// 	// },
+	// };
+
 	return (
 		<>
 			<PaginatedTable
@@ -353,24 +371,6 @@ const UserProjectTable: FC<Props> = ({
 				onActiveStatusOptionSelectionChange={statusChangeHandler}
 				hideWorkflowStatusDropdown={true}
 			/>
-			{/*<SearchBox onClick={searchClickHandler} />
-			 <TotalCount
-				label={t("project.count", { framework: "React" })}
-				count={totalCount}
-			/>
-			<Table
-				data={projects!}
-				columns={columns}
-				columnsToHide={displayActionsColumn ? [] : ["Actions"]}
-				noRecordsText={t("table.noProject", { framework: "React" })}
-			/>
-			<Pagination
-				className={styles.paginationBar}
-				currentPage={currentPage}
-				totalCount={totalCount}
-				pageSize={pageSize}
-				onPageChange={(page) => pageChangeHandler(page)}
-			/> */}
 
 			<DeleteConfirmation
 				isOpen={isModalOpen}

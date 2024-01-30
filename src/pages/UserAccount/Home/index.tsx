@@ -95,12 +95,16 @@ const UserAccountPage = () => {
 						insertPrivilege,
 						updatePrivilege,
 						deletePrivilege,
+						canExportPdf,
+						canExportExcel,
 					} = privilege;
 					setPrivileges({
 						readPrivilege,
 						insertPrivilege,
 						updatePrivilege,
 						deletePrivilege,
+						canExportPdf,
+						canExportExcel,
 					});
 				}
 			}
@@ -311,16 +315,8 @@ const UserAccountPage = () => {
 	};
 
 	const tableSortHandler = (columnId: string, isSortedDesc: boolean) => {
-		let orderByParam = "";
 		setToggleSort(!toggleSort);
-		if (toggleSort) {
-			orderByParam = `&OrderBy=${columnId}`;
-		} else {
-			orderByParam = `&OrderByDesc=${columnId}`;
-		}
-
-		setOrderBy(orderByParam);
-		// fetchData(currentPage, orderByParam);
+		setOrderBy(columnId);
 		setCurrentPage(1);
 	};
 
@@ -406,21 +402,6 @@ const UserAccountPage = () => {
 		email: { value: "Email", text: email },
 	};
 
-	// const propertyDisplayNames: Record<
-	// 	keyof APIExportUser,
-	// 	Record<string, string>
-	// > = {
-	// 	id: { Id: id },
-	// 	employeeNo: { EmployeeNo: employeeNo },
-	// 	nameEnglish: { NameEnglish: nameEnglish },
-	// 	name: { Name: fullName },
-	// 	logName: { LogName: logName },
-	// 	rank: { Rank: rank },
-	// 	department: { Department: department },
-	// 	phone: { Phone: phone },
-	// 	email: { Email: email },
-	// };
-
 	const exportDataHandler = async (data: APIExportData) => {
 		setIsExportLoading(true);
 		const dataValues: APIExportData = {
@@ -437,14 +418,22 @@ const UserAccountPage = () => {
 			},
 		};
 
+		// saving to the file
 		const us = t("user.names", { framework: "React" });
 		const currentDate = format(new Date(), "ddMMyyyyhhmmss", {
 			locale: language !== "ar" ? ar : enGB,
 		});
 		const fileName = `${us}_${currentDate}.${data.format}`;
 
-		const d = await exportUsers(dataValues, fileName);
-		toast.success(t("message.downloaded", { framework: "React" }).toString());
+		const { data: fData, error } = await exportUsers(dataValues, fileName);
+		if (fData) {
+			toast.success(t("message.downloaded", { framework: "React" }).toString());
+		}
+		if (error) {
+			toast.error(
+				t("message.unauthorizedExport", { framework: "React" }).toString()
+			);
+		}
 		setIsExportLoading(false);
 	};
 
@@ -456,15 +445,16 @@ const UserAccountPage = () => {
 			className={styles.userList}
 			showAddButton={privileges?.insertPrivilege!}
 			btnAddLabel={t("button.addNewUser", { framework: "React" })}
-			btnAddUrlLink={RoutePath.USER_SEARCH}>
+			btnAddUrlLink={RoutePath.USER_SEARCH}
+			isExportSelectionLoading={isExportLoading}
+			displayExportButton={
+				privileges?.canExportExcel || privileges?.canExportPdf
+			}
+			exportDisplayNames={propertyDisplayNames}
+			onExcelExport={exportDataHandler}
+			onPdfExport={exportDataHandler}>
 			<div className={styles.content}>
 				<div className={styles.hierarchyContainer}>
-					{/* <ShadowedContainer
-						className={language === "ar" ? styles.filterLTR : styles.filter}>
-						<Button onClick={filterByDepartmentClickHandler}>
-							{t("filter.byDepartment", { framework: "React" })}
-						</Button>
-					</ShadowedContainer> */}
 					<div
 						className={
 							language === "ar" ? styles.hierarchyLTR : styles.hierarchy
@@ -500,11 +490,6 @@ const UserAccountPage = () => {
 						onWorkflowStatusOptionSelectionChange={() => {}}
 						showRoleOption
 						onRoleOptonSelectionHandler={roleSelectHandler}
-						isExportSelectionLoading={isExportLoading}
-						displayExportButton={true}
-						exportDisplayNames={propertyDisplayNames}
-						onExcelExport={exportDataHandler}
-						onPdfExport={exportDataHandler}
 					/>
 				</ShadowedContainer>
 			</div>

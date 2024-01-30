@@ -26,6 +26,10 @@ export async function getUserProjects(
 			queryParam += `&statusCode=1`;
 		}
 
+		if (orderBy) {
+			queryParam += `&orderBy=${orderBy}`;
+		}
+
 		const url =
 			`/users/${id}/projects?page=${currentPage}&postsperpage=${pageSize}` +
 			queryParam;

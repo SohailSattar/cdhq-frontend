@@ -8,6 +8,17 @@
 	}
 
 	.actions {
+		.action {
+			// background-color: ;
+			padding: unset;
+		}
+
+		.icon {
+			height: 28px;
+			padding: 2px;
+			width: auto;
+		}
+
 		&:not([dir="rtl"]) {
 			.action {
 				margin-right: 10px; // Adjust the margin based on your preference

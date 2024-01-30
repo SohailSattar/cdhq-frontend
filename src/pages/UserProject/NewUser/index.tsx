@@ -52,6 +52,8 @@ const AssignUserToProjectPage = () => {
 
 		const deptStruct = formInputs.structureType?.value!.toString();
 		const canGrant = formInputs.canGrant;
+		const exportToExcel = formInputs.canExportExcel;
+		const exportToPdf = formInputs.canExportPdf;
 
 		const params: APIProjectToUser = {
 			projectId: id!,
@@ -62,6 +64,8 @@ const AssignUserToProjectPage = () => {
 			departmentId: deptId!,
 			departmentStructureType: deptStruct,
 			canGrant: canGrant,
+			canExportExcel: exportToExcel,
+			canExportPdf: exportToPdf,
 		};
 
 		const { data: userProjectId } = await assignNewProjectToUser(params);

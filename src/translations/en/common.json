@@ -107,6 +107,8 @@
 		"userName": "User Name"
 	},
 	"export": {
+		"exportToExcel": "Export to Excel",
+		"exportToPdf": "Export to Pdf",
 		"toExcel": "To Excel",
 		"toPdf": "To PDF",
 		"fieldsSelectTitle": "Select fields to be exported",
@@ -218,7 +220,8 @@
 		"parent": "Parent Deparment",
 		"centers": "Centers",
 		"center": "Center",
-		"structureType": "Structure Type"
+		"structureType": "Structure Type",
+		"section": "Section"
 	},
 	"rank": {
 		"name": "Rank"
@@ -312,6 +315,7 @@
 		"recordActivated": "Record has been activated",
 		"recordDeactivated": "Record has been deactivated",
 		"unauthorized": "You are not authorized to view this page",
+		"unauthorizedExport": "You are not authorized to export the data",
 		"noAccountContact": "Don't have an account? Contact the electronic services department",
 		"employeeNotExists": "No employee with this employee number exists! Please contact the Ministry of Interior.",
 		"employeeUserExists": "User already exists. To edit this user, click on this link",
@@ -370,6 +374,7 @@
 		"noUser": "No user found",
 		"noEmployee": "No employee found",
 		"noNews": "No news found",
+		"noHonor": "No honors found",
 		"noMenu": "No menu items found"
 	},
 	"footer": {

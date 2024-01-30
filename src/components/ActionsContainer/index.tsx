@@ -25,7 +25,9 @@ const ActionsContainer: FC<Props> = ({ showExport = true, onExportClick }) => {
 									framework: "React",
 								})}
 								onClick={onExportClick}>
-								Export
+								{t("button.export", {
+									framework: "React",
+								})}
 								{/* <FontAwesomeIcon icon={faFileExcel} /> */}
 							</Button>
 						</div>

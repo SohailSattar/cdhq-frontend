@@ -119,6 +119,8 @@ const UserProjectEditPage = () => {
 			workflowEndToId: formInput.workflowEnd?.value!.toString()!,
 			departmentStructureType: formInput.structureType?.value!.toString(),
 			canGrant: formInput.canGrant,
+			canExportExcel: formInput.canExportExcel,
+			canExportPdf: formInput.canExportPdf,
 		};
 
 		const { data, error } = await updateUserProject(params);

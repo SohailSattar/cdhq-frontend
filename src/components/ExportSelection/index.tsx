@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFileExcel, faFilePdf } from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faFileExcel, faFilePdf } from "@fortawesome/free-solid-svg-icons";
 import {
 	Button,
 	CheckBoxSelections,
@@ -10,8 +10,12 @@ import {
 } from "..";
 import { APIExportData, PropertyDisplayNames } from "../../api";
 
-import styles from "./styles.module.scss";
+import { ReactComponent as XLSXIcon } from "../../assets/icons/xlsx.svg";
+import { ReactComponent as PdfIcon } from "../../assets/icons/pdf.svg";
+
 import { useTranslation } from "react-i18next";
+
+import styles from "./styles.module.scss";
 
 interface Props<T> {
 	displayNames: PropertyDisplayNames<T>;
@@ -131,7 +135,7 @@ const ExportSelection = <T extends Record<string, any>>({
 						framework: "React",
 					})}
 					className={styles.action}>
-					<FontAwesomeIcon icon={faFileExcel} />
+					<XLSXIcon className={styles.icon} />
 				</Button>
 				<Button
 					onClick={pdfExportClickHandler}
@@ -139,7 +143,7 @@ const ExportSelection = <T extends Record<string, any>>({
 						framework: "React",
 					})}
 					className={styles.action}>
-					<FontAwesomeIcon icon={faFilePdf} />
+					<PdfIcon className={styles.icon} />
 				</Button>
 			</ShadowedContainer>
 		</div>

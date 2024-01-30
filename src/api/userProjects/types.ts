@@ -31,6 +31,8 @@ export interface APIProjectToUser {
 	WorkflowEndToId: string;
 	departmentStructureType: string;
 	canGrant?: boolean;
+	canExportPdf: boolean;
+	canExportExcel: boolean;
 }
 
 export interface APIUserProject extends APIPrivileges {
@@ -71,6 +73,8 @@ export interface APIUserProjectDetail {
 	deletePrivilege: boolean;
 	updatePrivilege: boolean;
 	readPrivilege: boolean;
+	canExportPdf: boolean;
+	canExportExcel: boolean;
 	canGrant: boolean;
 	createdBy?: string;
 	createdOn: string;
@@ -92,4 +96,6 @@ export interface APIUpdateUserProjectDetail {
 	workflowEndToId: Id;
 	departmentStructureType: Id;
 	canGrant: boolean;
+	canExportPdf: boolean;
+	canExportExcel: boolean;
 }

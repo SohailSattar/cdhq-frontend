@@ -13,7 +13,8 @@ export async function getUsersByDepartments(
 	roleId?: Id,
 	projectId?: Id,
 	statusCode?: Id,
-	orderBy?: string
+	orderBy?: string,
+	isDescending: boolean = false
 ): Promise<APIResponse<APIPaginatedUser>> {
 	try {
 		const config = getConfig();
@@ -37,7 +38,7 @@ export async function getUsersByDepartments(
 		}
 
 		if (orderBy) {
-			parameter += `${orderBy}`;
+			parameter += `&orderBy=${orderBy}&isDescending=${isDescending}`;
 		}
 
 		let url = `/departments/users?page=${currentPage}&postsperpage=${pageSize}${parameter}`;

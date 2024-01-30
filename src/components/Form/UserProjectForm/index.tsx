@@ -323,7 +323,7 @@ const UserProjectForm: FC<Props> = ({
 				if (selectedOption) {
 					const selected = data.find((x) => x.id === selectedOption.value!)!;
 
-					const label = `${selected.id} - ${
+					const label = `${selected?.id!} - ${
 						language !== "ar" ? selected?.nameArabic! : selected?.nameEnglish!
 					}`;
 
@@ -379,44 +379,6 @@ const UserProjectForm: FC<Props> = ({
 
 		fetchData();
 	}, [setWorkflowRangeOptions, language, role, getValues, setValue]);
-
-	// Centers
-	// const fetchCenters = useMemo(
-	// 	() => async (id: Id) => {
-	// 		const { data } = await getCentersByDepartment(id);
-
-	// 		setCentersOptions(
-	// 			data!.map((dept: APIDepartmentItem) => {
-	// 				const label = `${dept.id} - ${
-	// 					language !== "ar" ? dept.longFullName : dept.longFullNameEnglish
-	// 				}`;
-
-	// 				return {
-	// 					label: label,
-	// 					value: dept.id,
-	// 				};
-	// 			})
-	// 		);
-
-	// 		const selectedOption = getValues("center");
-	// 		if (selectedOption) {
-	// 			const selected = data?.find((x) => x.id === selectedOption?.value);
-
-	// 			if (selected) {
-	// 				const label = `${selected?.id} - ${
-	// 					language !== "ar" ? selected?.name : selected?.nameEnglish
-	// 				}`;
-
-	// 				const value = selected.id;
-	// 				setValue("center", {
-	// 					label: label,
-	// 					value: value,
-	// 				});
-	// 			}
-	// 		}
-	// 	},
-	// 	[setCentersOptions, language]
-	// );
 
 	// Privileges
 	const fetchPrivileges = useMemo(
@@ -563,6 +525,8 @@ const UserProjectForm: FC<Props> = ({
 					department,
 					departmentStructureType,
 					canGrant,
+					canExportExcel,
+					canExportPdf,
 				} = data;
 
 				// Project
@@ -673,6 +637,8 @@ const UserProjectForm: FC<Props> = ({
 				setValue("structureType", selectedStructureType!);
 
 				setValue("canGrant", canGrant);
+				setValue("canExportExcel", canExportExcel);
+				setValue("canExportPdf", canExportPdf);
 
 				setShowDeleteButton(true);
 			}
@@ -753,122 +719,7 @@ const UserProjectForm: FC<Props> = ({
 		setValue,
 	]);
 
-	// useEffect(() => {
-	// 	const fetch = async () => {
-	// 		if (data) {
-	// 			const { project, department } = data;
-	// 			//
-
-	// 			if (project.departmentCategory.code === DepartmentCategory.Center) {
-	// 				setShowCenterOptions(true);
-	// 				const centerPrefix = data.department.id.toString().substring(0, 3);
-
-	// 				const mainDepartment = departmentsOptions.find((x) =>
-	// 					x.value.toString().startsWith(centerPrefix)
-	// 				);
-
-	// 				setValue("department", mainDepartment!);
-
-	// 				//////////////////////////////////////////////////////
-
-	// 				const { data: centersList } = await getCentersByDepartment(
-	// 					data.department.id
-	// 				);
-
-	// 				// setCentersOptions(
-	// 				// 	centersList!.map((dept: APIDepartmentItem) => {
-	// 				// 		return {
-	// 				// 			label: dept.id
-	// 				// 				.toString()
-	// 				// 				.concat(
-	// 				// 					" - ",
-	// 				// 					language !== "ar"
-	// 				// 						? dept.longFullName
-	// 				// 						: dept.longFullNameEnglish
-	// 				// 				),
-	// 				// 			value: dept.id,
-	// 				// 		};
-	// 				// 	})
-	// 				// );
-
-	// 				// const currentCenter = centersOptions.find(
-	// 				// 	(x) => x.value === data.department.id
-	// 				// );
-
-	// 				// setValue("center", currentCenter!);
-	// 			} else {
-	// 				const selectedDepartment = departmentsOptions.find(
-	// 					(x) => x.value === department.id
-	// 				);
-
-	// 				setValue("department", selectedDepartment!);
-	// 			}
-	// 		}
-	// 	};
-
-	// 	fetch();
-	// }, [data, departmentsOptions, language]);
-
-	// useEffect(() => {
-	// 	if (showCenterOptions) {
-	// 		// Department Structure Type
-	// 		register("center", {
-	// 			required: "Center is required.",
-	// 		});
-	// 	}
-	// }, [register, setValue, language, showCenterOptions]);
-
-	// useEffect(() => {
-	// 	const fetch = async () => {
-	// 		if (data) {
-	// 			const { project } = data!;
-
-	// 			// fetchDepartments(project.id);
-
-	// 			if (project.departmentCategory.code === DepartmentCategory.Center) {
-	// 				setShowCenterOptions(true);
-
-	// 				const centerPrefix = data.department.id.toString().substring(0, 3);
-
-	// 				const mainDepartment = departmentsOptions.find((x) =>
-	// 					x.value.toString().startsWith(centerPrefix)
-	// 				);
-
-	// 				setValue("department", mainDepartment!);
-
-	// 				const { data: centersList } = await getCentersByDepartment(
-	// 					data.department.id
-	// 				);
-
-	// 				setCentersOptions(
-	// 					centersList!.map((dept: APIDepartmentItem) => {
-	// 						return {
-	// 							label: language !== "ar" ? dept.name : dept.nameEnglish,
-	// 							value: dept.id,
-	// 						};
-	// 					})
-	// 				);
-
-	// 				const currentCenter = centersOptions.find(
-	// 					(x) => x.value === data.department.id
-	// 				);
-
-	// 				setValue("center", currentCenter!);
-	// 			}
-	// 		}
-	// 	};
-
-	// 	// fetch();
-	// }, [
-	// 	data,
-	// 	setCentersOptions,
-	// 	setDepartmentsOptions,
-	// 	// centersOptions,
-	// 	// departmentsOptions,
-	// ]);
-
 	const projectSelectHandler = (option: DropdownOption) => {
-		// setShowCenterOptions(false);
 		setDepartmentsOptions([]);
 		if (option?.meta!.hasWorkflow! === false) {
 			setDisableWorkflow(true);
@@ -895,29 +746,13 @@ const UserProjectForm: FC<Props> = ({
 
 		setValue("project", option);
 
-		// setValue("department", { label: "", value: "", meta: null });
-
 		if (option?.value) {
 			fetchDepartments(option?.value);
 		}
-
-		// setCentersOptions([]);
-
-		// if (option?.meta.departmentSelectionType === DepartmentCategory.Center) {
-		// 	setShowCenterOptions(true);
-		// } else {
-		// 	setShowCenterOptions(false);
-		// }
 	};
 
 	const departmentSelectHandler = async (option: DropdownOption) => {
-		// setCentersOptions([]);
-		// setValue("center", { label: "", value: "", meta: null });
 		setValue("department", option);
-
-		// if (role !== ROLE.SUPERADMIN) {
-		// if (!showCenterOptions) {
-		//Fetch Details
 
 		if (role !== ROLE.SUPERADMIN) {
 			const projctId = getValues("project.value");
@@ -941,54 +776,7 @@ const UserProjectForm: FC<Props> = ({
 				fetchPrivileges(details!.privilege.sequenceNumber);
 			}
 		}
-		// }
-		// }
-
-		// if (showCenterOptions) {
-		// 	fetchCenters(option.value);
-		// }
 	};
-
-	// const centerSelectHandler = async (option: DropdownOption) => {
-	// 	setValue("center", option!);
-	// 	//Fetch Details
-	// 	const projctId = getValues("project.value");
-
-	// 	// if (role === ROLE.ADMIN) {
-	// 	if (option) {
-	// 		const { data: details } = await getUserProjectByDepartment(
-	// 			projctId,
-	// 			option?.value
-	// 		);
-
-	// 		if (details) {
-	// 			// Privilege
-	// 			const selectedPrivilege = privilegeOptions.find(
-	// 				(x) => x.value == details.privilege.sequenceNumber
-	// 			);
-	// 			setValue("privilege", selectedPrivilege!);
-
-	// 			// Workflow Start
-	// 			const selectedWorkflowStart = workflowRangeOptions.find(
-	// 				(x) => x.value == details.workflowStartFrom.id
-	// 			);
-	// 			setValue("workflowStart", selectedWorkflowStart!);
-
-	// 			// Workflow End
-	// 			const selectedWorkflowEnd = workflowRangeOptions.find(
-	// 				(x) => x.value == details.workflowEndTo.id
-	// 			);
-	// 			setValue("workflowEnd", selectedWorkflowEnd!);
-
-	// 			const start = details?.workflowStartFrom.id!;
-	// 			const end = details?.workflowEndTo.id!;
-
-	// 			fetchWorkflow(+start, +end);
-	// 			fetchPrivileges(details!.privilege.sequenceNumber);
-	// 		}
-	// 	}
-	// 	// }
-	// };
 
 	const submitHandler = (values: IUserProjectFormInputs) => {
 		onActionButtonClick(values);
@@ -1044,34 +832,12 @@ const UserProjectForm: FC<Props> = ({
 										options={departmentsOptions}
 										onSelect={departmentSelectHandler}
 										value={value}
-										// disabled={isExistingEmployee}
-										// disabled={disableField}
 									/>
 								)}
 								name="department"
 								control={control}
-								// rules={{ required: true }}
 							/>
 						</div>
-						{/* {showCenterOptions && (
-							<div className={styles.rowItem}>
-								<Controller
-									render={({ field: { value } }) => (
-										<Dropdown
-											label={t("department.center", { framework: "React" })}
-											options={centersOptions}
-											onSelect={centerSelectHandler}
-											value={value}
-											// disabled={isExistingEmployee}
-											// disabled={disableField}
-										/>
-									)}
-									name="center"
-									control={control}
-									// rules={{ required: true }}
-								/>
-							</div>
-						)} */}
 					</div>
 					<div className={styles.row}>
 						<div className={styles.rowItem}>
@@ -1136,6 +902,43 @@ const UserProjectForm: FC<Props> = ({
 								control={control}
 								// rules={{ required: true }}
 							/>
+						</div>
+						<div className={styles.rowItem}>
+							<ShadowedContainer className={styles.checkContainer}>
+								<Controller
+									render={({ field: { onChange, value } }) => (
+										<Checkbox
+											label={t("export.exportToExcel", {
+												framework: "React",
+											})}
+											checked={value}
+											onChange={onChange}
+										/>
+									)}
+									name="canExportExcel"
+									control={control}
+									// rules={{ required: true }}
+								/>
+								<Controller
+									render={({ field: { onChange, value } }) => (
+										<Checkbox
+											label={t("export.exportToPdf", {
+												framework: "React",
+											})}
+											checked={value}
+											onChange={onChange}
+										/>
+									)}
+									name="canExportPdf"
+									control={control}
+									// rules={{ required: true }}
+								/>
+								{/* <Checkbox
+									label={t('userProject.canGrant', { framework: 'React' })}
+									checked={canGrant}
+									onChange={checkChangeHandler}
+								/> */}
+							</ShadowedContainer>
 						</div>
 					</div>
 					<div className={styles.row}>

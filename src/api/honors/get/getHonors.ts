@@ -8,7 +8,8 @@ export async function getHonors(
 	pageSize: number,
 	keyword?: string,
 	statusCode?: Id,
-	orderBy?: string
+	orderBy?: string,
+	isDescending: boolean = false
 ): Promise<APIResponse<APIPaginatedHonors>> {
 	try {
 		const config = getConfig();
@@ -24,7 +25,7 @@ export async function getHonors(
 		}
 
 		if (orderBy) {
-			queryParam += `${orderBy}`;
+			queryParam += `&orderBy=${orderBy}&isDescending=${isDescending}`;
 		}
 
 		const url =
