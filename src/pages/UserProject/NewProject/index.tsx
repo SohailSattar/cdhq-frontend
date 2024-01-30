@@ -84,6 +84,8 @@ const AssignProjectToUserPage = () => {
 		const workflowEndId = formInputs.workflowEnd?.value!.toString();
 		const structType = formInputs.structureType?.value!.toString();
 		const canGrant = formInputs.canGrant!;
+		const exportToExcel = formInputs.canExportExcel;
+		const exportToPdf = formInputs.canExportPdf;
 
 		const params: APIProjectToUser = {
 			userId: id!,
@@ -94,6 +96,8 @@ const AssignProjectToUserPage = () => {
 			departmentId: deptId!,
 			departmentStructureType: structType,
 			canGrant: canGrant,
+			canExportExcel: exportToExcel,
+			canExportPdf: exportToPdf,
 		};
 
 		const { data: userProjectId } = await assignNewProjectToUser(params);

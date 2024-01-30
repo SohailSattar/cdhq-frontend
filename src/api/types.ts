@@ -40,6 +40,7 @@ export interface APIResponseStatus {
 
 export interface APIResponseData {
 	file: BlobPart;
+	errors?: string[];
 }
 
 //Pagination
@@ -78,6 +79,7 @@ export interface APIQueryParams {
 	page?: number;
 	postsPerPage?: number;
 	keyword?: string;
+	departmentId?: Id;
 	projectId?: Id;
 	statusCode?: Id;
 	orderBy?: string;

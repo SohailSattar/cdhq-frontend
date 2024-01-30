@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Column } from "react-table";
 import { getHonors } from "../../../api/honors/get/getHonors";
-import { APIHonor } from "../../../api/honors/types";
+import { APIExportHonor, APIHonor } from "../../../api/honors/types";
 import { APIPrivileges } from "../../../api/privileges/type";
 import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPrivilege";
 import {
@@ -24,12 +24,13 @@ import * as RoutePath from "../../../RouteConfig";
 import { Id } from "../../../utils";
 
 import styles from "./styles.module.scss";
-import { APIStatus } from "../../../api";
+import { APIExportData, APIStatus } from "../../../api";
 import { updateHonorStatus } from "../../../api/honors/update/updateHonorStatus";
 import { toast } from "react-toastify";
 import { useStore } from "../../../utils/store";
 import { format } from "date-fns";
 import { getDepartmentsByProject } from "../../../api/departments/get/getDepartmentsByProject";
+import { exportHonors } from "../../../api/honors/export/exportHonors";
 
 const HonorsHomePage = () => {
 	const [t] = useTranslation("common");
@@ -54,8 +55,10 @@ const HonorsHomePage = () => {
 	const [selectedStatusCode, setSelectedStatusCode] = useState<Id>(1);
 
 	//Parameters
-	const [toggleSort, setToggleSort] = useState(false);
-	const [orderBy, setOrderBy] = useState<string>("&OrderByDesc=createdOn");
+	const [toggleSort, setToggleSort] = useState(true);
+	const [orderBy, setOrderBy] = useState<string>("createdOn");
+
+	const [isExportLoading, setIsExportLoading] = useState<boolean>(false);
 
 	const fetchData = useMemo(
 		() => async () => {
@@ -81,7 +84,8 @@ const HonorsHomePage = () => {
 					pageSize,
 					keyword,
 					selectedStatusCode,
-					orderBy
+					orderBy,
+					toggleSort
 				);
 
 				if (data) {
@@ -92,7 +96,7 @@ const HonorsHomePage = () => {
 				}
 			}
 		},
-		[currentPage, keyword, orderBy, pageSize, selectedStatusCode]
+		[currentPage, keyword, orderBy, pageSize, selectedStatusCode, toggleSort]
 	);
 
 	useEffect(() => {
@@ -175,6 +179,7 @@ const HonorsHomePage = () => {
 	const name = t("honor.name", { framework: "React" });
 	const rank = t("rank.name", { framework: "React" });
 	const department = t("department.name", { framework: "React" });
+	const section = t("department.section", { framework: "React" });
 	const honorType = t("honor.type.name", { framework: "React" });
 
 	//Actions
@@ -292,6 +297,51 @@ const HonorsHomePage = () => {
 		fetchDepartments();
 	}, [fetchDepartments]);
 
+	// For Export
+	const propertyDisplayNames: Record<
+		keyof APIExportHonor,
+		Record<string, string>
+	> = {
+		name: { value: "Name", text: name },
+		rank: { value: "Rank", text: rank },
+		department: { value: "Department", text: department },
+		section: { value: "Section", text: section },
+		honoredOn: { value: "HonoredOn", text: honoredOn },
+		honorType: { value: "HonorType", text: honorType },
+	};
+
+	const exportDataHandler = async (data: APIExportData) => {
+		setIsExportLoading(true);
+		const dataValues: APIExportData = {
+			...data,
+			language: language === "ar" ? "en" : "ar",
+			queryParams: {
+				page: currentPage,
+				postsPerPage: pageSize,
+				keyword: keyword,
+				// departmentId: departmentId,
+				statusCode: selectedStatusCode,
+				orderBy: orderBy,
+				isDescending: toggleSort,
+			},
+		};
+		const us = t("honor.title", { framework: "React" });
+		const currentDate = format(new Date(), "ddMMyyyyhhmmss", {
+			locale: language !== "ar" ? ar : enGB,
+		});
+		const fileName = `${us}_${currentDate}.${data.format}`;
+		const { data: fData, error } = await exportHonors(dataValues, fileName);
+		if (fData) {
+			toast.success(t("message.downloaded", { framework: "React" }).toString());
+		}
+		if (error) {
+			toast.error(
+				t("message.unauthorizedExport", { framework: "React" }).toString()
+			);
+		}
+		setIsExportLoading(false);
+	};
+
 	const searchHandler = (keyword: string) => {
 		setKeyword(keyword);
 
@@ -316,15 +366,8 @@ const HonorsHomePage = () => {
 	);
 
 	const tableSortHandler = (columnId: string, isSortedDesc: boolean) => {
-		let orderByParam = "";
 		setToggleSort(!toggleSort);
-		if (toggleSort) {
-			orderByParam = `&OrderBy=${columnId}`;
-		} else {
-			orderByParam = `&OrderByDesc=${columnId}`;
-		}
-
-		setOrderBy(orderByParam);
+		setOrderBy(columnId);
 		// fetchData(currentPage, orderByParam);
 		setCurrentPage(1);
 	};
@@ -347,6 +390,13 @@ const HonorsHomePage = () => {
 			showAddButton={privileges?.insertPrivilege}
 			btnAddUrlLink={RoutePath.HONORS_NEW}
 			btnAddLabel={t("button.add", { framework: "React" })}
+			isExportSelectionLoading={isExportLoading}
+			displayExportButton={
+				privileges?.canExportExcel || privileges?.canExportPdf
+			}
+			exportDisplayNames={propertyDisplayNames}
+			onExcelExport={exportDataHandler}
+			onPdfExport={exportDataHandler}
 			className={styles.honors}>
 			<PaginatedTable
 				totalCountText={t("news.count", { framework: "React" })}
@@ -361,7 +411,7 @@ const HonorsHomePage = () => {
 				onTableSort={tableSortHandler}
 				onPageChange={pageChangeHandler}
 				onPageViewSelectionChange={pageViewSelectionHandler}
-				noRecordText={t("table.noNews", { framework: "React" })}
+				noRecordText={t("table.noHonor", { framework: "React" })}
 				hideActiveStatusDropdown
 				onActiveStatusOptionSelectionChange={statusSelectHandler}
 				columnsToHide={

@@ -12,7 +12,6 @@ import * as RoutePath from "../../../RouteConfig";
 
 import { useStore } from "../../../utils/store";
 
-import styles from "./styles.module.scss";
 import { getAllMenuTypes } from "../../../api/menuTypes/get/getAllMenuTypes";
 import { APIType } from "../../../api/menuTypes/types";
 import { getLinkTypes } from "../../../api/linkTypes/get/getLinkTypes";
@@ -24,6 +23,8 @@ import { useNavigate } from "react-router-dom";
 import { APIPrivileges } from "../../../api/privileges/type";
 import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPrivilege";
 import { Project } from "../../../data/projects";
+
+import styles from "./styles.module.scss";
 
 const MenuTable = () => {
 	const navigate = useNavigate();

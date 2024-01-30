@@ -113,6 +113,8 @@ interface IUserProjectForm {
 	// center: DropdownOption;
 	structureType: DropdownOption;
 	canGrant: boolean;
+	canExportExcel: boolean;
+	canExportPdf: boolean;
 }
 
 export interface IUserProjectFormInputs extends IUserProjectForm {

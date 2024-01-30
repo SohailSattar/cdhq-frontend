@@ -6,6 +6,8 @@ export interface APIPrivileges {
 	deletePrivilege: boolean;
 	updatePrivilege: boolean;
 	readPrivilege: boolean;
+	canExportExcel?: boolean;
+	canExportPdf?: boolean;
 }
 
 export interface APIPrivilege extends APIPrivileges {

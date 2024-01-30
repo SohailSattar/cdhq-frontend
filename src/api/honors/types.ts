@@ -39,3 +39,13 @@ export interface APIUpdateHonorImage {
 	id: string;
 	thumbnail: File;
 }
+
+//////////////////// EXPORT API ////////////////////////
+export interface APIExportHonor {
+	name: string;
+	rank: string;
+	department: string;
+	section: string;
+	honoredOn: string;
+	honorType: string;
+}

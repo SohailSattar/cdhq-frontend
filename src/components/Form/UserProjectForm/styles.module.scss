@@ -35,4 +35,10 @@
 	.btnContainerRTL {
 		margin-left: 5px;
 	}
+
+	.checkContainer {
+		box-shadow: unset;
+		display: flex;
+		justify-content: space-evenly;
+	}
 }
