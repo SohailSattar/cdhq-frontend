@@ -111,8 +111,11 @@
 		"exportToPdf": "تحميل ملف PDF",
 		"toExcel": "الى اكسل",
 		"toPdf": "PDF الى",
+		"excel": "اكسل",
+		"pdf": "PDF",
 		"fieldsSelectTitle": "اختر الحقول",
-		"useCurrentPage": "استعمال الصفحة الحالية ؟"
+		"useCurrentPage": "الصفحة الحالية ؟",
+		"selectAll": "تحديد الكل"
 	},
 	"button": {
 		"view": "عرض",

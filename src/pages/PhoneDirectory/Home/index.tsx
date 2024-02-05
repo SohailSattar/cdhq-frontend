@@ -1,7 +1,8 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Column } from "react-table";
 import { toast } from "react-toastify";
+import { enGB, ar } from "date-fns/locale";
 import { APIPrivileges } from "../../../api/privileges/type";
 import {
 	Button,
@@ -11,7 +12,10 @@ import {
 	PaginatedTable,
 	ShadowedContainer,
 } from "../../../components";
-import { DropdownOption } from "../../../components/Dropdown";
+import {
+	DropdownOption,
+	Props as DropdownProps,
+} from "../../../components/Dropdown";
 import { PhoneForm, IPhoneFormInputs } from "../../../components";
 import { PhoneDirectoryColumns } from "../../../components/PaginatedTable/types";
 import { Project } from "../../../data/projects";
@@ -28,6 +32,8 @@ import { getPhoneDirectoryByDepartment } from "../../../api/phoneDirectory/get/g
 import { getPhoneDirectoryList } from "../../../api/phoneDirectory/get/getPhoneDirectoryList";
 
 import styles from "./styles.module.scss";
+import { getEmployeeStatuses } from "../../../api/employees/get/getEmployeeStatuses";
+import { Id } from "../../../utils";
 
 const PhoneDirectoryPage = () => {
 	const language = useStore((state) => state.language);
@@ -44,11 +50,14 @@ const PhoneDirectoryPage = () => {
 
 	const [keyword, setKeyword] = useState("");
 	const [departmentIds, setDepartmentIds] = useState<string[]>([]);
+	const [statusId, setStatusId] = useState<Id>("");
 
 	const [currentPage, setCurrentPage] = useState(1);
 
 	const [isPopupOpen, setIsPopupOpen] = useState(false);
 	const [selectedRow, setSelectedRow] = useState<APIPhoneDirectory>();
+
+	const [statusOptions, setStatusOptions] = useState<DropdownOption[]>([]);
 
 	const id = t("user.id", { framework: "React" });
 	const employeeNo = t("user.employeeNumber", { framework: "React" });
@@ -62,6 +71,7 @@ const PhoneDirectoryPage = () => {
 	const actions = t("global.actions", { framework: "React" });
 	const edit = t("button.edit", { framework: "React" });
 
+	const [isExportLoading, setIsExportLoading] = useState<boolean>(false);
 	const [orderBy, setOrderBy] = useState<string>("rankId");
 
 	const columns: Column<PhoneDirectoryColumns>[] = useMemo(
@@ -192,6 +202,7 @@ const PhoneDirectoryPage = () => {
 					currentPage,
 					pageSize,
 					keyword,
+					statusId,
 					orderBy,
 					toggleSort
 				);
@@ -202,7 +213,7 @@ const PhoneDirectoryPage = () => {
 				}
 			}
 		},
-		[pageSize, keyword, orderBy, toggleSort]
+		[pageSize, keyword, statusId, orderBy, toggleSort]
 	);
 
 	const fetchByDepartment = useMemo(
@@ -240,6 +251,7 @@ const PhoneDirectoryPage = () => {
 					pageSize,
 					keyword,
 					departmentIds,
+					statusId,
 					orderBy,
 					toggleSort
 				);
@@ -250,8 +262,36 @@ const PhoneDirectoryPage = () => {
 				}
 			}
 		},
-		[currentPage, pageSize, keyword, departmentIds, orderBy, toggleSort]
+		[
+			currentPage,
+			pageSize,
+			keyword,
+			departmentIds,
+			statusId,
+			orderBy,
+			toggleSort,
+		]
 	);
+
+	const fetchStatuses = useMemo(
+		() => async () => {
+			const { data } = await getEmployeeStatuses();
+			console.log(data);
+			if (data) {
+				setStatusOptions(
+					data?.map((x) => {
+						return {
+							label: `${language !== "ar" ? x.name : x.nameEnglish}`,
+							value: x.id,
+						};
+					})
+				);
+			}
+		},
+		[language]
+	);
+
+	console.log(statusOptions);
 
 	useEffect(() => {
 		if (departmentIds.length === 0) {
@@ -260,6 +300,10 @@ const PhoneDirectoryPage = () => {
 			fetchByDepartment();
 		}
 	}, [fetchData, currentPage, departmentIds.length, fetchByDepartment]);
+
+	useEffect(() => {
+		fetchStatuses();
+	}, [fetchStatuses]);
 
 	const userSearchClickHandler = (keyword: string) => {
 		setKeyword(keyword);
@@ -319,6 +363,17 @@ const PhoneDirectoryPage = () => {
 		setCurrentPage(1);
 	};
 
+	const statusSelectHandler = (option: DropdownOption) => {
+		setStatusId(option?.value!);
+	};
+
+	const dropdowns: { [key: string]: DropdownProps } = {
+		statuses: {
+			options: statusOptions,
+			onSelect: statusSelectHandler,
+		},
+	};
+
 	return (
 		<PageContainer
 			title={t("page.phoneDirectoryHome", { framework: "React" })}
@@ -344,6 +399,7 @@ const PhoneDirectoryPage = () => {
 						setCurrentPage={setCurrentPage}
 						data={employees}
 						columns={columns}
+						dropdowns={dropdowns}
 						onSearch={userSearchClickHandler}
 						onTableSort={tableSortHandler}
 						onPageChange={pageChangeHandler}

@@ -7,6 +7,7 @@ export async function getHonors(
 	currentPage: number,
 	pageSize: number,
 	keyword?: string,
+	departmentId?: Id,
 	statusCode?: Id,
 	orderBy?: string,
 	isDescending: boolean = false
@@ -18,6 +19,10 @@ export async function getHonors(
 
 		if (keyword) {
 			queryParam += `&keyword=${keyword}`;
+		}
+
+		if (departmentId) {
+			queryParam += `&departmentId=${departmentId}`;
 		}
 
 		if (statusCode) {

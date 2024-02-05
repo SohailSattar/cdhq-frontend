@@ -70,6 +70,7 @@ export interface APIExportData {
 	format: "xlsx" | "pdf";
 	selectedFields: { [key: string]: string };
 	queryParams?: APIQueryParams;
+	departmentIds?: string[];
 }
 
 // Generic mapping for property names and their display names

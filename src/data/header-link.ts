@@ -16,6 +16,11 @@ const headerLinks = [
 		url: "/project",
 		displayFor: [ROLE.SUPERADMIN.toString()],
 	},
+	{
+		short: "department",
+		url: "/department",
+		displayFor: [ROLE.SUPERADMIN.toString()],
+	},
 ];
 
 export default headerLinks;

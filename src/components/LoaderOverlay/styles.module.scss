@@ -42,19 +42,19 @@
 @keyframes round {
 	0%,
 	100% {
-		box-shadow: 31px 45px 0 5px $GREEN, 13px 20px 0 2px #ff9967,
-			-31px -45px 0 5px $GREEN, -13px -20px 0 2px #ff9967;
+		box-shadow: 31px 45px 0 5px $GREEN, 13px 20px 0 2px $PRIMARY,
+			-31px -45px 0 5px $GREEN, -13px -20px 0 2px $PRIMARY;
 	}
 	25% {
-		box-shadow: -13px -20px 0 2px #ff9967, 31px 45px 0 5px $GREEN,
-			13px 20px 0 2px #ff9967, -31px -45px 0 5px $GREEN;
+		box-shadow: -13px -20px 0 2px $PRIMARY, 31px 45px 0 5px $GREEN,
+			13px 20px 0 2px $PRIMARY, -31px -45px 0 5px $GREEN;
 	}
 	50% {
-		box-shadow: -31px -45px 0 5px $GREEN, -13px -20px 0 2px #ff9967,
-			31px 45px 0 5px $GREEN, 13px 20px 0 2px #ff9967;
+		box-shadow: -31px -45px 0 5px $GREEN, -13px -20px 0 2px $PRIMARY,
+			31px 45px 0 5px $GREEN, 13px 20px 0 2px $PRIMARY;
 	}
 	75% {
-		box-shadow: -13px -20px 0 2px #ff9967, 31px 45px 0 5px $GREEN,
-			13px 20px 0 2px #ff9967, -31px -45px 0 5px $GREEN;
+		box-shadow: -13px -20px 0 2px $PRIMARY, 31px 45px 0 5px $GREEN,
+			13px 20px 0 2px $PRIMARY, -31px -45px 0 5px $GREEN;
 	}
 }
