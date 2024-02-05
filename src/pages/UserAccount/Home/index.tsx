@@ -116,7 +116,8 @@ const UserAccountPage = () => {
 	const id = t("user.id", { framework: "React" });
 	const employeeNo = t("user.employeeNumber", { framework: "React" });
 	const logName = t("user.logName", { framework: "React" });
-	const fullName = t("global.name", { framework: "React" });
+	const nameArabic = t("global.name", { framework: "React" });
+	const fullName = t("user.fullName", { framework: "React" });
 	const nameEnglish = t("global.nameEnglish", { framework: "React" });
 
 	const rank = t("rank.name", { framework: "React" });
@@ -393,10 +394,10 @@ const UserAccountPage = () => {
 	> = {
 		id: { value: "Id", text: id },
 		employeeNo: { value: "EmployeeNo", text: employeeNo },
-		nameEnglish: { value: "NameEnglish", text: nameEnglish },
-		name: { value: "Name", text: fullName },
-		logName: { value: "LogName", text: logName },
 		rank: { value: "Rank", text: rank },
+		nameEnglish: { value: "NameEnglish", text: nameEnglish },
+		name: { value: "Name", text: nameArabic },
+		logName: { value: "LogName", text: logName },
 		department: { value: "Department", text: department },
 		phone: { value: "Phone", text: phone },
 		email: { value: "Email", text: email },
@@ -416,6 +417,7 @@ const UserAccountPage = () => {
 				orderBy: orderBy,
 				isDescending: toggleSort,
 			},
+			departmentIds: departmentIds,
 		};
 
 		// saving to the file
@@ -447,9 +449,7 @@ const UserAccountPage = () => {
 			btnAddLabel={t("button.addNewUser", { framework: "React" })}
 			btnAddUrlLink={RoutePath.USER_SEARCH}
 			isExportSelectionLoading={isExportLoading}
-			displayExportButton={
-				privileges?.canExportExcel || privileges?.canExportPdf
-			}
+			displayExportButton={true}
 			exportDisplayNames={propertyDisplayNames}
 			onExcelExport={exportDataHandler}
 			onPdfExport={exportDataHandler}>

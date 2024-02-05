@@ -153,7 +153,8 @@ const PageContainer: FC<Props> = ({
 									showBackButton ||
 									showEditButton ||
 									showAddButton ||
-									showChangeStatusButton
+									showChangeStatusButton ||
+									displayExportButton
 										? styles.actionContainer
 										: ""
 								}
@@ -245,18 +246,20 @@ const PageContainer: FC<Props> = ({
 									</motion.div>
 								)}
 
-								<div>
-									<Button
-										withIcon
-										tooltip={t("button.export", {
-											framework: "React",
-										})}
-										onClick={() => setIsOpen(true)}>
-										{t("button.export", {
-											framework: "React",
-										})}
-									</Button>
-								</div>
+								{displayExportButton && (
+									<div>
+										<Button
+											withIcon
+											tooltip={t("button.export", {
+												framework: "React",
+											})}
+											onClick={() => setIsOpen(true)}>
+											{t("button.export", {
+												framework: "React",
+											})}
+										</Button>
+									</div>
+								)}
 							</motion.div>
 							<motion.div
 								className={className}

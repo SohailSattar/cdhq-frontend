@@ -1,12 +1,16 @@
 import { APIResponse, getConfig } from "../..";
 import { instance } from "../../../network";
+import { Id } from "../../../utils";
 import { APIPagedPhoneDirectory } from "../types";
+
+import { PHONE_DIRECTORY } from "../../ROUTES";
 
 export async function getPhoneDirectoryByDepartment(
 	currentPage: number = 1,
 	pageSize: number = 50,
 	keyword: string = "",
 	deptIds: string[],
+	statusCode?: Id,
 	orderBy?: string,
 	isDescending: boolean = false
 ): Promise<APIResponse<APIPagedPhoneDirectory>> {
@@ -19,12 +23,16 @@ export async function getPhoneDirectoryByDepartment(
 			queryParam += `&keyword=${keyword}`;
 		}
 
+		if (statusCode) {
+			queryParam += `&statusCode=${statusCode}`;
+		}
+
 		if (orderBy) {
 			queryParam += `&orderBy=${orderBy}&isDescending=${isDescending}`;
 		}
 
 		const response = await instance.post<APIPagedPhoneDirectory>(
-			`/phone-directory?page=${currentPage}&postsperpage=${pageSize}&keyword=${keyword}${queryParam}`,
+			`${PHONE_DIRECTORY}?page=${currentPage}&postsperpage=${pageSize}&keyword=${keyword}${queryParam}`,
 			{
 				ids: deptIds,
 			},

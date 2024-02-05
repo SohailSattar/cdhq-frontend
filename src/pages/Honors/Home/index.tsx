@@ -83,6 +83,7 @@ const HonorsHomePage = () => {
 					currentPage,
 					pageSize,
 					keyword,
+					departmentId,
 					selectedStatusCode,
 					orderBy,
 					toggleSort
@@ -96,7 +97,15 @@ const HonorsHomePage = () => {
 				}
 			}
 		},
-		[currentPage, keyword, orderBy, pageSize, selectedStatusCode, toggleSort]
+		[
+			currentPage,
+			departmentId,
+			keyword,
+			orderBy,
+			pageSize,
+			selectedStatusCode,
+			toggleSort,
+		]
 	);
 
 	useEffect(() => {
@@ -319,12 +328,15 @@ const HonorsHomePage = () => {
 				page: currentPage,
 				postsPerPage: pageSize,
 				keyword: keyword,
-				// departmentId: departmentId,
 				statusCode: selectedStatusCode,
 				orderBy: orderBy,
 				isDescending: toggleSort,
+				...(departmentId && { departmentId: departmentId }), // Only include departmentId if it has a value
 			},
 		};
+
+		console.log(dataValues);
+
 		const us = t("honor.title", { framework: "React" });
 		const currentDate = format(new Date(), "ddMMyyyyhhmmss", {
 			locale: language !== "ar" ? ar : enGB,
@@ -391,9 +403,7 @@ const HonorsHomePage = () => {
 			btnAddUrlLink={RoutePath.HONORS_NEW}
 			btnAddLabel={t("button.add", { framework: "React" })}
 			isExportSelectionLoading={isExportLoading}
-			displayExportButton={
-				privileges?.canExportExcel || privileges?.canExportPdf
-			}
+			displayExportButton={true}
 			exportDisplayNames={propertyDisplayNames}
 			onExcelExport={exportDataHandler}
 			onPdfExport={exportDataHandler}

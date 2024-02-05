@@ -36,16 +36,21 @@ const CheckBoxSelections = <T extends Record<string, any>>({
 	}, [checkedValues.length, isSelectAll, valuesArray]);
 
 	useEffect(() => {
-		const computedValuesArray = Object.keys(displayNames)
-			.map((key) => {
-				const displayName = displayNames[key];
-				return (
-					displayName && { value: displayName.value, text: displayName.text }
-				);
-			})
-			.filter((value) => value !== undefined);
+		if (displayNames) {
+			const computedValuesArray = Object.keys(displayNames)
+				.map((key) => {
+					const displayName = displayNames[key];
+					return (
+						displayName && {
+							value: displayName.value,
+							text: displayName.text,
+						}
+					);
+				})
+				.filter((value) => value !== undefined);
 
-		setValuesArray(computedValuesArray!);
+			setValuesArray(computedValuesArray!);
+		}
 	}, [displayNames]);
 
 	const handleCheckboxChange = (

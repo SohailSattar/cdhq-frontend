@@ -41,6 +41,9 @@ import {
 	QRCodeHomeContentManagementPage,
 	QRCodeNewContentManagementPage,
 	QRCodeEditContentManagementPage,
+	DepartmentHomePage,
+	DepartmentDetailPage,
+	DepartmentEditPage,
 } from "./pages";
 
 import * as RoutePath from "./RouteConfig";
@@ -421,38 +424,38 @@ function App() {
 						/>
 					</Route> */}
 						{/* Department */}
-						{/* <Route element={<ProtectedRoute />}>
-						<Route
-							path={`${RoutePath.DEPARTMENT}`}
-							element={
-								<Layout>
-									<DepartmentHomePage />
-								</Layout>
-							}
-						/>
-					</Route>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.DEPARTMENT}`}
+								element={
+									<Layout>
+										<DepartmentHomePage />
+									</Layout>
+								}
+							/>
+						</Route>
 
-					<Route element={<ProtectedRoute />}>
-						<Route
-							path={`${RoutePath.DEPARTMENT}/:id`}
-							element={
-								<Layout>
-									<DepartmentDetailPage />
-								</Layout>
-							}
-						/>
-					</Route>
-					<Route element={<ProtectedRoute />}>
-						<Route
-							path={`${RoutePath.DEPARTMENT}/:id/edit`}
-							element={
-								<Layout>
-									<DepartmentEditPage />
-								</Layout>
-							}
-						/>
-					</Route>
-					<Route element={<ProtectedRoute />}>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.DEPARTMENT}/:id`}
+								element={
+									<Layout>
+										<DepartmentDetailPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.DEPARTMENT}/:id/edit`}
+								element={
+									<Layout>
+										<DepartmentEditPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						{/*<Route element={<ProtectedRoute />}>
 						<Route
 							path={`${RoutePath.DEPARTMENT}/hierarchy`}
 							element={

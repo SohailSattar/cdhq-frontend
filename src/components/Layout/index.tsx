@@ -539,11 +539,11 @@ const Layout: FC<Props> = ({
 					// reset the state of your app so the error doesn't happen again
 				}}>
 				<OffcanvasNavbar hideLoginButton={hideLoginButton} />
-				<LoaderOverlay loading={isLoading}>
-					<div className={clsx(styles.layout, className)}>
-						{content === undefined ? <Loader /> : content}
-					</div>
-				</LoaderOverlay>
+				{/* <LoaderOverlay loading={isLoading}> */}
+				<div className={clsx(styles.layout, className)}>
+					{content === undefined ? <Loader /> : content}
+				</div>
+				{/* </LoaderOverlay> */}
 				{!defaultPosition && (
 					<div>
 						<br />

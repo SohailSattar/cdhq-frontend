@@ -111,8 +111,11 @@
 		"exportToPdf": "Export to Pdf",
 		"toExcel": "To Excel",
 		"toPdf": "To PDF",
+		"excel": "Excel",
+		"pdf": "Pdf",
 		"fieldsSelectTitle": "Select fields to be exported",
-		"useCurrentPage": "Use current page?"
+		"useCurrentPage": "Current page?",
+		"selectAll": "Select All"
 	},
 	"button": {
 		"view": "View",

@@ -109,7 +109,9 @@ const ExportSelection = <T extends Record<string, any>>({
 				<hr />
 				<div>
 					<Checkbox
-						label="Select All"
+						label={t("export.selectAll", {
+							framework: "React",
+						})}
 						onChange={selectAllClickHandler}
 						checked={isSelectAll}
 					/>
@@ -131,7 +133,7 @@ const ExportSelection = <T extends Record<string, any>>({
 			<ShadowedContainer className={styles.actions}>
 				<Button
 					onClick={excelExportClickHandler}
-					tooltip={t("export.toExcel", {
+					tooltip={t("export.excel", {
 						framework: "React",
 					})}
 					className={styles.action}>
@@ -139,7 +141,7 @@ const ExportSelection = <T extends Record<string, any>>({
 				</Button>
 				<Button
 					onClick={pdfExportClickHandler}
-					tooltip={t("export.toPdf", {
+					tooltip={t("export.pdf", {
 						framework: "React",
 					})}
 					className={styles.action}>
