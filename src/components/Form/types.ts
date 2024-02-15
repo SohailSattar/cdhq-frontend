@@ -90,6 +90,18 @@ export interface IUserFormInputs {
 	password2: string;
 }
 
+export interface IDepartmentFormInputs {
+	name: string;
+	nameEnglish: string;
+	level: DropdownOption;
+	parent: DropdownOption;
+	emirate: DropdownOption;
+	status: DropdownOption;
+	operator: DropdownOption;
+	group: DropdownOption;
+	cdBuilding: DropdownOption;
+}
+
 export interface IProjectFormInputs {
 	iconName?: string;
 	name: string;

@@ -44,6 +44,7 @@ import {
 	DepartmentHomePage,
 	DepartmentDetailPage,
 	DepartmentEditPage,
+	DepartmentNewPage,
 } from "./pages";
 
 import * as RoutePath from "./RouteConfig";
@@ -464,17 +465,17 @@ function App() {
 								</Layout>
 							}
 						/>
-					</Route>
-					<Route element={<ProtectedRoute />}>
-						<Route
-							path={`${RoutePath.DEPARTMENT}/new`}
-							element={
-								<Layout>
-									<NewDepartmentPage />
-								</Layout>
-							}
-						/>
-					</Route> */}
+					</Route>*/}
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.DEPARTMENT}/new`}
+								element={
+									<Layout>
+										<DepartmentNewPage />
+									</Layout>
+								}
+							/>
+						</Route>
 						{/* Honors */}
 						<Route element={<ProtectedRoute />}>
 							<Route

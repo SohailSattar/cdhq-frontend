@@ -75,6 +75,7 @@
 		"userDetail": "User Details",
 		"userEdit": "Edit User",
 		"userCreate": "Create User",
+		"departmentHome": "Departments",
 		"projectHome": "Project Management",
 		"projectDetail": "Project Details",
 		"projectEdit": "Edit Project",
@@ -215,7 +216,9 @@
 		"withOrWithoutSubSection": "With sub-sections or without sub-sections?"
 	},
 	"department": {
+		"id": "Department Id",
 		"name": "Department",
+		"nameEnglish": "Department [English]",
 		"fullName": "Full Name [Arabic]",
 		"fullNameEnglish": "Full Name [English]",
 		"single": "Single Department",
@@ -224,7 +227,8 @@
 		"centers": "Centers",
 		"center": "Center",
 		"structureType": "Structure Type",
-		"section": "Section"
+		"section": "Section",
+		"level": "Level"
 	},
 	"rank": {
 		"name": "Rank"
@@ -252,6 +256,7 @@
 				"password": "Password is required",
 				"password2": "You have to retype the password",
 				"department": "Department is required",
+				"parentDepartment": "Parent Department is required",
 				"structureType": "Structure type is required.",
 				"class": "Class is required",
 				"rank": "Rank is required",
@@ -269,7 +274,11 @@
 				"newsType": "Short summary is required.",
 				"news": "News is required.",
 				"menuType": "Menu Type is required.",
-				"linkType": "Link Type is required."
+				"linkType": "Link Type is required.",
+				"level": "Level is required",
+				"emirate": "Emirate is required",
+				"status": "Status is required",
+				"operator": "Operator is required"
 			},
 			"selection": {
 				"employee": "No Employee has been selected"

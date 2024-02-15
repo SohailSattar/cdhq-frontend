@@ -143,14 +143,14 @@ const ProjectUserForm: FC<Props> = ({
 			if (data) {
 				setDepartmentsOptions(
 					data.map((dept: APICategorizedDepartment) => {
-						return { label: dept.longFullName, value: dept.id };
+						return { label: dept.fullName, value: dept.id };
 					})
 				);
 
 				if (empDepartmentsOptions.length <= 0) {
 					setEmpDepartmentsOptions(
 						data.map((dept: APICategorizedDepartment) => {
-							return { label: dept.longFullName, value: dept.id };
+							return { label: dept.fullName, value: dept.id };
 						})
 					);
 				}
@@ -506,7 +506,9 @@ const ProjectUserForm: FC<Props> = ({
 									render={({ messages }) => {
 										return messages
 											? _.entries(messages).map(([type, message]) => (
-													<p key={type} className="error">
+													<p
+														key={type}
+														className="error">
 														{message}
 													</p>
 											  ))
@@ -519,7 +521,9 @@ const ProjectUserForm: FC<Props> = ({
 									render={({ messages }) => {
 										return messages
 											? _.entries(messages).map(([type, message]) => (
-													<p key={type} className="error">
+													<p
+														key={type}
+														className="error">
 														{message}
 													</p>
 											  ))
@@ -532,7 +536,9 @@ const ProjectUserForm: FC<Props> = ({
 									render={({ messages }) => {
 										return messages
 											? _.entries(messages).map(([type, message]) => (
-													<p key={type} className="error">
+													<p
+														key={type}
+														className="error">
 														{message}
 													</p>
 											  ))
@@ -545,7 +551,9 @@ const ProjectUserForm: FC<Props> = ({
 									render={({ messages }) => {
 										return messages
 											? _.entries(messages).map(([type, message]) => (
-													<p key={type} className="error">
+													<p
+														key={type}
+														className="error">
 														{message}
 													</p>
 											  ))
@@ -558,7 +566,9 @@ const ProjectUserForm: FC<Props> = ({
 									render={({ messages }) => {
 										return messages
 											? _.entries(messages).map(([type, message]) => (
-													<p key={type} className="error">
+													<p
+														key={type}
+														className="error">
 														{message}
 													</p>
 											  ))
@@ -572,7 +582,9 @@ const ProjectUserForm: FC<Props> = ({
 									render={({ messages }) => {
 										return messages
 											? _.entries(messages).map(([type, message]) => (
-													<p key={type} className="error">
+													<p
+														key={type}
+														className="error">
 														{message}
 													</p>
 											  ))

@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import {
 	Button,
+	ErrorAlert,
 	ExportSelection,
 	LoaderOverlay,
 	Modal,
@@ -55,6 +56,8 @@ interface Props {
 	///////////////////////////////
 	className?: string;
 	children: any;
+	//////////////////////////////
+	errors?: string[];
 }
 const PageContainer: FC<Props> = ({
 	lockFor,
@@ -79,6 +82,8 @@ const PageContainer: FC<Props> = ({
 	onPdfExport = emptyFunction,
 	className,
 	children,
+	////////////////
+	errors = [],
 }) => {
 	const [t] = useTranslation("common");
 	const language = useStore((state) => state.language);
@@ -282,6 +287,9 @@ const PageContainer: FC<Props> = ({
 									/>
 								</LoaderOverlay>
 							</Modal>
+						</Portal>
+						<Portal>
+							<ErrorAlert errors={errors} />
 						</Portal>
 					</>
 				)

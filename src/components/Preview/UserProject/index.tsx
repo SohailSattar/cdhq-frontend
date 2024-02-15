@@ -39,8 +39,8 @@ const UserProjectPreview: FC<Props> = ({ data }) => {
 					</div>
 					<div className={styles.value}>
 						{language !== "ar"
-							? department?.longFullName!
-							: department?.longFullNameEnglish!}
+							? department?.fullName!
+							: department?.fullNameEnglish!}
 					</div>
 				</div>
 				{/* <div className={styles.rowItem}>

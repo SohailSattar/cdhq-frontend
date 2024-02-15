@@ -121,8 +121,8 @@ const UserProjectForm: FC<Props> = ({
 						return {
 							label:
 								language !== "ar"
-									? dept.id + " - " + dept.longFullName
-									: dept.id + " - " + dept.longFullNameEnglish,
+									? dept.id + " - " + dept.fullName
+									: dept.id + " - " + dept.fullNameEnglish,
 							value: dept.id,
 						};
 					})
@@ -133,9 +133,7 @@ const UserProjectForm: FC<Props> = ({
 
 					if (selected) {
 						const label =
-							language !== "ar"
-								? selected.longFullName
-								: selected.longFullNameEnglish;
+							language !== "ar" ? selected.fullName : selected.fullNameEnglish;
 						const value = selected?.id;
 
 						setValue("department", {

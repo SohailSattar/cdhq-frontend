@@ -24,7 +24,7 @@ const DepartmentDetail: FC<Props> = ({ detail }) => {
 					<div className={styles.container}>
 						<div>
 							<div>Department Name [Full]</div>
-							<div>{detail?.longFullName}</div>
+							<div>{detail?.fullName}</div>
 						</div>
 						<div>
 							<div>Emirate</div>

@@ -1,25 +1,84 @@
-.userList {
-    .section {
-        margin-top: 0px;
-    }
+.departmentsList {
+	.section {
+		margin-top: 0px;
+	}
 
-    .content {
-        display: flex;
-    }
+	.content {
+		display: flex;
+		flex-direction: row;
+	}
 
-    .hierarchy {
-        padding-left: 15px;
-    }
+	.filter {
+		margin-left: 15px;
+	}
 
-    .table {
-        width: 80%;
-    }
+	.filterLTR {
+		margin-right: 15px;
+	}
 
-    .action {
-        display: flex;
-    }
+	.hierarchyContainer,
+	.table {
+		flex-grow: 1; /* Both containers will grow equally */
+		padding: 10px; /* Add padding for spacing */
+		box-sizing: border-box; /* Include padding in width/height calculations */
+		overflow-y: auto; /* Add scrollbars if content overflows */
+	}
 
-    .btnDiv {
-        margin-left: 5px;
-    }
+	.hierarchy {
+		height: 10px;
+		min-height: 774px;
+		margin-left: 15px;
+		// overflow: auto;
+	}
+
+	.hierarchyLTR {
+		height: 10px;
+		min-height: 774px;
+		margin-right: 15px;
+		// overflow: auto;
+	}
+
+	.table {
+		width: 80%;
+	}
+
+	.tableHeaderCell {
+		display: flex;
+		justify-content: center;
+	}
+
+	.cell {
+		display: flex;
+		justify-content: center;
+	}
+
+	.action {
+		display: flex;
+		justify-content: flex-end;
+	}
+
+	.btnDiv {
+		margin-left: 5px;
+	}
+
+	.btnDivLTR {
+		margin-right: 5px;
+	}
+
+	.name {
+		display: flex;
+		flex-direction: column;
+
+		.arabic {
+			display: flex;
+			// justify-content: center;
+			justify-content: right;
+		}
+
+		.english {
+			display: flex;
+			// justify-content: center;
+			justify-content: left;
+		}
+	}
 }

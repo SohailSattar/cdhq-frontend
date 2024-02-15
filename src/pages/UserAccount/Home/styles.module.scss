@@ -72,13 +72,13 @@
 		.arabic {
 			display: flex;
 			justify-content: center;
-			// justify-content: right;
+			justify-content: right;
 		}
 
 		.english {
 			display: flex;
-			justify-content: center;
-			// justify-content: left;
+			// justify-content: center;
+			justify-content: left;
 		}
 	}
 }

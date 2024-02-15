@@ -180,7 +180,7 @@ const HonorForm: FC<Props> = ({
 								id: d.id,
 								name: language !== "ar" ? d.name : d.nameEnglish,
 								rank: language !== "ar" ? d.rank?.name : d.rank?.nameEnglish!,
-								dept: d.department?.longFullName,
+								dept: d.department?.fullName,
 							},
 						};
 					})

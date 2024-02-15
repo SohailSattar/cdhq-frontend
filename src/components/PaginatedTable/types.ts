@@ -1,10 +1,25 @@
 import { APIActiveStatus } from "../../api/activeStatus/types";
-import { APIDepartmentItem } from "../../api/departments/types";
+import {
+	APIDepartmentItem,
+	APIDepartmentName,
+} from "../../api/departments/types";
+import { APIEmirate } from "../../api/emirates/types";
 import { APIType as APIImageType } from "../../api/imageType/types";
 import { APIType } from "../../api/linkTypes/types";
 import { APIMenuItem } from "../../api/menu/types";
 import { APIProjectGroup } from "../../api/projects/types";
 import { APIRank } from "../../api/ranks/types";
+
+export interface DepartmentColumns {
+	id: number;
+	name: string;
+	nameEnglish: string;
+	fullName: string;
+	fullNameEnglish: string;
+	parent: APIDepartmentName;
+	emirate: APIEmirate;
+	status: string;
+}
 
 export interface PhoneDirectoryColumns {
 	id: number;

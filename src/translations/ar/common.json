@@ -75,6 +75,7 @@
 		"userDetail": "تفاصيل حساب المستخدم",
 		"userEdit": "تعديل حساب المستخدم",
 		"userCreate": "انشاء حساب مستخدم",
+		"departmentHome": "Departments",
 		"projectHome": "الأنظمة و البرامج",
 		"projectDetail": "تفاصيل النظام",
 		"projectEdit": "تعديل بيانات النظام",
@@ -215,7 +216,9 @@
 		"withOrWithoutSubSection": "مع أو بدون الأقسام و الأفرع ؟"
 	},
 	"department": {
+		"id": "Department Id",
 		"name": "الادارة",
+		"nameEnglish": "Name English",
 		"fullName": "الاسم الكامل [عربي]",
 		"fullNameEnglish": "الاسم الكامل [إنجليزي]",
 		"single": "قسم واحد",
@@ -224,7 +227,8 @@
 		"centers": "المراكز",
 		"center": "مركز",
 		"structureType": "مع الأقسام و الأفرع",
-		"section": "قسم"
+		"section": "قسم",
+		"level": "Level"
 	},
 	"rank": {
 		"name": "الرتبة"
@@ -252,6 +256,7 @@
 				"password": " الرمز السري اجباري ",
 				"password2": " تأكيد الرمز السري",
 				"department": "الادارة حقل اجباري",
+				"parentDepartment": "Parent Department is required",
 				"structureType": " يرجى اختيار مع أو بدون الأقسام و الأفرع",
 				"class": "الملاك حقل اجباري",
 				"rank": "حقل الرتبة اجباري",
@@ -269,7 +274,11 @@
 				"newsType": " نوع الخبر اجباري",
 				"news": "  الخبر حقل اجباري",
 				"menuType": "نوع القائمة اجباري",
-				"linkType": "نوع الرابط اجباري"
+				"linkType": "نوع الرابط اجباري",
+				"level": "Level is required",
+				"emirate": "Emirate is required",
+				"status": "Status is required",
+				"operator": "Operator is required"
 			},
 			"selection": {
 				"employee": " لم يتم اختيار الموظف"

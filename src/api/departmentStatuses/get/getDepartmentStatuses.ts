@@ -1,18 +1,18 @@
 import { APIResponse, getConfig } from "../..";
 import { instance } from "../../../network";
-import { APIDepartmentLevel } from "../types";
+import { APIDepartmentStatus } from "../types";
 
 import { DEPARTMENTS } from "../../ROUTES";
 
-export async function getDepartmentLevels(): Promise<
-	APIResponse<APIDepartmentLevel[]>
+export async function getDepartmentStatuses(): Promise<
+	APIResponse<APIDepartmentStatus[]>
 > {
 	try {
 		const config = getConfig();
 
-		const url = `${DEPARTMENTS}/levels`;
+		const url = `${DEPARTMENTS}/statuses`;
 
-		const response = await instance.get<APIDepartmentLevel[]>(url, config);
+		const response = await instance.get<APIDepartmentStatus[]>(url, config);
 		const data = response.data.filter((x) => x.id !== 0);
 		return { data };
 	} catch (err: any) {

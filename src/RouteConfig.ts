@@ -5,13 +5,16 @@ export const ID = ":id";
 export const ROOT = `/`;
 export const HOME = `/home`;
 export const LOGIN = `/login`;
-export const DEPARTMENT = `/department`;
 
 export const USER = `/user`;
 export const USER_DETAIL = `/user/${ID}`;
 export const USER_EDIT = `${USER_DETAIL}/edit`;
 export const USER_NEW = `${USER}/new`;
 export const USER_SEARCH = USER + "/search";
+
+//////////////////////////////////////////////// DEPARTMENT ////////////////////////////////////////////////
+export const DEPARTMENT = `/department`;
+export const DEPARTMENT_NEW = `${DEPARTMENT}/new`;
 
 export const PROJECT = `/project`;
 export const PROJECT_DETAIL = `${PROJECT}/${ID}`;
