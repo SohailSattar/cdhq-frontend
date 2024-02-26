@@ -75,8 +75,8 @@
 		"userDetail": "تفاصيل حساب المستخدم",
 		"userEdit": "تعديل حساب المستخدم",
 		"userCreate": "انشاء حساب مستخدم",
-		"departmentHome": "Departments",
-		"departmentNew": "New Department",
+		"departmentHome": "الصفحة الرئيسية للهيكل التنظيمي",
+		"departmentNew": "قسم جديد",
 		"projectHome": "الأنظمة و البرامج",
 		"projectDetail": "تفاصيل النظام",
 		"projectEdit": "تعديل بيانات النظام",
@@ -217,9 +217,9 @@
 		"withOrWithoutSubSection": "مع أو بدون الأقسام و الأفرع ؟"
 	},
 	"department": {
-		"id": "Department Id",
+		"id": "رمز القسم",
 		"name": "الادارة",
-		"nameEnglish": "Name English",
+		"nameEnglish": "الاسم بالانجليزي",
 		"fullName": "الاسم الكامل [عربي]",
 		"fullNameEnglish": "الاسم الكامل [إنجليزي]",
 		"single": "قسم واحد",
@@ -229,20 +229,20 @@
 		"center": "مركز",
 		"structureType": "مع الأقسام و الأفرع",
 		"section": "قسم",
-		"level": "Level",
-		"status": "Department Status",
-		"operator": "Department Operator",
-		"group": "Department Group"
+		"level": "المستوى",
+		"status": "حالة القسم ",
+		"operator": "الادارة المسؤولة",
+		"group": "الادارة"
 	},
 	"cd": {
-		"buildings": "Civil Defense Buildings",
+		"buildings": " مباني الدفاع المدني",
 		"building": {
-			"title": "Civil Defense Building",
-			"name": "Building Name",
-			"nameEnglish": "Building Name [English]",
-			"constructYear": "Construction Year",
-			"longitude": "Longitude",
-			"latitude": "Latitude"
+			"title": " مبني الدفاع المدني",
+			"name": " اسم المبنى",
+			"nameEnglish": " اسم المبنى [English]",
+			"constructYear": "تاريخ البناء",
+			"longitude": "خط الطول",
+			"latitude": "خط العرض"
 		},
 		"owner": { "name": "Owner" }
 	},
@@ -272,8 +272,8 @@
 				"password": " الرمز السري اجباري ",
 				"password2": " تأكيد الرمز السري",
 				"department": "الادارة حقل اجباري",
-				"section": "Section is required",
-				"parentDepartment": "Parent Department is required",
+				"section": "القسم حقل اجباري",
+				"parentDepartment": "القسم الرئيسي حقل اجباري ",
 				"structureType": " يرجى اختيار مع أو بدون الأقسام و الأفرع",
 				"class": "الملاك حقل اجباري",
 				"rank": "حقل الرتبة اجباري",
@@ -292,11 +292,11 @@
 				"news": "  الخبر حقل اجباري",
 				"menuType": "نوع القائمة اجباري",
 				"linkType": "نوع الرابط اجباري",
-				"level": "Level is required",
-				"emirate": "Emirate is required",
-				"status": "Status is required",
-				"operator": "Operator is required",
-				"owner": "Owner is required."
+				"level": " المستوى حقل اجباري",
+				"emirate": "الامارة حقل اجباري",
+				"status": "الحالة حقل اجباري",
+				"operator": "الادارة المسؤولة حقل اجباري",
+				"owner": " الادارة حقل اجباري"
 			},
 			"selection": {
 				"employee": " لم يتم اختيار الموظف"
@@ -372,7 +372,7 @@
 		"projectUpdated": "تم تحديث البرنامج",
 		"projectActivated": "تم تفعيل البرنامج",
 		"projectDeactivated": "البرنامج غير فعال ",
-		"departmentDeactivated": "Department is now deactivated.",
+		"departmentDeactivated": "تم الغاء  تفعيل الادارة",
 		"delete": "هل أنت متأكد أنك تريد الحذف؟",
 		"deleteProject": "هل أنت متأكد أنك تريد حذف هذا البرنامج ؟",
 		"userProjectAdd": "تعيين برنامج  جديد للمستخدم",
