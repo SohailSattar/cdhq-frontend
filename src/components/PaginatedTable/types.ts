@@ -1,4 +1,6 @@
 import { APIActiveStatus } from "../../api/activeStatus/types";
+import { APICivilDefenseBuildingOwner } from "../../api/civilDefenseBuildingsOwners/types";
+import { APIDepartmentLevel } from "../../api/departmentLevel/types";
 import {
 	APIDepartmentItem,
 	APIDepartmentName,
@@ -16,9 +18,18 @@ export interface DepartmentColumns {
 	nameEnglish: string;
 	fullName: string;
 	fullNameEnglish: string;
+	level: APIDepartmentLevel;
 	parent: APIDepartmentName;
 	emirate: APIEmirate;
 	status: string;
+}
+
+export interface CivilDefenseBuildingColumns {
+	id: number;
+	name: string;
+	nameEnglish: string;
+	owner: APICivilDefenseBuildingOwner;
+	section: APIDepartmentName;
 }
 
 export interface PhoneDirectoryColumns {

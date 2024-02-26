@@ -45,6 +45,8 @@ import {
 	DepartmentDetailPage,
 	DepartmentEditPage,
 	DepartmentNewPage,
+	CDBuildingsEditContentManagementPage,
+	CDBuildingsNewContentManagementPage,
 } from "./pages";
 
 import * as RoutePath from "./RouteConfig";
@@ -63,6 +65,7 @@ import styles from "./styles.module.scss";
 import { useCallback, useEffect, useMemo } from "react";
 import { generateSessionToken } from "./api/sessions/add/generateSessionToken";
 import React from "react";
+import CDBuildingsHomeContentManagementPage from "./pages/ContentManagement/CivilDefenseBuildings/Home";
 
 function App() {
 	const language = useStore((state) => state.language);
@@ -281,6 +284,40 @@ function App() {
 								}
 							/>
 						</Route>
+						{/* CONTENT MANAGEMENT - Civil Defense */}
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.CONTENT_MANAGEMENT_CD_BUILDING}`}
+								element={
+									<Layout
+									// projectId={Project.ImageManagement}  TODO: Fix this
+									// privilegeType={"Read"}
+									>
+										<CDBuildingsHomeContentManagementPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.CONTENT_MANAGEMENT_CD_BUILDING_EDIT}`}
+								element={
+									<Layout>
+										<CDBuildingsEditContentManagementPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.CONTENT_MANAGEMENT_CD_BUILDING_NEW}`}
+								element={
+									<Layout>
+										<CDBuildingsNewContentManagementPage />
+									</Layout>
+								}
+							/>
+						</Route>
 						{/* User */}
 						<Route element={<ProtectedRoute />}>
 							<Route
@@ -324,7 +361,7 @@ function App() {
 						</Route>
 						<Route element={<ProtectedRoute />}>
 							<Route
-								path={`${RoutePath.USER}/:id/edit`}
+								path={`${RoutePath.USER_EDIT}`}
 								element={
 									<Layout>
 										<UserEditPage />
@@ -363,7 +400,6 @@ function App() {
 								}
 							/>
 						</Route>
-
 						<Route element={<ProtectedRoute />}>
 							<Route
 								path={RoutePath.PROJECT_NEW}
@@ -435,7 +471,6 @@ function App() {
 								}
 							/>
 						</Route>
-
 						<Route element={<ProtectedRoute />}>
 							<Route
 								path={`${RoutePath.DEPARTMENT}/:id`}

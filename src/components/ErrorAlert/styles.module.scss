@@ -1,10 +1,12 @@
 .errorAlert {
+	border: 1px solid black;
+	width: 500px;
 	.header {
 		display: flex;
 		justify-content: center;
 		color: red;
 	}
 	.message {
-		color: black;
+		font-size: 16px;
 	}
 }

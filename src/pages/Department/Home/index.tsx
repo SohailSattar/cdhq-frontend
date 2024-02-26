@@ -3,14 +3,12 @@ import {
 	ActionButtons,
 	PageContainer,
 	PaginatedTable,
-	RedirectButton,
 	ShadowedContainer,
 } from "../../../components";
 import {
 	DropdownOption,
 	Props as DropdownProps,
 } from "../../../components/Dropdown";
-import Layout from "../container/Layout";
 import styles from "./styles.module.scss";
 import { useStore } from "../../../utils/store";
 import { useEffect, useMemo, useState } from "react";
@@ -21,6 +19,7 @@ import { Column } from "react-table";
 import * as RoutePath from "../../../RouteConfig";
 import { getDepartments } from "../../../api/departments/get/getDepartments";
 import { getEmirates } from "../../../api/emirates/get/getEmirates";
+import { getDepartmentLevels } from "../../../api/departmentLevel/get/getDepartmentLevels";
 
 const DepartmentHomePage = () => {
 	const [t] = useTranslation("common");
@@ -31,6 +30,7 @@ const DepartmentHomePage = () => {
 
 	const [keyword, setKeyword] = useState("");
 
+	const [levelOptions, setLevelOptions] = useState<DropdownOption[]>([]);
 	const [emirateOptions, setEmirateOptions] = useState<DropdownOption[]>([]);
 
 	const [departments, setDepartments] = useState<APIDepartmentItem[]>([]);
@@ -39,18 +39,19 @@ const DepartmentHomePage = () => {
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [pageSize, setPageSize] = useState<number>(50);
 
+	const [orderBy, setOrderBy] = useState<string>("Id");
+
 	const [toggleSort, setToggleSort] = useState(false);
 
 	// This variable is to set the status code which we can pass to the API
 	const [selectedStatusCode, setSelectedStatusCode] = useState<Id>();
 
+	const [selectedLevelCode, setSelectedLevelCode] = useState<Id>();
+	const [emirateId, setEmirateId] = useState<Id>();
+
 	const id = t("department.id", { framework: "React" });
 	const departmentName = t("department.name", { framework: "React" });
-	const departmentNameEng = t("department.nameEnglish", { framework: "React" });
-	const deptFullName = t("department.fullName", { framework: "React" });
-	const deptFullNameEnglish = t("department.fullNameEnglish", {
-		framework: "React",
-	});
+	const level = t("department.level", { framework: "React" });
 	const parentDept = t("department.parent", {
 		framework: "React",
 	});
@@ -60,11 +61,27 @@ const DepartmentHomePage = () => {
 
 	const status = t("global.status", { framework: "React" });
 
-	const [orderBy, setOrderBy] = useState<string>("");
-
 	//Actions
 	const actions = t("global.actions", { framework: "React" });
 	const detail = t("button.detail", { framework: "React" });
+
+	useEffect(() => {
+		const fetch = async () => {
+			const { data } = await getDepartmentLevels();
+
+			if (data) {
+				setLevelOptions(
+					data.map((x) => ({
+						label: `${x.id} - ${language !== "ar" ? x.name : x.nameEnglish}`,
+						value: x.id,
+					}))
+				);
+				// setLevels(data);
+			}
+		};
+
+		fetch();
+	}, [language]);
 
 	useEffect(() => {
 		const fetch = async () => {
@@ -100,11 +117,19 @@ const DepartmentHomePage = () => {
 				</div>
 			),
 		},
-		// {
-		// 	Header: departmentNameEng,
-		// 	id: "nameEnglish",
-		// 	accessor: (p) => p.nameEnglish,
-		// },
+		{
+			Header: level,
+			id: "level",
+			accessor: (p) =>
+				p.parent ? (
+					<div className={styles.name}>
+						<div className={styles.arabic}>{p.level?.name!}</div>
+						<div>{p.level?.nameEnglish}</div>
+					</div>
+				) : (
+					<div className={styles.name}>-</div>
+				),
+		},
 		// {
 		// 	Header: deptFullName,
 		// 	id: "fullName",
@@ -181,8 +206,11 @@ const DepartmentHomePage = () => {
 				currentPage,
 				pageSize,
 				keyword,
+				selectedLevelCode,
+				emirateId,
 				selectedStatusCode,
-				orderBy
+				orderBy,
+				toggleSort
 			);
 			if (error) {
 				if (error?.response!.status! === 403) {
@@ -196,7 +224,16 @@ const DepartmentHomePage = () => {
 				setPageSize(data?.pageSize);
 			}
 		},
-		[keyword, currentPage, pageSize, selectedStatusCode, orderBy]
+		[
+			currentPage,
+			pageSize,
+			keyword,
+			selectedLevelCode,
+			emirateId,
+			selectedStatusCode,
+			orderBy,
+			toggleSort,
+		]
 	);
 
 	useEffect(() => {
@@ -223,25 +260,30 @@ const DepartmentHomePage = () => {
 	};
 
 	const tableSortHandler = (columnId: string, isSortedDesc: boolean) => {
-		let orderByParam = "";
 		setToggleSort(!toggleSort);
-		if (toggleSort) {
-			orderByParam = `&OrderBy=${columnId}`;
-		} else {
-			orderByParam = `&OrderByDesc=${columnId}`;
-		}
-		setOrderBy(orderByParam);
+
+		setOrderBy(columnId);
 		setCurrentPage(1);
-		// fetchProjects(currentPage, orderByParam);
+	};
+
+	const levelSelectHandler = (option: DropdownOption) => {
+		setSelectedLevelCode(option?.value!);
 	};
 
 	const emirateSelectHandler = (option: DropdownOption) => {
-		// setEmiteId(option?.value!);
+		setEmirateId(option?.value!);
 	};
+
 	const dropdowns: { [key: string]: DropdownProps } = {
+		levels: {
+			options: levelOptions,
+			onSelect: levelSelectHandler,
+			placeholder: t("department.level", { framework: "React" }),
+		},
 		emirates: {
 			options: emirateOptions,
 			onSelect: emirateSelectHandler,
+			placeholder: t("emirate.name", { framework: "React" }),
 		},
 	};
 

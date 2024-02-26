@@ -15,7 +15,7 @@ interface Props {
 const TableList: FC<Props> = ({ onViewClick }) => {
 	const [t] = useTranslation("common");
 	const [currentPage, setCurrentPage] = useState(1);
-	const [pageSize, setPageSize] = useState<number>(10);
+	const [pageSize, setPageSize] = useState<number>(50);
 	const [totalCount, setTotalCount] = useState<number>(0);
 
 	const [news, setNews] = useState<APINews[]>([]);

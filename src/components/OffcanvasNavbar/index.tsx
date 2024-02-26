@@ -223,20 +223,6 @@ const OffcanvasNavbar: FC<Props> = ({ hideLoginButton }) => {
 															styles.languageChange
 														)}
 													/>
-													{/* {loggedUser.role === ROLE.SUPERADMIN && (
-														<div className={styles.setting}>
-															<FontAwesomeIcon
-																icon={faGear}
-																style={{ color: "black", cursor: "pointer" }}
-																onClick={gearClickHandler}
-																className={clsx(
-																	styles.menuItem,
-																	styles.actionBtn,
-																	menuButton
-																)}
-															/>
-														</div>
-													)} */}
 												</div>
 												<Logout
 													label={t("account.logout", { framework: "React" })}

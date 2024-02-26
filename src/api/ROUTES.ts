@@ -1,4 +1,5 @@
 export const CD_BUILDINGS = "/civil-defense/buildings";
+export const CD_BUILDINGS_OWNERS = "/civil-defense/buildings/owners";
 export const EMIRATES = "/emirates";
 export const EMPLOYEES = "/employees";
 export const DEPARTMENTS = "/departments";

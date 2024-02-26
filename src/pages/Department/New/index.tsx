@@ -12,9 +12,11 @@ import { ROLE } from "../../../utils";
 import { APICreateDepartment } from "../../../api/departments/types";
 import { addDepartment } from "../../../api/departments/add/addDepartment";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const NewDepartmentPage = () => {
 	const [t] = useTranslation("common");
+	const navigate = useNavigate();
 
 	const [id, setId] = useState("");
 	const [name, setName] = useState("");
@@ -55,6 +57,7 @@ const NewDepartmentPage = () => {
 			toast.success(
 				t("message.departmentCreated", { framework: "React" }).toString()
 			);
+			navigate(`${RoutePath.DEPARTMENT}/${data.id}`);
 		}
 	};
 

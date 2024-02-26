@@ -116,25 +116,6 @@ const PageContainer: FC<Props> = ({
 		process();
 	}, [displayContent, display, lockFor]);
 
-	// useEffect(() => {
-	// 	animate(scope.current, { opacity: 1 });
-	// }, [animate, scope]);
-
-	// useEffect(() => {
-	// 	controls.start({
-	// 		x: 0,
-	// 		opacity: 1,
-	// 		height: "auto",
-	// 		transition: {
-	// 			duration: 3,
-	// 			type: "spring",
-	// 			stiffness: 1000,
-	// 			// damping: "10",
-	// 			ease: [0, 0.71, 0.2, 1.01],
-	// 		},
-	// 	});
-	// }, [controls]);
-
 	return (
 		<>
 			{
@@ -288,9 +269,14 @@ const PageContainer: FC<Props> = ({
 								</LoaderOverlay>
 							</Modal>
 						</Portal>
-						<Portal>
-							<ErrorAlert errors={errors} />
-						</Portal>
+						{errors.length > 0 && (
+							<Portal>
+								<ErrorAlert
+									message="Error"
+									errors={errors}
+								/>
+							</Portal>
+						)}
 					</>
 				)
 			}

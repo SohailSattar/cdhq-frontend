@@ -42,6 +42,10 @@ export const CONTENT_MANAGEMENT_QR_CODE = `${CONTENT_MANAGEMENT}/qr-code`;
 export const CONTENT_MANAGEMENT_QR_CODE_EDIT = `${CONTENT_MANAGEMENT_QR_CODE}/${ID}/edit`;
 export const CONTENT_MANAGEMENT_QR_CODE_NEW = `${CONTENT_MANAGEMENT_QR_CODE}/new`;
 
+export const CONTENT_MANAGEMENT_CD_BUILDING = `${CONTENT_MANAGEMENT}/cd-building`;
+export const CONTENT_MANAGEMENT_CD_BUILDING_EDIT = `${CONTENT_MANAGEMENT_CD_BUILDING}/${ID}/edit`;
+export const CONTENT_MANAGEMENT_CD_BUILDING_NEW = `${CONTENT_MANAGEMENT_CD_BUILDING}/new`;
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Projects

@@ -17,11 +17,15 @@ import * as RoutePath from "../../../RouteConfig";
 import {
 	APIDepartmentDetail,
 	APIUpdateDepartment,
+	APIUpdateDepartmentStatus,
 } from "../../../api/departments/types";
 import { ROLE } from "../../../utils";
 import { deleteDepartment } from "../../../api/departments/delete/deleteDepartment";
 import { updateDepartment } from "../../../api/departments/update/updateDepartment";
 import { toast } from "react-toastify";
+import { updateDepartmentStatus } from "../../../api/departments/update/updateDepartmentStatus";
+import { getActiveStatus } from "../../../api/activeStatus/get/getActiveStatus";
+import { APIActiveStatus } from "../../../api/activeStatus/types";
 
 const DepartmentEditPage = () => {
 	const { id } = useParams<{ id: string }>();
@@ -31,6 +35,7 @@ const DepartmentEditPage = () => {
 	const [showModal, setShowModal] = useState(false);
 
 	const [dept, setDept] = useState<APIDepartmentDetail>();
+	const [status, setStatus] = useState<APIActiveStatus>();
 
 	const [errors, setErrors] = useState<string[]>([]);
 
@@ -40,6 +45,11 @@ const DepartmentEditPage = () => {
 
 			if (data) {
 				setDept(data!);
+				setStatus(data?.activeStatus);
+				setErrors([
+					"Cannot delete the department.",
+					"Employees are assigned to this department.",
+				]);
 			}
 		};
 		fetch();
@@ -79,6 +89,29 @@ const DepartmentEditPage = () => {
 		}
 	};
 
+	const activateButtonClickHandler = async () => {
+		const statusCode = 1;
+
+		const params: APIUpdateDepartmentStatus = {
+			id: id!,
+			activeStatusId: statusCode,
+		};
+
+		const { data } = await updateDepartmentStatus(params);
+		if (data) {
+			const { data: status } = await getActiveStatus(statusCode);
+
+			if (status) {
+				setStatus(status);
+			}
+		}
+
+		toast.success(
+			t("message.projectActivated", { framework: "React" }).toString()
+		);
+		setShowModal(false);
+	};
+
 	const deleteButtonClickHandler = () => {
 		setShowModal(true);
 	};
@@ -92,16 +125,15 @@ const DepartmentEditPage = () => {
 		}
 
 		if (data) {
-			// projects.find((x) => x.id === +selectedProjectId)?.activeStatus;
-
-			// setProjects(projects.filter((p) => p.id !== +selectedProjectId));
-			// fetchProjects(id);
-
 			if (data.success === false) {
 				setErrors(data.errors!);
 			} else {
+				const { data: status } = await getActiveStatus(9);
+				if (status) {
+					setStatus(status);
+				}
 				toast.success(
-					t("message.userProjectDeleted", { framework: "React" }).toString()
+					t("message.departmentDeactivated", { framework: "React" }).toString()
 				);
 			}
 		}
@@ -117,8 +149,8 @@ const DepartmentEditPage = () => {
 			showBackButton
 			btnBackUrlLink={RoutePath.DEPARTMENT}
 			showChangeStatusButton
-			currentStatus={dept?.activeStatus?.id === 1 ? "ACTIVE" : "DEACTIVE"}
-			// onActivate={activateButtonClickHandler}
+			currentStatus={status?.id === 1 ? "ACTIVE" : "DEACTIVE"}
+			onActivate={activateButtonClickHandler}
 			onDectivate={deleteButtonClickHandler}
 			lockFor={[ROLE.ADMIN, ROLE.USER]}
 			errors={errors}>

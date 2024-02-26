@@ -107,8 +107,6 @@ const DepartmentForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 				cdBuilding,
 			} = data;
 
-			console.log(data);
-
 			setValue("name", name);
 			setValue("nameEnglish", nameEnglish);
 
@@ -120,8 +118,6 @@ const DepartmentForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 			const selectedEmirate = emirateOptions.find(
 				(x) => x.value === region?.id!
 			);
-
-			console.log(region);
 
 			setValue("emirate", selectedEmirate!);
 
@@ -189,7 +185,7 @@ const DepartmentForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 			if (data) {
 				setLevelOptions(
 					data.map((x) => ({
-						label: `${language !== "ar" ? x.name : x.nameEnglish}`,
+						label: `${x.id} - ${language !== "ar" ? x.name : x.nameEnglish}`,
 						value: x.id,
 					}))
 				);
@@ -425,7 +421,7 @@ const DepartmentForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 							<Controller
 								render={({ field: { onChange, value } }) => (
 									<Dropdown
-										label={t("cd.building", { framework: "React" })}
+										label={t("cd.building.title", { framework: "React" })}
 										options={cdBuildingOptions}
 										onSelect={onChange}
 										value={value}

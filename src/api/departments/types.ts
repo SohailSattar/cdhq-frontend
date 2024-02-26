@@ -15,6 +15,7 @@ export interface APIDepartmentItem {
 	fullName: string;
 	fullNameEnglish: string;
 	parent: APIDepartmentName;
+	level: APIDepartmentLevel;
 }
 
 export interface APIPaginatedDepartment extends APIPaginate {
@@ -35,7 +36,6 @@ export interface APIDepartmentDetail extends APIDepartmentItem {
 	fullNameEnglish: string;
 	emirate: APIEmirate;
 	region: APIEmirate;
-	level: APIDepartmentLevel;
 	parent: APIDepartmentName;
 	status: APIDepartmentStatus;
 	operator: APIDepartmentOperator;

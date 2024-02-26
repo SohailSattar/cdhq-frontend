@@ -76,6 +76,7 @@
 		"userEdit": "Edit User",
 		"userCreate": "Create User",
 		"departmentHome": "Departments",
+		"departmentNew": "New Department",
 		"projectHome": "Project Management",
 		"projectDetail": "Project Details",
 		"projectEdit": "Edit Project",
@@ -228,7 +229,22 @@
 		"center": "Center",
 		"structureType": "Structure Type",
 		"section": "Section",
-		"level": "Level"
+		"level": "Level",
+		"status": "Department Status",
+		"operator": "Department Operator",
+		"group": "Department Group"
+	},
+	"cd": {
+		"buildings": "Civil Defense Buildings",
+		"building": {
+			"title": "Civil Defense Building",
+			"name": "Building Name",
+			"nameEnglish": "Building Name [English]",
+			"constructYear": "Construction Year",
+			"longitude": "Longitude",
+			"latitude": "Latitude"
+		},
+		"owner": { "name": "Owner" }
 	},
 	"rank": {
 		"name": "Rank"
@@ -256,6 +272,7 @@
 				"password": "Password is required",
 				"password2": "You have to retype the password",
 				"department": "Department is required",
+				"section": "Section is required",
 				"parentDepartment": "Parent Department is required",
 				"structureType": "Structure type is required.",
 				"class": "Class is required",
@@ -278,7 +295,8 @@
 				"level": "Level is required",
 				"emirate": "Emirate is required",
 				"status": "Status is required",
-				"operator": "Operator is required"
+				"operator": "Operator is required",
+				"owner": "Owner is required."
 			},
 			"selection": {
 				"employee": "No Employee has been selected"
@@ -301,6 +319,7 @@
 		"actions": "Actions",
 		"status": "Status",
 		"activeStatus": "Active Status",
+		"id": "Id",
 		"name": "Name [Arabic]",
 		"nameEnglish": "Name [English]",
 		"workflowStatus": "حالة التمرير"
@@ -353,6 +372,7 @@
 		"projectUpdated": "The project has been updated",
 		"projectActivated": "Project has been activated",
 		"projectDeactivated": "The project is now deactivated",
+		"departmentDeactivated": "Department is now deactivated.",
 		"delete": "Are you sure you want to deactivate?",
 		"deleteProject": "Are you sure you want to deactivate this project?",
 		"userProjectAdd": "Assign New Project to User",

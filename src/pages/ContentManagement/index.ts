@@ -19,3 +19,8 @@ export { default as MenuNewSettingsPage } from "./Menu/New";
 export { default as QRCodeEditContentManagementPage } from "./QRCode/Edit";
 export { default as QRCodeHomeContentManagementPage } from "./QRCode/Home";
 export { default as QRCodeNewContentManagementPage } from "./QRCode/New";
+
+// Civil Defense Buildings
+export { default as CDBuildingsEditContentManagementPage } from "./CivilDefenseBuildings/Edit";
+export { default as CDBuildingsHomeContentManagementPage } from "./CivilDefenseBuildings/Home";
+export { default as CDBuildingsNewContentManagementPage } from "./CivilDefenseBuildings/New";
