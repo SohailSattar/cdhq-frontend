@@ -11,8 +11,8 @@ import { ROLE } from "../../../utils";
 
 import styles from "./styles.module.scss";
 import {
+	CDBuildingsHomeContentManagementPage,
 	ImageHomeContentManagementPage,
-	LinkTypesHomeContentManagementPage,
 	MenuHomeSettingsPage,
 	QRCodeHomeContentManagementPage,
 } from "..";
@@ -66,6 +66,7 @@ const SettingsHomePage = () => {
 					{/* <Tab>{t("linkType.name", { framework: "React" })}</Tab> */}
 					<Tab>{t("tab.imagesVideos", { framework: "React" })}</Tab>
 					<Tab>{t("tab.qrCodes", { framework: "React" })}</Tab>
+					<Tab>{t("cd.buildings", { framework: "React" })}</Tab>
 				</TabList>
 				<TabPanel>
 					<ShadowedContainer className={styles.tabContainer}>
@@ -85,6 +86,11 @@ const SettingsHomePage = () => {
 				<TabPanel>
 					<ShadowedContainer className={styles.tabContainer}>
 						<QRCodeHomeContentManagementPage />
+					</ShadowedContainer>
+				</TabPanel>
+				<TabPanel>
+					<ShadowedContainer className={styles.tabContainer}>
+						<CDBuildingsHomeContentManagementPage />
 					</ShadowedContainer>
 				</TabPanel>
 			</Tabs>

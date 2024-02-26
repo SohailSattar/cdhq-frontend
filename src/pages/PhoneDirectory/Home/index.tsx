@@ -276,7 +276,7 @@ const PhoneDirectoryPage = () => {
 	const fetchStatuses = useMemo(
 		() => async () => {
 			const { data } = await getEmployeeStatuses();
-			console.log(data);
+
 			if (data) {
 				setStatusOptions(
 					data?.map((x) => {
@@ -290,8 +290,6 @@ const PhoneDirectoryPage = () => {
 		},
 		[language]
 	);
-
-	console.log(statusOptions);
 
 	useEffect(() => {
 		if (departmentIds.length === 0) {

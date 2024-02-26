@@ -5,13 +5,16 @@ export const ID = ":id";
 export const ROOT = `/`;
 export const HOME = `/home`;
 export const LOGIN = `/login`;
-export const DEPARTMENT = `/department`;
 
 export const USER = `/user`;
 export const USER_DETAIL = `/user/${ID}`;
 export const USER_EDIT = `${USER_DETAIL}/edit`;
 export const USER_NEW = `${USER}/new`;
 export const USER_SEARCH = USER + "/search";
+
+//////////////////////////////////////////////// DEPARTMENT ////////////////////////////////////////////////
+export const DEPARTMENT = `/department`;
+export const DEPARTMENT_NEW = `${DEPARTMENT}/new`;
 
 export const PROJECT = `/project`;
 export const PROJECT_DETAIL = `${PROJECT}/${ID}`;
@@ -38,6 +41,10 @@ export const CONTENT_MANAGEMENT_IMAGE_NEW = `${CONTENT_MANAGEMENT_IMAGE}/new`;
 export const CONTENT_MANAGEMENT_QR_CODE = `${CONTENT_MANAGEMENT}/qr-code`;
 export const CONTENT_MANAGEMENT_QR_CODE_EDIT = `${CONTENT_MANAGEMENT_QR_CODE}/${ID}/edit`;
 export const CONTENT_MANAGEMENT_QR_CODE_NEW = `${CONTENT_MANAGEMENT_QR_CODE}/new`;
+
+export const CONTENT_MANAGEMENT_CD_BUILDING = `${CONTENT_MANAGEMENT}/cd-building`;
+export const CONTENT_MANAGEMENT_CD_BUILDING_EDIT = `${CONTENT_MANAGEMENT_CD_BUILDING}/${ID}/edit`;
+export const CONTENT_MANAGEMENT_CD_BUILDING_NEW = `${CONTENT_MANAGEMENT_CD_BUILDING}/new`;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

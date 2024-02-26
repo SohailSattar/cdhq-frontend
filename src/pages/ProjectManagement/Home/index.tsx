@@ -116,38 +116,6 @@ const ProjectManagementPage = () => {
 
 	const fetchProjects = useMemo(
 		() => async () => {
-			// if (keyword === "") {
-			// 	// Get all the projects if no keyword is mentioned
-			// 	const { data, error } = await getProjects(
-			// 		currentPage,
-			// 		pageSize,
-			// 		keyword,
-			// 		selectedStatusCode
-			// 	);
-			// 	if (error) {
-			// 		if (error?.response!.status! === 403) {
-			// 			setCanView(false);
-			// 		}
-			// 	}
-
-			// 	if (data) {
-			// 		setProjects(data?.projects);
-			// 		setTotalCount(data?.totalItems);
-			// 		setPageSize(data?.pageSize);
-			// 	}
-			// } else {
-			// 	const { data } = await getProjectsByKeyword(
-			// 		keyword,
-			// 		currentPage,
-			// 		pageSize
-			// 	);
-
-			// 	if (data) {
-			// 		setProjects(data?.projects);
-			// 		setTotalCount(data?.totalItems);
-			// 		setPageSize(data?.pageSize);
-			// 	}
-			// }
 			const { data, error } = await getProjects(
 				currentPage,
 				pageSize,

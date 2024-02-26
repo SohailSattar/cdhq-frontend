@@ -1,6 +1,8 @@
-import { APIResponse, getConfig } from '../..';
-import { instance } from '../../../network';
-import { APIDepartmentLevel } from '../types';
+import { APIResponse, getConfig } from "../..";
+import { instance } from "../../../network";
+import { APIDepartmentLevel } from "../types";
+
+import { DEPARTMENTS } from "../../ROUTES";
 
 export async function getDepartmentLevels(): Promise<
 	APIResponse<APIDepartmentLevel[]>
@@ -8,7 +10,7 @@ export async function getDepartmentLevels(): Promise<
 	try {
 		const config = getConfig();
 
-		const url = `/departments/levels`;
+		const url = `${DEPARTMENTS}/levels`;
 
 		const response = await instance.get<APIDepartmentLevel[]>(url, config);
 		const data = response.data.filter((x) => x.id !== 0);

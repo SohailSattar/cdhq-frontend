@@ -69,6 +69,17 @@ export interface IRequestFormInputs {
 	// iconName: string;
 }
 
+// Civil Defense Building Forms
+export interface ICivilDefenseBuildingFormInputs {
+	name: string;
+	nameEnglish: string;
+	owner: DropdownOption;
+	constructionYear: string;
+	latitude: string;
+	longitude: string;
+	section: DropdownOption;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 
 export interface IEmployeeSignatureFormInputs {
@@ -88,6 +99,18 @@ export interface IUserFormInputs {
 	rank: DropdownOption;
 	password: string;
 	password2: string;
+}
+
+export interface IDepartmentFormInputs {
+	name: string;
+	nameEnglish: string;
+	level: DropdownOption;
+	parent: DropdownOption;
+	emirate: DropdownOption;
+	status: DropdownOption;
+	operator: DropdownOption;
+	group: DropdownOption;
+	cdBuilding: DropdownOption;
 }
 
 export interface IProjectFormInputs {

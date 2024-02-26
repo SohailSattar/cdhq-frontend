@@ -67,8 +67,8 @@ const PhoneForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 					className={clsx(styles.section, styles.headingContainer)}>
 					<div className={styles.heading}>
 						{language !== "ar"
-							? data?.department?.longFullName
-							: data?.department?.longFullNameEnglish}
+							? data?.department?.fullName
+							: data?.department?.fullNameEnglish}
 					</div>
 				</ShadowedContainer>
 				<ShadowedContainer className={styles.section}>

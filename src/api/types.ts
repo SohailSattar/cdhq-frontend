@@ -2,7 +2,7 @@ import { Id } from "../utils";
 
 //Base
 export interface APIBase {
-	id: number;
+	id: Id;
 	name: string;
 	nameEnglish: string;
 }

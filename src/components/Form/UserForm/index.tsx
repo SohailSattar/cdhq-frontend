@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import { ErrorMessage } from "@hookform/error-message";
 import { Button, Dropdown, ShadowedContainer, TextBox } from "../..";
 import { getClasses } from "../../../api/classes/get/getClasses";
-import { getDepartments } from "../../../api/departments/get/getDepartments";
 import { getRanks } from "../../../api/ranks/get/getRanks";
 import { useStore } from "../../../utils/store";
 import { DropdownOption } from "../../Dropdown";
@@ -211,7 +210,7 @@ const UserForm: FC<Props> = ({
 				setDepartmentOptions(
 					dl.map((x) => ({
 						label: `${x.id} - ${
-							language !== "ar" ? x.longFullName : x.longFullNameEnglish
+							language !== "ar" ? x.fullName : x.fullNameEnglish
 						}`,
 						value: x.id,
 					}))

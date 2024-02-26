@@ -1,5 +1,5 @@
 export * from "./types";
-
+export { default as CivilDefenseBuildingForm } from "./CivilDefenseBuildingForm";
 export { default as DepartmentForm } from "./DepartmentForm";
 export { default as HonorForm } from "./HonorForm";
 export { default as ImageForm } from "./ImageForm";

@@ -80,8 +80,8 @@ const Details: FC<Props> = ({ user, status }) => {
 					</div>
 					<div className={styles.text}>
 						{language !== "ar"
-							? user?.department?.longFullName
-							: user?.department?.longFullNameEnglish}
+							? user?.department?.fullName
+							: user?.department?.fullNameEnglish}
 					</div>
 				</div>
 				<div className={styles.detail}>

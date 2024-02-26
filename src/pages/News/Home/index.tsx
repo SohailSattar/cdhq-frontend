@@ -33,7 +33,7 @@ const NewsHomePage = () => {
 	const navigate = useNavigate();
 
 	const [currentPage, setCurrentPage] = useState(1);
-	const [pageSize, setPageSize] = useState<number>(10);
+	const [pageSize, setPageSize] = useState<number>(50);
 	const [totalCount, setTotalCount] = useState<number>(0);
 
 	const [privileges, setPrivileges] = useState<APIPrivileges>();

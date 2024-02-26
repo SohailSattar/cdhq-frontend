@@ -11,7 +11,7 @@
 			"projectManagement": "  ادارة الأنظمة و البرامج",
 			"userAccount": "حسابات المستخدمين",
 			"departmentHierarchy": "الهيكل التنظيمي",
-			"department": "إِدَارَة"
+			"department": "الهيكل التنظيمي"
 		},
 		"mainMenu": {
 			"strategy": "الاستراتيجية"
@@ -75,6 +75,8 @@
 		"userDetail": "تفاصيل حساب المستخدم",
 		"userEdit": "تعديل حساب المستخدم",
 		"userCreate": "انشاء حساب مستخدم",
+		"departmentHome": "Departments",
+		"departmentNew": "New Department",
 		"projectHome": "الأنظمة و البرامج",
 		"projectDetail": "تفاصيل النظام",
 		"projectEdit": "تعديل بيانات النظام",
@@ -215,7 +217,9 @@
 		"withOrWithoutSubSection": "مع أو بدون الأقسام و الأفرع ؟"
 	},
 	"department": {
+		"id": "Department Id",
 		"name": "الادارة",
+		"nameEnglish": "Name English",
 		"fullName": "الاسم الكامل [عربي]",
 		"fullNameEnglish": "الاسم الكامل [إنجليزي]",
 		"single": "قسم واحد",
@@ -224,7 +228,23 @@
 		"centers": "المراكز",
 		"center": "مركز",
 		"structureType": "مع الأقسام و الأفرع",
-		"section": "قسم"
+		"section": "قسم",
+		"level": "Level",
+		"status": "Department Status",
+		"operator": "Department Operator",
+		"group": "Department Group"
+	},
+	"cd": {
+		"buildings": "Civil Defense Buildings",
+		"building": {
+			"title": "Civil Defense Building",
+			"name": "Building Name",
+			"nameEnglish": "Building Name [English]",
+			"constructYear": "Construction Year",
+			"longitude": "Longitude",
+			"latitude": "Latitude"
+		},
+		"owner": { "name": "Owner" }
 	},
 	"rank": {
 		"name": "الرتبة"
@@ -252,6 +272,8 @@
 				"password": " الرمز السري اجباري ",
 				"password2": " تأكيد الرمز السري",
 				"department": "الادارة حقل اجباري",
+				"section": "Section is required",
+				"parentDepartment": "Parent Department is required",
 				"structureType": " يرجى اختيار مع أو بدون الأقسام و الأفرع",
 				"class": "الملاك حقل اجباري",
 				"rank": "حقل الرتبة اجباري",
@@ -269,7 +291,12 @@
 				"newsType": " نوع الخبر اجباري",
 				"news": "  الخبر حقل اجباري",
 				"menuType": "نوع القائمة اجباري",
-				"linkType": "نوع الرابط اجباري"
+				"linkType": "نوع الرابط اجباري",
+				"level": "Level is required",
+				"emirate": "Emirate is required",
+				"status": "Status is required",
+				"operator": "Operator is required",
+				"owner": "Owner is required."
 			},
 			"selection": {
 				"employee": " لم يتم اختيار الموظف"
@@ -292,6 +319,7 @@
 		"actions": " ",
 		"status": "الحالة",
 		"activeStatus": "حالة البرامج",
+		"id": "رمز الرابط",
 		"name": "الاسم [عربي]",
 		"nameEnglish": "الاسم [إنجليزي]",
 		"workflowStatus": "حالة التمرير"
@@ -344,6 +372,7 @@
 		"projectUpdated": "تم تحديث البرنامج",
 		"projectActivated": "تم تفعيل البرنامج",
 		"projectDeactivated": "البرنامج غير فعال ",
+		"departmentDeactivated": "Department is now deactivated.",
 		"delete": "هل أنت متأكد أنك تريد الحذف؟",
 		"deleteProject": "هل أنت متأكد أنك تريد حذف هذا البرنامج ؟",
 		"userProjectAdd": "تعيين برنامج  جديد للمستخدم",

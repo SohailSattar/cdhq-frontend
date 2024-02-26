@@ -1,18 +1,43 @@
-.form {
-    display: flex;
-    flex-direction: column;
+.container {
+	// padding: 15px 15px;
+	// max-height: auto;
+	overflow: inherit;
+}
 
+.department {
+	// display: flex;
 
-    .section {
-        padding: 5px;
-        // width: 100%;
-        display: flex;
-        // flex-direction: row;
-    }
+	.row {
+		display: flex;
+		margin-bottom: 15px;
 
-    .field {
-        width: 100%;
-        margin-bottom: 5px;
-        padding: 0 5px;
-    }
+		.field {
+			display: flex;
+			flex: 1;
+			flex-direction: column;
+		}
+
+		.inputField {
+			margin-bottom: 15px;
+		}
+
+		.ddlField {
+			display: flex;
+			flex: 1;
+			flex-direction: column;
+			margin: 0 5px;
+		}
+
+		.actions {
+			display: flex;
+
+			.btn {
+				margin-left: 5px;
+			}
+
+			.btnLTR {
+				margin-right: 5px;
+			}
+		}
+	}
 }

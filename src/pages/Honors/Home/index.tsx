@@ -293,7 +293,7 @@ const HonorsHomePage = () => {
 				data?.map((x) => {
 					return {
 						label: `${x.id} - ${
-							language !== "ar" ? x.longFullName : x.longFullNameEnglish
+							language !== "ar" ? x.fullName : x.fullNameEnglish
 						}`,
 						value: x.id,
 					};
@@ -334,8 +334,6 @@ const HonorsHomePage = () => {
 				...(departmentId && { departmentId: departmentId }), // Only include departmentId if it has a value
 			},
 		};
-
-		console.log(dataValues);
 
 		const us = t("honor.title", { framework: "React" });
 		const currentDate = format(new Date(), "ddMMyyyyhhmmss", {
