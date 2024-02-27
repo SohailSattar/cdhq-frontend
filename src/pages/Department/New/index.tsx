@@ -18,15 +18,6 @@ const NewDepartmentPage = () => {
 	const [t] = useTranslation("common");
 	const navigate = useNavigate();
 
-	const [id, setId] = useState("");
-	const [name, setName] = useState("");
-	const [nameEnglish, setNameEnglish] = useState("");
-	const [selectedLevelOption, setSelectedLevelOption] =
-		useState<DropdownOption>();
-	const [fullName, setFullName] = useState("");
-	const [fullNameEnglish, setFullNameEnglish] = useState("");
-	const [selectedEmirate, setSelectedEmirate] = useState<DropdownOption>();
-
 	const submitHandler = async (values: IDepartmentFormInputs) => {
 		const {
 			name,

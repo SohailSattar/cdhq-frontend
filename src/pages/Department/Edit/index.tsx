@@ -46,10 +46,6 @@ const DepartmentEditPage = () => {
 			if (data) {
 				setDept(data!);
 				setStatus(data?.activeStatus);
-				setErrors([
-					"Cannot delete the department.",
-					"Employees are assigned to this department.",
-				]);
 			}
 		};
 		fetch();
