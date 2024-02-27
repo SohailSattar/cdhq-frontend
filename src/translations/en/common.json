@@ -368,6 +368,8 @@
 		"userProjectActivated": "Project has been reactivated",
 		"userProjectDeleted": "Project removed successfully",
 		"unvailable": "N/A",
+		"departmentCreated":"Department created.",
+		"departmentUpdated":"Department updated",
 		"projectAdded": "New project created",
 		"projectUpdated": "The project has been updated",
 		"projectActivated": "Project has been activated",
