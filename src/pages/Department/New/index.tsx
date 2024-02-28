@@ -48,7 +48,7 @@ const NewDepartmentPage = () => {
 			toast.success(
 				t("message.departmentCreated", { framework: "React" }).toString()
 			);
-			navigate(`${RoutePath.DEPARTMENT}/${data.id}`);
+			navigate(`${RoutePath.DEPARTMENT}/${data.id}/edit`);
 		}
 	};
 

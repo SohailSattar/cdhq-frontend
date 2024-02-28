@@ -68,17 +68,19 @@
 	.name {
 		display: flex;
 		flex-direction: column;
+		justify-content: center;
 
 		.arabic {
 			display: flex;
-			// justify-content: center;
-			justify-content: right;
+			justify-content: center;
+			// justify-content: right;
 		}
 
 		.english {
 			display: flex;
-			// justify-content: center;
-			justify-content: left;
+			justify-content: center;
+			color: blue;
+			// justify-content: left;
 		}
 	}
 }

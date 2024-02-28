@@ -112,8 +112,8 @@ const DepartmentHomePage = () => {
 			id: "name",
 			accessor: (p) => (
 				<div className={styles.name}>
-					<div className={styles.arabic}>{p.name}</div>
-					<div>{p.nameEnglish}</div>
+					<div className={styles.arabic}>{p.fullName}</div>
+					<div className={styles.english}>{p.fullNameEnglish}</div>
 				</div>
 			),
 		},
@@ -140,19 +140,19 @@ const DepartmentHomePage = () => {
 		// 	id: "fullNameEnglish",
 		// 	accessor: (p) => p.fullNameEnglish,
 		// },
-		{
-			Header: parentDept,
-			id: "parent",
-			accessor: (p) =>
-				p.parent ? (
-					<div className={styles.name}>
-						<div className={styles.arabic}>{p.parent?.name!}</div>
-						<div>{p.parent?.nameEnglish!}</div>
-					</div>
-				) : (
-					<div className={styles.name}>-</div>
-				),
-		},
+		// {
+		// 	Header: parentDept,
+		// 	id: "parent",
+		// 	accessor: (p) =>
+		// 		p.parent ? (
+		// 			<div className={styles.name}>
+		// 				<div className={styles.arabic}>{p.parent?.name!}</div>
+		// 				<div>{p.parent?.nameEnglish!}</div>
+		// 			</div>
+		// 		) : (
+		// 			<div className={styles.name}>-</div>
+		// 		),
+		// },
 		{
 			Header: emirate,
 			id: "emirate",
