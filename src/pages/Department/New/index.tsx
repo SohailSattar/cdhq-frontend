@@ -18,15 +18,6 @@ const NewDepartmentPage = () => {
 	const [t] = useTranslation("common");
 	const navigate = useNavigate();
 
-	const [id, setId] = useState("");
-	const [name, setName] = useState("");
-	const [nameEnglish, setNameEnglish] = useState("");
-	const [selectedLevelOption, setSelectedLevelOption] =
-		useState<DropdownOption>();
-	const [fullName, setFullName] = useState("");
-	const [fullNameEnglish, setFullNameEnglish] = useState("");
-	const [selectedEmirate, setSelectedEmirate] = useState<DropdownOption>();
-
 	const submitHandler = async (values: IDepartmentFormInputs) => {
 		const {
 			name,
@@ -38,6 +29,7 @@ const NewDepartmentPage = () => {
 			operator,
 			group,
 			cdBuilding,
+			moiDeptId,
 		} = values;
 
 		const params: APICreateDepartment = {
@@ -50,6 +42,7 @@ const NewDepartmentPage = () => {
 			operatorId: operator?.value!,
 			groupId: group?.value !== "" ? group?.value! : undefined,
 			cdBuildingId: cdBuilding?.value !== "" ? cdBuilding?.value! : undefined,
+			moiDeptId: moiDeptId || undefined,
 		};
 
 		const { data } = await addDepartment(params);
@@ -57,7 +50,7 @@ const NewDepartmentPage = () => {
 			toast.success(
 				t("message.departmentCreated", { framework: "React" }).toString()
 			);
-			navigate(`${RoutePath.DEPARTMENT}/${data.id}`);
+			navigate(`${RoutePath.DEPARTMENT}/${data.id}/edit`);
 		}
 	};
 

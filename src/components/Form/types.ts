@@ -111,6 +111,7 @@ export interface IDepartmentFormInputs {
 	operator: DropdownOption;
 	group: DropdownOption;
 	cdBuilding: DropdownOption;
+	moiDeptId?: string;
 }
 
 export interface IProjectFormInputs {

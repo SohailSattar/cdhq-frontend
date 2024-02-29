@@ -232,7 +232,8 @@
 		"level": "المستوى",
 		"status": "الحالة",
 		"operator": "الادارة المسؤولة",
-		"group": "الادارة"
+		"group": "الادارة",
+		"moiDeptId": "رمز الادارة"
 	},
 	"cd": {
 		"buildings": " مباني الدفاع المدني",
@@ -244,7 +245,7 @@
 			"longitude": "خط الطول",
 			"latitude": "خط العرض"
 		},
-		"owner": { "name": "Owner" }
+		"owner": { "name": "مالك الادارة" }
 	},
 	"rank": {
 		"name": "الرتبة"
@@ -368,8 +369,8 @@
 		"userProjectActivated": "تم اعادة تفعيل النظام",
 		"userProjectDeleted": "تمت إزالة البرنامج بنجاح",
 		"unvailable": "غير متاح",
-		"departmentCreated":"تمت الاضافة",
-		"departmentUpdated":"تم تحديت السجل ",
+		"departmentCreated": "تمت الاضافة",
+		"departmentUpdated": "تم تحديت السجل",
 		"projectAdded": "تم إنشاء برنامج جديد",
 		"projectUpdated": "تم تحديث البرنامج",
 		"projectActivated": "تم تفعيل البرنامج",
@@ -389,7 +390,7 @@
 		"newsActivated": " تم تفعيل الخبر",
 		"newsDeactivated": " تم حذف الخبر",
 		"savingConfirmationTitle": "سيتم الحفظ",
-		"savingConfirmation": "سيتم حفظ البيانات . هل أنت متأكد ؟ ",
+		"savingConfirmation": "سيتم حفظ البيانات . هل أنت متأكد ؟",
 		"menuItemAdded": "تم اضافة عنوان على القائمة",
 		"menuItemUpdated": "تم تحديث القائمة",
 		"honorCreated": "تم اضافة سجل جديد ",

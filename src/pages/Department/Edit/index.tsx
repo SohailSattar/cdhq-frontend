@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getDepartmentDetail } from "../../../api/departments/get/getDepartmentDetail";
 import {
 	DeleteConfirmation,
@@ -19,18 +19,21 @@ import {
 	APIUpdateDepartment,
 	APIUpdateDepartmentStatus,
 } from "../../../api/departments/types";
-import { ROLE } from "../../../utils";
+import { Id, ROLE } from "../../../utils";
 import { deleteDepartment } from "../../../api/departments/delete/deleteDepartment";
 import { updateDepartment } from "../../../api/departments/update/updateDepartment";
 import { toast } from "react-toastify";
 import { updateDepartmentStatus } from "../../../api/departments/update/updateDepartmentStatus";
 import { getActiveStatus } from "../../../api/activeStatus/get/getActiveStatus";
 import { APIActiveStatus } from "../../../api/activeStatus/types";
+import Layout from "../container/Layout";
 
 const DepartmentEditPage = () => {
 	const { id } = useParams<{ id: string }>();
 	const [t] = useTranslation("common");
 	const language = useStore((state) => state.language);
+
+	const navigate = useNavigate();
 
 	const [showModal, setShowModal] = useState(false);
 
@@ -46,14 +49,14 @@ const DepartmentEditPage = () => {
 			if (data) {
 				setDept(data!);
 				setStatus(data?.activeStatus);
-				setErrors([
-					"Cannot delete the department.",
-					"Employees are assigned to this department.",
-				]);
 			}
 		};
 		fetch();
 	}, [id, language]);
+
+	const navigateTreeHandler = (id: Id) => {
+		navigate(`${RoutePath.DEPARTMENT}/${id}/edit`);
+	};
 
 	const submitHandler = async (values: IDepartmentFormInputs) => {
 		const {
@@ -66,6 +69,7 @@ const DepartmentEditPage = () => {
 			operator,
 			group,
 			cdBuilding,
+			moiDeptId,
 		} = values;
 
 		const params: APIUpdateDepartment = {
@@ -79,6 +83,7 @@ const DepartmentEditPage = () => {
 			operatorId: operator?.value!,
 			groupId: group?.value !== "" ? group?.value! : undefined,
 			cdBuildingId: cdBuilding?.value !== "" ? cdBuilding?.value! : undefined,
+			moiDeptId: moiDeptId || undefined,
 		};
 
 		const { data } = await updateDepartment(params);
@@ -154,22 +159,26 @@ const DepartmentEditPage = () => {
 			onDectivate={deleteButtonClickHandler}
 			lockFor={[ROLE.ADMIN, ROLE.USER]}
 			errors={errors}>
-			<DepartmentForm
-				data={dept}
-				actionButtonText={t("button.update", { framework: "React" }).toString()}
-				onSubmit={submitHandler}
-			/>{" "}
-			<MetaDataDetails
-				createdBy={dept?.createdBy!}
-				createdOn={dept?.createdOn!}
-				updatedBy={dept?.updatedBy}
-				updatedOn={dept?.updatedOn}
-			/>
-			<DeleteConfirmation
-				isOpen={showModal}
-				onYesClick={deleteConfirmationClickHandler}
-				onCancelClick={deleteCancelHandler}
-			/>
+			<Layout onTreeNavigate={navigateTreeHandler}>
+				<DepartmentForm
+					data={dept}
+					actionButtonText={t("button.update", {
+						framework: "React",
+					}).toString()}
+					onSubmit={submitHandler}
+				/>{" "}
+				<MetaDataDetails
+					createdBy={dept?.createdBy!}
+					createdOn={dept?.createdOn!}
+					updatedBy={dept?.updatedBy}
+					updatedOn={dept?.updatedOn}
+				/>
+				<DeleteConfirmation
+					isOpen={showModal}
+					onYesClick={deleteConfirmationClickHandler}
+					onCancelClick={deleteCancelHandler}
+				/>
+			</Layout>
 		</PageContainer>
 	);
 };

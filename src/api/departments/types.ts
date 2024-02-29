@@ -42,6 +42,7 @@ export interface APIDepartmentDetail extends APIDepartmentItem {
 	group: APIDepartmentGroup;
 	cdBuilding: APICivilDefenseBuilding;
 	activeStatus: APIActiveStatus;
+	moiDeptId: string;
 	createdBy: string;
 	createdOn: string;
 	updatedBy: string;
@@ -75,6 +76,7 @@ interface IDepartment {
 	operatorId: Id;
 	groupId?: Id;
 	cdBuildingId?: Id;
+	moiDeptId?: string;
 }
 
 export interface APICreateDepartment {
@@ -88,6 +90,7 @@ export interface APICreateDepartment {
 	operatorId: Id;
 	groupId?: Id;
 	cdBuildingId?: Id;
+	moiDeptId?: string;
 }
 
 export interface APIUpdateDepartment extends IDepartment {}

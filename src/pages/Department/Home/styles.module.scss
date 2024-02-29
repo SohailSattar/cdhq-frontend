@@ -68,6 +68,7 @@
 	.name {
 		display: flex;
 		flex-direction: column;
+		justify-content: center;
 
 		.arabic {
 			display: flex;
@@ -78,6 +79,7 @@
 		.english {
 			display: flex;
 			// justify-content: center;
+			color: blue;
 			justify-content: left;
 		}
 	}
