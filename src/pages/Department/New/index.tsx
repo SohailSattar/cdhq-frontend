@@ -29,6 +29,7 @@ const NewDepartmentPage = () => {
 			operator,
 			group,
 			cdBuilding,
+			moiDeptId,
 		} = values;
 
 		const params: APICreateDepartment = {
@@ -41,6 +42,7 @@ const NewDepartmentPage = () => {
 			operatorId: operator?.value!,
 			groupId: group?.value !== "" ? group?.value! : undefined,
 			cdBuildingId: cdBuilding?.value !== "" ? cdBuilding?.value! : undefined,
+			moiDeptId: moiDeptId || undefined,
 		};
 
 		const { data } = await addDepartment(params);

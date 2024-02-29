@@ -105,10 +105,11 @@ const DepartmentForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 				operator,
 				group,
 				cdBuilding,
+				moiDeptId,
 			} = data;
 
 			setValue("name", name);
-			setValue("nameEnglish", nameEnglish);
+			setValue("nameEnglish", nameEnglish || "");
 
 			// Level
 			const selectedLevel = levelOptions.find((x) => x.value === level?.id!);
@@ -144,6 +145,8 @@ const DepartmentForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 				(x) => x.value === cdBuilding?.id!
 			);
 			setValue("cdBuilding", selectedCdBuilding!);
+
+			setValue("moiDeptId", moiDeptId || "");
 		}
 	}, [
 		cdBuildingOptions,
@@ -429,6 +432,23 @@ const DepartmentForm: FC<Props> = ({ data, actionButtonText, onSubmit }) => {
 								)}
 								name="cdBuilding"
 								control={control}
+							/>
+						</div>
+					</div>
+					<div className={styles.row}>
+						<div className={styles.field}>
+							<Controller
+								render={({ field: { value, onChange } }) => (
+									<TextBox
+										type="text"
+										label={t("department.moiDeptId", { framework: "React" })}
+										value={value}
+										onChange={onChange}
+									/>
+								)}
+								name="moiDeptId"
+								control={control}
+								defaultValue=""
 							/>
 						</div>
 					</div>

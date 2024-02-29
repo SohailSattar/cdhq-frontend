@@ -124,7 +124,7 @@ const DepartmentHomePage = () => {
 				p.parent ? (
 					<div className={styles.name}>
 						<div className={styles.arabic}>{p.level?.name!}</div>
-						<div>{p.level?.nameEnglish}</div>
+						<div className={styles.english}>{p.level?.nameEnglish}</div>
 					</div>
 				) : (
 					<div className={styles.name}>-</div>
@@ -160,7 +160,7 @@ const DepartmentHomePage = () => {
 				p.parent ? (
 					<div className={styles.name}>
 						<div className={styles.arabic}>{p.emirate?.name!}</div>
-						<div>{p.emirate?.nameEnglish!}</div>
+						<div className={styles.english}>{p.emirate?.nameEnglish!}</div>
 					</div>
 				) : (
 					<div>-</div>
@@ -287,6 +287,18 @@ const DepartmentHomePage = () => {
 		},
 	};
 
+	const statusSelectHandler = useMemo(
+		() => (option: DropdownOption) => {
+			if (option) {
+				setSelectedStatusCode((prevState) => (prevState = option?.value!));
+			} else {
+				setSelectedStatusCode(1);
+			}
+			setCurrentPage(1);
+		},
+		[]
+	);
+
 	return (
 		<PageContainer
 			lockFor={[ROLE.ADMIN, ROLE.USER]}
@@ -311,7 +323,7 @@ const DepartmentHomePage = () => {
 						onTableSort={tableSortHandler}
 						onPageChange={pageChangeHandler}
 						onPageViewSelectionChange={pageViewSelectionHandler}
-						hideActiveStatusDropdown
+						onActiveStatusOptionSelectionChange={statusSelectHandler}
 					/>
 				</ShadowedContainer>
 			</div>
