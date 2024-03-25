@@ -1,3 +1,4 @@
+export const ASSIGNED_JOBS = "/assigned-jobs";
 export const CD_BUILDINGS = "/civil-defense/buildings";
 export const CD_BUILDINGS_OWNERS = "/civil-defense/buildings/owners";
 export const EMIRATES = "/emirates";
@@ -6,6 +7,9 @@ export const DEPARTMENTS = "/departments";
 export const HONORS = "/honors";
 export const IMAGES = "/images";
 export const MENU = "/menu";
+export const MOI = "/moi";
 export const PHONE_DIRECTORY = "/phone-directory";
+export const PROFESSIONS = "/professions";
 export const QR_CODE = "/qr-codes";
 export const VISITORS = "/visitors";
+export const WORKS = "/works";

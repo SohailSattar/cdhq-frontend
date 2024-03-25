@@ -6,11 +6,20 @@ export const ROOT = `/`;
 export const HOME = `/home`;
 export const LOGIN = `/login`;
 
+//////////////////////////////////////////////// USER ////////////////////////////////////////////////
+
 export const USER = `/user`;
 export const USER_DETAIL = `/user/${ID}`;
 export const USER_EDIT = `${USER_DETAIL}/edit`;
 export const USER_NEW = `${USER}/new`;
 export const USER_SEARCH = USER + "/search";
+
+//////////////////////////////////////////////// EMPLOYEE ////////////////////////////////////////////////
+
+export const EMPLOYEE = `/employee`;
+export const EMPLOYEE_DETAIL = EMPLOYEE + "/" + ID;
+export const EMPLOYEE_EDIT = EMPLOYEE_DETAIL + "/edit";
+export const EMPLOYEE_NEW = `${EMPLOYEE}/new`;
 
 //////////////////////////////////////////////// DEPARTMENT ////////////////////////////////////////////////
 export const DEPARTMENT = `/department`;

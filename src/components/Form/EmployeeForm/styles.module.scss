@@ -1,0 +1,80 @@
+.empForm {
+	.row {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	.basic {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		.heading {
+			// text-decoration: underline;
+		}
+
+		.row {
+			display: flex;
+			margin-bottom: 15px;
+
+			.field {
+				display: flex;
+				flex: 1;
+				flex-direction: column;
+				margin: 0 5px;
+			}
+
+			.ddlField {
+				display: flex;
+				flex: 1;
+				flex-direction: column;
+				margin: 0 5px;
+			}
+
+			.actions {
+				display: flex;
+				margin-top: 15px;
+
+				.btn {
+					margin-left: 5px;
+				}
+				.btnLTR {
+					margin-right: 5px;
+				}
+			}
+		}
+	}
+
+	.thumbnailContainer {
+		margin-left: 15px;
+
+		.browse {
+			margin-bottom: 15px;
+		}
+		.image {
+			max-height: 300px;
+			max-width: 500px;
+		}
+
+		.uploadSection {
+			display: flex;
+			justify-content: left;
+		}
+	}
+
+	.thumbnailContainerLTR {
+		margin-right: 15px;
+
+		.browse {
+			margin-bottom: 15px;
+		}
+		.image {
+			max-height: 300px;
+			max-width: 440px; //500px;;
+		}
+
+		.uploadSection {
+			display: flex;
+			justify-content: right;
+		}
+	}
+}

@@ -47,6 +47,9 @@ import {
 	DepartmentNewPage,
 	CDBuildingsEditContentManagementPage,
 	CDBuildingsNewContentManagementPage,
+	EmployeeHomePage,
+	EmployeeNewPage,
+	EmployeeEditPage,
 } from "./pages";
 
 import * as RoutePath from "./RouteConfig";
@@ -507,6 +510,38 @@ function App() {
 								element={
 									<Layout>
 										<DepartmentNewPage />
+									</Layout>
+								}
+							/>
+						</Route>
+
+						{/* Employees */}
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={RoutePath.EMPLOYEE}
+								element={
+									<Layout>
+										<EmployeeHomePage />
+									</Layout>
+								}
+							/>
+						</Route>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.EMPLOYEE_NEW}`}
+								element={
+									<Layout>
+										<EmployeeNewPage />
+									</Layout>
+								}
+							/>
+						</Route>
+						<Route element={<ProtectedRoute />}>
+							<Route
+								path={`${RoutePath.EMPLOYEE_EDIT}`}
+								element={
+									<Layout>
+										<EmployeeEditPage />
 									</Layout>
 								}
 							/>
