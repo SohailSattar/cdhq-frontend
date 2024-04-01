@@ -7,11 +7,16 @@ import {
 import * as RoutePath from "../../../RouteConfig";
 import { useTranslation } from "react-i18next";
 import { useEffect, useMemo, useState } from "react";
-import { APIEmployeeDetail } from "../../../api/employees/types";
+import {
+	APIEmployeeDetail,
+	APIUpdateEmployee,
+} from "../../../api/employees/types";
 import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPrivilege";
 import { getEmployeeDetails } from "../../../api/employees/get/getEmployeeDetails";
 import { Project } from "../../../data/projects";
 import { APIPrivileges } from "../../../api/privileges/type";
+import { updateEmployee } from "../../../api/employees/update/updateEmployee";
+import { toast } from "react-toastify";
 
 const EmployeeEditPage = () => {
 	const { id } = useParams<{ id: string }>();
@@ -43,10 +48,7 @@ const EmployeeEditPage = () => {
 					const { data } = await getEmployeeDetails(id!);
 					setEmployee(data);
 				} else {
-					const url = RoutePath.NEWS_DETAIL.replace(
-						RoutePath.ID,
-						id?.toString()!
-					);
+					const url = RoutePath.EMPLOYEE;
 					navigate(url);
 				}
 			}
@@ -60,6 +62,81 @@ const EmployeeEditPage = () => {
 		}
 	}, [id, fetch]);
 
+	const editEmployeeHandler = async (values: IEmployeeFormInputs) => {
+		const {
+			class: recruiter,
+			rank,
+			contractType,
+			profession,
+			nationality,
+			nationalService,
+			nationalServiceGroup,
+			status,
+			department,
+			section,
+			professionalTraining,
+			workMode,
+			workGroup,
+			signList,
+			actJob,
+			assignedJob,
+			militaryTrained,
+			militaryWear,
+			qualification,
+			degreeCountry,
+			gender,
+			maritalStatus,
+			religion,
+			specialNeed,
+			healthStatus,
+			bloodType,
+			...rest
+		} = values;
+
+		// departmentId: values.department.value,
+		const params: APIUpdateEmployee = {
+			id: id!,
+			classId: recruiter.value,
+			rankId: rank.value,
+			contractTypeId: contractType.value,
+			professionId: profession.value,
+			nationalityId: nationality.value,
+			nationalServiceId: nationalService.value,
+			statusId: status.value,
+			departmentId: department.value,
+			sectionId: section.value,
+			professionalTrainingId: professionalTraining.value,
+			workModeId: workMode.value,
+			workGroupId: workGroup.value,
+			signListId: signList.value,
+			actJobMOIId: actJob.value,
+			assignedJobId: assignedJob.value,
+			militaryTrainId: militaryTrained.value,
+			militaryWearId: militaryWear.value,
+			qualificationId: qualification.value,
+			degreeCountryId: degreeCountry.value,
+			genderId: gender.value,
+			maritalStatusId: maritalStatus.value,
+			religionId: religion.value,
+			specialNeedId: specialNeed.value,
+			healthStatusId: healthStatus.value,
+			bloodTypeId: bloodType.value,
+			...rest,
+		};
+
+		console.log(params);
+
+		const { data, error } = await updateEmployee(params);
+
+		if (data?.success) {
+			toast.success(
+				t("message.employeeUpdated", { framework: "React" }).toString()
+			);
+		} else {
+			toast.error(error?.ErrorMessage);
+		}
+	};
+
 	return (
 		<PageContainer
 			title="Edit Employee"
@@ -67,10 +144,8 @@ const EmployeeEditPage = () => {
 			btnBackUrlLink={RoutePath.EMPLOYEE}>
 			<EmployeeForm
 				data={employee}
-				actionButtonText={""}
-				onSubmit={function (data: IEmployeeFormInputs): void {
-					throw new Error("Function not implemented.");
-				}}
+				actionButtonText={t("button.update", { framework: "React" }).toString()}
+				onSubmit={editEmployeeHandler}
 			/>
 		</PageContainer>
 	);

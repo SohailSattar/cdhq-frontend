@@ -73,6 +73,24 @@ import CDBuildingsHomeContentManagementPage from "./pages/ContentManagement/Civi
 function App() {
 	const language = useStore((state) => state.language);
 
+	useEffect(() => {
+		const observer = new PerformanceObserver((list) => {
+			const entries = list.getEntries();
+			entries.forEach((entry) => {
+				if (entry.entryType === "longtask") {
+					console.log("Long task detected:", entry);
+					// You can perform further analysis or logging here
+				}
+			});
+		});
+
+		observer.observe({ entryTypes: ["longtask"] });
+
+		return () => {
+			observer.disconnect();
+		};
+	}, []);
+
 	// const createSessionToken = useCallback(async () => {
 	// 	await generateSessionToken();
 	// }, []);

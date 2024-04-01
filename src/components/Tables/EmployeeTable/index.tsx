@@ -5,13 +5,23 @@ import { Column } from "react-table";
 import { EmployeeColumns } from "../../PaginatedTable/types";
 import { useEffect, useMemo, useState } from "react";
 
-import styles from "./styles.module.scss";
-import { PaginatedTable, RedirectButton } from "../..";
+import {
+	DepartmentTree,
+	PaginatedTable,
+	RedirectButton,
+	ShadowedContainer,
+} from "../..";
 import { DropdownOption } from "../../Dropdown";
 import { getPagedEmployees } from "../../../api/employees/get/getPagedEmployees";
-import { APIEmployeeListItem } from "../../../api/employees/types";
+import {
+	APIEmployeeListItem,
+	APIExportEmployee,
+} from "../../../api/employees/types";
 
 import * as RoutePath from "../../../RouteConfig";
+
+import styles from "./styles.module.scss";
+import { Project } from "../../../data/projects";
 
 const EmployeeTable = () => {
 	const [t] = useTranslation("common");
@@ -29,6 +39,9 @@ const EmployeeTable = () => {
 	//Parameters
 	const [orderBy, setOrderBy] = useState<string>("rankId");
 	const [toggleSort, setToggleSort] = useState(false);
+
+	const [departmentIds, setDepartmentIds] = useState<string[]>([]);
+	const [isExportLoading, setIsExportLoading] = useState<boolean>(false);
 
 	useEffect(() => {
 		const fetch = async () => {
@@ -53,6 +66,8 @@ const EmployeeTable = () => {
 	const rank = t("rank.name", { framework: "React" });
 	const employeeNo = t("user.employeeNumber", { framework: "React" });
 	const name = t("global.name", { framework: "React" });
+	const nameArabic = t("global.nameArabic", { framework: "React" });
+	const nameEnglish = t("global.nameEnglish", { framework: "React" });
 	const age = t("employee.age", { framework: "React" });
 
 	const department = t("department.name", { framework: "React" });
@@ -91,7 +106,7 @@ const EmployeeTable = () => {
 				id: "rankId",
 				accessor: (p) => p.rank,
 				Cell: ({ value }: any) => (
-					<div>
+					<div className={styles.rank}>
 						{value
 							? language !== "ar"
 								? value?.name!
@@ -227,20 +242,41 @@ const EmployeeTable = () => {
 		setPage(currentpage);
 	};
 
+	const departmentNodeCheckHandler = (ids: any) => {
+		setDepartmentIds(ids);
+		setPage(1);
+	};
+
 	return (
-		<PaginatedTable
-			totalCountText={t("menu.count", { framework: "React" })}
-			totalCount={totalCount}
-			pageSize={pageSize}
-			currentPage={page}
-			data={items}
-			columns={columns}
-			noRecordText={""}
-			onSearch={searchClickHandler}
-			onTableSort={tableSortHandler}
-			onPageChange={pageChangeHandler}
-			onPageViewSelectionChange={pageViewSelectionHandler}
-		/>
+		<div className={styles.content}>
+			<ShadowedContainer className={styles.hierarchyContainer}>
+				<div
+					className={
+						language === "ar" ? styles.hierarchyLTR : styles.hierarchy
+					}>
+					<DepartmentTree
+						onNodeCheck={departmentNodeCheckHandler}
+						isExpanded
+					/>
+				</div>
+			</ShadowedContainer>
+			<ShadowedContainer>
+				<PaginatedTable
+					totalCountText={t("menu.count", { framework: "React" })}
+					totalCount={totalCount}
+					pageSize={pageSize}
+					currentPage={page}
+					data={items}
+					columns={columns}
+					noRecordText={""}
+					onSearch={searchClickHandler}
+					onTableSort={tableSortHandler}
+					onPageChange={pageChangeHandler}
+					onPageViewSelectionChange={pageViewSelectionHandler}
+					// classNameTable={styles.empTable}
+				/>
+			</ShadowedContainer>
+		</div>
 	);
 };
 

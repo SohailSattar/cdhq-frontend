@@ -83,6 +83,8 @@ export interface ICivilDefenseBuildingFormInputs {
 ////////////////////////////////////////////////////////////////////////////////
 
 export interface IEmployeeFormInputs {
+	thumbnail?: File;
+	photo: string;
 	employeeNo: string;
 	name: string;
 	nameEnglish: string;
@@ -98,10 +100,11 @@ export interface IEmployeeFormInputs {
 	status: DropdownOption;
 	statusDetails: string;
 	statusDate: string;
-	militaryCardExpiryDate: Date;
+	militaryCardExpiryDate: string;
 	//////////////////////////////
 	department: DropdownOption;
 	section: DropdownOption;
+	isWorkLocationManager: boolean;
 	professionalTraining: DropdownOption;
 	workMode: DropdownOption;
 	workGroup: DropdownOption;
@@ -110,6 +113,9 @@ export interface IEmployeeFormInputs {
 	actJob: DropdownOption;
 	assignedJob: DropdownOption;
 	additionalJob: string;
+	previousExperienceYear: string;
+	previousExperienceMonth: string;
+	previousExperienceDay: string;
 	militaryTrained: DropdownOption;
 	militaryWear: DropdownOption;
 	//////////////////////////////
@@ -131,7 +137,7 @@ export interface IEmployeeFormInputs {
 	gender: DropdownOption;
 	maritalStatus: DropdownOption;
 	religion: DropdownOption;
-	birthDate: any;
+	birthDate: string;
 	birthPlace: string;
 	specialNeed: DropdownOption;
 	healthStatus: DropdownOption;
@@ -148,7 +154,7 @@ export interface IEmployeeFormInputs {
 	notes: string;
 	//////////////////////////////
 	emergencyCallName: string;
-	emergencyCallRelation: DropdownOption;
+	emergencyCallRelation: string;
 	emergencyCallPhone: string;
 	emergencyCallAddress: string;
 	emergencyOtherContact: string;

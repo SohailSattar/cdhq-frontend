@@ -16,7 +16,6 @@ import { APIProfessionalTraining } from "../professionalTraining/types";
 import { APIProfession } from "../professions/types";
 import { APIQualification } from "../qualifications/types";
 import { APIRank } from "../ranks/types";
-import { APIRelative } from "../relatives/types";
 import { APIReligion } from "../religions/types";
 import { APISignatureListItem } from "../signaturesList/types";
 import { APISpecialNeed } from "../specialNeeds/types";
@@ -87,6 +86,7 @@ export interface APIEmployeeListItem {
 
 export interface APIEmployeeDetail {
 	id: Id;
+	photo: string;
 	employeeNo: string;
 	name: string;
 	nameEnglish: string;
@@ -102,16 +102,21 @@ export interface APIEmployeeDetail {
 	status: APIEmployeeStatus;
 	statusDetail: string;
 	statusDate: string;
-	militaryCardExpiryDate: Date;
+	militaryCardExpiryDate: string;
 	///////////////////////////////////////////////
 	department: APIDepartmentName;
 	section: APIDepartmentName;
+	isWorkLocationManager: boolean;
 	professionalTraining: APIProfessionalTraining;
 	workMode: APIWorkMode;
 	workGroup: APIWorkGroup;
 	signList: APISignatureListItem;
 	actJobMOI: APIActualJobMOI;
 	assignedJob: APIAssignedJob;
+	additionalJob?: string;
+	previousExperienceYear: string;
+	previousExperienceMonth: string;
+	previousExperienceDay: string;
 	militaryTrain: APIMilitaryTrained;
 	militaryWear: APIMilitaryWear;
 	///////////////////////////////////////////////
@@ -150,7 +155,7 @@ export interface APIEmployeeDetail {
 	notes: string;
 	//////////////////////////////
 	emergencyCallName: string;
-	emergencyCallRelation: APIRelative;
+	emergencyCallRelation: string;
 	emergencyCallPhone: string;
 	emergencyCallAddress: string;
 	emergencyOtherContact: string;
@@ -167,6 +172,79 @@ export interface APIEmployeeStatus {
 	nameEnglish: string;
 }
 
+export interface APIUpdateEmployee {
+	id: Id;
+	employeeNo: string;
+	name: string;
+	nameEnglish: string;
+	classId: Id;
+	hireDate: string;
+	joinDate: string;
+	rankId: Id;
+	contractTypeId: Id;
+	professionId: Id;
+	nationalityId: Id;
+	nationalServiceId: Id;
+	nationalServiceGroup?: string;
+	statusId: Id;
+	statusDetail?: string;
+	statusDate: string;
+	militaryCardExpiryDate: string;
+	///////////////////////////////////////////////
+	departmentId: Id;
+	sectionId: Id;
+	isWorkLocationManager: boolean;
+	professionalTrainingId: Id;
+	workModeId: Id;
+	workGroupId: Id;
+	signListId: Id;
+	actJobMOIId: Id;
+	assignedJobId: Id;
+	additionalJob?: string;
+	militaryTrainId: Id;
+	militaryWearId: Id;
+	///////////////////////////////////////////////
+	qualificationId: Id;
+	degreeDate: string;
+	degreeName: string;
+	degreeCountryId: Id;
+	universityName: string;
+	///////////////////////////////////////////////
+	residenceEmirate: string;
+	residenceCity: string;
+	residenceArea: string;
+	phone: string;
+	phone2: string;
+	phoneOffice: string;
+	emailLan: string;
+	emailNet: string;
+	////////////////
+	genderId: Id;
+	maritalStatusId: Id;
+	religionId: Id;
+	birthDate: string;
+	birthPlace: string;
+	specialNeedId: Id;
+	healthStatusId: Id;
+	passportNo: string;
+	familyBookNo?: string;
+	emiratesIdNo: string;
+	uidNo: string;
+	districtNo?: string;
+	districtName?: string;
+	lastMedicalTestDate: string;
+	bloodTypeId: Id;
+	height?: string;
+	weight?: string;
+	notes?: string;
+	////////////////
+	emergencyCallName: string;
+	emergencyCallRelation: string;
+	emergencyCallPhone: string;
+	emergencyCallAddress: string;
+	emergencyOtherContact: string;
+}
+
 export interface APIUpdateEmployeeSignature {
 	id: Id;
 	thumbnail: File;
@@ -174,4 +252,18 @@ export interface APIUpdateEmployeeSignature {
 
 export interface APIPaginatedEmployees extends APIPaginate {
 	employees: APIEmployeeListItem[];
+}
+
+//////////////////// EXPORT API ////////////////////////
+export interface APIExportEmployee {
+	id: number;
+	employeeNo: number;
+	rank: string;
+	name: string;
+	nameEnglish: string;
+	age: number;
+	status: string;
+	department: string;
+	section: string;
+	class: string;
 }
