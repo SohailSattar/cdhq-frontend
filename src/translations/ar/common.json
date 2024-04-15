@@ -244,7 +244,7 @@
 			"longitude": "خط الطول",
 			"latitude": "خط العرض"
 		},
-		"owner": { "name": "Owner" }
+		"owner": { "name": "مالك المبنى" }
 	},
 	"rank": {
 		"name": "الرتبة"
