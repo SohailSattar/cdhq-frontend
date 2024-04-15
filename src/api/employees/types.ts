@@ -172,6 +172,79 @@ export interface APIEmployeeStatus {
 	nameEnglish: string;
 }
 
+export interface APINewEmployee {
+	thumbnail: File;
+	employeeNo: string;
+	name: string;
+	nameEnglish: string;
+	classId: Id;
+	hireDate: string;
+	joinDate: string;
+	rankId: Id;
+	contractTypeId: Id;
+	professionId: Id;
+	nationalityId: Id;
+	nationalServiceId: Id;
+	nationalServiceGroup?: string;
+	statusId: Id;
+	statusDetail?: string;
+	statusDate: string;
+	militaryCardExpiryDate: string;
+	///////////////////////////////////////////////
+	departmentId: Id;
+	sectionId: Id;
+	isWorkLocationManager: boolean;
+	professionalTrainingId: Id;
+	workModeId: Id;
+	workGroupId: Id;
+	signListId: Id;
+	actJobMOIId: Id;
+	assignedJobId: Id;
+	additionalJob?: string;
+	militaryTrainId: Id;
+	militaryWearId: Id;
+	///////////////////////////////////////////////
+	qualificationId: Id;
+	degreeDate: string;
+	degreeName: string;
+	degreeCountryId: Id;
+	universityName: string;
+	///////////////////////////////////////////////
+	residenceEmirate: string;
+	residenceCity: string;
+	residenceArea: string;
+	phone: string;
+	phone2: string;
+	phoneOffice: string;
+	emailLan: string;
+	emailNet: string;
+	////////////////
+	genderId: Id;
+	maritalStatusId: Id;
+	religionId: Id;
+	birthDate: string;
+	birthPlace: string;
+	specialNeedId: Id;
+	healthStatusId: Id;
+	passportNo: string;
+	familyBookNo?: string;
+	emiratesIdNo: string;
+	uidNo: string;
+	districtNo?: string;
+	districtName?: string;
+	lastMedicalTestDate: string;
+	bloodTypeId: Id;
+	height?: string;
+	weight?: string;
+	notes?: string;
+	////////////////
+	emergencyCallName: string;
+	emergencyCallRelation: string;
+	emergencyCallPhone: string;
+	emergencyCallAddress: string;
+	emergencyOtherContact: string;
+}
+
 export interface APIUpdateEmployee {
 	id: Id;
 	employeeNo: string;
@@ -243,6 +316,11 @@ export interface APIUpdateEmployee {
 	emergencyCallPhone: string;
 	emergencyCallAddress: string;
 	emergencyOtherContact: string;
+}
+
+export interface APIUpdateEmployeePhoto {
+	id: Id;
+	thumbnail: File;
 }
 
 export interface APIUpdateEmployeeSignature {

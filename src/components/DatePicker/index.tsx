@@ -72,16 +72,20 @@ const useStyles = makeStyles((theme: Theme) => ({
 const DateSelector = (props: any) => {
 	const language = useStore((state) => state.language);
 
-	const { date, setDate, dateFormat = "dd MMMM yyyy" } = props;
+	const { date, onChange, dateFormat = "dd MMMM yyyy" } = props;
 	const { root } = useStyles();
+
+	// const changeHandler = (date: any) => {
+	// 	setdate(date);
+	// };
 
 	return (
 		<div className={styles.DateSelector}>
-			{props?.labelText && (
+			{props?.labeltext && (
 				<FormLabel
 					style={{ color: "black" }}
 					className={styles.title}>
-					{props?.labelText}
+					{props?.labeltext}
 				</FormLabel>
 			)}
 			<MuiPickersUtilsProvider
@@ -96,7 +100,7 @@ const DateSelector = (props: any) => {
 						format={dateFormat}
 						value={date}
 						InputAdornmentProps={{ position: "start" }}
-						onChange={(date) => setDate(date)}
+						onChange={onChange}
 						//disablePast={true}
 						{...props}
 					/>

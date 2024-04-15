@@ -1,6 +1,6 @@
 import _ from "lodash/fp";
 import { ErrorMessage } from "@hookform/error-message";
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Button, ShadowedContainer, TextBox } from "../..";
@@ -10,9 +10,10 @@ import styles from "./styles.module.scss";
 
 interface Props {
 	onSubmit: (data: ILoginFormInputs) => void;
+	serverErrors?: string[];
 }
 
-const LoginForm: FC<Props> = ({ onSubmit }) => {
+const LoginForm: FC<Props> = ({ onSubmit, serverErrors = [] }) => {
 	const [t] = useTranslation("common");
 	const language = useStore((state) => state.language);
 
@@ -140,6 +141,17 @@ const LoginForm: FC<Props> = ({ onSubmit }) => {
 									/>
 								</ShadowedContainer>
 							</div>
+						)}
+						{serverErrors.length > 0 && (
+							<ShadowedContainer>
+								{serverErrors.map((error, index) => (
+									<div
+										className="error"
+										key={index}>
+										{error}
+									</div>
+								))}
+							</ShadowedContainer>
 						)}
 						{/* {errorMessage !== "" && (
               <div>

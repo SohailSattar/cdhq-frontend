@@ -83,7 +83,7 @@ export interface ICivilDefenseBuildingFormInputs {
 ////////////////////////////////////////////////////////////////////////////////
 
 export interface IEmployeeFormInputs {
-	thumbnail?: File;
+	thumbnail: File;
 	photo: string;
 	employeeNo: string;
 	name: string;
@@ -98,7 +98,7 @@ export interface IEmployeeFormInputs {
 	nationalService: DropdownOption;
 	nationalServiceGroup: string;
 	status: DropdownOption;
-	statusDetails: string;
+	statusDetails?: string;
 	statusDate: string;
 	militaryCardExpiryDate: string;
 	//////////////////////////////

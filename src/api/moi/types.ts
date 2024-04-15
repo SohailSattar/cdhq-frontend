@@ -9,6 +9,7 @@ export interface APIJobCategory {
 export interface APIActualJobMOI {
 	id: Id;
 	name: string;
+	nameEnglish: string;
 	JobDetailId: Id;
 	groupId: Id;
 }

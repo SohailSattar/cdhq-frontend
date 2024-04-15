@@ -10,6 +10,7 @@ import { useEffect, useMemo, useState } from "react";
 import {
 	APIEmployeeDetail,
 	APIUpdateEmployee,
+	APIUpdateEmployeePhoto,
 } from "../../../api/employees/types";
 import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPrivilege";
 import { getEmployeeDetails } from "../../../api/employees/get/getEmployeeDetails";
@@ -17,6 +18,7 @@ import { Project } from "../../../data/projects";
 import { APIPrivileges } from "../../../api/privileges/type";
 import { updateEmployee } from "../../../api/employees/update/updateEmployee";
 import { toast } from "react-toastify";
+import { updateEmployeeImage } from "../../../api/employees/update/updateEmployeeImage";
 
 const EmployeeEditPage = () => {
 	const { id } = useParams<{ id: string }>();
@@ -137,6 +139,20 @@ const EmployeeEditPage = () => {
 		}
 	};
 
+	const imageUploadHandler = async (image: File) => {
+		const params: APIUpdateEmployeePhoto = {
+			id: id!,
+			thumbnail: image,
+		};
+
+		const { data } = await updateEmployeeImage(params);
+		if (data) {
+			toast.success(
+				t("message.imageUpdated", { framework: "React" }).toString()
+			);
+		}
+	};
+
 	return (
 		<PageContainer
 			title="Edit Employee"
@@ -146,6 +162,7 @@ const EmployeeEditPage = () => {
 				data={employee}
 				actionButtonText={t("button.update", { framework: "React" }).toString()}
 				onSubmit={editEmployeeHandler}
+				onImageUpload={imageUploadHandler}
 			/>
 		</PageContainer>
 	);

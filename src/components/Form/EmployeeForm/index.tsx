@@ -33,11 +33,9 @@ import { getQualifications } from "../../../api/qualifications/get/getQualificat
 import { getGenders } from "../../../api/genders/get/getGenders";
 import { getMaritalStatuses } from "../../../api/maritalStatus/get/getMaritalStatuses";
 import { getReligions } from "../../../api/religions/get/getReligions";
-import { use } from "i18next";
 import { getSpecialNeeds } from "../../../api/specialNeeds/get/getSpecialNeeds";
 import { getHealthStatuses } from "../../../api/healthStatuses/get/getHealthStatuses";
 import { getBloodTypes } from "../../../api/bloodTypes/get/getBloodTypes";
-import { getRelatives } from "../../../api/relatives/get/getRelatives";
 import DatePicker from "../../DatePicker";
 import { getMoiJobCategories } from "../../../api/moi/get/getMoiJobCategories";
 
@@ -51,6 +49,34 @@ import { ErrorMessage } from "@hookform/error-message";
 import { getDepartmentsByProject } from "../../../api/departments/get/getDepartmentsByProject";
 import { Project } from "../../../data/projects";
 import clsx from "clsx";
+
+// Define an interface for dropdown options
+interface DropdownOptions {
+	classes: DropdownOption[];
+	ranks: DropdownOption[];
+	contractTypes: DropdownOption[];
+	professions: DropdownOption[];
+	countries: DropdownOption[];
+	nationalServices: DropdownOption[];
+	statuses: DropdownOption[];
+	departments: DropdownOption[];
+	section: DropdownOption[];
+	professionalTraining: DropdownOption[];
+	workMode: DropdownOption[];
+	workGroup: DropdownOption[];
+	signaturesLists: DropdownOption[];
+	jobCategoryMoi: DropdownOption[];
+	assignedJobs: DropdownOption[];
+	militaryTrained: DropdownOption[];
+	militaryUniform: DropdownOption[];
+	qualifications: DropdownOption[];
+	genders: DropdownOption[];
+	maritalStatuses: DropdownOption[];
+	religions: DropdownOption[];
+	specialNeeds: DropdownOption[];
+	healthStatuses: DropdownOption[];
+	bloodTypes: DropdownOption[];
+}
 
 interface Props {
 	data?: APIEmployeeDetail;
@@ -71,70 +97,36 @@ const EmployeeForm: FC<Props> = ({
 	const language = useStore((state: { language: any }) => state.language);
 
 	const [hideUploadButton, setHideUploadButton] = useState<boolean>(true);
+	const [dropdownOptions, setDropdownOptions] = useState<DropdownOptions>({
+		classes: [],
+		ranks: [],
+		contractTypes: [],
+		professions: [],
+		countries: [],
+		nationalServices: [],
+		statuses: [],
+		departments: [],
+		section: [],
+		professionalTraining: [],
+		workMode: [],
+		workGroup: [],
+		signaturesLists: [],
+		jobCategoryMoi: [],
+		assignedJobs: [],
+		militaryTrained: [],
+		militaryUniform: [],
+		qualifications: [],
+		genders: [],
+		maritalStatuses: [],
+		religions: [],
+		specialNeeds: [],
+		healthStatuses: [],
+		bloodTypes: [],
+	});
 
-	const [classOptions, setClassOptions] = useState<DropdownOption[]>([]);
-	const [rankOptions, setRankOptions] = useState<DropdownOption[]>([]);
-	const [contractTypeOptions, setContractTypeOptions] = useState<
-		DropdownOption[]
-	>([]);
-	const [professionOptions, setProfessionOptions] = useState<DropdownOption[]>(
-		[]
-	);
-	const [countryOptions, setCountryOptions] = useState<DropdownOption[]>([]);
-	const [nationalServiceOptions, setNationalServiceOptions] = useState<
-		DropdownOption[]
-	>([]);
-	const [statusOptions, setStatusOptions] = useState<DropdownOption[]>([]);
-	const [departmentOptions, setDepartmentOptions] = useState<DropdownOption[]>(
-		[]
-	);
-	const [sectionOptions, setSectionOptions] = useState<DropdownOption[]>([]);
-	const [professionalTrainingOptions, setProfessionalTrainingOptions] =
-		useState<DropdownOption[]>([]);
-	const [workModeOptions, setWorkModeOptions] = useState<DropdownOption[]>([]);
-	const [workGroupOptions, setWorkGroupOptions] = useState<DropdownOption[]>(
-		[]
-	);
-	const [signaturesListsOptions, setSignaturesListsOptions] = useState<
-		DropdownOption[]
-	>([]);
-
-	const [jobCategoryMoiOptions, setJobCategoryMoiOptions] = useState<
-		DropdownOption[]
-	>([]);
 	const [actJobMoiOptions, setActJobMoiOptions] = useState<DropdownOption[]>(
 		[]
 	);
-	const [assignedJobOptions, setAssignedJobOptions] = useState<
-		DropdownOption[]
-	>([]);
-	const [militaryTrainedOptions, setMilitaryTrainedOptions] = useState<
-		DropdownOption[]
-	>([]);
-	const [militaryUniformOptions, setMilitaryUniformOptions] = useState<
-		DropdownOption[]
-	>([]);
-
-	//////////
-	const [qualificationOptions, setQualificationOptions] = useState<
-		DropdownOption[]
-	>([]);
-	//////////
-	const [genderOptions, setGenderOptions] = useState<DropdownOption[]>([]);
-	const [maritalStatusOptions, setMaritalStatusOptions] = useState<
-		DropdownOption[]
-	>([]);
-	const [religionOptions, setReligionOptions] = useState<DropdownOption[]>([]);
-	const [specialNeedOptions, setSpecialNeedOptions] = useState<
-		DropdownOption[]
-	>([]);
-	const [healthStatusOptions, setHealthStatusOptions] = useState<
-		DropdownOption[]
-	>([]);
-	const [bloodTypeOptions, setBloodTypeOptions] = useState<DropdownOption[]>(
-		[]
-	);
-	const [relativeOptions, setRelativeOptions] = useState<DropdownOption[]>([]);
 
 	const {
 		register,
@@ -145,6 +137,226 @@ const EmployeeForm: FC<Props> = ({
 		control,
 	} = useForm<IEmployeeFormInputs>({ criteriaMode: "all" });
 
+	const fetchData = useCallback(async () => {
+		try {
+			const [
+				classes,
+				ranks,
+				contractTypes,
+				professions,
+				countries,
+				nationalServices,
+				statuses,
+				departments,
+				section,
+				professionalTraining,
+				workMode,
+				workGroup,
+				signaturesLists,
+				jobCategoryMoi,
+				assignedJobs,
+				militaryTrained,
+				militaryUniform,
+				qualifications,
+				genders,
+				maritalStatuses,
+				religions,
+				specialNeeds,
+				healthStatuses,
+				bloodTypes,
+			] = await Promise.all([
+				getClasses().then((response) =>
+					response?.data?.map((item) => ({
+						value: item.id,
+						label: `${item.logPre} - ${
+							language !== "ar" ? item.name : item.nameEnglish
+						}`,
+					}))
+				) as Promise<DropdownOption[]>,
+				getRanks().then((response) =>
+					response?.data?.map((item) => ({
+						value: item.id,
+						label: `${language !== "ar" ? item.name : item.nameEnglish}`,
+					}))
+				) as Promise<DropdownOption[]>,
+				getContractTypes().then((response) =>
+					response?.data?.map((item) => ({
+						value: item.id,
+						label: `${language !== "ar" ? item.name : item.nameEnglish}`,
+					}))
+				) as Promise<DropdownOption[]>,
+				getProfessions().then((response) =>
+					response?.data?.map((item) => ({
+						value: item.id,
+						label: `${language !== "ar" ? item.name : item.nameEnglish}`,
+					}))
+				) as Promise<DropdownOption[]>,
+				getCountries().then((response) =>
+					response?.data?.map((item) => ({
+						value: item.id,
+						label: `${language !== "ar" ? item.name : item.nameEnglish}`,
+					}))
+				) as Promise<DropdownOption[]>,
+				getNationalServices().then((response) =>
+					response?.data?.map((item) => ({
+						value: item.id,
+						label: `${language !== "ar" ? item.name : item.nameEnglish}`,
+					}))
+				) as Promise<DropdownOption[]>,
+				getEmployeeStatuses().then((response) =>
+					response?.data?.map((item) => ({
+						value: item.id,
+						label: `${item.id} - ${
+							language !== "ar" ? item.name : item.nameEnglish
+						}`,
+					}))
+				) as Promise<DropdownOption[]>,
+				getDepartmentsByProject(Project.Employees).then((response) =>
+					response?.data?.map((item) => ({
+						value: item.id,
+						label: `${item.id} - ${
+							language !== "ar" ? item.name : item.nameEnglish
+						}`,
+					}))
+				) as Promise<DropdownOption[]>,
+				getCategorizedDepartments().then((response) =>
+					response?.data?.map((item) => ({
+						value: item.id,
+						label: `${item.id} - ${
+							language !== "ar" ? item.fullName : item.fullNameEnglish
+						}`,
+					}))
+				) as Promise<DropdownOption[]>,
+				getProfessionalTrainings().then((response) =>
+					response?.data?.map((item) => ({
+						value: item.id,
+						label: `${language !== "ar" ? item.name : item.nameEnglish}`,
+					}))
+				) as Promise<DropdownOption[]>,
+				getWorkModes().then((response) =>
+					response?.data?.map((item) => ({
+						value: item.id,
+						label: `${language !== "ar" ? item.name : item.nameEnglish}`,
+					}))
+				) as Promise<DropdownOption[]>,
+				getWorkGroups().then((response) =>
+					response?.data?.map((item) => ({
+						value: item.id,
+						label: `${language !== "ar" ? item.name : item.nameEnglish}`,
+					}))
+				) as Promise<DropdownOption[]>,
+				getSignaturesList().then((response) =>
+					response?.data?.map((item) => ({
+						value: item.id,
+						label: `${language !== "ar" ? item.name : item.nameEnglish}`,
+					}))
+				) as Promise<DropdownOption[]>,
+				getMoiJobCategories().then((response) =>
+					response?.data?.map((item) => ({
+						value: item.id,
+						label: `${language !== "ar" ? item.name : item.nameEnglish}`,
+					}))
+				) as Promise<DropdownOption[]>,
+				getAssignedJobs().then((response) =>
+					response?.data?.map((item) => ({
+						value: item.id,
+						label: `${language !== "ar" ? item.name : item.nameEnglish}`,
+					}))
+				) as Promise<DropdownOption[]>,
+				getMilitaryTrained().then((response) =>
+					response?.data?.map((item) => ({
+						value: item.id,
+						label: `${language !== "ar" ? item.name : item.nameEnglish}`,
+					}))
+				) as Promise<DropdownOption[]>,
+				getMilitaryWear().then((response) =>
+					response?.data?.map((item) => ({
+						value: item.id,
+						label: `${language !== "ar" ? item.name : item.nameEnglish}`,
+					}))
+				) as Promise<DropdownOption[]>,
+				getQualifications().then((response) =>
+					response?.data?.map((item) => ({
+						value: item.id,
+						label: `${language !== "ar" ? item.name : item.nameEnglish}`,
+					}))
+				) as Promise<DropdownOption[]>,
+				getGenders().then((response) =>
+					response?.data?.map((item) => ({
+						value: item.id,
+						label: `${language !== "ar" ? item.name : item.nameEnglish}`,
+					}))
+				) as Promise<DropdownOption[]>,
+				getMaritalStatuses().then((response) =>
+					response?.data?.map((item) => ({
+						value: item.id,
+						label: `${language !== "ar" ? item.name : item.nameEnglish}`,
+					}))
+				) as Promise<DropdownOption[]>,
+				getReligions().then((response) =>
+					response?.data?.map((item) => ({
+						value: item.id,
+						label: `${language !== "ar" ? item.name : item.nameEnglish}`,
+					}))
+				) as Promise<DropdownOption[]>,
+				getSpecialNeeds().then((response) =>
+					response?.data?.map((item) => ({
+						value: item.id,
+						label: `${language !== "ar" ? item.name : item.nameEnglish}`,
+					}))
+				) as Promise<DropdownOption[]>,
+				getHealthStatuses().then((response) =>
+					response?.data?.map((item) => ({
+						value: item.id,
+						label: `${language !== "ar" ? item.name : item.nameEnglish}`,
+					}))
+				) as Promise<DropdownOption[]>,
+				getBloodTypes().then((response) =>
+					response?.data?.map((item) => ({
+						value: item.id,
+						label: `${language !== "ar" ? item.name : item.nameEnglish}`,
+					}))
+				) as Promise<DropdownOption[]>,
+				// Add other dropdown options requests here
+			]);
+
+			setDropdownOptions({
+				classes,
+				ranks,
+				contractTypes,
+				professions,
+				countries,
+				nationalServices,
+				statuses,
+				departments,
+				section,
+				professionalTraining,
+				workMode,
+				workGroup,
+				signaturesLists,
+				jobCategoryMoi,
+				assignedJobs,
+				militaryTrained,
+				militaryUniform,
+				qualifications,
+				genders,
+				maritalStatuses,
+				religions,
+				specialNeeds,
+				healthStatuses,
+				bloodTypes,
+			});
+		} catch (error) {
+			console.error("Error fetching data:", error);
+		}
+	}, [language]);
+
+	useEffect(() => {
+		console.log("fetchData start");
+		fetchData();
+		console.log("fetchData end");
+	}, [fetchData]);
+
 	const fetchActJobMoi = useMemo(
 		() => async (categoryId: Id) => {
 			const { data: list } = await getMoiActJobs(categoryId);
@@ -152,7 +364,7 @@ const EmployeeForm: FC<Props> = ({
 				setActJobMoiOptions(
 					list?.map((d) => {
 						return {
-							label: d.name,
+							label: `${language !== "ar" ? d.name : d.nameEnglish}`,
 							value: d.id,
 						};
 					})
@@ -160,10 +372,30 @@ const EmployeeForm: FC<Props> = ({
 			}
 			console.log("check");
 		},
-		[]
+		[language]
 	);
 
 	useEffect(() => {
+		if (data) {
+			const { actJobMOI } = data;
+			fetchActJobMoi(actJobMOI.groupId);
+			console.log("fetch jobCatMoi");
+		}
+	}, [data, fetchActJobMoi]);
+
+	useEffect(() => {
+		if (data) {
+			const { actJobMOI } = data;
+			const selectedActJobMoi = actJobMoiOptions.find(
+				(x) => x.value === actJobMOI?.id
+			);
+			setValue("actJob", selectedActJobMoi!);
+			console.log("populate jobCatMoi");
+		}
+	}, [actJobMoiOptions, data, setValue]);
+
+	useEffect(() => {
+		console.log("here?");
 		register("employeeNo", {
 			required: t("error.form.required.employeeNo", {
 				framework: "React",
@@ -493,6 +725,7 @@ const EmployeeForm: FC<Props> = ({
 		});
 
 		if (data) {
+			console.log(data);
 			setHideUploadButton(false);
 			const {
 				photo,
@@ -566,12 +799,11 @@ const EmployeeForm: FC<Props> = ({
 			} = data;
 
 			setValue("photo", photo!);
-			console.log(photo);
 			setValue("employeeNo", employeeNo!);
 			setValue("name", name!);
 			setValue("nameEnglish", nameEnglish!);
 
-			const selectedClass = classOptions.find(
+			const selectedClass = dropdownOptions.classes.find(
 				(x: { value: any }) => x.value === recruiter?.id!
 			);
 			setValue("class", selectedClass!);
@@ -579,80 +811,81 @@ const EmployeeForm: FC<Props> = ({
 			setValue("hireDate", hireDate!);
 			setValue("joinDate", joinDate!);
 
-			const selectedRank = rankOptions.find(
+			const selectedRank = dropdownOptions.ranks.find(
 				(x: { value: any }) => x.value === rank?.id!
 			);
 			setValue("rank", selectedRank!);
 
-			const selectedContract = contractTypeOptions.find(
+			const selectedContract = dropdownOptions.contractTypes.find(
 				(x: { value: any }) => x.value === contractType?.id!
 			);
 			setValue("contractType", selectedContract!);
 
-			const selectedProfession = professionOptions.find(
+			const selectedProfession = dropdownOptions.professions.find(
 				(x: { value: any }) => x.value === profession?.id!
 			);
 			setValue("profession", selectedProfession!);
 
-			const selectedaNationality = countryOptions.find(
+			const selectedaNationality = dropdownOptions.countries.find(
 				(x: { value: any }) => x.value === nationality?.id!
 			);
 			setValue("nationality", selectedaNationality!);
 
-			const selectedNationalService = nationalServiceOptions.find(
+			const selectedNationalService = dropdownOptions.nationalServices.find(
 				(x: { value: any }) => x.value === nationalService?.id!
 			);
 			setValue("nationalService", selectedNationalService!);
 			setValue("nationalServiceGroup", nationalServiceGroup! || "");
 
-			const selectedStatus = statusOptions.find(
+			const selectedStatus = dropdownOptions.statuses.find(
 				(x: { value: any }) => x.value === status?.id!
 			);
 			setValue("status", selectedStatus!);
 
-			setValue("statusDetails", statusDetail! || "");
+			setValue("statusDetails", statusDetail);
 			setValue("statusDate", statusDate!);
 
 			setValue("militaryCardExpiryDate", militaryCardExpiryDate);
 
-			const selectedDepartment = departmentOptions.find(
+			const selectedDepartment = dropdownOptions.departments.find(
 				(x: { value: any }) => x.value === department?.id!
 			);
 			setValue("department", selectedDepartment!);
 
-			const selectedSection = sectionOptions.find(
+			const selectedSection = dropdownOptions.section.find(
 				(x: { value: any }) => x.value === section?.id!
 			);
 			setValue("section", selectedSection!);
 
 			setValue("isWorkLocationManager", isWorkLocationManager);
 
-			const selectedProfessionTraining = professionalTrainingOptions.find(
-				(x: { value: any }) => x.value === professionalTraining?.id!
-			);
+			const selectedProfessionTraining =
+				dropdownOptions.professionalTraining.find(
+					(x: { value: any }) => x.value === professionalTraining?.id!
+				);
 			setValue("professionalTraining", selectedProfessionTraining!);
 
-			const selectedWorkMode = workModeOptions.find(
+			const selectedWorkMode = dropdownOptions.workMode.find(
 				(x: { value: any }) => x.value === workMode?.id!
 			);
 			setValue("workMode", selectedWorkMode!);
 
-			const selectedWorkGroup = workGroupOptions.find(
+			const selectedWorkGroup = dropdownOptions.workGroup.find(
 				(x: { value: any }) => x.value === workGroup?.id!
 			);
 			setValue("workGroup", selectedWorkGroup!);
 
-			const selectedSignList = signaturesListsOptions.find(
+			const selectedSignList = dropdownOptions.signaturesLists.find(
 				(x: { value: any }) => x.value === signList?.id!
 			);
 			setValue("signList", selectedSignList!);
 
-			const selectedjobCatMoi = jobCategoryMoiOptions.find(
+			const selectedjobCatMoi = dropdownOptions.jobCategoryMoi.find(
 				(x) => x.value === actJobMOI.groupId
 			);
 			setValue("jobCatMoi", selectedjobCatMoi!);
 
-			const selectedAssignedJob = assignedJobOptions.find(
+			const selectedAssignedJob = dropdownOptions.assignedJobs.find(
 				(x: { value: any }) => x.value === assignedJob?.id!
 			);
 			setValue("assignedJob", selectedAssignedJob!);
@@ -662,26 +895,26 @@ const EmployeeForm: FC<Props> = ({
 			setValue("previousExperienceMonth", previousExperienceMonth! || "0");
 			setValue("previousExperienceDay", previousExperienceDay! || "0");
 
-			const selectedMilitaryTrained = militaryTrainedOptions.find(
+			const selectedMilitaryTrained = dropdownOptions.militaryTrained.find(
 				(x: { value: any }) => x.value === militaryTrain?.id!
 			);
 			setValue("militaryTrained", selectedMilitaryTrained!);
 
-			const selectedMilitaryWear = militaryUniformOptions.find(
+			const selectedMilitaryWear = dropdownOptions.militaryUniform.find(
 				(x: { value: any }) => x.value === militaryWear?.id!
 			);
 			setValue("militaryWear", selectedMilitaryWear!);
 
 			//////////////////////////////////////
-			const selectedQualification = qualificationOptions.find(
+			const selectedQualification = dropdownOptions.qualifications.find(
 				(x: { value: any }) => x.value === qualification?.id!
 			);
 			setValue("qualification", selectedQualification!);
 
 			setValue("degreeDate", degreeDate!);
-			setValue("degreeName", degreeName! || "");
+			setValue("degreeName", degreeName!);
 
-			const selectedDegreeCountry = countryOptions.find(
+			const selectedDegreeCountry = dropdownOptions.countries.find(
 				(x: { value: any }) => x.value === degreeCountry?.id!
 			);
 			setValue("degreeCountry", selectedDegreeCountry!);
@@ -698,17 +931,17 @@ const EmployeeForm: FC<Props> = ({
 			setValue("emailLan", emailLan! || "");
 			setValue("emailNet", emailNet! || "");
 			////////////////////////////////////////
-			const selectedGender = genderOptions.find(
+			const selectedGender = dropdownOptions.genders.find(
 				(x: { value: any }) => x.value === gender?.id!
 			);
 			setValue("gender", selectedGender!);
 
-			const selectedMaritalStatus = maritalStatusOptions.find(
+			const selectedMaritalStatus = dropdownOptions.maritalStatuses.find(
 				(x: { value: any }) => x.value === maritalStatus?.id!
 			);
 			setValue("maritalStatus", selectedMaritalStatus!);
 
-			const selectedReligion = religionOptions.find(
+			const selectedReligion = dropdownOptions.religions.find(
 				(x: { value: any }) => x.value === religion?.id!
 			);
 			setValue("religion", selectedReligion!);
@@ -716,31 +949,31 @@ const EmployeeForm: FC<Props> = ({
 			setValue("birthDate", birthDate! || "");
 			setValue("birthPlace", birthPlace! || "");
 
-			const selectedSpecialNeed = specialNeedOptions.find(
+			const selectedSpecialNeed = dropdownOptions.specialNeeds.find(
 				(x: { value: any }) => x.value === specialNeed?.id!
 			);
 			setValue("specialNeed", selectedSpecialNeed!);
 
-			const selectedHealthStatus = healthStatusOptions.find(
+			const selectedHealthStatus = dropdownOptions.healthStatuses.find(
 				(x: { value: any }) => x.value === healthStatus?.id!
 			);
 			setValue("healthStatus", selectedHealthStatus!);
 
-			setValue("passportNo", passportNo! || "");
-			setValue("familyBookNo", familyBookNo! || "");
-			setValue("emiratesIdNo", emiratesIdNo! || "");
-			setValue("uidNo", uidNo! || "");
-			setValue("districtNo", districtNo! || "");
-			setValue("districtName", districtName! || "");
+			setValue("passportNo", passportNo!);
+			setValue("familyBookNo", familyBookNo!);
+			setValue("emiratesIdNo", emiratesIdNo!);
+			setValue("uidNo", uidNo!);
+			setValue("districtNo", districtNo);
+			setValue("districtName", districtName);
 			setValue("lastMedicalTestDate", lastMedicalTestDate!);
 
-			const selectedBloodType = bloodTypeOptions.find(
+			const selectedBloodType = dropdownOptions.bloodTypes.find(
 				(x: { value: any }) => x.value === bloodType?.id!
 			);
 			setValue("bloodType", selectedBloodType!);
 
-			setValue("height", height! || "");
-			setValue("weight", weight! || "");
+			setValue("height", height!);
+			setValue("weight", weight!);
 			setValue("notes", notes! || "");
 			////////////////////////////////////////
 			setValue("emergencyCallName", emergencyCallName! || "");
@@ -750,511 +983,48 @@ const EmployeeForm: FC<Props> = ({
 			setValue("emergencyCallPhone", emergencyCallPhone! || "");
 			setValue("emergencyCallAddress", emergencyCallAddress! || "");
 			setValue("emergencyOtherContact", emergencyOtherContact! || "");
-			console.log("abcbabsb");
+			// console.log("abcbabsb");
 		}
 	}, [
-		assignedJobOptions,
-		bloodTypeOptions,
-		classOptions,
-		contractTypeOptions,
-		countryOptions,
 		data,
-		departmentOptions,
-		genderOptions,
-		healthStatusOptions,
-		jobCategoryMoiOptions,
-		maritalStatusOptions,
-		militaryTrainedOptions,
-		militaryUniformOptions,
-		nationalServiceOptions,
-		professionOptions,
-		professionalTrainingOptions,
-		qualificationOptions,
-		rankOptions,
+		dropdownOptions.assignedJobs,
+		dropdownOptions.bloodTypes,
+		dropdownOptions.classes,
+		dropdownOptions.contractTypes,
+		dropdownOptions.countries,
+		dropdownOptions.departments,
+		dropdownOptions.genders,
+		dropdownOptions.healthStatuses,
+		dropdownOptions.jobCategoryMoi,
+		dropdownOptions.maritalStatuses,
+		dropdownOptions.militaryTrained,
+		dropdownOptions.militaryUniform,
+		dropdownOptions.nationalServices,
+		dropdownOptions.professionalTraining,
+		dropdownOptions.professions,
+		dropdownOptions.qualifications,
+		dropdownOptions.ranks,
+		dropdownOptions.religions,
+		dropdownOptions.section,
+		dropdownOptions.signaturesLists,
+		dropdownOptions.specialNeeds,
+		dropdownOptions.statuses,
+		dropdownOptions.workGroup,
+		dropdownOptions.workMode,
+		language,
 		register,
-		relativeOptions,
-		religionOptions,
-		sectionOptions,
 		setValue,
-		signaturesListsOptions,
-		specialNeedOptions,
-		statusOptions,
 		t,
-		workGroupOptions,
-		workModeOptions,
 	]);
 
-	useEffect(() => {
-		if (data) {
-			const { actJobMOI } = data;
-			fetchActJobMoi(actJobMOI.groupId);
-			console.log("fetch jobCatMoi");
-		}
-	}, [data, fetchActJobMoi]);
+	console.log(errors);
 
-	useEffect(() => {
-		if (data) {
-			const { actJobMOI } = data;
-			const selectedActJobMoi = actJobMoiOptions.find(
-				(x) => x.value === actJobMOI?.id
-			);
-			setValue("actJob", selectedActJobMoi!);
-			console.log("populate jobCatMoi");
-		}
-	}, [actJobMoiOptions, data, setValue]);
-
-	useEffect(() => {
-		const fetchClasses = async () => {
-			const { data } = await getClasses();
-			if (data) {
-				setClassOptions(
-					data?.map((d) => {
-						return {
-							label: `${language !== "ar" ? d.name : d.nameEnglish}`,
-							value: d.id,
-						};
-					})
-				);
-			}
-		};
-
-		fetchClasses();
-	}, [language]);
-
-	useEffect(() => {
-		const fetchRanks = async () => {
-			const { data } = await getRanks();
-			if (data) {
-				setRankOptions(
-					data?.map((d) => {
-						return {
-							label: `${language !== "ar" ? d.name : d.nameEnglish}`,
-							value: d.id,
-						};
-					})
-				);
-			}
-		};
-
-		fetchRanks();
-	}, [language]);
-
-	useEffect(() => {
-		const fetchContractTypes = async () => {
-			const { data } = await getContractTypes();
-			if (data) {
-				setContractTypeOptions(
-					data?.map((d) => {
-						return {
-							label: `${language !== "ar" ? d.name : d.nameEnglish}`,
-							value: d.id,
-						};
-					})
-				);
-			}
-		};
-
-		fetchContractTypes();
-	}, [language]);
-
-	useEffect(() => {
-		const fetchProfessions = async () => {
-			const { data } = await getProfessions();
-			if (data) {
-				setProfessionOptions(
-					data?.map((d) => {
-						return {
-							label: `${language !== "ar" ? d.name : d.nameEnglish}`,
-							value: d.id,
-						};
-					})
-				);
-			}
-		};
-
-		fetchProfessions();
-	}, [language]);
-
-	useEffect(() => {
-		const fetchCountries = async () => {
-			const { data } = await getCountries();
-			if (data) {
-				setCountryOptions(
-					data?.map((d) => {
-						return {
-							label: `${language !== "ar" ? d.name : d.nameEnglish}`,
-							value: d.id,
-						};
-					})
-				);
-			}
-		};
-
-		fetchCountries();
-	}, [language]);
-
-	useEffect(() => {
-		const fetchNationalService = async () => {
-			const { data } = await getNationalServices();
-			if (data) {
-				setNationalServiceOptions(
-					data?.map((d) => {
-						return {
-							label: `${language !== "ar" ? d.name : d.nameEnglish}`,
-							value: d.id,
-						};
-					})
-				);
-			}
-		};
-
-		fetchNationalService();
-	}, [language]);
-
-	useEffect(() => {
-		const fetchStatus = async () => {
-			const { data } = await getEmployeeStatuses();
-			if (data) {
-				setStatusOptions(
-					data?.map((d) => {
-						return {
-							label: `${language !== "ar" ? d.name : d.nameEnglish}`,
-							value: d.id,
-						};
-					})
-				);
-			}
-		};
-		fetchStatus();
-	}, [language]);
-
-	useEffect(() => {
-		const fetchDepartments = async () => {
-			const { data } = await getDepartmentsByProject(Project.Employees);
-			if (data) {
-				setDepartmentOptions(
-					data?.map((d) => {
-						return {
-							label: `${language !== "ar" ? d.name : d.nameEnglish}`,
-							value: d.id,
-						};
-					})
-				);
-			}
-		};
-
-		fetchDepartments();
-	}, [language]);
-
-	useEffect(() => {
-		const fetchDepartments = async () => {
-			const { data } = await getCategorizedDepartments();
-			if (data) {
-				setSectionOptions(
-					data?.map((d) => {
-						return {
-							label: `${language !== "ar" ? d.fullName : d.fullNameEnglish}`,
-							value: d.id,
-						};
-					})
-				);
-			}
-		};
-
-		fetchDepartments();
-	}, [language]);
-
-	useEffect(() => {
-		const fetchProfessionalTraining = async () => {
-			const { data } = await getProfessionalTrainings();
-			if (data) {
-				setProfessionalTrainingOptions(
-					data?.map((d) => {
-						return {
-							label: `${language !== "ar" ? d.name : d.nameEnglish}`,
-							value: d.id,
-						};
-					})
-				);
-			}
-		};
-
-		fetchProfessionalTraining();
-	}, [language]);
-
-	useEffect(() => {
-		const fetchWorkMode = async () => {
-			const { data } = await getWorkModes();
-			if (data) {
-				setWorkModeOptions(
-					data?.map((d) => {
-						return {
-							label: `${language !== "ar" ? d.name : d.nameEnglish}`,
-							value: d.id,
-						};
-					})
-				);
-			}
-		};
-
-		fetchWorkMode();
-	}, [language]);
-
-	useEffect(() => {
-		const fetchWorkGroup = async () => {
-			const { data } = await getWorkGroups();
-			if (data) {
-				setWorkGroupOptions(
-					data?.map((d) => {
-						return {
-							label: `${language !== "ar" ? d.name : d.nameEnglish}`,
-							value: d.id,
-						};
-					})
-				);
-			}
-		};
-
-		fetchWorkGroup();
-	}, [language]);
-
-	useEffect(() => {
-		const fetchSignaturesLists = async () => {
-			const { data } = await getSignaturesList();
-			if (data) {
-				setSignaturesListsOptions(
-					data?.map((d) => {
-						return {
-							label: `${language !== "ar" ? d.name : d.nameEnglish}`,
-							value: d.id,
-						};
-					})
-				);
-			}
-		};
-
-		fetchSignaturesLists();
-	}, [language]);
-
-	useEffect(() => {
-		const fetchJobCategoryMoi = async () => {
-			const { data } = await getMoiJobCategories();
-			if (data) {
-				setJobCategoryMoiOptions(
-					data?.map((d) => {
-						return {
-							label: `${language !== "ar" ? d.name : d.nameEnglish}`,
-							value: d.id,
-						};
-					})
-				);
-			}
-		};
-
-		fetchJobCategoryMoi();
-	}, [language]);
-
-	useEffect(() => {
-		const fetchAssignedJobs = async () => {
-			const { data } = await getAssignedJobs();
-			if (data) {
-				setAssignedJobOptions(
-					data?.map((d) => {
-						return {
-							label: `${language !== "ar" ? d.name : d.nameEnglish}`,
-							value: d.id,
-						};
-					})
-				);
-			}
-		};
-
-		fetchAssignedJobs();
-	}, [language]);
-
-	useEffect(() => {
-		const fetchMilitraryTrained = async () => {
-			const { data } = await getMilitaryTrained();
-			if (data) {
-				setMilitaryTrainedOptions(
-					data?.map((d) => {
-						return {
-							label: `${language !== "ar" ? d.name : d.nameEnglish}`,
-							value: d.id,
-						};
-					})
-				);
-			}
-		};
-
-		fetchMilitraryTrained();
-	}, [language]);
-
-	useEffect(() => {
-		const fetchMilitraryUniform = async () => {
-			const { data } = await getMilitaryWear();
-			if (data) {
-				setMilitaryUniformOptions(
-					data?.map((d) => {
-						return {
-							label: `${language !== "ar" ? d.name : d.nameEnglish}`,
-							value: d.id,
-						};
-					})
-				);
-			}
-		};
-
-		fetchMilitraryUniform();
-	}, [language]);
-
-	////////////////////////////////////
-
-	useEffect(() => {
-		const fetchQualification = async () => {
-			const { data } = await getQualifications();
-			if (data) {
-				setQualificationOptions(
-					data?.map((d) => {
-						return {
-							label: `${language !== "ar" ? d.name : d.nameEnglish}`,
-							value: d.id,
-						};
-					})
-				);
-			}
-		};
-
-		fetchQualification();
-	}, [language]);
-
-	////////////////////////////////////
-
-	useEffect(() => {
-		const fetchGenders = async () => {
-			const { data } = await getGenders();
-			if (data) {
-				setGenderOptions(
-					data?.map((d) => {
-						return {
-							label: `${language !== "ar" ? d.name : d.nameEnglish}`,
-							value: d.id,
-						};
-					})
-				);
-			}
-		};
-
-		fetchGenders();
-	}, [language]);
-
-	useEffect(() => {
-		const fetchMaritalStatus = async () => {
-			const { data } = await getMaritalStatuses();
-			if (data) {
-				setMaritalStatusOptions(
-					data?.map((d) => {
-						return {
-							label: `${language !== "ar" ? d.name : d.nameEnglish}`,
-							value: d.id,
-						};
-					})
-				);
-			}
-		};
-
-		fetchMaritalStatus();
-	}, [language]);
-
-	useEffect(() => {
-		const fetchReligions = async () => {
-			const { data } = await getReligions();
-			if (data) {
-				setReligionOptions(
-					data?.map((d) => {
-						return {
-							label: `${language !== "ar" ? d.name : d.nameEnglish}`,
-							value: d.id,
-						};
-					})
-				);
-			}
-		};
-
-		fetchReligions();
-	}, [language]);
-
-	useEffect(() => {
-		const fetchSpecialNeeds = async () => {
-			const { data } = await getSpecialNeeds();
-			if (data) {
-				setSpecialNeedOptions(
-					data?.map((d) => {
-						return {
-							label: `${language !== "ar" ? d.name : d.nameEnglish}`,
-							value: d.id,
-						};
-					})
-				);
-			}
-		};
-
-		fetchSpecialNeeds();
-	}, [language]);
-
-	useEffect(() => {
-		const fetchHealthStatus = async () => {
-			const { data } = await getHealthStatuses();
-			if (data) {
-				setHealthStatusOptions(
-					data?.map((d) => {
-						return {
-							label: `${language !== "ar" ? d.name : d.nameEnglish}`,
-							value: d.id,
-						};
-					})
-				);
-			}
-		};
-
-		fetchHealthStatus();
-	}, [language]);
-
-	useEffect(() => {
-		const fetchBloodType = async () => {
-			const { data } = await getBloodTypes();
-			if (data) {
-				setBloodTypeOptions(
-					data?.map((d) => {
-						return {
-							label: `${language !== "ar" ? d.name : d.nameEnglish}`,
-							value: d.id,
-						};
-					})
-				);
-			}
-		};
-
-		fetchBloodType();
-	}, [language]);
-
-	useEffect(() => {
-		const fetchRelatives = async () => {
-			const { data } = await getRelatives();
-			if (data) {
-				setRelativeOptions(
-					data?.map((d) => {
-						return {
-							label: `${language !== "ar" ? d.name : d.nameEnglish}`,
-							value: d.id,
-						};
-					})
-				);
-			}
-		};
-
-		fetchRelatives();
-	}, [language]);
+	// const handleChange = (fieldName: any, value: any) => {
+	// 	setFormData((prevData) => ({
+	// 		...prevData,
+	// 		[fieldName]: value,
+	// 	}));
+	// };
 
 	////////////////////////////////////
 	const jobCategoryMoiChangeHandler = async (option: DropdownOption) => {
@@ -1282,8 +1052,6 @@ const EmployeeForm: FC<Props> = ({
 		const image = getValues("thumbnail");
 		onImageUpload(image!)!;
 	};
-
-	console.log("sadsa");
 
 	return (
 		<form onSubmit={handleSubmit(submitHandler)}>
@@ -1390,7 +1158,7 @@ const EmployeeForm: FC<Props> = ({
 										render={({ field: { value, onChange } }) => (
 											<Dropdown
 												label={t("class.name", { framework: "React" })}
-												options={classOptions}
+												options={dropdownOptions.classes}
 												onSelect={onChange}
 												value={value}
 											/>
@@ -1406,14 +1174,15 @@ const EmployeeForm: FC<Props> = ({
 										render={({ field: { onChange, value } }) => (
 											<DatePicker
 												date={value}
-												setDate={onChange}
-												labelText={t("employee.hireDate", {
+												onChange={onChange}
+												labeltext={t("employee.hireDate", {
 													framework: "React",
 												})}
 											/>
 										)}
 										name="hireDate"
 										control={control}
+										defaultValue={new Date().toISOString()}
 									/>
 								</div>
 								<div className={styles.field}>
@@ -1421,14 +1190,15 @@ const EmployeeForm: FC<Props> = ({
 										render={({ field: { onChange, value } }) => (
 											<DatePicker
 												date={value}
-												setDate={onChange}
-												labelText={t("employee.joinDate", {
+												onChange={onChange}
+												labeltext={t("employee.joinDate", {
 													framework: "React",
 												})}
 											/>
 										)}
 										name="joinDate"
 										control={control}
+										defaultValue={new Date().toISOString()}
 									/>
 								</div>
 								<div className={styles.ddlField}>
@@ -1436,7 +1206,7 @@ const EmployeeForm: FC<Props> = ({
 										render={({ field: { value, onChange } }) => (
 											<Dropdown
 												label={t("rank.name", { framework: "React" })}
-												options={rankOptions}
+												options={dropdownOptions.ranks}
 												onSelect={onChange}
 												value={value}
 											/>
@@ -1452,7 +1222,7 @@ const EmployeeForm: FC<Props> = ({
 												label={t("employee.contractType", {
 													framework: "React",
 												})}
-												options={contractTypeOptions}
+												options={dropdownOptions.contractTypes}
 												onSelect={onChange}
 												value={value}
 											/>
@@ -1468,7 +1238,7 @@ const EmployeeForm: FC<Props> = ({
 										render={({ field: { value, onChange } }) => (
 											<Dropdown
 												label={t("employee.profession", { framework: "React" })}
-												options={professionOptions}
+												options={dropdownOptions.professions}
 												onSelect={onChange}
 												value={value}
 											/>
@@ -1484,7 +1254,7 @@ const EmployeeForm: FC<Props> = ({
 												label={t("employee.nationality", {
 													framework: "React",
 												})}
-												options={countryOptions}
+												options={dropdownOptions.countries}
 												onSelect={onChange}
 												value={value}
 											/>
@@ -1500,7 +1270,7 @@ const EmployeeForm: FC<Props> = ({
 												label={t("employee.nationalService", {
 													framework: "React",
 												})}
-												options={nationalServiceOptions}
+												options={dropdownOptions.nationalServices}
 												onSelect={onChange}
 												value={value}
 											/>
@@ -1533,7 +1303,7 @@ const EmployeeForm: FC<Props> = ({
 										render={({ field: { value, onChange } }) => (
 											<Dropdown
 												label={t("employee.status", { framework: "React" })}
-												options={statusOptions}
+												options={dropdownOptions.statuses}
 												onSelect={onChange}
 												value={value}
 											/>
@@ -1550,13 +1320,12 @@ const EmployeeForm: FC<Props> = ({
 												label={t("employee.statusDetail", {
 													framework: "React",
 												})}
-												value={value}
+												value={value || ""}
 												onChange={onChange}
 											/>
 										)}
 										name="statusDetails"
 										control={control}
-										defaultValue={""}
 									/>
 								</div>
 								<div className={styles.field}>
@@ -1564,14 +1333,15 @@ const EmployeeForm: FC<Props> = ({
 										render={({ field: { onChange, value } }) => (
 											<DatePicker
 												date={value}
-												setDate={onChange}
-												labelText={t("employee.statusDate", {
+												onChange={onChange}
+												labeltext={t("employee.statusDate", {
 													framework: "React",
 												})}
 											/>
 										)}
 										name="statusDate"
 										control={control}
+										defaultValue={new Date().toISOString()}
 									/>
 								</div>
 								<div className={styles.field}>
@@ -1579,14 +1349,15 @@ const EmployeeForm: FC<Props> = ({
 										render={({ field: { onChange, value } }) => (
 											<DatePicker
 												date={value}
-												setDate={onChange}
-												labelText={t("employee.milCardExpDate", {
+												onChange={onChange}
+												labeltext={t("employee.milCardExpDate", {
 													framework: "React",
 												})}
 											/>
 										)}
 										name="militaryCardExpiryDate"
 										control={control}
+										defaultValue={new Date().toISOString()}
 									/>
 								</div>
 							</div>
@@ -1594,7 +1365,6 @@ const EmployeeForm: FC<Props> = ({
 					</div>
 				</div>
 				<Hr />
-				{/* <div className={styles.row}> */}
 				<ShadowedContainer className={styles.basic}>
 					<div className={styles.row}>
 						<div className={styles.ddlField}>
@@ -1602,7 +1372,7 @@ const EmployeeForm: FC<Props> = ({
 								render={({ field: { value, onChange } }) => (
 									<Dropdown
 										label={t("employee.workplace", { framework: "React" })}
-										options={departmentOptions}
+										options={dropdownOptions.departments}
 										onSelect={onChange}
 										value={value}
 									/>
@@ -1635,7 +1405,7 @@ const EmployeeForm: FC<Props> = ({
 										label={t("employee.workLocation", {
 											framework: "React",
 										})}
-										options={sectionOptions}
+										options={dropdownOptions.section}
 										onSelect={onChange}
 										value={value}
 									/>
@@ -1653,7 +1423,7 @@ const EmployeeForm: FC<Props> = ({
 										label={t("employee.professionalTraining", {
 											framework: "React",
 										})}
-										options={professionalTrainingOptions}
+										options={dropdownOptions.professionalTraining}
 										onSelect={onChange}
 										value={value}
 									/>
@@ -1668,7 +1438,7 @@ const EmployeeForm: FC<Props> = ({
 								render={({ field: { value, onChange } }) => (
 									<Dropdown
 										label={t("employee.workMode", { framework: "React" })}
-										options={workModeOptions}
+										options={dropdownOptions.workMode}
 										onSelect={onChange}
 										value={value}
 									/>
@@ -1682,7 +1452,7 @@ const EmployeeForm: FC<Props> = ({
 								render={({ field: { value, onChange } }) => (
 									<Dropdown
 										label={t("employee.workGroup", { framework: "React" })}
-										options={workGroupOptions}
+										options={dropdownOptions.workGroup}
 										onSelect={onChange}
 										value={value}
 									/>
@@ -1696,7 +1466,7 @@ const EmployeeForm: FC<Props> = ({
 								render={({ field: { value, onChange } }) => (
 									<Dropdown
 										label={t("employee.signList", { framework: "React" })}
-										options={signaturesListsOptions}
+										options={dropdownOptions.signaturesLists}
 										onSelect={onChange}
 										value={value}
 									/>
@@ -1714,7 +1484,7 @@ const EmployeeForm: FC<Props> = ({
 										label={t("employee.jobCatMoi", {
 											framework: "React",
 										})}
-										options={jobCategoryMoiOptions}
+										options={dropdownOptions.jobCategoryMoi}
 										onSelect={jobCategoryMoiChangeHandler}
 										value={value}
 									/>
@@ -1743,7 +1513,7 @@ const EmployeeForm: FC<Props> = ({
 								render={({ field: { value, onChange } }) => (
 									<Dropdown
 										label={t("employee.assignedJob", { framework: "React" })}
-										options={assignedJobOptions}
+										options={dropdownOptions.assignedJobs}
 										onSelect={onChange}
 										value={value}
 									/>
@@ -1827,7 +1597,7 @@ const EmployeeForm: FC<Props> = ({
 										label={t("employee.militaryTrained", {
 											framework: "React",
 										})}
-										options={militaryTrainedOptions}
+										options={dropdownOptions.militaryTrained}
 										onSelect={onChange}
 										value={value}
 									/>
@@ -1843,7 +1613,7 @@ const EmployeeForm: FC<Props> = ({
 										label={t("employee.militaryUniform", {
 											framework: "React",
 										})}
-										options={militaryUniformOptions}
+										options={dropdownOptions.militaryUniform}
 										onSelect={onChange}
 										value={value}
 									/>
@@ -1868,7 +1638,7 @@ const EmployeeForm: FC<Props> = ({
 										label={t("employee.academicQualification", {
 											framework: "React",
 										})}
-										options={qualificationOptions}
+										options={dropdownOptions.qualifications}
 										onSelect={onChange}
 										value={value}
 									/>
@@ -1882,8 +1652,8 @@ const EmployeeForm: FC<Props> = ({
 								render={({ field: { onChange, value } }) => (
 									<DatePicker
 										date={value}
-										setDate={onChange}
-										labelText={t("employee.academicQualificationDate", {
+										onChange={onChange}
+										labeltext={t("employee.academicQualificationDate", {
 											framework: "React",
 										})}
 									/>
@@ -1916,7 +1686,7 @@ const EmployeeForm: FC<Props> = ({
 										label={t("employee.qualificationCountry", {
 											framework: "React",
 										})}
-										options={countryOptions}
+										options={dropdownOptions.countries}
 										onSelect={onChange}
 										value={value}
 									/>
@@ -2034,6 +1804,7 @@ const EmployeeForm: FC<Props> = ({
 								)}
 								name="phone2"
 								control={control}
+								defaultValue={""}
 							/>
 						</div>
 						<div className={styles.field}>
@@ -2050,6 +1821,7 @@ const EmployeeForm: FC<Props> = ({
 								)}
 								name="phoneOffice"
 								control={control}
+								defaultValue={""}
 							/>
 						</div>
 					</div>{" "}
@@ -2068,6 +1840,7 @@ const EmployeeForm: FC<Props> = ({
 								)}
 								name="emailLan"
 								control={control}
+								defaultValue={""}
 							/>
 						</div>{" "}
 						<div className={styles.field}>
@@ -2084,6 +1857,7 @@ const EmployeeForm: FC<Props> = ({
 								)}
 								name="emailNet"
 								control={control}
+								defaultValue={""}
 							/>
 						</div>
 					</div>
@@ -2098,7 +1872,7 @@ const EmployeeForm: FC<Props> = ({
 										label={t("employee.gender", {
 											framework: "React",
 										})}
-										options={genderOptions}
+										options={dropdownOptions.genders}
 										onSelect={onChange}
 										value={value}
 									/>
@@ -2114,7 +1888,7 @@ const EmployeeForm: FC<Props> = ({
 										label={t("employee.maritalStatus", {
 											framework: "React",
 										})}
-										options={maritalStatusOptions}
+										options={dropdownOptions.maritalStatuses}
 										onSelect={onChange}
 										value={value}
 									/>
@@ -2130,7 +1904,7 @@ const EmployeeForm: FC<Props> = ({
 										label={t("employee.religion", {
 											framework: "React",
 										})}
-										options={religionOptions}
+										options={dropdownOptions.religions}
 										onSelect={onChange}
 										value={value}
 									/>
@@ -2143,15 +1917,16 @@ const EmployeeForm: FC<Props> = ({
 							<Controller
 								render={({ field: { onChange, value } }) => (
 									<DatePicker
-										date={value}
-										setDate={onChange}
-										labelText={t("employee.dob", {
+										date={value || new Date()}
+										onChange={onChange}
+										labeltext={t("employee.dob", {
 											framework: "React",
 										})}
 									/>
 								)}
 								name="birthDate"
 								control={control}
+								defaultValue={new Date().toISOString()}
 							/>
 						</div>
 					</div>
@@ -2170,6 +1945,7 @@ const EmployeeForm: FC<Props> = ({
 								)}
 								name="birthPlace"
 								control={control}
+								defaultValue={""}
 							/>
 						</div>
 						<div className={styles.ddlField}>
@@ -2179,7 +1955,7 @@ const EmployeeForm: FC<Props> = ({
 										label={t("employee.specialNeeds", {
 											framework: "React",
 										})}
-										options={specialNeedOptions}
+										options={dropdownOptions.specialNeeds}
 										onSelect={onChange}
 										value={value}
 									/>
@@ -2195,7 +1971,7 @@ const EmployeeForm: FC<Props> = ({
 										label={t("employee.healthStatus", {
 											framework: "React",
 										})}
-										options={healthStatusOptions}
+										options={dropdownOptions.healthStatuses}
 										onSelect={onChange}
 										value={value}
 									/>
@@ -2212,7 +1988,7 @@ const EmployeeForm: FC<Props> = ({
 										label={t("employee.passportNo", {
 											framework: "React",
 										})}
-										value={value}
+										value={value || ""}
 										onChange={onChange}
 									/>
 								)}
@@ -2230,7 +2006,7 @@ const EmployeeForm: FC<Props> = ({
 										label={t("employee.familyBook", {
 											framework: "React",
 										})}
-										value={value}
+										value={value || ""}
 										onChange={onChange}
 									/>
 								)}
@@ -2252,6 +2028,7 @@ const EmployeeForm: FC<Props> = ({
 								)}
 								name="emiratesIdNo"
 								control={control}
+								defaultValue={""}
 							/>
 						</div>
 						<div className={styles.field}>
@@ -2268,6 +2045,7 @@ const EmployeeForm: FC<Props> = ({
 								)}
 								name="uidNo"
 								control={control}
+								defaultValue={""}
 							/>
 						</div>
 						<div className={styles.field}>
@@ -2278,12 +2056,13 @@ const EmployeeForm: FC<Props> = ({
 										label={t("employee.districtNo", {
 											framework: "React",
 										})}
-										value={value}
+										value={value || ""}
 										onChange={onChange}
 									/>
 								)}
 								name="districtNo"
 								control={control}
+								defaultValue={""}
 							/>
 						</div>
 					</div>
@@ -2302,6 +2081,7 @@ const EmployeeForm: FC<Props> = ({
 								)}
 								name="districtName"
 								control={control}
+								defaultValue={""}
 							/>
 						</div>
 						<div className={styles.field}>
@@ -2309,14 +2089,15 @@ const EmployeeForm: FC<Props> = ({
 								render={({ field: { onChange, value } }) => (
 									<DatePicker
 										date={value}
-										setDate={onChange}
-										labelText={t("employee.lastMedTestDate", {
+										onChange={onChange}
+										labeltext={t("employee.lastMedTestDate", {
 											framework: "React",
 										})}
 									/>
 								)}
 								name="lastMedicalTestDate"
 								control={control}
+								defaultValue={new Date().toISOString()}
 							/>
 						</div>
 						<div className={styles.ddlField}>
@@ -2326,7 +2107,7 @@ const EmployeeForm: FC<Props> = ({
 										label={t("employee.bloodType", {
 											framework: "React",
 										})}
-										options={bloodTypeOptions}
+										options={dropdownOptions.bloodTypes}
 										onSelect={onChange}
 										value={value}
 									/>
@@ -2343,12 +2124,13 @@ const EmployeeForm: FC<Props> = ({
 										label={t("employee.height", {
 											framework: "React",
 										})}
-										value={value}
+										value={value || ""}
 										onChange={onChange}
 									/>
 								)}
 								name="height"
 								control={control}
+								defaultValue={""}
 							/>
 						</div>
 					</div>
@@ -2361,7 +2143,7 @@ const EmployeeForm: FC<Props> = ({
 										label={t("employee.weight", {
 											framework: "React",
 										})}
-										value={value}
+										value={value || ""}
 										onChange={onChange}
 									/>
 								)}
@@ -2985,7 +2767,7 @@ const EmployeeForm: FC<Props> = ({
 							/>
 							<ErrorMessage
 								errors={errors}
-								name="dob"
+								name="birthDate"
 								render={({ messages }) => {
 									return messages
 										? _.entries(messages).map(([type, message]) => (

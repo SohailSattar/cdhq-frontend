@@ -12,7 +12,7 @@ import { Footer, Header } from "../../components";
 import * as RoutePath from "../../RouteConfig";
 
 import styles from "./styles.module.scss";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { checkLoginStatus } from "../../api/login/get/checkLoginStatus";
 import { loginUserPhp } from "../../api/login/post/loginUserPhp";
 
@@ -25,6 +25,8 @@ const LoginPage = () => {
 	const setUserRole = useStore((state) => state.setUserRole);
 
 	const stableNavigate = useCallback(navigate, []);
+
+	const [serverErrors, setServerErrors] = useState<string[]>([]);
 
 	const checkStatus = useCallback(async () => {
 		const { data } = await checkLoginStatus();
@@ -42,11 +44,12 @@ const LoginPage = () => {
 		const { data, error } = await loginUser(values);
 
 		if (error) {
-			toast.error(error.ErrorMessage, {
-				// autoClose: false,
-				autoClose: 2500,
-				transition: Flip,
-			});
+			// toast.error(error.ErrorMessage, {
+			// 	// autoClose: false,
+			// 	autoClose: 2500,
+			// 	transition: Flip,
+			// });
+			setServerErrors(error.ErrorMessage.split("\n"));
 		}
 
 		if (data) {
@@ -88,7 +91,10 @@ const LoginPage = () => {
 						role="main"
 						className="pb-3">
 						<div className="container container-custom-width">
-							<LoginForm onSubmit={submitHandler} />
+							<LoginForm
+								onSubmit={submitHandler}
+								serverErrors={serverErrors}
+							/>
 						</div>
 					</main>
 				</div>
