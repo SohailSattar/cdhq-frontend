@@ -362,17 +362,17 @@ export interface APIExportEmployee {
 	actJobMOI: string;
 	assignedJob: string;
 	additionalJob?: string;
-	previousExperienceYear: string;
-	previousExperienceMonth: string;
-	previousExperienceDay: string;
+	//previousExperienceYear: string;
+	//previousExperienceMonth: string;
+	//previousExperienceDay: string;
 	militaryTrain: string;
 	militaryWear: string;
 	///////////////////////////////////////////////
 	qualification: string;
-	degreeDate: string;
+	//degreeDate: string;
 	degreeName: string;
-	degreeCountry: string;
-	universityName: string;
+	//degreeCountry: string;
+	//universityName: string;
 	///////////////////////////////////////////////
 	residenceEmirate: string;
 	residenceCity: string;
@@ -385,21 +385,21 @@ export interface APIExportEmployee {
 	//////////////////////////////
 	gender: string;
 	maritalStatus: string;
-	religion: string;
+	//religion: string;
 	birthDate: string;
 	birthPlace: string;
 	specialNeed: string;
 	healthStatus: string;
 	passportNo: string;
-	familyBookNo: string;
+	//familyBookNo: string;
 	emiratesIdNo: string;
-	uidNo: string;
-	districtNo: string;
+	//uidNo: string;
+	//districtNo: string;
 	districtName: string;
 	lastMedicalTestDate: string;
 	bloodType: string;
-	height: string;
-	weight: string;
+	//height: string;
+	//weight: string;
 	notes: string;
 	//////////////////////////////
 	emergencyCallName: string;
