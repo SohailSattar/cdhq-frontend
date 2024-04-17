@@ -22,7 +22,6 @@ export interface EmployeeColumns {
 	employeeNo: string;
 	rank: APIRank;
 	name: string;
-	age: number;
 	status: APIEmployeeStatus;
 	department: APIDepartmentItem;
 	section: APIDepartmentItem;

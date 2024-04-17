@@ -72,7 +72,6 @@ export interface APIEmployeeListItem {
 	rank: APIRank;
 	name: string;
 	nameEnglish: string;
-	age: number;
 	status: APIEmployeeStatus;
 	department: APIDepartmentName;
 	section: APIDepartmentName;
@@ -344,4 +343,68 @@ export interface APIExportEmployee {
 	department: string;
 	section: string;
 	class: string;
+	//////////////////////
+	hireDate: string;
+	joinDate: string;
+	contractType: string;
+	profession: string;
+	nationality: string;
+	nationalService: string;
+	nationalServiceGroup: string;
+	statusDetail: string;
+	statusDate: string;
+	militaryCardExpiryDate: string;
+	///////////////////////////////////////////////
+	professionalTraining: string;
+	workMode: string;
+	workGroup: string;
+	signList: string;
+	actJobMOI: string;
+	assignedJob: string;
+	additionalJob?: string;
+	previousExperienceYear: string;
+	previousExperienceMonth: string;
+	previousExperienceDay: string;
+	militaryTrain: string;
+	militaryWear: string;
+	///////////////////////////////////////////////
+	qualification: string;
+	degreeDate: string;
+	degreeName: string;
+	degreeCountry: string;
+	universityName: string;
+	///////////////////////////////////////////////
+	residenceEmirate: string;
+	residenceCity: string;
+	residenceArea: string;
+	phone: string;
+	phone2: string;
+	phoneOffice: string;
+	emailLan: string;
+	emailNet: string;
+	//////////////////////////////
+	gender: string;
+	maritalStatus: string;
+	religion: string;
+	birthDate: string;
+	birthPlace: string;
+	specialNeed: string;
+	healthStatus: string;
+	passportNo: string;
+	familyBookNo: string;
+	emiratesIdNo: string;
+	uidNo: string;
+	districtNo: string;
+	districtName: string;
+	lastMedicalTestDate: string;
+	bloodType: string;
+	height: string;
+	weight: string;
+	notes: string;
+	//////////////////////////////
+	emergencyCallName: string;
+	emergencyCallRelation: string;
+	emergencyCallPhone: string;
+	emergencyCallAddress: string;
+	emergencyOtherContact: string;
 }

@@ -126,11 +126,7 @@ const EmployeeTable = () => {
 					</div>
 				),
 			},
-			{
-				Header: age,
-				id: "age",
-				accessor: (p) => p.age,
-			},
+
 			{
 				Header: status,
 				id: "statusId",
