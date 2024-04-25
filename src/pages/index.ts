@@ -10,6 +10,11 @@ export * from "./ContentManagement";
 
 export { default as PageNotFound } from "./PageNotFound";
 
+// Employee
+export { default as EmployeeEditPage } from "./Employees/Edit";
+export { default as EmployeeHomePage } from "./Employees/Home";
+export { default as EmployeeNewPage } from "./Employees/New";
+
 // Department
 export { default as DepartmentDetailPage } from "./Department/Detail";
 export { default as DepartmentEditPage } from "./Department/Edit";

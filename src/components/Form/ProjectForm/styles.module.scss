@@ -1,3 +1,5 @@
+@import "../../../assets/css/colors.scss";
+
 .container {
 	// padding: 15px 15px;
 	// max-height: auto;
@@ -16,7 +18,7 @@
 
 			.image {
 				color: white;
-				background-color: rgb(97, 239, 97);
+				background-color: $PRIMARY;
 				max-height: 200px;
 				// border: 2px rgb(97, 239, 97) solid;
 				width: auto;
@@ -28,7 +30,7 @@
 
 			.image {
 				color: white;
-				background-color: rgb(97, 239, 97);
+				background-color: $PRIMARY;
 				max-height: 200px;
 				// border: 2px rgb(97, 239, 97) solid;
 				width: auto;

@@ -82,6 +82,87 @@ export interface ICivilDefenseBuildingFormInputs {
 
 ////////////////////////////////////////////////////////////////////////////////
 
+export interface IEmployeeFormInputs {
+	thumbnail: File;
+	photo: string;
+	employeeNo: string;
+	name: string;
+	nameEnglish: string;
+	class: DropdownOption;
+	hireDate: string;
+	joinDate: string;
+	rank: DropdownOption;
+	contractType: DropdownOption;
+	profession: DropdownOption;
+	nationality: DropdownOption;
+	nationalService: DropdownOption;
+	nationalServiceGroup: string;
+	status: DropdownOption;
+	statusDetails?: string;
+	statusDate: string;
+	militaryCardExpiryDate: string;
+	//////////////////////////////
+	department: DropdownOption;
+	section: DropdownOption;
+	isWorkLocationManager: boolean;
+	professionalTraining: DropdownOption;
+	workMode: DropdownOption;
+	workGroup: DropdownOption;
+	signList: DropdownOption;
+	jobCatMoi: DropdownOption;
+	actJob: DropdownOption;
+	assignedJob: DropdownOption;
+	additionalJob: string;
+	previousExperienceYear: string;
+	previousExperienceMonth: string;
+	previousExperienceDay: string;
+	militaryTrained: DropdownOption;
+	militaryWear: DropdownOption;
+	//////////////////////////////
+	qualification: DropdownOption;
+	degreeDate: string;
+	degreeName: string;
+	degreeCountry: DropdownOption;
+	universityName: string;
+	//////////////////////////////
+	residenceEmirate: string;
+	residenceCity: string;
+	residenceArea: string;
+	phone: string;
+	phone2: string;
+	phoneOffice: string;
+	emailLan: string;
+	emailNet: string;
+	//////////////////////////////
+	gender: DropdownOption;
+	maritalStatus: DropdownOption;
+	religion: DropdownOption;
+	birthDate: string;
+	birthPlace: string;
+	specialNeed: DropdownOption;
+	healthStatus: DropdownOption;
+	passportNo: string;
+	familyBookNo: string;
+	emiratesIdNo: string;
+	uidNo: string;
+	districtNo: string;
+	districtName: string;
+	lastMedicalTestDate: string;
+	bloodType: DropdownOption;
+	height: string;
+	weight: string;
+	notes: string;
+	//////////////////////////////
+	emergencyCallName: string;
+	emergencyCallRelation: string;
+	emergencyCallPhone: string;
+	emergencyCallAddress: string;
+	emergencyOtherName: string;
+	emergencyOtherRelation: string;
+	emergencyOtherPhone: string;
+	emergencyOtherAddress: string;
+}
+
 export interface IEmployeeSignatureFormInputs {
 	thumbnail?: File;
 	imageName: string;

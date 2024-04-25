@@ -12,7 +12,7 @@ import {
 } from "../../../components";
 import { PageContainer } from "../../../components";
 
-import * as RoutePath from "../..//../RouteConfig";
+import * as RoutePath from "../../../RouteConfig";
 import { useEffect, useState } from "react";
 import { APIPrivileges } from "../../../api/privileges/type";
 import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPrivilege";

@@ -11,7 +11,6 @@ import {
 	PaginatedTable,
 	ShadowedContainer,
 } from "../../../components";
-import { getUsersByKeyword } from "../../../api/users/get/getUsersByKeyword";
 import { DropdownOption } from "../../../components/Dropdown";
 
 import { useStore } from "../../../utils/store";
@@ -32,7 +31,6 @@ import { APIPrivileges } from "../../../api/privileges/type";
 import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPrivilege";
 import { Project } from "../../../data/projects";
 import { APIRole } from "../../../api/roles/types";
-import { getRole } from "../../../api/users/get/getRole";
 import { getMyRole } from "../../../api/users/get/getMyRole";
 import { APIExportData } from "../../../api";
 import { exportUsers } from "../../../api/users/export/exportUsers";
@@ -43,8 +41,6 @@ const UserAccountPage = () => {
 	const [t] = useTranslation("common");
 	const navigate = useNavigate();
 	const language = useStore((state) => state.language);
-
-	const loggedUser = useStore((state) => state.loggedInUser);
 	const [role, setRole] = useState<APIRole>();
 
 	const [keyword, setKeyword] = useState("");

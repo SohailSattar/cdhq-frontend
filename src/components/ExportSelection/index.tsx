@@ -16,17 +16,20 @@ import { ReactComponent as PdfIcon } from "../../assets/icons/pdf.svg";
 import { useTranslation } from "react-i18next";
 
 import styles from "./styles.module.scss";
+import { emptyFunction } from "../../utils";
 
 interface Props<T> {
 	displayNames: PropertyDisplayNames<T>;
 	onExcelExport: (data: APIExportData) => void;
-	onPdfExport: (data: APIExportData) => void;
+	onPdfExport?: (data: APIExportData) => void;
+	hidePdfExport?: boolean;
 }
 
 const ExportSelection = <T extends Record<string, any>>({
 	displayNames,
 	onExcelExport,
-	onPdfExport,
+	onPdfExport = () => {},
+	hidePdfExport = false,
 }: Props<T>) => {
 	const [t] = useTranslation("common");
 	const [dynamicObject, setDynamicObject] = useState<{ [key: string]: string }>(
@@ -139,14 +142,16 @@ const ExportSelection = <T extends Record<string, any>>({
 					className={styles.action}>
 					<XLSXIcon className={styles.icon} />
 				</Button>
-				<Button
-					onClick={pdfExportClickHandler}
-					tooltip={t("export.pdf", {
-						framework: "React",
-					})}
-					className={styles.action}>
-					<PdfIcon className={styles.icon} />
-				</Button>
+				{!hidePdfExport && (
+					<Button
+						onClick={pdfExportClickHandler}
+						tooltip={t("export.pdf", {
+							framework: "React",
+						})}
+						className={styles.action}>
+						<PdfIcon className={styles.icon} />
+					</Button>
+				)}
 			</ShadowedContainer>
 		</div>
 	);

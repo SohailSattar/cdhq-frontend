@@ -103,6 +103,7 @@ const NewsEditPage = () => {
 			);
 		}
 	};
+
 	const videoUploadHandler = async (video: File) => {
 		const params: APIUpdateNewsVideo = {
 			id: id!,
