@@ -18,7 +18,7 @@ import { APIExportData } from "../../../api";
 import { useStore } from "../../../utils/store";
 import { format } from "date-fns";
 import { ar, enGB } from "date-fns/locale";
-import { toast } from "react-toastify";
+import { Id, toast } from "react-toastify";
 
 import styles from "./styles.module.scss";
 import { Column } from "react-table";
@@ -26,6 +26,7 @@ import { EmployeeColumns } from "../../../components/PaginatedTable/types";
 import { DropdownOption } from "../../../components/Dropdown";
 import { getPagedEmployees } from "../../../api/employees/get/getPagedEmployees";
 import { exportEmployees } from "../../../api/employees/export/exportEmployees";
+import { getEmployeesByDepartments } from "../../../api/employees/get/getEmployeesByDepartments";
 
 const EmployeeHomePage = () => {
 	const [t] = useTranslation("common");
@@ -39,6 +40,8 @@ const EmployeeHomePage = () => {
 
 	const [keyword, setKeyword] = useState("");
 
+	const [statusCode, setStatusCode] = useState<Id>();
+
 	//Parameters
 	const [orderBy, setOrderBy] = useState<string>("rankId");
 	const [toggleSort, setToggleSort] = useState(false);
@@ -47,8 +50,8 @@ const EmployeeHomePage = () => {
 
 	const [isExportLoading, setIsExportLoading] = useState<boolean>(false);
 
-	useEffect(() => {
-		const fetch = async () => {
+	const fetch = useMemo(
+		() => async () => {
 			const { data } = await getPagedEmployees({
 				page,
 				postsPerPage: pageSize,
@@ -61,27 +64,98 @@ const EmployeeHomePage = () => {
 				setTotalCount(data.totalItems);
 				setPageSize(data?.pageSize);
 			}
-		};
+		},
+		[keyword, orderBy, page, pageSize, toggleSort]
+	);
 
+	useEffect(() => {
 		fetch();
-	}, [keyword, orderBy, page, pageSize, toggleSort]);
+	}, [fetch, keyword, orderBy, page, pageSize, toggleSort]);
+
+	const fetchByDepartment = useMemo(
+		() => async () => {
+			const { data } = await getEmployeesByDepartments(
+				page,
+				pageSize,
+				departmentIds,
+				keyword,
+				statusCode,
+				orderBy
+			);
+
+			if (data) {
+				setItems(data?.employees);
+				setTotalCount(data?.totalItems);
+			}
+		},
+		[page, pageSize, departmentIds, keyword, statusCode, orderBy]
+	);
+
+	useEffect(() => {
+		if (departmentIds.length === 0) {
+			fetch();
+		} else {
+			fetchByDepartment();
+		}
+	}, [departmentIds.length, fetch, fetchByDepartment]);
 
 	const id = t("user.id", { framework: "React" });
 	const rank = t("rank.name", { framework: "React" });
-	const employeeNo = t("user.employeeNumber", { framework: "React" });
+	const employeeNo = t("employee.militaryNo", { framework: "React" });
 	const name = t("global.name", { framework: "React" });
 	const nameArabic = t("global.nameArabic", { framework: "React" });
 	const nameEnglish = t("global.nameEnglish", { framework: "React" });
 	const age = t("employee.age", { framework: "React" });
+	const empStatus = t("employee.status", { framework: "React" });
+	const workLocation = t("employee.workLocation", { framework: "React" });
+	const lastUpdate = t("common.lastUpdate", { framework: "React" });
+	const notes = t("employee.notes", { framework: "React" });
+	const assignedJob = t("employee.assignedJob", { framework: "React" });
+	const workMode = t("employee.workMode", { framework: "React" });
+	const workGroup = t("employee.workGroup", { framework: "React" });
+	const profession = t("employee.profession", { framework: "React" });
+	const professionalTraining = t("employee.professionalTraining", {
+		framework: "React",
+	});
+	const phone = t("user.phone", { framework: "React" });
+	const phoneOffice = t("user.phoneOffice", { framework: "React" });
+	const passportNo = t("employee.passportNo", { framework: "React" });
+	const nationalService = t("employee.nationalService", { framework: "React" });
+	const militaryTrained = t("employee.militaryTrained", { framework: "React" });
+	const militaryUniform = t("employee.militaryUniform", { framework: "React" });
+	const maritalStatus = t("employee.maritalStatus", { framework: "React" });
+	const joinDate = t("employee.joinDate", { framework: "React" });
+	const hireDate = t("employee.hireDate", { framework: "React" });
+	const healthStatus = t("employee.healthStatus", { framework: "React" });
+	const gender = t("employee.gender", { framework: "React" });
+	const emergencyName = t("employee.emergency.phone2", { framework: "React" });
+	const emergencyRelation = t("employee.emergency.relation", {
+		framework: "React",
+	});
+	const emergencyPhone = t("employee.emergency.phone", { framework: "React" });
+	const emergencyAddress = t("employee.emergency.address", {
+		framework: "React",
+	});
+	const emirate = t("emirate.name", { framework: "React" });
+	const emailNet = t("employee.emailNet", { framework: "React" });
+	const eidNo = t("employee.eid", { framework: "React" });
+	const districtName = t("employee.districtName", { framework: "React" });
+	const nationality = t("employee.nationality", { framework: "React" });
+	const contractType = t("employee.contractType", { framework: "React" });
+	const bloodType = t("employee.bloodType", { framework: "React" });
+	const birthPlace = t("employee.birthPlace", { framework: "React" });
+	const birthDate = t("employee.dob", { framework: "React" });
+	const milCardExpDate = t("employee.milCardExpDate", { framework: "React" });
 
 	const department = t("department.name", { framework: "React" });
 	const section = t("department.section", { framework: "React" });
 	const recruiter = t("class.name", { framework: "React" });
 
-	const phone = t("user.phone", { framework: "React" });
 	const email = t("user.email", { framework: "React" });
 
 	const status = t("global.status", { framework: "React" });
+
+	const position = t("employee.position", { framework: "React" });
 
 	//Actions
 	const actions = t("global.actions", { framework: "React" });
@@ -246,72 +320,66 @@ const EmployeeHomePage = () => {
 	};
 
 	// For Export
+
 	const propertyDisplayNames: Record<
 		keyof APIExportEmployee,
 		Record<string, string>
 	> = {
-		id: { value: "Id", text: id },
+		// id: { value: "Id", text: id },
 		employeeNo: { value: "EmployeeNo", text: employeeNo },
 		rank: { value: "Rank", text: rank },
-		nameEnglish: { value: "NameEnglish", text: nameEnglish },
 		name: { value: "Name", text: nameArabic },
-		department: { value: "Department", text: department },
-		section: { value: "Section", text: section },
-		class: { value: "Class", text: recruiter },
-		status: { value: "Status", text: status },
+		nameEnglish: { value: "NameEnglish", text: nameEnglish },
 		age: { value: "Age", text: age },
-		phone: { value: "Phone", text: "phone" },
-
-		professionalTraining: { value: "Phone", text: "phone" },
-		workMode: { value: "Phone", text: "phone" },
-		workGroup: { value: "Phone", text: "phone" },
-		hireDate: { value: "Phone", text: "phone" },
-		joinDate: { value: "Phone", text: "phone" },
-		contractType: { value: "Phone", text: "phone" },
-		profession: { value: "Phone", text: "phone" },
-		nationality: { value: "Phone", text: "phone" },
-		nationalService: { value: "Phone", text: "phone" },
-		nationalServiceGroup: { value: "Phone", text: "phone" },
-		statusDate: { value: "Phone", text: "phone" },
-		militaryCardExpiryDate: { value: "Phone", text: "phone" },
-		signList: { value: "Phone", text: "phone" },
-		assignedJob: { value: "Phone", text: "phone" },
-		additionalJob: { value: "Phone", text: "phone" },
-		previousExperienceYear: { value: "Phone", text: "phone" },
-		previousExperienceMonth: { value: "Phone", text: "phone" },
-		previousExperienceDay: { value: "Phone", text: "phone" },
-		militaryWear: { value: "Phone", text: "phone" },
-		qualification: { value: "Phone", text: "phone" },
-		degreeDate: { value: "Phone", text: "phone" },
-		degreeName: { value: "Phone", text: "phone" },
-		degreeCountry: { value: "Phone", text: "phone" },
-		universityName: { value: "Phone", text: "phone" },
-		residenceEmirate: { value: "Phone", text: "phone" },
-		residenceCity: { value: "Phone", text: "phone" },
-		residenceArea: { value: "Phone", text: "phone" },
-		phone2: { value: "Phone", text: "phone" },
-		phoneOffice: { value: "Phone", text: "phone" },
-		emailLan: { value: "Phone", text: "phone" },
-		emailNet: { value: "Phone", text: "phone" },
-		gender: { value: "Phone", text: "phone" },
-		maritalStatus: { value: "Phone", text: "phone" },
-		religion: { value: "Phone", text: "phone" },
-		birthDate: { value: "Phone", text: "phone" },
-		birthPlace: { value: "Phone", text: "phone" },
-		specialNeed: { value: "Phone", text: "phone" },
-		healthStatus: { value: "Phone", text: "phone" },
-		passportNo: { value: "Phone", text: "phone" },
-		familyBookNo: { value: "Phone", text: "phone" },
-		emiratesIdNo: { value: "Phone", text: "phone" },
-		uidNo: { value: "Phone", text: "phone" },
-		districtNo: { value: "Phone", text: "phone" },
-		districtName: { value: "Phone", text: "phone" },
-		lastMedicalTestDate: { value: "Phone", text: "phone" },
-		bloodType: { value: "Phone", text: "phone" },
-		weight: { value: "Phone", text: "phone" },
-		actJobMOI: { value: "Phone", text: "phone" },
-		statusDetail: { value: "Phone", text: "phone" },
-		militaryTrain: { value: "Phone", text: "phone" },
+		status: { value: "Status", text: empStatus },
+		department: { value: "Department", text: department },
+		section: { value: "Section", text: workLocation },
+		class: { value: "Class", text: recruiter },
+		assignedJob: { value: "AssignedJob", text: assignedJob },
+		workMode: { value: "WorkMode", text: workMode },
+		workGroup: { value: "WorkGroup", text: workGroup },
+		profession: { value: "Profession", text: profession },
+		professionalTraining: {
+			value: "ProfessionalTraining",
+			text: professionalTraining,
+		},
+		phone: { value: "Phone", text: phone },
+		phoneOffice: { value: "PhoneOffice", text: phoneOffice },
+		passportNo: { value: "PassportNo", text: passportNo },
+		nationalService: { value: "NationalService", text: nationalService },
+		militaryTrain: { value: "MilitaryTrain", text: militaryTrained },
+		militaryWear: { value: "MilitaryWear", text: militaryUniform },
+		maritalStatus: { value: "MaritalStatus", text: maritalStatus },
+		joinDate: { value: "JoinDate", text: joinDate },
+		hireDate: { value: "HireDate", text: hireDate },
+		healthStatus: { value: "HealthStatus", text: healthStatus },
+		gender: { value: "Gender", text: gender },
+		emergencyCallName: { value: "EmergencyCallName", text: emergencyName },
+		emergencyCallRelation: {
+			value: "EmergencyCallRelation",
+			text: emergencyRelation,
+		},
+		emergencyCallPhone: { value: "EmergencyCallPhone", text: emergencyPhone },
+		emergencyCallAddress: {
+			value: "EmergencyCallAddress",
+			text: emergencyAddress,
+		},
+		residenceEmirate: { value: "ResidenceEmirate", text: emirate },
+		emailNet: { value: "EmailNet", text: emailNet },
+		emiratesIdNo: { value: "EmiratesIdNo", text: eidNo },
+		districtName: { value: "DistrictName", text: districtName },
+		nationality: { value: "Nationality", text: nationality },
+		contractType: { value: "ContractType", text: contractType },
+		bloodType: { value: "BloodType", text: bloodType },
+		birthPlace: { value: "BirthPlace", text: birthPlace },
+		birthDate: { value: "BirthDate", text: birthDate },
+		militaryCardExpiryDate: {
+			value: "MilitaryCardExpiryDate",
+			text: milCardExpDate,
+		},
+		notes: { value: "Notes", text: notes },
+		updatedOn: { value: "UpdatedOn", text: lastUpdate },
+		position: { value: "Position", text: position },
 	};
 
 	const exportDataHandler = async (data: APIExportData) => {
@@ -358,7 +426,6 @@ const EmployeeHomePage = () => {
 			btnAddUrlLink={RoutePath.EMPLOYEE_NEW}
 			exportDisplayNames={propertyDisplayNames}
 			onExcelExport={exportDataHandler}
-			onPdfExport={exportDataHandler}
 			isExportSelectionLoading={isExportLoading}>
 			<div className={styles.content}>
 				<div className={styles.hierarchyContainer}>
@@ -385,6 +452,7 @@ const EmployeeHomePage = () => {
 						onTableSort={tableSortHandler}
 						onPageChange={pageChangeHandler}
 						onPageViewSelectionChange={pageViewSelectionHandler}
+						hideActiveStatusDropdown
 						// classNameTable={styles.empTable}
 					/>
 				</ShadowedContainer>

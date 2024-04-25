@@ -1,4 +1,5 @@
 import { Id } from "../../utils";
+import { APIActiveStatus } from "../activeStatus/types";
 import { APIAssignedJob } from "../assignedJobs/types";
 import { APIBloodType } from "../bloodTypes/types";
 import { APIClass, APIClassItem } from "../classes/types";
@@ -157,7 +158,12 @@ export interface APIEmployeeDetail {
 	emergencyCallRelation: string;
 	emergencyCallPhone: string;
 	emergencyCallAddress: string;
-	emergencyOtherContact: string;
+	emergencyOtherName: string;
+	emergencyOtherRelation: string;
+	emergencyOtherPhone: string;
+	emergencyOtherAddress: string;
+	//////////////////////////////
+	activeStatus: APIActiveStatus;
 }
 
 export interface APIEmployeeSignature {
@@ -241,7 +247,7 @@ export interface APINewEmployee {
 	emergencyCallRelation: string;
 	emergencyCallPhone: string;
 	emergencyCallAddress: string;
-	emergencyOtherContact: string;
+	emergencyOtherName: string;
 }
 
 export interface APIUpdateEmployee {
@@ -314,7 +320,7 @@ export interface APIUpdateEmployee {
 	emergencyCallRelation: string;
 	emergencyCallPhone: string;
 	emergencyCallAddress: string;
-	emergencyOtherContact: string;
+	emergencyOtherName: string;
 }
 
 export interface APIUpdateEmployeePhoto {
@@ -331,9 +337,14 @@ export interface APIPaginatedEmployees extends APIPaginate {
 	employees: APIEmployeeListItem[];
 }
 
+/////////////////////////////////////////////////////////
+export interface APIUpdateEmployeeStatus {
+	id: Id;
+	activeStatusId: number;
+}
+
 //////////////////// EXPORT API ////////////////////////
 export interface APIExportEmployee {
-	id: number;
 	employeeNo: number;
 	rank: string;
 	name: string;
@@ -343,68 +354,37 @@ export interface APIExportEmployee {
 	department: string;
 	section: string;
 	class: string;
-	//////////////////////
 	hireDate: string;
 	joinDate: string;
 	contractType: string;
 	profession: string;
 	nationality: string;
 	nationalService: string;
-	nationalServiceGroup: string;
-	statusDetail: string;
-	statusDate: string;
 	militaryCardExpiryDate: string;
-	///////////////////////////////////////////////
 	professionalTraining: string;
 	workMode: string;
 	workGroup: string;
-	signList: string;
-	actJobMOI: string;
 	assignedJob: string;
-	additionalJob?: string;
-	//previousExperienceYear: string;
-	//previousExperienceMonth: string;
-	//previousExperienceDay: string;
 	militaryTrain: string;
 	militaryWear: string;
-	///////////////////////////////////////////////
-	qualification: string;
-	//degreeDate: string;
-	degreeName: string;
-	//degreeCountry: string;
-	//universityName: string;
-	///////////////////////////////////////////////
 	residenceEmirate: string;
-	residenceCity: string;
-	residenceArea: string;
 	phone: string;
-	phone2: string;
 	phoneOffice: string;
-	emailLan: string;
 	emailNet: string;
-	//////////////////////////////
 	gender: string;
 	maritalStatus: string;
-	//religion: string;
 	birthDate: string;
 	birthPlace: string;
-	specialNeed: string;
 	healthStatus: string;
 	passportNo: string;
-	//familyBookNo: string;
 	emiratesIdNo: string;
-	//uidNo: string;
-	//districtNo: string;
 	districtName: string;
-	lastMedicalTestDate: string;
 	bloodType: string;
-	//height: string;
-	//weight: string;
 	notes: string;
-	//////////////////////////////
 	emergencyCallName: string;
 	emergencyCallRelation: string;
 	emergencyCallPhone: string;
 	emergencyCallAddress: string;
-	emergencyOtherContact: string;
+	updatedOn: string;
+	position: string;
 }

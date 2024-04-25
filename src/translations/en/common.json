@@ -2,6 +2,7 @@
 	"common": {
 		"created": "Created by",
 		"updated": "Updated by",
+		"lastUpdate": "Last Update",
 		"dated": "Dated",
 		"city": "City",
 		"year": "Year",
@@ -238,6 +239,7 @@
 		"height": "Height",
 		"weight": "Weight",
 		"notes": "Notes",
+		"position": "Position",
 		"emergency": {
 			"heading": "Relatives who can be contacted in case of emergency",
 			"name": "Emergency Contact Name",

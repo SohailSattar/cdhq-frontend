@@ -29,8 +29,6 @@ export async function getPagedEmployees(
 
 		const url = `${EMPLOYEES}?page=${page}&postsperpage=${postsPerPage}${queryParam}`;
 
-		console.log(url);
-
 		const response = await instance.get<APIPaginatedEmployees>(url, config);
 		const data = response.data;
 		return { data };

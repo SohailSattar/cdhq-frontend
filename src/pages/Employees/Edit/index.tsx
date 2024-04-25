@@ -1,5 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import {
+	DeleteConfirmation,
 	EmployeeForm,
 	IEmployeeFormInputs,
 	PageContainer,
@@ -19,17 +20,27 @@ import { APIPrivileges } from "../../../api/privileges/type";
 import { updateEmployee } from "../../../api/employees/update/updateEmployee";
 import { toast } from "react-toastify";
 import { updateEmployeeImage } from "../../../api/employees/update/updateEmployeeImage";
+import { getActiveStatus } from "../../../api/activeStatus/get/getActiveStatus";
+import { APIStatus } from "../../../api";
+import { updateEmployeeStatus } from "../../../api/employees/update/updateEmployeeStatus";
+import { APIActiveStatus } from "../../../api/activeStatus/types";
 
 const EmployeeEditPage = () => {
 	const { id } = useParams<{ id: string }>();
 	const [t] = useTranslation("common");
 	const navigate = useNavigate();
 
+	const [isLoading, setisLoading] = useState<boolean>(true);
+
 	const [employee, setEmployee] = useState<APIEmployeeDetail>();
 	const [privileges, setPrivileges] = useState<APIPrivileges>();
 
+	const [status, setStatus] = useState<APIActiveStatus>();
+	const [showModal, setShowModal] = useState(false);
+
 	const fetch = useMemo(
 		() => async () => {
+			// setisLoading(true);
 			const { data: privilege } = await getProjectPrivilege(Project.Employees);
 			if (privilege) {
 				const {
@@ -48,12 +59,17 @@ const EmployeeEditPage = () => {
 
 				if (privilege?.updatePrivilege! !== false) {
 					const { data } = await getEmployeeDetails(id!);
-					setEmployee(data);
+
+					if (data) {
+						setEmployee(data);
+						setStatus(data.activeStatus);
+					}
 				} else {
 					const url = RoutePath.EMPLOYEE;
 					navigate(url);
 				}
 			}
+			setisLoading(false);
 		},
 		[id, navigate]
 	);
@@ -61,6 +77,7 @@ const EmployeeEditPage = () => {
 	useEffect(() => {
 		if (id) {
 			fetch();
+			setisLoading(false);
 		}
 	}, [id, fetch]);
 
@@ -153,16 +170,62 @@ const EmployeeEditPage = () => {
 		}
 	};
 
+	const deleteButtonClickHandler = () => {
+		setShowModal(true);
+	};
+
+	const deleteConfirmationClickHandler = async () => {
+		const statusCode = 9;
+
+		const params: APIStatus = {
+			id: id!,
+			activeStatusId: 9,
+		};
+
+		const { data, error } = await updateEmployeeStatus(params);
+
+		if (data) {
+			const { data: status } = await getActiveStatus(statusCode);
+			if (status) {
+				setStatus(status);
+			}
+		}
+
+		toast.error(
+			t("message.honorDeactivated", { framework: "React" }).toString()
+		);
+		setShowModal(false);
+		navigate(`${RoutePath.EMPLOYEE}`);
+	};
+
+	const deleteCancelHandler = () => {
+		setShowModal(false);
+	};
+
 	return (
 		<PageContainer
 			title="Edit Employee"
 			showBackButton
-			btnBackUrlLink={RoutePath.EMPLOYEE}>
+			displayContent={privileges?.updatePrivilege}
+			btnBackUrlLink={RoutePath.EMPLOYEE}
+			showChangeStatusButton={
+				privileges?.privilegeId !== 999 && privileges?.updatePrivilege
+			}
+			currentStatus={status?.id === 1 ? "ACTIVE" : "DEACTIVE"}
+			onDectivate={deleteButtonClickHandler}
+			loading={isLoading}>
 			<EmployeeForm
 				data={employee}
-				actionButtonText={t("button.update", { framework: "React" }).toString()}
+				actionButtonText={t("button.update", {
+					framework: "React",
+				}).toString()}
 				onSubmit={editEmployeeHandler}
 				onImageUpload={imageUploadHandler}
+			/>{" "}
+			<DeleteConfirmation
+				isOpen={showModal}
+				onYesClick={deleteConfirmationClickHandler}
+				onCancelClick={deleteCancelHandler}
 			/>
 		</PageContainer>
 	);

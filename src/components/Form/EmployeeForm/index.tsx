@@ -395,7 +395,6 @@ const EmployeeForm: FC<Props> = ({
 	}, [actJobMoiOptions, data, setValue]);
 
 	useEffect(() => {
-		console.log("here?");
 		register("employeeNo", {
 			required: t("error.form.required.employeeNo", {
 				framework: "React",
@@ -406,10 +405,6 @@ const EmployeeForm: FC<Props> = ({
 					framework: "React",
 				}).toString(),
 			},
-			// minLength: {
-			// 	value: 11,
-			// 	message: 'This input must exceed 10 characters',
-			// },
 		});
 
 		// Employee Name
@@ -661,12 +656,12 @@ const EmployeeForm: FC<Props> = ({
 			}).toString(),
 		});
 
-		// Passport No
-		register("passportNo", {
-			required: t("error.form.required.passportNo", {
-				framework: "React",
-			}).toString(),
-		});
+		// // Passport No
+		// register("passportNo", {
+		// 	required: t("error.form.required.passportNo", {
+		// 		framework: "React",
+		// 	}).toString(),
+		// });
 
 		// Emirates Id No
 		register("emiratesIdNo", {
@@ -682,12 +677,12 @@ const EmployeeForm: FC<Props> = ({
 			}).toString(),
 		});
 
-		// Last Medical Test Date
-		register("lastMedicalTestDate", {
-			required: t("error.form.required.lastMedTestDate", {
-				framework: "React",
-			}).toString(),
-		});
+		// // Last Medical Test Date
+		// register("lastMedicalTestDate", {
+		// 	required: t("error.form.required.lastMedTestDate", {
+		// 		framework: "React",
+		// 	}).toString(),
+		// });
 
 		// Blood Type
 		register("bloodType", {
@@ -795,7 +790,10 @@ const EmployeeForm: FC<Props> = ({
 				emergencyCallRelation,
 				emergencyCallPhone,
 				emergencyCallAddress,
-				emergencyOtherContact,
+				emergencyOtherName,
+				emergencyOtherRelation,
+				emergencyOtherPhone,
+				emergencyOtherAddress,
 			} = data;
 
 			setValue("photo", photo!);
@@ -977,13 +975,14 @@ const EmployeeForm: FC<Props> = ({
 			setValue("notes", notes! || "");
 			////////////////////////////////////////
 			setValue("emergencyCallName", emergencyCallName! || "");
-
 			setValue("emergencyCallRelation", emergencyCallRelation!);
-
 			setValue("emergencyCallPhone", emergencyCallPhone! || "");
 			setValue("emergencyCallAddress", emergencyCallAddress! || "");
-			setValue("emergencyOtherContact", emergencyOtherContact! || "");
-			// console.log("abcbabsb");
+
+			setValue("emergencyOtherName", emergencyOtherName! || "");
+			setValue("emergencyOtherRelation", emergencyOtherRelation! || "");
+			setValue("emergencyOtherPhone", emergencyOtherPhone! || "");
+			setValue("emergencyOtherAddress", emergencyOtherAddress! || "");
 		}
 	}, [
 		data,
@@ -1016,8 +1015,6 @@ const EmployeeForm: FC<Props> = ({
 		setValue,
 		t,
 	]);
-
-	console.log(errors);
 
 	// const handleChange = (fieldName: any, value: any) => {
 	// 	setFormData((prevData) => ({
@@ -1994,6 +1991,7 @@ const EmployeeForm: FC<Props> = ({
 								)}
 								name="passportNo"
 								control={control}
+								defaultValue={""}
 							/>
 						</div>
 					</div>
@@ -2229,26 +2227,7 @@ const EmployeeForm: FC<Props> = ({
 								control={control}
 								defaultValue={""}
 							/>
-						</div>{" "}
-						<div className={styles.field}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<TextBox
-										type="text"
-										label={t("employee.emergency.phone2", {
-											framework: "React",
-										})}
-										value={value}
-										onChange={onChange}
-									/>
-								)}
-								name="emergencyOtherContact"
-								control={control}
-								defaultValue={""}
-							/>
 						</div>
-					</div>{" "}
-					<div className={styles.row}>
 						<div className={styles.field}>
 							<Controller
 								render={({ field: { value, onChange } }) => (
@@ -2262,6 +2241,76 @@ const EmployeeForm: FC<Props> = ({
 									/>
 								)}
 								name="emergencyCallAddress"
+								control={control}
+								defaultValue={""}
+							/>
+						</div>
+					</div>{" "}
+					<div className={styles.row}>
+						<div className={styles.field}>
+							<Controller
+								render={({ field: { value, onChange } }) => (
+									<TextBox
+										type="text"
+										label={t("employee.emergency.name", {
+											framework: "React",
+										})}
+										value={value}
+										onChange={onChange}
+									/>
+								)}
+								name="emergencyOtherName"
+								control={control}
+								defaultValue={""}
+							/>
+						</div>
+						<div className={styles.field}>
+							<Controller
+								render={({ field: { value, onChange } }) => (
+									<TextBox
+										type="text"
+										label={t("employee.emergency.relation", {
+											framework: "React",
+										})}
+										value={value}
+										onChange={onChange}
+									/>
+								)}
+								name="emergencyOtherRelation"
+								control={control}
+								defaultValue={""}
+							/>
+						</div>
+						<div className={styles.field}>
+							<Controller
+								render={({ field: { value, onChange } }) => (
+									<TextBox
+										type="text"
+										label={t("employee.emergency.phone2", {
+											framework: "React",
+										})}
+										value={value}
+										onChange={onChange}
+									/>
+								)}
+								name="emergencyOtherPhone"
+								control={control}
+								defaultValue={""}
+							/>
+						</div>
+						<div className={styles.field}>
+							<Controller
+								render={({ field: { value, onChange } }) => (
+									<TextBox
+										type="text"
+										label={t("employee.emergency.address", {
+											framework: "React",
+										})}
+										value={value}
+										onChange={onChange}
+									/>
+								)}
+								name="emergencyOtherAddress"
 								control={control}
 								defaultValue={""}
 							/>
@@ -2825,7 +2874,7 @@ const EmployeeForm: FC<Props> = ({
 										: null;
 								}}
 							/>
-							<ErrorMessage
+							{/* <ErrorMessage
 								errors={errors}
 								name="passportNo"
 								render={({ messages }) => {
@@ -2839,7 +2888,7 @@ const EmployeeForm: FC<Props> = ({
 										  ))
 										: null;
 								}}
-							/>
+							/> */}
 							<ErrorMessage
 								errors={errors}
 								name="emiratesIdNo"
@@ -2870,7 +2919,7 @@ const EmployeeForm: FC<Props> = ({
 										: null;
 								}}
 							/>
-							<ErrorMessage
+							{/* <ErrorMessage
 								errors={errors}
 								name="lastMedicalTestDate"
 								render={({ messages }) => {
@@ -2884,7 +2933,7 @@ const EmployeeForm: FC<Props> = ({
 										  ))
 										: null;
 								}}
-							/>
+							/> */}
 							<ErrorMessage
 								errors={errors}
 								name="bloodType"

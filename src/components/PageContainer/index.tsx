@@ -5,6 +5,7 @@ import {
 	Button,
 	ErrorAlert,
 	ExportSelection,
+	Loader,
 	LoaderOverlay,
 	Modal,
 	NotAuthorized,
@@ -49,6 +50,7 @@ interface Props {
 	// Export
 	isExportSelectionLoading?: boolean;
 	displayExportButton?: boolean;
+	displayPdfExportButton?: boolean;
 	exportDisplayNames?: any;
 	onExcelExport?: (data: APIExportData) => void;
 	onPdfExport?: (data: APIExportData) => void;
@@ -58,6 +60,7 @@ interface Props {
 	children: any;
 	//////////////////////////////
 	errors?: string[];
+	loading?: boolean;
 }
 const PageContainer: FC<Props> = ({
 	lockFor,
@@ -77,6 +80,7 @@ const PageContainer: FC<Props> = ({
 	onDectivate,
 	isExportSelectionLoading = false,
 	displayExportButton = false,
+	displayPdfExportButton = false,
 	exportDisplayNames,
 	onExcelExport = emptyFunction,
 	onPdfExport = emptyFunction,
@@ -84,6 +88,7 @@ const PageContainer: FC<Props> = ({
 	children,
 	////////////////
 	errors = [],
+	loading = false,
 }) => {
 	const [t] = useTranslation("common");
 	const language = useStore((state) => state.language);
@@ -118,168 +123,164 @@ const PageContainer: FC<Props> = ({
 
 	return (
 		<>
-			{
-				// display === undefined ? (
-				// <Loader />
-				// ) :
-				display === false ? (
-					<NotAuthorized />
-				) : (
-					<>
-						<div className={styles.container}>
-							{/* UNCOMMENT LATER ON */}
-							{title && (
-								<div className={styles.heading}>
-									<span className={styles.title}>{title}</span>
-								</div>
-							)}
+			{loading ? ( // Render LoaderOverlay if loading
+				<Loader />
+			) : display === false ? (
+				<NotAuthorized />
+			) : (
+				<>
+					<div className={styles.container}>
+						{/* UNCOMMENT LATER ON */}
+						{title && (
+							<div className={styles.heading}>
+								<span className={styles.title}>{title}</span>
+							</div>
+						)}
 
-							<motion.div
-								className={
-									showBackButton ||
-									showEditButton ||
-									showAddButton ||
-									showChangeStatusButton ||
-									displayExportButton
-										? styles.actionContainer
-										: ""
-								}
-								initial={{ opacity: 0, visibility: "hidden" }}
-								animate={{ opacity: isVisible ? 1 : 0, visibility: "visible" }}
-								exit={{ opacity: 0 }}
-								transition={{ duration: 1 }}>
-								{showBackButton && (
-									<motion.div
-										className={styles.action}
-										initial={{ opacity: 0 }}
-										animate={{ opacity: isVisible ? 1 : 0 }}
-										exit={{ opacity: 0 }}
-										transition={{ duration: 0.2 }}>
-										<div className={styles.btnSection}>
+						<motion.div
+							className={
+								showBackButton ||
+								showEditButton ||
+								showAddButton ||
+								showChangeStatusButton ||
+								displayExportButton
+									? styles.actionContainer
+									: ""
+							}
+							initial={{ opacity: 0, visibility: "hidden" }}
+							animate={{ opacity: isVisible ? 1 : 0, visibility: "visible" }}
+							exit={{ opacity: 0 }}
+							transition={{ duration: 1 }}>
+							{showBackButton && (
+								<motion.div
+									className={styles.action}
+									initial={{ opacity: 0 }}
+									animate={{ opacity: isVisible ? 1 : 0 }}
+									exit={{ opacity: 0 }}
+									transition={{ duration: 0.2 }}>
+									<div className={styles.btnSection}>
+										<div
+											className={
+												language !== "ar" ? styles.btn : styles.btnLTR
+											}>
+											<RedirectButton
+												label={
+													btnBackLabel!
+														? btnBackLabel
+														: t("button.backToHome", { framework: "React" })
+												}
+												redirectTo={btnBackUrlLink!}
+											/>
+										</div>
+									</div>
+								</motion.div>
+							)}
+							{(showEditButton || showAddButton || showChangeStatusButton) && (
+								<motion.div
+									className={styles.action}
+									initial={{ opacity: 0 }}
+									animate={{ opacity: isVisible ? 1 : 0 }}
+									exit={{ opacity: 0 }}
+									transition={{ duration: 0.2 }}>
+									<div className={styles.btnSection}>
+										{showEditButton && (
+											<div
+												className={
+													language !== "ar" ? styles.btn : styles.btnLTR
+												}>
+												<RedirectButton
+													label={t("button.edit", { framework: "React" })}
+													redirectTo={btnEditUrlLink!}
+												/>
+											</div>
+										)}
+
+										{showAddButton && (
 											<div
 												className={
 													language !== "ar" ? styles.btn : styles.btnLTR
 												}>
 												<RedirectButton
 													label={
-														btnBackLabel!
-															? btnBackLabel
-															: t("button.backToHome", { framework: "React" })
+														btnAddLabel
+															? btnAddLabel
+															: t("button.add", { framework: "React" })
 													}
-													redirectTo={btnBackUrlLink!}
+													redirectTo={btnAddUrlLink!}
 												/>
 											</div>
-										</div>
-									</motion.div>
-								)}
-								{(showEditButton ||
-									showAddButton ||
-									showChangeStatusButton) && (
-									<motion.div
-										className={styles.action}
-										initial={{ opacity: 0 }}
-										animate={{ opacity: isVisible ? 1 : 0 }}
-										exit={{ opacity: 0 }}
-										transition={{ duration: 0.2 }}>
-										<div className={styles.btnSection}>
-											{showEditButton && (
-												<div
-													className={
-														language !== "ar" ? styles.btn : styles.btnLTR
-													}>
-													<RedirectButton
-														label={t("button.edit", { framework: "React" })}
-														redirectTo={btnEditUrlLink!}
-													/>
-												</div>
-											)}
+										)}
 
-											{showAddButton && (
-												<div
-													className={
-														language !== "ar" ? styles.btn : styles.btnLTR
-													}>
-													<RedirectButton
-														label={
-															btnAddLabel
-																? btnAddLabel
-																: t("button.add", { framework: "React" })
-														}
-														redirectTo={btnAddUrlLink!}
-													/>
-												</div>
-											)}
-
-											{showChangeStatusButton && (
-												<div
-													className={
-														language !== "ar" ? styles.btn : styles.btnLTR
-													}>
-													{currentStatus === "ACTIVE" ? (
-														<Button
-															onClick={onDectivate}
-															isCritical>
-															{t("button.deactivate", { framework: "React" })}
-														</Button>
-													) : (
-														<Button onClick={onActivate}>
-															{t("button.activate", { framework: "React" })}
-														</Button>
-													)}
-												</div>
-											)}
-										</div>
-									</motion.div>
-								)}
-
-								{displayExportButton && (
-									<div>
-										<Button
-											withIcon
-											tooltip={t("button.export", {
-												framework: "React",
-											})}
-											onClick={() => setIsOpen(true)}>
-											{t("button.export", {
-												framework: "React",
-											})}
-										</Button>
+										{showChangeStatusButton && (
+											<div
+												className={
+													language !== "ar" ? styles.btn : styles.btnLTR
+												}>
+												{currentStatus === "ACTIVE" ? (
+													<Button
+														onClick={onDectivate}
+														isCritical>
+														{t("button.deactivate", { framework: "React" })}
+													</Button>
+												) : (
+													<Button onClick={onActivate}>
+														{t("button.activate", { framework: "React" })}
+													</Button>
+												)}
+											</div>
+										)}
 									</div>
-								)}
-							</motion.div>
-							<motion.div
-								className={className}
-								initial={{ opacity: 0 }}
-								animate={{ opacity: isVisible ? 1 : 0 }}
-								exit={{ opacity: 0 }}
-								transition={{ duration: 0.5, delay: 0.1 }}>
-								{children}
-							</motion.div>
-						</div>
-						<Portal>
-							<Modal
-								isOpen={isOpen}
-								onClose={() => setIsOpen(false)}>
-								<LoaderOverlay loading={isExportSelectionLoading}>
-									<ExportSelection
-										displayNames={exportDisplayNames}
-										onExcelExport={onExcelExport}
-										onPdfExport={onPdfExport}
-									/>
-								</LoaderOverlay>
-							</Modal>
-						</Portal>
-						{errors.length > 0 && (
-							<Portal>
-								<ErrorAlert
-									message="Error"
-									errors={errors}
+								</motion.div>
+							)}
+
+							{displayExportButton && (
+								<div>
+									<Button
+										withIcon
+										tooltip={t("button.export", {
+											framework: "React",
+										})}
+										onClick={() => setIsOpen(true)}>
+										{t("button.export", {
+											framework: "React",
+										})}
+									</Button>
+								</div>
+							)}
+						</motion.div>
+						<motion.div
+							className={className}
+							initial={{ opacity: 0 }}
+							animate={{ opacity: isVisible ? 1 : 0 }}
+							exit={{ opacity: 0 }}
+							transition={{ duration: 0.5, delay: 0.1 }}>
+							{children}
+						</motion.div>
+					</div>
+					<Portal>
+						<Modal
+							isOpen={isOpen}
+							onClose={() => setIsOpen(false)}>
+							<LoaderOverlay loading={isExportSelectionLoading}>
+								<ExportSelection
+									displayNames={exportDisplayNames}
+									onExcelExport={onExcelExport}
+									onPdfExport={onPdfExport}
+									hidePdfExport={true}
 								/>
-							</Portal>
-						)}
-					</>
-				)
-			}
+							</LoaderOverlay>
+						</Modal>
+					</Portal>
+					{errors.length > 0 && (
+						<Portal>
+							<ErrorAlert
+								message="Error"
+								errors={errors}
+							/>
+						</Portal>
+					)}
+				</>
+			)}
 		</>
 	);
 };

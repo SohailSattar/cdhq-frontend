@@ -13,8 +13,6 @@ export const updateEmployee = async (
 
 		const url = EMPLOYEES;
 
-		console.log(updateEmployeeParams);
-
 		const response = await instance.put<APIResponseStatus>(
 			url,
 			updateEmployeeParams,

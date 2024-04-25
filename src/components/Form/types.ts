@@ -157,7 +157,10 @@ export interface IEmployeeFormInputs {
 	emergencyCallRelation: string;
 	emergencyCallPhone: string;
 	emergencyCallAddress: string;
-	emergencyOtherContact: string;
+	emergencyOtherName: string;
+	emergencyOtherRelation: string;
+	emergencyOtherPhone: string;
+	emergencyOtherAddress: string;
 }
 
 export interface IEmployeeSignatureFormInputs {
