@@ -75,8 +75,6 @@ const EmployeeNewPage = () => {
 			...rest,
 		};
 
-		console.log(params);
-
 		const { data, error } = await addEmployee(params);
 
 		if (data?.success) {

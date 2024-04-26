@@ -352,9 +352,7 @@ const EmployeeForm: FC<Props> = ({
 	}, [language]);
 
 	useEffect(() => {
-		console.log("fetchData start");
 		fetchData();
-		console.log("fetchData end");
 	}, [fetchData]);
 
 	const fetchActJobMoi = useMemo(
@@ -370,7 +368,6 @@ const EmployeeForm: FC<Props> = ({
 					})
 				);
 			}
-			console.log("check");
 		},
 		[language]
 	);
@@ -379,7 +376,6 @@ const EmployeeForm: FC<Props> = ({
 		if (data) {
 			const { actJobMOI } = data;
 			fetchActJobMoi(actJobMOI.groupId);
-			console.log("fetch jobCatMoi");
 		}
 	}, [data, fetchActJobMoi]);
 
@@ -390,7 +386,6 @@ const EmployeeForm: FC<Props> = ({
 				(x) => x.value === actJobMOI?.id
 			);
 			setValue("actJob", selectedActJobMoi!);
-			console.log("populate jobCatMoi");
 		}
 	}, [actJobMoiOptions, data, setValue]);
 
@@ -720,7 +715,6 @@ const EmployeeForm: FC<Props> = ({
 		});
 
 		if (data) {
-			console.log(data);
 			setHideUploadButton(false);
 			const {
 				photo,

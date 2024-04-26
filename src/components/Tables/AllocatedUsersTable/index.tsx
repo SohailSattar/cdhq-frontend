@@ -8,6 +8,12 @@ import { Column } from "react-table";
 import { getProjectUsers } from "../../../api/projects/get/getProjectUsers";
 import { APIProjectUserTable } from "../../PaginatedTable/types";
 import { getDepartmentsByProject } from "../../../api/departments/get/getDepartmentsByProject";
+import { APIExportData } from "../../../api";
+import { format } from "date-fns";
+import { ar, enGB } from "date-fns/locale";
+import { APIExportAllocatedUser } from "../../../api/projects/types";
+import { exportAllocatedUsers } from "../../../api/projects/export/exportAllocatedUsers";
+import { toast } from "react-toastify";
 
 interface Props {
 	projectId: Id;
@@ -34,6 +40,8 @@ const AllocatedUsersTable: FC<Props> = ({ projectId }) => {
 	const [departmentId, setDepartmentId] = useState<Id>("");
 
 	const [statusCode, setStatusCode] = useState<Id>("");
+
+	const [isExportLoading, setIsExportLoading] = useState<boolean>(false);
 
 	//Parameters
 	const [orderBy, setOrderBy] = useState<string>("");
@@ -171,6 +179,54 @@ const AllocatedUsersTable: FC<Props> = ({ projectId }) => {
 		},
 	};
 
+	// For Export
+	const propertyDisplayNames: Record<
+		keyof APIExportAllocatedUser,
+		Record<string, string>
+	> = {
+		// id: { value: "Id", text: id },
+		employeeNo: { value: "User.EmployeeNo", text: employeeNumber },
+		name: { value: "User", text: userName },
+		privilege: { value: "Privilege", text: privilege },
+		department: { value: "Department", text: department },
+	};
+
+	const exportDataHandler = async (data: APIExportData) => {
+		setIsExportLoading(true);
+		const dataValues: APIExportData = {
+			...data,
+			language: language === "ar" ? "en" : "ar",
+			queryParams: {
+				postsPerPage: pageSize,
+				keyword: keyword,
+				orderBy: orderBy,
+				isDescending: toggleSort,
+			},
+		};
+
+		// saving to the file
+		const priv = t("privilege.name", { framework: "React" });
+		const currentDate = format(new Date(), "ddMMyyyyhhmmss", {
+			locale: language !== "ar" ? ar : enGB,
+		});
+		const fileName = `${projectId}_${priv}_${currentDate}.${data.format}`;
+
+		const { data: fData, error } = await exportAllocatedUsers(
+			projectId,
+			dataValues,
+			fileName
+		);
+		if (fData) {
+			toast.success(t("message.downloaded", { framework: "React" }).toString());
+		}
+		if (error) {
+			toast.error(
+				t("message.unauthorizedExport", { framework: "React" }).toString()
+			);
+		}
+		setIsExportLoading(false);
+	};
+
 	return (
 		<>
 			<PaginatedTable
@@ -189,6 +245,10 @@ const AllocatedUsersTable: FC<Props> = ({ projectId }) => {
 				onPageViewSelectionChange={pageViewSelectionHandler}
 				hideWorkflowStatusDropdown={true}
 				onActiveStatusOptionSelectionChange={activeStatusSelectHandler}
+				displayExportButton={true}
+				displayPdfExportButton={false}
+				exportDisplayNames={propertyDisplayNames}
+				onExcelExport={exportDataHandler}
 				// hideActiveStatusDropdown
 			/>
 		</>

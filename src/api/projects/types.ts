@@ -126,3 +126,11 @@ export interface APIUpdateProjectThumbnail {
 	id: string;
 	thumbnail: File;
 }
+
+//////////////////// EXPORT API ////////////////////////
+export interface APIExportAllocatedUser {
+	employeeNo: string;
+	name: string;
+	privilege: string;
+	department: string;
+}

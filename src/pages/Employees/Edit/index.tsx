@@ -143,8 +143,6 @@ const EmployeeEditPage = () => {
 			...rest,
 		};
 
-		console.log(params);
-
 		const { data, error } = await updateEmployee(params);
 
 		if (data?.success) {

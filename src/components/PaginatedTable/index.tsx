@@ -63,6 +63,14 @@ interface Props {
 	onActiveStatusOptionSelectionChange?: (option: DropdownOption) => void;
 	onWorkflowStatusOptionSelectionChange?: (option: DropdownOption) => void;
 	columnsToHide?: string[];
+	// Export
+	isExportSelectionLoading?: boolean;
+	displayExportButton?: boolean;
+	displayPdfExportButton?: boolean;
+	exportDisplayNames?: any;
+	onExcelExport?: (data: APIExportData) => void;
+	onPdfExport?: (data: APIExportData) => void;
+	///
 	classNameTable?: string;
 }
 
@@ -90,6 +98,14 @@ const PaginatedTable: FC<Props> = ({
 	onActiveStatusOptionSelectionChange = () => {},
 	onWorkflowStatusOptionSelectionChange = () => {},
 	columnsToHide = [],
+	// Export
+	isExportSelectionLoading = false,
+	displayExportButton = false,
+	displayPdfExportButton = true,
+	exportDisplayNames,
+	onExcelExport = emptyFunction,
+	onPdfExport = emptyFunction,
+	////////////////////
 	classNameTable,
 }) => {
 	const [t] = useTranslation("common");
@@ -108,6 +124,8 @@ const PaginatedTable: FC<Props> = ({
 	]);
 
 	const [activeStatusText, setActiveStatusText] = useState<string>("");
+
+	const [isOpen, setIsOpen] = useState<boolean>(false);
 
 	useEffect(() => {
 		if (activeStatusPlaceHolder) {
@@ -349,10 +367,10 @@ const PaginatedTable: FC<Props> = ({
 						</div>
 					)}
 				</ShadowedContainer>
-				{/* <ActionsContainer
+				<ActionsContainer
 					showExport={displayExportButton}
 					onExportClick={() => setIsOpen(true)}
-				/> */}
+				/>
 				<Table
 					reference={tableRef}
 					columns={columns}
@@ -372,6 +390,20 @@ const PaginatedTable: FC<Props> = ({
 					/>
 				</div>
 			</div>
+			<Portal>
+				<Modal
+					isOpen={isOpen}
+					onClose={() => setIsOpen(false)}>
+					<LoaderOverlay loading={isExportSelectionLoading}>
+						<ExportSelection
+							displayNames={exportDisplayNames}
+							onExcelExport={onExcelExport}
+							onPdfExport={onPdfExport}
+							hidePdfExport={!displayPdfExportButton}
+						/>
+					</LoaderOverlay>
+				</Modal>
+			</Portal>
 		</>
 	);
 };

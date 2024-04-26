@@ -320,7 +320,6 @@ const EmployeeHomePage = () => {
 	};
 
 	// For Export
-
 	const propertyDisplayNames: Record<
 		keyof APIExportEmployee,
 		Record<string, string>
@@ -426,6 +425,7 @@ const EmployeeHomePage = () => {
 			btnAddUrlLink={RoutePath.EMPLOYEE_NEW}
 			exportDisplayNames={propertyDisplayNames}
 			onExcelExport={exportDataHandler}
+			displayPdfExportButton={false}
 			isExportSelectionLoading={isExportLoading}>
 			<div className={styles.content}>
 				<div className={styles.hierarchyContainer}>
