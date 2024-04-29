@@ -384,6 +384,7 @@ interface Props {
 	showLinks?: boolean;
 	showCounter?: boolean;
 	defaultPosition?: boolean;
+	showHeaderLogo?: boolean;
 }
 
 const Layout: FC<Props> = ({
@@ -396,6 +397,7 @@ const Layout: FC<Props> = ({
 	showLinks = false,
 	showCounter = false,
 	defaultPosition = false,
+	showHeaderLogo = false,
 }) => {
 	const navigate = useNavigate();
 
@@ -538,7 +540,10 @@ const Layout: FC<Props> = ({
 				onReset={() => {
 					// reset the state of your app so the error doesn't happen again
 				}}>
-				<OffcanvasNavbar hideLoginButton={hideLoginButton} />
+				<OffcanvasNavbar
+					showHeaderLogo={showHeaderLogo}
+					hideLoginButton={hideLoginButton}
+				/>
 				{/* <LoaderOverlay loading={isLoading}> */}
 				<div className={clsx(styles.layout, className)}>
 					{content === undefined ? <Loader /> : content}

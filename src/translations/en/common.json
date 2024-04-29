@@ -182,6 +182,7 @@
 	"employee": {
 		"names": "Employees",
 		"signature": "Signature",
+		"photo": "Photo",
 		"militaryNo": "Military No.",
 		"age": "Age",
 		"hireDate": "Hiring Date",

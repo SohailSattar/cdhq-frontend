@@ -102,7 +102,8 @@ function App() {
 									showQRCodes={true}
 									showLinks={true}
 									showCounter={true}
-									defaultPosition={true}>
+									defaultPosition={true}
+									showHeaderLogo>
 									<LandingPage />
 								</Layout>
 							}
@@ -112,7 +113,8 @@ function App() {
 							element={
 								<Layout
 									hideLoginButton={true}
-									noChecks={true}>
+									noChecks={true}
+									showHeaderLogo>
 									<LoginPage />
 								</Layout>
 							}

@@ -23,6 +23,7 @@ import Button from "react-bootstrap/Button";
 import * as RoutePath from "../../RouteConfig";
 
 import HouseLogo from "../../assets/icons/white-home-icon.png";
+import EmblemLogo from "../../assets/icons/white-emblem-icon.png";
 
 import { ROLE } from "../../utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -52,10 +53,11 @@ const useStyles = makeStyles(() => ({
 }));
 
 interface Props {
+	showHeaderLogo?: boolean;
 	hideLoginButton?: boolean;
 }
 
-const OffcanvasNavbar: FC<Props> = ({ hideLoginButton }) => {
+const OffcanvasNavbar: FC<Props> = ({ showHeaderLogo, hideLoginButton }) => {
 	const [t, i18n] = useTranslation("common");
 	const navigate = useNavigate();
 	const toggleLanguage = useStore((state) => state.language);
@@ -148,7 +150,7 @@ const OffcanvasNavbar: FC<Props> = ({ hideLoginButton }) => {
 						};}`}</style>
 					</Helmet>
 				</HelmetProvider>
-				<LogoHeader />
+				{showHeaderLogo && <LogoHeader />}
 				<Navbar
 					expand={size}
 					className={clsx("mb-3", "navbar", styles.navbar)}
@@ -162,7 +164,7 @@ const OffcanvasNavbar: FC<Props> = ({ hideLoginButton }) => {
 									alt="home"
 									className={styles.NavDropdownHome}
 									style={{ width: "30px" }}
-									src={HouseLogo}
+									src={showHeaderLogo ? HouseLogo : EmblemLogo}
 								/>
 							</Nav.Link>
 						</div>

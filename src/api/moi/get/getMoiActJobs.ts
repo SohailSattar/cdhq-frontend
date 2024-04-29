@@ -13,8 +13,6 @@ export async function getMoiActJobs(
 
 		const url = `${MOI}/job/categories/${categoryId}/list`;
 
-		console.log(url);
-
 		const response = await instance.get<APIActualJobMOI[]>(url, config);
 		const data = response.data;
 		return { data };

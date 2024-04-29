@@ -99,8 +99,9 @@ export const Dropdown: FC<Props> = ({
 		() => (base: any) =>
 			mergeProps(base, {
 				// fontFamily: 'Spartan',
-				fontSize: placeHolderFontSize ? placeHolderFontSize : "14px",
+				fontSize: placeHolderFontSize ? placeHolderFontSize : "16px",
 				textTransform: "capitalize",
+				color: "blue",
 			}),
 		[placeHolderFontSize]
 	);
@@ -128,8 +129,9 @@ export const Dropdown: FC<Props> = ({
 	const styles = useMemo(
 		() => ({
 			// control: compose(arabicStyle),
+			singleValue: fontStyle, // Apply custom style to the single value (selected option) text
 		}),
-		[]
+		[fontStyle]
 	);
 
 	return (

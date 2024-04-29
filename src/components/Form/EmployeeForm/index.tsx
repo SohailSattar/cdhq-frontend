@@ -352,9 +352,7 @@ const EmployeeForm: FC<Props> = ({
 	}, [language]);
 
 	useEffect(() => {
-		console.log("fetchData start");
 		fetchData();
-		console.log("fetchData end");
 	}, [fetchData]);
 
 	const fetchActJobMoi = useMemo(
@@ -370,7 +368,6 @@ const EmployeeForm: FC<Props> = ({
 					})
 				);
 			}
-			console.log("check");
 		},
 		[language]
 	);
@@ -379,7 +376,6 @@ const EmployeeForm: FC<Props> = ({
 		if (data) {
 			const { actJobMOI } = data;
 			fetchActJobMoi(actJobMOI.groupId);
-			console.log("fetch jobCatMoi");
 		}
 	}, [data, fetchActJobMoi]);
 
@@ -390,7 +386,6 @@ const EmployeeForm: FC<Props> = ({
 				(x) => x.value === actJobMOI?.id
 			);
 			setValue("actJob", selectedActJobMoi!);
-			console.log("populate jobCatMoi");
 		}
 	}, [actJobMoiOptions, data, setValue]);
 
@@ -720,8 +715,6 @@ const EmployeeForm: FC<Props> = ({
 		});
 
 		if (data) {
-			console.log(data);
-			setHideUploadButton(false);
 			const {
 				photo,
 				employeeNo,
@@ -1038,6 +1031,7 @@ const EmployeeForm: FC<Props> = ({
 
 	const imageChangeHandler = (evnt: ChangeEvent<HTMLInputElement>) => {
 		if (evnt.target.files) {
+			setHideUploadButton(false);
 			const file = evnt.target.files[0];
 			const x = getFullPath(file);
 			setValue("thumbnail", file);
@@ -1047,6 +1041,7 @@ const EmployeeForm: FC<Props> = ({
 
 	const imageUpdateHandler = () => {
 		const image = getValues("thumbnail");
+		setHideUploadButton(true);
 		onImageUpload(image!)!;
 	};
 
@@ -1061,16 +1056,8 @@ const EmployeeForm: FC<Props> = ({
 									? styles.thumbnailContainer
 									: styles.thumbnailContainerLTR
 							}>
-							<h4>{t("image.thumbnail", { framework: "React" })}</h4>
+							<h4>{t("employee.photo", { framework: "React" })}</h4>
 							{/* <ImageUploader/> */}
-							<div className={styles.browse}>
-								<input
-									type="file"
-									name="thumbnail"
-									onChange={imageChangeHandler}
-									accept="image/*"
-								/>
-							</div>
 							<div>
 								<Controller
 									render={({ field: { value, onChange } }) =>
@@ -1089,6 +1076,14 @@ const EmployeeForm: FC<Props> = ({
 									name="photo"
 									control={control}
 									defaultValue={""}
+								/>
+							</div>
+							<div className={styles.browse}>
+								<input
+									type="file"
+									name="thumbnail"
+									onChange={imageChangeHandler}
+									accept="image/*"
 								/>
 							</div>
 							{!hideUploadButton && (
@@ -1113,6 +1108,7 @@ const EmployeeForm: FC<Props> = ({
 												label={t("employee.militaryNo", { framework: "React" })}
 												value={value}
 												onChange={onChange}
+												className={styles.txtBox}
 											/>
 										)}
 										name="employeeNo"
@@ -1361,7 +1357,6 @@ const EmployeeForm: FC<Props> = ({
 						</ShadowedContainer>
 					</div>
 				</div>
-				<Hr />
 				<ShadowedContainer className={styles.basic}>
 					<div className={styles.row}>
 						<div className={styles.ddlField}>
@@ -1621,7 +1616,7 @@ const EmployeeForm: FC<Props> = ({
 						</div>
 					</div>
 				</ShadowedContainer>
-				<Hr />
+
 				<ShadowedContainer className={styles.basic}>
 					<div className={styles.row}>
 						<div className={styles.field}>
@@ -1713,8 +1708,6 @@ const EmployeeForm: FC<Props> = ({
 						</div>
 					</div>
 				</ShadowedContainer>
-
-				<Hr />
 				<ShadowedContainer className={styles.basic}>
 					<div className={styles.row}>
 						<div className={styles.field}>
@@ -1859,7 +1852,6 @@ const EmployeeForm: FC<Props> = ({
 						</div>
 					</div>
 				</ShadowedContainer>
-				<Hr />
 				<ShadowedContainer className={styles.basic}>
 					<div className={styles.row}>
 						<div className={styles.ddlField}>
@@ -2169,7 +2161,6 @@ const EmployeeForm: FC<Props> = ({
 						</div>
 					</div>
 				</ShadowedContainer>
-				<Hr />
 				<ShadowedContainer className={styles.basic}>
 					<h4 className={styles.heading}>
 						{t("employee.emergency.heading", {
@@ -2317,7 +2308,6 @@ const EmployeeForm: FC<Props> = ({
 						</div>
 					</div>
 				</ShadowedContainer>
-				<Hr />
 				<div>
 					{Object.keys(errors).length > 0 && (
 						<ShadowedContainer>

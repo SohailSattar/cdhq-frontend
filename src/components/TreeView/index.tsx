@@ -34,8 +34,7 @@ const TreeView: FC<Props> = ({ node, onNodeClick, direction = "rtl" }) => {
 		({ node, onToggle }: DefaultNodeProps) => (
 			<div
 				className={direction === "rtl" ? "tree-node" : "tree-node-ltr"}
-				key={node.data.title}
-			>
+				key={node.data.title}>
 				<div
 					onClick={onToggle}
 					className={classnames({
@@ -57,8 +56,7 @@ const TreeView: FC<Props> = ({ node, onNodeClick, direction = "rtl" }) => {
 							!node.isSelected()
 						);
 						nodeClickHandler(node);
-					}}
-				>
+					}}>
 					<div className="titles">
 						<div className="node-title">{node.data.name}</div>
 						{node.data.title && (

@@ -27,10 +27,18 @@ import { DropdownOption } from "../../../components/Dropdown";
 import { getPagedEmployees } from "../../../api/employees/get/getPagedEmployees";
 import { exportEmployees } from "../../../api/employees/export/exportEmployees";
 import { getEmployeesByDepartments } from "../../../api/employees/get/getEmployeesByDepartments";
+import { APIRole } from "../../../api/roles/types";
+import { getMyRole } from "../../../api/users/get/getMyRole";
+import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPrivilege";
+import { ROLE } from "../../../utils";
+import { Project } from "../../../data/projects";
+import { APIPrivileges } from "../../../api/privileges/type";
 
 const EmployeeHomePage = () => {
 	const [t] = useTranslation("common");
 	const language = useStore((state) => state.language);
+
+	const [role, setRole] = useState<APIRole>();
 
 	const [items, setItems] = useState<APIEmployeeListItem[]>([]);
 
@@ -49,6 +57,50 @@ const EmployeeHomePage = () => {
 	const [departmentIds, setDepartmentIds] = useState<string[]>([]);
 
 	const [isExportLoading, setIsExportLoading] = useState<boolean>(false);
+
+	const [privileges, setPrivileges] = useState<APIPrivileges>();
+
+	useEffect(() => {
+		const fetch = async () => {
+			const { data } = await getMyRole();
+			if (data) {
+				setRole(data.role!);
+			}
+		};
+
+		fetch();
+	}, []);
+
+	// check if authorized to access
+	useEffect(() => {
+		const fetch = async () => {
+			if (role?.name !== ROLE.SUPERADMIN) {
+				const { data: privilege } = await getProjectPrivilege(
+					Project.Employees
+				);
+				if (privilege) {
+					const {
+						readPrivilege,
+						insertPrivilege,
+						updatePrivilege,
+						deletePrivilege,
+						canExportPdf,
+						canExportExcel,
+					} = privilege;
+					setPrivileges({
+						readPrivilege,
+						insertPrivilege,
+						updatePrivilege,
+						deletePrivilege,
+						canExportPdf,
+						canExportExcel,
+					});
+				}
+			}
+		};
+
+		fetch();
+	}, [role?.name, setPrivileges]);
 
 	const fetch = useMemo(
 		() => async () => {
@@ -295,6 +347,7 @@ const EmployeeHomePage = () => {
 
 	const searchClickHandler = (keyword: string) => {
 		setKeyword(keyword);
+		setPage(1);
 	};
 
 	const tableSortHandler = (columnId: string, isSortedDesc: boolean) => {
@@ -320,7 +373,6 @@ const EmployeeHomePage = () => {
 	};
 
 	// For Export
-
 	const propertyDisplayNames: Record<
 		keyof APIExportEmployee,
 		Record<string, string>
@@ -388,7 +440,7 @@ const EmployeeHomePage = () => {
 			...data,
 			language: language === "ar" ? "en" : "ar",
 			queryParams: {
-				// page: currentPage,
+				page: page,
 				postsPerPage: pageSize,
 				keyword: keyword,
 				// projectId: selectedProject,
@@ -420,12 +472,15 @@ const EmployeeHomePage = () => {
 
 	return (
 		<PageContainer
+			lockFor={[ROLE.USER]}
+			displayContent={privileges?.readPrivilege!}
 			title="Employees"
 			showAddButton
-			displayExportButton
+			displayExportButton={role?.name! === ROLE.SUPERADMIN}
 			btnAddUrlLink={RoutePath.EMPLOYEE_NEW}
 			exportDisplayNames={propertyDisplayNames}
 			onExcelExport={exportDataHandler}
+			displayPdfExportButton={false}
 			isExportSelectionLoading={isExportLoading}>
 			<div className={styles.content}>
 				<div className={styles.hierarchyContainer}>

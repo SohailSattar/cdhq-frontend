@@ -19,12 +19,9 @@ export const updateEmployee = async (
 			config
 		);
 
-		console.log(response);
-
 		const data = response.data;
 		return { data };
 	} catch (err: any) {
-		console.log(err);
 		const error = err.response.data;
 		return { error };
 	}

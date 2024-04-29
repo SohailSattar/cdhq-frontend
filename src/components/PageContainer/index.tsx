@@ -80,7 +80,7 @@ const PageContainer: FC<Props> = ({
 	onDectivate,
 	isExportSelectionLoading = false,
 	displayExportButton = false,
-	displayPdfExportButton = false,
+	displayPdfExportButton = true,
 	exportDisplayNames,
 	onExcelExport = emptyFunction,
 	onPdfExport = emptyFunction,
@@ -266,7 +266,7 @@ const PageContainer: FC<Props> = ({
 									displayNames={exportDisplayNames}
 									onExcelExport={onExcelExport}
 									onPdfExport={onPdfExport}
-									hidePdfExport={true}
+									hidePdfExport={!displayPdfExportButton}
 								/>
 							</LoaderOverlay>
 						</Modal>

@@ -3,6 +3,7 @@ import {
 	DeleteConfirmation,
 	EmployeeForm,
 	IEmployeeFormInputs,
+	MetaDataDetails,
 	PageContainer,
 } from "../../../components";
 import * as RoutePath from "../../../RouteConfig";
@@ -24,11 +25,15 @@ import { getActiveStatus } from "../../../api/activeStatus/get/getActiveStatus";
 import { APIStatus } from "../../../api";
 import { updateEmployeeStatus } from "../../../api/employees/update/updateEmployeeStatus";
 import { APIActiveStatus } from "../../../api/activeStatus/types";
+import { ROLE } from "../../../utils";
+import { checkPrivilegeForProjectUser } from "../../../api/userProjects/get/checkPrivilegeForProjectUser";
 
 const EmployeeEditPage = () => {
 	const { id } = useParams<{ id: string }>();
 	const [t] = useTranslation("common");
 	const navigate = useNavigate();
+
+	const [lockPage, setLockPage] = useState<boolean>(false);
 
 	const [isLoading, setisLoading] = useState<boolean>(true);
 
@@ -41,7 +46,10 @@ const EmployeeEditPage = () => {
 	const fetch = useMemo(
 		() => async () => {
 			// setisLoading(true);
-			const { data: privilege } = await getProjectPrivilege(Project.Employees);
+			const { data: privilege } = await checkPrivilegeForProjectUser(
+				id!,
+				Project.Employees
+			);
 			if (privilege) {
 				const {
 					readPrivilege,
@@ -57,7 +65,7 @@ const EmployeeEditPage = () => {
 					deletePrivilege,
 				});
 
-				if (privilege?.updatePrivilege! !== false) {
+				if (updatePrivilege! !== false) {
 					const { data } = await getEmployeeDetails(id!);
 
 					if (data) {
@@ -143,8 +151,6 @@ const EmployeeEditPage = () => {
 			...rest,
 		};
 
-		console.log(params);
-
 		const { data, error } = await updateEmployee(params);
 
 		if (data?.success) {
@@ -204,6 +210,7 @@ const EmployeeEditPage = () => {
 
 	return (
 		<PageContainer
+			lockFor={[ROLE.USER]}
 			title="Edit Employee"
 			showBackButton
 			displayContent={privileges?.updatePrivilege}
@@ -221,7 +228,13 @@ const EmployeeEditPage = () => {
 				}).toString()}
 				onSubmit={editEmployeeHandler}
 				onImageUpload={imageUploadHandler}
-			/>{" "}
+			/>
+			<MetaDataDetails
+				createdBy={employee?.createdBy!}
+				createdOn={employee?.createdOn!}
+				updatedBy={employee?.updatedBy}
+				updatedOn={employee?.updatedOn}
+			/>
 			<DeleteConfirmation
 				isOpen={showModal}
 				onYesClick={deleteConfirmationClickHandler}
