@@ -29,6 +29,7 @@ export interface Props {
 	onKeyDown?: any;
 	reference?: any;
 	autocomplete?: string;
+	className?: string;
 }
 
 const TextBox: FC<Props> = ({
@@ -44,6 +45,7 @@ const TextBox: FC<Props> = ({
 	onKeyDown,
 	reference,
 	autocomplete = "",
+	className,
 }) => {
 	const language = useStore((state) => state.language);
 	const theme = createTheme({
@@ -80,6 +82,7 @@ const TextBox: FC<Props> = ({
 							disabled={disabled}
 							ref={reference}
 							autoComplete={autocomplete}
+							className={className}
 						/>
 						{/* <FormHelperText id='component-error-text' className={styles.error}>
 					Error

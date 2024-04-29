@@ -164,6 +164,10 @@ export interface APIEmployeeDetail {
 	emergencyOtherAddress: string;
 	//////////////////////////////
 	activeStatus: APIActiveStatus;
+	createdBy: string;
+	createdOn: string;
+	updatedBy: string;
+	updatedOn: string;
 }
 
 export interface APIEmployeeSignature {

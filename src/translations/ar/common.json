@@ -182,6 +182,7 @@
 	"employee": {
 		"names": "الموظفين",
 		"signature": "التوقيع",
+		"photo": "الصورة",
 		"militaryNo": "الرقم العسكري",
 		"age": "العمر",
 		"hireDate": "تاريخ التعيين",

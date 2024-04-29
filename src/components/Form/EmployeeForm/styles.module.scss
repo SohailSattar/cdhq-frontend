@@ -43,6 +43,12 @@
 				justify-content: end;
 			}
 
+			.txtBox {
+				.text {
+					color: blue;
+				}
+			}
+
 			.exp {
 				display: flex;
 			}
@@ -74,7 +80,7 @@
 
 		.uploadSection {
 			display: flex;
-			justify-content: left;
+			justify-content: right;
 		}
 	}
 
@@ -91,7 +97,7 @@
 
 		.uploadSection {
 			display: flex;
-			justify-content: right;
+			justify-content: left;
 		}
 	}
 }
