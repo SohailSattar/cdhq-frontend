@@ -1,7 +1,7 @@
 import { FC, useEffect, useMemo, useState } from "react";
 import { ActionButtons, Button, PaginatedTable } from "../..";
 import { useTranslation } from "react-i18next";
-import { Column } from "react-table";
+import { Column } from "@tanstack/react-table";
 import { NewsColumns } from "../../PaginatedTable/types";
 import { APINews } from "../../../api/news/types";
 import { DropdownOption } from "../../Dropdown";
@@ -31,28 +31,29 @@ const TableList: FC<Props> = ({ onViewClick }) => {
 	const actions = t("global.actions", { framework: "React" });
 	const view = t("button.view", { framework: "React" });
 
-	const columns: Column<NewsColumns>[] = useMemo(
-		() => [
-			{
-				Header: txtId,
-				id: "id",
-				accessor: (p) => p.id,
-			},
-			{
-				Header: title,
-				id: "title",
-				accessor: (p) => p.title,
-			},
-			{
-				Header: actions,
-				accessor: (p) => p,
-				Cell: ({ value }: any) => (
-					<Button onClick={() => onViewClick(value.id)}>{view}</Button>
-				),
-			},
-		],
-		[actions, onViewClick, title, txtId, view]
-	);
+	// const columns: Column<NewsColumns>[] = useMemo(
+	// 	() => [
+	// 		{
+	// 			Header: txtId,
+	// 			id: "id",
+	// 			accessor: (p) => p.id,
+	// 		},
+	// 		{
+	// 			Header: title,
+	// 			id: "title",
+	// 			accessor: (p) => p.title,
+	// 		},
+	// 		{
+	// 			Header: actions,
+	// 			accessor: (p) => p,
+	// 			Cell: ({ value }: any) => (
+	// 				<Button onClick={() => onViewClick(value.id)}>{view}</Button>
+	// 			),
+	// 		},
+	// 	],
+	// 	[actions, onViewClick, title, txtId, view]
+	// );
+
 	const fetchData = useMemo(
 		() => async (currentPage: number, keyword?: string) => {
 			const { data } = await getNews(
@@ -102,22 +103,24 @@ const TableList: FC<Props> = ({ onViewClick }) => {
 		setCurrentPage(1);
 	};
 	return (
-		<PaginatedTable
-			totalCountText={t("news.count", { framework: "React" })}
-			totalCount={totalCount}
-			pageSize={pageSize}
-			currentPage={currentPage}
-			setCurrentPage={setCurrentPage}
-			data={news}
-			columns={columns}
-			onSearch={newsSearchClickHandler}
-			onTableSort={tableSortHandler}
-			onPageChange={pageChangeHandler}
-			onPageViewSelectionChange={pageViewSelectionHandler}
-			noRecordText={t("table.noNews", { framework: "React" })}
-			hideActiveStatusDropdown
-			hideWorkflowStatusDropdown
-		/>
+		<>
+			{/* <PaginatedTable
+				totalCountText={t("news.count", { framework: "React" })}
+				totalCount={totalCount}
+				pageSize={pageSize}
+				currentPage={currentPage}
+				setCurrentPage={setCurrentPage}
+				data={news}
+				columns={columns}
+				onSearch={newsSearchClickHandler}
+				onTableSort={tableSortHandler}
+				onPageChange={pageChangeHandler}
+				onPageViewSelectionChange={pageViewSelectionHandler}
+				noRecordText={t("table.noNews", { framework: "React" })}
+				hideActiveStatusDropdown
+				hideWorkflowStatusDropdown
+			/> */}
+		</>
 	);
 };
 

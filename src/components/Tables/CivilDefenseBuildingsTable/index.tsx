@@ -10,7 +10,7 @@ import * as RoutePath from "../../../RouteConfig";
 
 import styles from "./styles.module.scss";
 import { CivilDefenseBuildingColumns } from "../../PaginatedTable/types";
-import { Column } from "react-table";
+import { Column } from "@tanstack/react-table";
 import { getPagedCdBuildings } from "../../../api/civilDefenseBuildings/get/getPagedCdBuildings";
 import { APICivilDefenseBuildingItem } from "../../../api/civilDefenseBuildings/types";
 import { Id } from "../../../utils";
@@ -96,53 +96,53 @@ const CivilDefenseBuildingsTable = () => {
 	const actions = t("global.actions", { framework: "React" });
 	const edit = t("button.edit", { framework: "React" });
 
-	const columns: Column<CivilDefenseBuildingColumns>[] = [
-		{
-			Header: id,
-			id: "id",
-			accessor: (p) => p.id,
-		},
-		{
-			Header: name,
-			id: "name",
-			accessor: (p) => p.name,
-		},
-		{
-			Header: nameEng,
-			id: "nameEnglish",
-			accessor: (p) => p.nameEnglish,
-		},
-		{
-			Header: owner,
-			id: "owner",
-			accessor: (p) =>
-				language !== "ar" ? p.owner?.name! : p.owner?.nameEnglish!,
-		},
-		{
-			Header: section,
-			id: "section",
-			accessor: (p) =>
-				language !== "ar" ? p.section?.name! : p.section?.nameEnglish!,
-		},
-		{
-			Header: actions,
-			accessor: (p) => p.id,
-			Cell: ({ value }: any) => (
-				<div className={styles.action}>
-					<div className={styles.btnDiv}>
-						<RedirectButton
-							label={edit}
-							redirectTo={`${RoutePath.CONTENT_MANAGEMENT_CD_BUILDING_EDIT.replace(
-								RoutePath.ID,
-								value
-							)}`}
-							// style={{ height: "20px", fontSize: "12px" }}
-						/>
-					</div>
-				</div>
-			),
-		},
-	];
+	// const columns: Column<CivilDefenseBuildingColumns>[] = [
+	// 	{
+	// 		Header: id,
+	// 		id: "id",
+	// 		accessor: (p) => p.id,
+	// 	},
+	// 	{
+	// 		Header: name,
+	// 		id: "name",
+	// 		accessor: (p) => p.name,
+	// 	},
+	// 	{
+	// 		Header: nameEng,
+	// 		id: "nameEnglish",
+	// 		accessor: (p) => p.nameEnglish,
+	// 	},
+	// 	{
+	// 		Header: owner,
+	// 		id: "owner",
+	// 		accessor: (p) =>
+	// 			language !== "ar" ? p.owner?.name! : p.owner?.nameEnglish!,
+	// 	},
+	// 	{
+	// 		Header: section,
+	// 		id: "section",
+	// 		accessor: (p) =>
+	// 			language !== "ar" ? p.section?.name! : p.section?.nameEnglish!,
+	// 	},
+	// 	{
+	// 		Header: actions,
+	// 		accessor: (p) => p.id,
+	// 		Cell: ({ value }: any) => (
+	// 			<div className={styles.action}>
+	// 				<div className={styles.btnDiv}>
+	// 					<RedirectButton
+	// 						label={edit}
+	// 						redirectTo={`${RoutePath.CONTENT_MANAGEMENT_CD_BUILDING_EDIT.replace(
+	// 							RoutePath.ID,
+	// 							value
+	// 						)}`}
+	// 						// style={{ height: "20px", fontSize: "12px" }}
+	// 					/>
+	// 				</div>
+	// 			</div>
+	// 		),
+	// 	},
+	// ];
 
 	const searchClickHandler = (keyword: string) => {
 		setKeyword(keyword);
@@ -183,23 +183,25 @@ const CivilDefenseBuildingsTable = () => {
 	};
 
 	return (
-		<PaginatedTable
-			totalCountText={t("menu.count", { framework: "React" })}
-			totalCount={totalCount}
-			currentPage={currentPage}
-			setCurrentPage={setCurrentPage}
-			pageSize={pageSize}
-			data={items}
-			columns={columns}
-			dropdowns={dropdowns}
-			noRecordText={""}
-			onSearch={searchClickHandler}
-			onTableSort={tableSortHandler}
-			onPageChange={pageChangeHandler}
-			onPageViewSelectionChange={pageViewSelectionHandler}
-			hideWorkflowStatusDropdown={true}
-			onActiveStatusOptionSelectionChange={activeStatusChangeHandler}
-		/>
+		<>
+			{/* <PaginatedTable
+				totalCountText={t("menu.count", { framework: "React" })}
+				totalCount={totalCount}
+				currentPage={currentPage}
+				setCurrentPage={setCurrentPage}
+				pageSize={pageSize}
+				data={items}
+				columns={columns}
+				dropdowns={dropdowns}
+				noRecordText={""}
+				onSearch={searchClickHandler}
+				onTableSort={tableSortHandler}
+				onPageChange={pageChangeHandler}
+				onPageViewSelectionChange={pageViewSelectionHandler}
+				hideWorkflowStatusDropdown={true}
+				onActiveStatusOptionSelectionChange={activeStatusChangeHandler}
+			/> */}
+		</>
 	);
 };
 

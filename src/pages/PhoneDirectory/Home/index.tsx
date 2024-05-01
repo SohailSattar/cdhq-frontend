@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Column } from "react-table";
+import { Column } from "@tanstack/react-table";
 import { toast } from "react-toastify";
 import { enGB, ar } from "date-fns/locale";
 import { APIPrivileges } from "../../../api/privileges/type";
@@ -74,93 +74,93 @@ const PhoneDirectoryPage = () => {
 	const [isExportLoading, setIsExportLoading] = useState<boolean>(false);
 	const [orderBy, setOrderBy] = useState<string>("rankId");
 
-	const columns: Column<PhoneDirectoryColumns>[] = useMemo(
-		() => [
-			{
-				Header: employeeNo,
-				id: "employeeNo",
-				accessor: (p) => p.employeeNo,
-				Cell: ({ value }: any) => <div className={styles.name}>{value}</div>,
-			},
-			{
-				Header: rank,
-				id: "rankId",
-				accessor: (p) => p.rank,
-				Cell: ({ value }: any) => (
-					<div className={styles.name}>
-						{language !== "ar" ? value.name : value.nameEnglish}
-					</div>
-				),
-			},
-			{
-				Header: fullName,
-				id: "name",
-				accessor: (p) => p,
-				Cell: ({ value }: any) => (
-					<div className={styles.name}>
-						{language !== "ar" ? value?.name! : value?.nameEnglish!}
-					</div>
-				),
-			},
-			{
-				Header: department,
-				id: "departmentId",
-				accessor: (p) => p.department,
-				Cell: ({ value }: any) => (
-					<div className={styles.name}>
-						{language !== "ar" ? value?.name! : value?.nameEnglish!}
-					</div>
-				),
-			},
-			{
-				Header: phone,
-				id: "phone",
-				accessor: (p) => p.phone,
-			},
-			{
-				Header: phone,
-				id: "phone2",
-				accessor: (p) => p.phone2,
-			},
-			{
-				Header: phoneOffice,
-				id: "phoneOffice",
-				accessor: (p) => p.phoneOffice,
-			},
-			{
-				Header: actions,
-				accessor: (p) => p,
-				Cell: ({ row, value }: any) => (
-					<div className={styles.action}>
-						<div
-							className={language !== "ar" ? styles.btnDiv : styles.btnDivLTR}>
-							{privileges?.updatePrivilege! === true && (
-								<Button
-									onClick={() => {
-										editClickHandler(row.values.name!);
-									}}
-									style={{ height: "20px", fontSize: "12px" }}>
-									{edit}
-								</Button>
-							)}
-						</div>
-					</div>
-				),
-			},
-		],
-		[
-			employeeNo,
-			rank,
-			fullName,
-			department,
-			phone,
-			phoneOffice,
-			actions,
-			language,
-			privileges?.updatePrivilege,
-			edit,
-		] //role
-	);
+	// const columns: Column<PhoneDirectoryColumns>[] = useMemo(
+	// 	() => [
+	// 		{
+	// 			Header: employeeNo,
+	// 			id: "employeeNo",
+	// 			accessor: (p) => p.employeeNo,
+	// 			Cell: ({ value }: any) => <div className={styles.name}>{value}</div>,
+	// 		},
+	// 		{
+	// 			Header: rank,
+	// 			id: "rankId",
+	// 			accessor: (p) => p.rank,
+	// 			Cell: ({ value }: any) => (
+	// 				<div className={styles.name}>
+	// 					{language !== "ar" ? value.name : value.nameEnglish}
+	// 				</div>
+	// 			),
+	// 		},
+	// 		{
+	// 			Header: fullName,
+	// 			id: "name",
+	// 			accessor: (p) => p,
+	// 			Cell: ({ value }: any) => (
+	// 				<div className={styles.name}>
+	// 					{language !== "ar" ? value?.name! : value?.nameEnglish!}
+	// 				</div>
+	// 			),
+	// 		},
+	// 		{
+	// 			Header: department,
+	// 			id: "departmentId",
+	// 			accessor: (p) => p.department,
+	// 			Cell: ({ value }: any) => (
+	// 				<div className={styles.name}>
+	// 					{language !== "ar" ? value?.name! : value?.nameEnglish!}
+	// 				</div>
+	// 			),
+	// 		},
+	// 		{
+	// 			Header: phone,
+	// 			id: "phone",
+	// 			accessor: (p) => p.phone,
+	// 		},
+	// 		{
+	// 			Header: phone,
+	// 			id: "phone2",
+	// 			accessor: (p) => p.phone2,
+	// 		},
+	// 		{
+	// 			Header: phoneOffice,
+	// 			id: "phoneOffice",
+	// 			accessor: (p) => p.phoneOffice,
+	// 		},
+	// 		{
+	// 			Header: actions,
+	// 			accessor: (p) => p,
+	// 			Cell: ({ row, value }: any) => (
+	// 				<div className={styles.action}>
+	// 					<div
+	// 						className={language !== "ar" ? styles.btnDiv : styles.btnDivLTR}>
+	// 						{privileges?.updatePrivilege! === true && (
+	// 							<Button
+	// 								onClick={() => {
+	// 									editClickHandler(row.values.name!);
+	// 								}}
+	// 								style={{ height: "20px", fontSize: "12px" }}>
+	// 								{edit}
+	// 							</Button>
+	// 						)}
+	// 					</div>
+	// 				</div>
+	// 			),
+	// 		},
+	// 	],
+	// 	[
+	// 		employeeNo,
+	// 		rank,
+	// 		fullName,
+	// 		department,
+	// 		phone,
+	// 		phoneOffice,
+	// 		actions,
+	// 		language,
+	// 		privileges?.updatePrivilege,
+	// 		edit,
+	// 	] //role
+	// );
 
 	const pageViewSelectionHandler = (option: DropdownOption) => {
 		const size = +option.value;
@@ -389,7 +389,7 @@ const PhoneDirectoryPage = () => {
 					</ShadowedContainer>
 				</div>
 				<div className={styles.table}>
-					<PaginatedTable
+					{/* <PaginatedTable
 						totalCountText={t("user.count", { framework: "React" })}
 						totalCount={totalCount}
 						pageSize={pageSize}
@@ -408,7 +408,7 @@ const PhoneDirectoryPage = () => {
 						hideActiveStatusDropdown
 						hideWorkflowStatusDropdown
 						onWorkflowStatusOptionSelectionChange={() => {}}
-					/>
+					/> */}
 				</div>
 				<div></div>
 				<Modal

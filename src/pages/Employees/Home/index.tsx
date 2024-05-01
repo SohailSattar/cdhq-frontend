@@ -21,7 +21,7 @@ import { ar, enGB } from "date-fns/locale";
 import { Id, toast } from "react-toastify";
 
 import styles from "./styles.module.scss";
-import { Column } from "react-table";
+import { Column, createColumnHelper } from "@tanstack/react-table";
 import { EmployeeColumns } from "../../../components/PaginatedTable/types";
 import { DropdownOption } from "../../../components/Dropdown";
 import { getPagedEmployees } from "../../../api/employees/get/getPagedEmployees";
@@ -213,128 +213,328 @@ const EmployeeHomePage = () => {
 	const actions = t("global.actions", { framework: "React" });
 	const edit = t("button.edit", { framework: "React" });
 
-	const columns: Column<EmployeeColumns>[] = useMemo(
+	// const columns: Column<EmployeeColumns>[] = useMemo(
+	// 	() => [
+	// 		// {
+	// 		// 	id: "img",
+	// 		// 	accessor: (p) => p.imageName,
+	// 		// 	Cell: ({ value }: any) => <PhotoThumbnailImage src={value!} />,
+	// 		// },
+	// 		// {
+	// 		// 	Header: txtId,
+	// 		// 	id: "id",
+	// 		// 	accessor: (p) => p.id,
+	// 		// },
+	// 		{
+	// 			Header: employeeNo,
+	// 			id: "employeeNo",
+	// 			accessor: (p) => p.employeeNo,
+	// 			Cell: ({ value }: any) => <div className={styles.cell}>{value}</div>,
+	// 		},
+	// 		{
+	// 			Header: rank,
+	// 			id: "rankId",
+	// 			accessor: (p) => p.rank,
+	// 			Cell: ({ value }: any) => (
+	// 				<div className={styles.rank}>
+	// 					{value
+	// 						? language !== "ar"
+	// 							? value?.name!
+	// 							: value?.nameEnglish!
+	// 						: "-"}
+	// 				</div>
+	// 			),
+	// 		},
+	// 		{
+	// 			Header: name,
+	// 			id: "name",
+	// 			accessor: (p) => p,
+	// 			Cell: ({ value }: any) => (
+	// 				<div className={styles.name}>
+	// 					<div className={styles.arabic}>{value.name}</div>
+	// 					<div className={styles.english}>{value.nameEnglish}</div>
+	// 				</div>
+	// 			),
+	// 		},
+	// 		{
+	// 			Header: status,
+	// 			id: "statusId",
+	// 			accessor: (p) => p.status,
+	// 			Cell: ({ value }: any) => (
+	// 				<div>
+	// 					{value
+	// 						? language !== "ar"
+	// 							? value?.name!
+	// 							: value?.nameEnglish!
+	// 						: "-"}
+	// 				</div>
+	// 			),
+	// 		},
+	// 		{
+	// 			Header: department,
+	// 			id: "departmentId",
+	// 			accessor: (p) => p.department,
+	// 			Cell: ({ value }: any) => (
+	// 				<div>
+	// 					{value
+	// 						? language !== "ar"
+	// 							? value?.name!
+	// 							: value?.nameEnglish!
+	// 						: "-"}
+	// 				</div>
+	// 			),
+	// 		},
+	// 		{
+	// 			Header: section,
+	// 			id: "sectionId",
+	// 			accessor: (p) => p.section,
+	// 			Cell: ({ value }: any) => (
+	// 				<div>
+	// 					{value
+	// 						? language !== "ar"
+	// 							? value?.name!
+	// 							: value?.nameEnglish!
+	// 						: "-"}
+	// 				</div>
+	// 			),
+	// 		},
+	// 		{
+	// 			Header: recruiter,
+	// 			id: "classId",
+	// 			accessor: (p) => p.class,
+	// 			Cell: ({ value }: any) => (
+	// 				<div>
+	// 					{value
+	// 						? language !== "ar"
+	// 							? value?.name!
+	// 							: value?.nameEnglish!
+	// 						: "-"}
+	// 				</div>
+	// 			),
+	// 		},
+	// 		{
+	// 			Header: actions,
+	// 			accessor: (p) => p.id,
+	// 			Cell: ({ value }: any) => (
+	// 				<div className={styles.action}>
+	// 					<div className={styles.btnDiv}>
+	// 						<RedirectButton
+	// 							label={edit}
+	// 							redirectTo={`${RoutePath.EMPLOYEE_EDIT.replace(
+	// 								RoutePath.ID,
+	// 								value
+	// 							)}`}
+	// 							// style={{ height: "20px", fontSize: "12px" }}
+	// 						/>
+	// 					</div>
+	// 				</div>
+	// 			),
+	// 		},
+	// 	],
+	// 	[
+	// 		actions,
+	// 		department,
+	// 		edit,
+	// 		employeeNo,
+	// 		language,
+	// 		name,
+	// 		rank,
+	// 		recruiter,
+	// 		section,
+	// 		status,
+	// 	]
+	// );
+
+	const columnHelper = createColumnHelper<EmployeeColumns>();
+	const columns = useMemo(
 		() => [
-			// {
-			// 	id: "img",
-			// 	accessor: (p) => p.imageName,
-			// 	Cell: ({ value }: any) => <PhotoThumbnailImage src={value!} />,
-			// },
-			// {
-			// 	Header: txtId,
-			// 	id: "id",
-			// 	accessor: (p) => p.id,
-			// },
-			{
-				Header: employeeNo,
+			columnHelper.accessor((row) => row.employeeNo, {
 				id: "employeeNo",
-				accessor: (p) => p.employeeNo,
-				Cell: ({ value }: any) => <div className={styles.cell}>{value}</div>,
-			},
-			{
-				Header: rank,
+				cell: (info) => <div className={styles.cell}>{info.getValue()}</div>,
+				header: () => employeeNo,
+			}),
+			columnHelper.accessor((row) => row.rank, {
 				id: "rankId",
-				accessor: (p) => p.rank,
-				Cell: ({ value }: any) => (
-					<div className={styles.rank}>
-						{value
+				header: rank,
+				cell: (info) => (
+					<div className={styles.cell}>
+						{info.getValue()
 							? language !== "ar"
-								? value?.name!
-								: value?.nameEnglish!
+								? info.getValue()?.name!
+								: info.getValue()?.nameEnglish!
 							: "-"}
 					</div>
 				),
-			},
-			{
-				Header: name,
+			}),
+			columnHelper.accessor((row) => row, {
 				id: "name",
-				accessor: (p) => p,
-				Cell: ({ value }: any) => (
+				cell: (info) => (
 					<div className={styles.name}>
-						<div className={styles.arabic}>{value.name}</div>
-						<div className={styles.english}>{value.nameEnglish}</div>
+						<div className={styles.arabic}>{info.getValue().name}</div>
+						<div className={styles.english}>{info.getValue().nameEnglish}</div>
 					</div>
 				),
-			},
-			{
-				Header: status,
+				header: () => name,
+			}),
+			columnHelper.accessor((row) => row.status, {
 				id: "statusId",
-				accessor: (p) => p.status,
-				Cell: ({ value }: any) => (
-					<div>
-						{value
+				cell: (info) => (
+					<div className={styles.cell}>
+						{info.getValue()
 							? language !== "ar"
-								? value?.name!
-								: value?.nameEnglish!
+								? info.getValue()?.name!
+								: info.getValue()?.nameEnglish!
 							: "-"}
 					</div>
 				),
-			},
-			{
-				Header: department,
+				header: () => status,
+			}),
+			columnHelper.accessor((row) => row.department, {
 				id: "departmentId",
-				accessor: (p) => p.department,
-				Cell: ({ value }: any) => (
-					<div>
-						{value
+				cell: (info) => (
+					<div className={styles.cell}>
+						{info.getValue()
 							? language !== "ar"
-								? value?.name!
-								: value?.nameEnglish!
+								? info.getValue()?.name!
+								: info.getValue()?.nameEnglish!
 							: "-"}
 					</div>
 				),
-			},
-			{
-				Header: section,
+				header: () => (
+					<div className={styles.tableHeaderCell}>{department}</div>
+				),
+			}),
+			columnHelper.accessor((row) => row.section, {
 				id: "sectionId",
-				accessor: (p) => p.section,
-				Cell: ({ value }: any) => (
-					<div>
-						{value
+				cell: (info) => (
+					<div className={styles.cell}>
+						{info.getValue()
 							? language !== "ar"
-								? value?.name!
-								: value?.nameEnglish!
+								? info.getValue()?.name!
+								: info.getValue()?.nameEnglish!
 							: "-"}
 					</div>
 				),
-			},
-			{
-				Header: recruiter,
+				header: () => <div className={styles.tableHeaderCell}>{section}</div>,
+			}),
+			columnHelper.accessor((row) => row.class, {
 				id: "classId",
-				accessor: (p) => p.class,
-				Cell: ({ value }: any) => (
-					<div>
-						{value
+				cell: (info) => (
+					<div className={styles.cell}>
+						{info.getValue()
 							? language !== "ar"
-								? value?.name!
-								: value?.nameEnglish!
+								? info.getValue()?.name!
+								: info.getValue()?.nameEnglish!
 							: "-"}
 					</div>
 				),
-			},
-			{
-				Header: actions,
-				accessor: (p) => p.id,
-				Cell: ({ value }: any) => (
+				header: () => <div className={styles.tableHeaderCell}>{recruiter}</div>,
+			}),
+
+			// 		{
+			// 			Header: actions,
+			// 			accessor: (p) => p.id,
+			// 			Cell: ({ value }: any) => (
+			// 				<div className={styles.action}>
+			// 					<div className={styles.btnDiv}>
+			// 						<RedirectButton
+			// 							label={edit}
+			// 							redirectTo={`${RoutePath.EMPLOYEE_EDIT.replace(
+			// 								RoutePath.ID,
+			// 								value
+			// 							)}`}
+			// 							// style={{ height: "20px", fontSize: "12px" }}
+			// 						/>
+			// 					</div>
+			// 				</div>
+			// 			),
+			// 		},
+
+			columnHelper.accessor((row) => row.id, {
+				id: "id",
+				cell: (info) => (
 					<div className={styles.action}>
 						<div className={styles.btnDiv}>
 							<RedirectButton
 								label={edit}
 								redirectTo={`${RoutePath.EMPLOYEE_EDIT.replace(
 									RoutePath.ID,
-									value
+									info.getValue().toString()
 								)}`}
 								// style={{ height: "20px", fontSize: "12px" }}
 							/>
 						</div>
 					</div>
 				),
-			},
+				header: () => actions,
+				enableColumnFilter: false,
+			}),
+			// columnHelper.accessor((row) => row.employeeNo, {
+			// 	id: "employeeNo",
+			// 	cell: (info) => <div className={styles.cell}>{info.getValue()}</div>,
+			// 	header: () => <span>{employeeNo}</span>,
+			// }),
+			// columnHelper.accessor((row) => row.logName, {
+			// 	id: "logName",
+			// 	cell: (info) => <div className={styles.cell}>{info.getValue()}</div>,
+			// 	header: () => <span>{logName}</span>,
+			// }),
+
+			// columnHelper.accessor((row) => row.rank, {
+			// 	id: "rankId",
+			// 	cell: (info) => (
+			// 		<div className={styles.name}>
+			// 			{info.getValue() && (
+			// 				<>
+			// 					<div className={styles.arabic}>{info.getValue().name}</div>
+			// 					<div className={styles.english}>
+			// 						{info.getValue().nameEnglish}
+			// 					</div>
+			// 				</>
+			// 			)}
+			// 		</div>
+			// 	),
+			// 	header: () => <div className={styles.tableHeaderCell}>{rank}</div>,
+			// }),
+			// columnHelper.accessor((row) => row.department, {
+			// 	id: "departmentId",
+			// 	cell: (info) => (
+			// 		<div className={styles.name}>
+			// 			{info.getValue() && (
+			// 				<>
+			// 					<div className={styles.arabic}>{info.getValue().name}</div>
+			// 					<div className={styles.english}>
+			// 						{info.getValue().nameEnglish}
+			// 					</div>
+			// 				</>
+			// 			)}
+			// 		</div>
+			// 	),
+			// 	header: () => (
+			// 		<div className={styles.tableHeaderCell}>{department}</div>
+			// 	),
+			// }),
+			// columnHelper.accessor((row) => row.activeStatus, {
+			// 	id: "activeStatus",
+			// 	cell: (info) => (
+			// 		<div className={styles.cell}>
+			// 			<ActiveStatus
+			// 				code={info.getValue().id === 1 ? 1 : 9}
+			// 				text={
+			// 					language !== "ar"
+			// 						? info.getValue().nameArabic
+			// 						: info.getValue().nameEnglish
+			// 				}
+			// 			/>
+			// 		</div>
+			// 	),
+			// 	header: () => status,
+			// 	enableColumnFilter: false,
+			// }),
 		],
 		[
-			actions,
+			columnHelper,
 			department,
-			edit,
 			employeeNo,
 			language,
 			name,

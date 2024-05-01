@@ -21,8 +21,15 @@ $border-radius: 0px;
 
 		background-color: white;
 
+		.ddl {
+		}
+
 		.tableHead {
 			height: 50px;
+
+			.heading {
+				margin-bottom: 5px;
+			}
 
 			.info {
 				display: flex;
@@ -62,6 +69,10 @@ $border-radius: 0px;
 		.tableHeadLTR {
 			th {
 				text-align: center;
+			}
+
+			.heading {
+				margin-bottom: 5px;
 			}
 		}
 

@@ -1,10 +1,10 @@
 /* eslint-disable import/no-anonymous-default-export */
-import React from 'react';
-import { Column } from 'react-table';
-import { Table } from '.';
+import React from "react";
+import { Column } from "react-table";
+import { Table } from ".";
 
 export default {
-	title: 'Components/Table',
+	title: "Components/Table",
 	component: Table,
 };
 
@@ -17,19 +17,19 @@ interface HorseExample {
 
 const columns: Column<HorseExample>[] = [
 	{
-		Header: 'Rank',
+		Header: "Rank",
 		accessor: (p) => p.rank,
 	},
 	{
-		Header: 'Age',
+		Header: "Age",
 		accessor: (p) => p.horse,
 	},
 	{
-		Header: 'Horse',
+		Header: "Horse",
 		accessor: (p) => p.age,
 	},
 	{
-		Header: 'Gender',
+		Header: "Gender",
 		accessor: (p) => p.gender,
 		Cell: ({ value }: any) => <div>{value} 😆 </div>,
 	},
@@ -38,14 +38,19 @@ const columns: Column<HorseExample>[] = [
 const data: HorseExample[] = [
 	{
 		rank: 1,
-		horse: 'horse 1',
+		horse: "horse 1",
 		age: 10,
-		gender: 'Male',
+		gender: "Male",
 	},
-	{ rank: 2, horse: 'horse 2', age: 16, gender: 'Male' },
+	{ rank: 2, horse: "horse 2", age: 16, gender: "Male" },
 ];
 
-export const Primary = () => <Table columns={columns} data={data} />;
+export const Primary = () => (
+	<Table
+		columns={columns}
+		data={data}
+	/>
+);
 
 export const Expandable = () => (
 	<Table
@@ -54,7 +59,7 @@ export const Expandable = () => (
 		renderSubComponent={(row) => (
 			<pre
 				style={{
-					fontSize: '10px',
+					fontSize: "10px",
 				}}>
 				<code>{JSON.stringify(row, null, 2)}</code>
 			</pre>

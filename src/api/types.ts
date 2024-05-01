@@ -1,3 +1,4 @@
+import { ColumnFilter } from "@tanstack/react-table";
 import { Id } from "../utils";
 
 //Base
@@ -71,6 +72,7 @@ export interface APIExportData {
 	selectedFields: { [key: string]: string };
 	queryParams?: APIQueryParams;
 	departmentIds?: string[];
+	filters?: ColumnFilter[];
 }
 
 // Generic mapping for property names and their display names
@@ -83,6 +85,12 @@ export interface APIQueryParams {
 	departmentId?: Id;
 	projectId?: Id;
 	statusCode?: Id;
+	type?: Id;
 	orderBy?: string;
 	isDescending?: boolean;
+}
+
+export interface APIColumnFilters {
+	id: string;
+	value: string;
 }

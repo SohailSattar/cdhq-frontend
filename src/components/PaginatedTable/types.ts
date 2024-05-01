@@ -17,11 +17,12 @@ import { APIMenuItem } from "../../api/menu/types";
 import { APIProjectGroup } from "../../api/projects/types";
 import { APIRank } from "../../api/ranks/types";
 
-export interface EmployeeColumns {
+export type EmployeeColumns = {
 	id: number;
 	employeeNo: string;
 	rank: APIRank;
 	name: string;
+	nameEnglish: string;
 	status: APIEmployeeStatus;
 	department: APIDepartmentItem;
 	section: APIDepartmentItem;
@@ -30,7 +31,7 @@ export interface EmployeeColumns {
 	nationality: APICountryItem;
 	gender: APIGender;
 	assignedJob: APIAssignedJob;
-}
+};
 
 export interface DepartmentColumns {
 	id: number;
@@ -64,14 +65,16 @@ export interface PhoneDirectoryColumns {
 	phoneOffice?: string;
 }
 
-export interface UserColumns {
+export type UserColumns = {
 	id: number;
 	employeeNo: string;
 	logName: string;
 	name: string;
 	nameEnglish: string;
+	rank: APIRank;
+	department: APIDepartmentName;
 	activeStatus: APIActiveStatus;
-}
+};
 
 export interface HonorColumn {
 	id: number;

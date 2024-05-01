@@ -15,7 +15,7 @@ import { useEffect, useMemo, useState } from "react";
 import { APIDepartmentItem } from "../../../api/departments/types";
 import { Id, ROLE } from "../../../utils";
 import { DepartmentColumns } from "../../../components/PaginatedTable/types";
-import { Column } from "react-table";
+import { Column } from "@tanstack/react-table";
 import * as RoutePath from "../../../RouteConfig";
 import { getDepartments } from "../../../api/departments/get/getDepartments";
 import { getEmirates } from "../../../api/emirates/get/getEmirates";
@@ -101,104 +101,104 @@ const DepartmentHomePage = () => {
 		fetch();
 	}, [language]);
 
-	const columns: Column<DepartmentColumns>[] = [
-		{
-			Header: id,
-			id: "id",
-			accessor: (p) => p.id,
-		},
-		{
-			Header: departmentName,
-			id: "name",
-			accessor: (p) => (
-				<div className={styles.name}>
-					<div className={styles.arabic}>{p.fullName}</div>
-					<div className={styles.english}>{p.fullNameEnglish}</div>
-				</div>
-			),
-		},
-		{
-			Header: level,
-			id: "level",
-			accessor: (p) =>
-				p.parent ? (
-					<div className={styles.name}>
-						<div className={styles.arabic}>{p.level?.name!}</div>
-						<div className={styles.english}>{p.level?.nameEnglish}</div>
-					</div>
-				) : (
-					<div className={styles.name}>-</div>
-				),
-		},
-		// {
-		// 	Header: deptFullName,
-		// 	id: "fullName",
-		// 	accessor: (p) => p.fullName,
-		// },
-		// {
-		// 	Header: deptFullNameEnglish,
-		// 	id: "fullNameEnglish",
-		// 	accessor: (p) => p.fullNameEnglish,
-		// },
-		// {
-		// 	Header: parentDept,
-		// 	id: "parent",
-		// 	accessor: (p) =>
-		// 		p.parent ? (
-		// 			<div className={styles.name}>
-		// 				<div className={styles.arabic}>{p.parent?.name!}</div>
-		// 				<div>{p.parent?.nameEnglish!}</div>
-		// 			</div>
-		// 		) : (
-		// 			<div className={styles.name}>-</div>
-		// 		),
-		// },
-		{
-			Header: emirate,
-			id: "emirate",
-			accessor: (p) =>
-				p.parent ? (
-					<div className={styles.name}>
-						<div className={styles.arabic}>{p.emirate?.name!}</div>
-						<div className={styles.english}>{p.emirate?.nameEnglish!}</div>
-					</div>
-				) : (
-					<div>-</div>
-				),
-		},
-		// {
-		// 	Header: projectGroupEnglish,
-		// 	accessor: (p) => p.group?.nameEnglish,
-		// },
-		// {
-		// 	Header: status,
-		// 	id: "activeStatus",
-		// 	accessor: (p) => p,
-		// 	Cell: ({ value }: any) => (
-		// 		<ActiveStatus
-		// 			code={value.activeStatus?.id!}
-		// 			text={
-		// 				language !== "ar"
-		// 					? value.activeStatus.nameArabic
-		// 					: value.activeStatus.nameEnglish
-		// 			}
-		// 		/>
-		// 	),
-		// },
-		{
-			id: "actions",
-			accessor: (p) => p,
-			Cell: ({ value }: any) => (
-				<ActionButtons
-					id={""}
-					// showView={true}
-					detailPageLink={`${RoutePath.DEPARTMENT}/${value.id}`}
-					editPageLink={`${RoutePath.DEPARTMENT}/${value.id}/edit`}
-					showEdit={true}
-				/>
-			),
-		},
-	];
+	// const columns: Column<DepartmentColumns>[] = [
+	// 	{
+	// 		Header: id,
+	// 		id: "id",
+	// 		accessor: (p) => p.id,
+	// 	},
+	// 	{
+	// 		Header: departmentName,
+	// 		id: "name",
+	// 		accessor: (p) => (
+	// 			<div className={styles.name}>
+	// 				<div className={styles.arabic}>{p.fullName}</div>
+	// 				<div className={styles.english}>{p.fullNameEnglish}</div>
+	// 			</div>
+	// 		),
+	// 	},
+	// 	{
+	// 		Header: level,
+	// 		id: "level",
+	// 		accessor: (p) =>
+	// 			p.parent ? (
+	// 				<div className={styles.name}>
+	// 					<div className={styles.arabic}>{p.level?.name!}</div>
+	// 					<div className={styles.english}>{p.level?.nameEnglish}</div>
+	// 				</div>
+	// 			) : (
+	// 				<div className={styles.name}>-</div>
+	// 			),
+	// 	},
+	// 	// {
+	// 	// 	Header: deptFullName,
+	// 	// 	id: "fullName",
+	// 	// 	accessor: (p) => p.fullName,
+	// 	// },
+	// 	// {
+	// 	// 	Header: deptFullNameEnglish,
+	// 	// 	id: "fullNameEnglish",
+	// 	// 	accessor: (p) => p.fullNameEnglish,
+	// 	// },
+	// 	// {
+	// 	// 	Header: parentDept,
+	// 	// 	id: "parent",
+	// 	// 	accessor: (p) =>
+	// 	// 		p.parent ? (
+	// 	// 			<div className={styles.name}>
+	// 	// 				<div className={styles.arabic}>{p.parent?.name!}</div>
+	// 	// 				<div>{p.parent?.nameEnglish!}</div>
+	// 	// 			</div>
+	// 	// 		) : (
+	// 	// 			<div className={styles.name}>-</div>
+	// 	// 		),
+	// 	// },
+	// 	{
+	// 		Header: emirate,
+	// 		id: "emirate",
+	// 		accessor: (p) =>
+	// 			p.parent ? (
+	// 				<div className={styles.name}>
+	// 					<div className={styles.arabic}>{p.emirate?.name!}</div>
+	// 					<div className={styles.english}>{p.emirate?.nameEnglish!}</div>
+	// 				</div>
+	// 			) : (
+	// 				<div>-</div>
+	// 			),
+	// 	},
+	// 	// {
+	// 	// 	Header: projectGroupEnglish,
+	// 	// 	accessor: (p) => p.group?.nameEnglish,
+	// 	// },
+	// 	// {
+	// 	// 	Header: status,
+	// 	// 	id: "activeStatus",
+	// 	// 	accessor: (p) => p,
+	// 	// 	Cell: ({ value }: any) => (
+	// 	// 		<ActiveStatus
+	// 	// 			code={value.activeStatus?.id!}
+	// 	// 			text={
+	// 	// 				language !== "ar"
+	// 	// 					? value.activeStatus.nameArabic
+	// 	// 					: value.activeStatus.nameEnglish
+	// 	// 			}
+	// 	// 		/>
+	// 	// 	),
+	// 	// },
+	// 	{
+	// 		id: "actions",
+	// 		accessor: (p) => p,
+	// 		Cell: ({ value }: any) => (
+	// 			<ActionButtons
+	// 				id={""}
+	// 				// showView={true}
+	// 				detailPageLink={`${RoutePath.DEPARTMENT}/${value.id}`}
+	// 				editPageLink={`${RoutePath.DEPARTMENT}/${value.id}/edit`}
+	// 				showEdit={true}
+	// 			/>
+	// 		),
+	// 	},
+	// ];
 
 	const fetchDepartments = useMemo(
 		() => async () => {
@@ -308,7 +308,7 @@ const DepartmentHomePage = () => {
 			btnAddUrlLink={RoutePath.DEPARTMENT_NEW}
 			className={styles.departmentsList}>
 			<div className={styles.content}>
-				<ShadowedContainer className={styles.table}>
+				{/* <ShadowedContainer className={styles.table}>
 					<PaginatedTable
 						totalCountText={"Total Count"}
 						totalCount={totalCount}
@@ -325,7 +325,7 @@ const DepartmentHomePage = () => {
 						onPageViewSelectionChange={pageViewSelectionHandler}
 						onActiveStatusOptionSelectionChange={statusSelectHandler}
 					/>
-				</ShadowedContainer>
+				</ShadowedContainer> */}
 			</div>
 		</PageContainer>
 	);

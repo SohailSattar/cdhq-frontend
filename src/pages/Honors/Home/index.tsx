@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { Column } from "react-table";
+import { Column } from "@tanstack/react-table";
 import { getHonors } from "../../../api/honors/get/getHonors";
 import { APIExportHonor, APIHonor } from "../../../api/honors/types";
 import { APIPrivileges } from "../../../api/privileges/type";
@@ -195,96 +195,96 @@ const HonorsHomePage = () => {
 	const actions = t("global.actions", { framework: "React" });
 	const status = t("global.status", { framework: "React" });
 
-	const columns: Column<HonorColumn>[] = useMemo(
-		() => [
-			{
-				id: "img",
-				accessor: (p) => p.imageName,
-				Cell: ({ value }: any) => <PhotoThumbnailImage src={value!} />,
-			},
-			{
-				Header: txtId,
-				id: "id",
-				accessor: (p) => p.id,
-			},
-			{
-				Header: honoredOn,
-				id: "createdOn",
-				accessor: (p) => p.createdOn,
-				Cell: ({ value }: any) => (
-					<>
-						{format(new Date(value!), "dd MMMM yyyy", {
-							locale: language !== "ar" ? ar : enGB,
-						})}
-					</>
-				),
-			},
-			{
-				Header: name,
-				id: "name",
-				accessor: (p) => p,
-				Cell: ({ value }: any) => (
-					<div className={styles.name}>
-						{language !== "ar" ? value.name : value.nameEnglish}
-					</div>
-				),
-			},
-			{
-				Header: rank,
-				id: "rank",
-				accessor: (p) => p,
-				Cell: ({ value }: any) => (
-					<div className={styles.name}>
-						{language !== "ar" ? value.rank : value.rankEnglish}
-					</div>
-				),
-			},
-			{
-				Header: department,
-				id: "department",
-				accessor: (p) => p,
-				Cell: ({ value }: any) => (
-					<div className={styles.name}>
-						{language !== "ar"
-							? value.department?.name!
-							: value.department?.name!}
-					</div>
-				),
-			},
-			{
-				Header: honorType,
-				id: "type",
-				accessor: (p) => p.type,
-			},
-			{
-				Header: actions,
-				id: "actions",
-				accessor: (p) => p,
-				Cell: ({ value }: any) => (
-					<ActionButtons
-						id={value.id}
-						showActivate={value.activeStatus.id !== 1}
-						onActivate={(id) => activateClickHandler(id)}
-						showEdit={privileges?.updatePrivilege}
-						onEdit={(id) => editClickHandler(value.id)}
-					/>
-				),
-			},
-		],
-		[
-			txtId,
-			honoredOn,
-			name,
-			rank,
-			department,
-			honorType,
-			actions,
-			language,
-			privileges?.updatePrivilege,
-			activateClickHandler,
-			editClickHandler,
-		]
-	);
+	// const columns: Column<HonorColumn>[] = useMemo(
+	// 	() => [
+	// 		{
+	// 			id: "img",
+	// 			accessor: (p) => p.imageName,
+	// 			Cell: ({ value }: any) => <PhotoThumbnailImage src={value!} />,
+	// 		},
+	// 		{
+	// 			Header: txtId,
+	// 			id: "id",
+	// 			accessor: (p) => p.id,
+	// 		},
+	// 		{
+	// 			Header: honoredOn,
+	// 			id: "createdOn",
+	// 			accessor: (p) => p.createdOn,
+	// 			Cell: ({ value }: any) => (
+	// 				<>
+	// 					{format(new Date(value!), "dd MMMM yyyy", {
+	// 						locale: language !== "ar" ? ar : enGB,
+	// 					})}
+	// 				</>
+	// 			),
+	// 		},
+	// 		{
+	// 			Header: name,
+	// 			id: "name",
+	// 			accessor: (p) => p,
+	// 			Cell: ({ value }: any) => (
+	// 				<div className={styles.name}>
+	// 					{language !== "ar" ? value.name : value.nameEnglish}
+	// 				</div>
+	// 			),
+	// 		},
+	// 		{
+	// 			Header: rank,
+	// 			id: "rank",
+	// 			accessor: (p) => p,
+	// 			Cell: ({ value }: any) => (
+	// 				<div className={styles.name}>
+	// 					{language !== "ar" ? value.rank : value.rankEnglish}
+	// 				</div>
+	// 			),
+	// 		},
+	// 		{
+	// 			Header: department,
+	// 			id: "department",
+	// 			accessor: (p) => p,
+	// 			Cell: ({ value }: any) => (
+	// 				<div className={styles.name}>
+	// 					{language !== "ar"
+	// 						? value.department?.name!
+	// 						: value.department?.name!}
+	// 				</div>
+	// 			),
+	// 		},
+	// 		{
+	// 			Header: honorType,
+	// 			id: "type",
+	// 			accessor: (p) => p.type,
+	// 		},
+	// 		{
+	// 			Header: actions,
+	// 			id: "actions",
+	// 			accessor: (p) => p,
+	// 			Cell: ({ value }: any) => (
+	// 				<ActionButtons
+	// 					id={value.id}
+	// 					showActivate={value.activeStatus.id !== 1}
+	// 					onActivate={(id) => activateClickHandler(id)}
+	// 					showEdit={privileges?.updatePrivilege}
+	// 					onEdit={(id) => editClickHandler(value.id)}
+	// 				/>
+	// 			),
+	// 		},
+	// 	],
+	// 	[
+	// 		txtId,
+	// 		honoredOn,
+	// 		name,
+	// 		rank,
+	// 		department,
+	// 		honorType,
+	// 		actions,
+	// 		language,
+	// 		privileges?.updatePrivilege,
+	// 		activateClickHandler,
+	// 		editClickHandler,
+	// 	]
+	// );
 
 	const fetchDepartments = useCallback(async () => {
 		const { data } = await getDepartmentsByProject(Project.Honors);
@@ -406,7 +406,7 @@ const HonorsHomePage = () => {
 			onExcelExport={exportDataHandler}
 			onPdfExport={exportDataHandler}
 			className={styles.honors}>
-			<PaginatedTable
+			{/* <PaginatedTable
 				totalCountText={t("news.count", { framework: "React" })}
 				totalCount={totalCount}
 				pageSize={pageSize}
@@ -427,7 +427,7 @@ const HonorsHomePage = () => {
 						? []
 						: ["actions"]
 				}
-			/>
+			/> */}
 		</PageContainer>
 	);
 };

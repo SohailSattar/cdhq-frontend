@@ -7,7 +7,7 @@ import {
 	useState,
 } from "react";
 import { useTranslation } from "react-i18next";
-import { Column } from "react-table";
+import { Column, ColumnFiltersState, OnChangeFn } from "@tanstack/react-table";
 import {
 	ActionsContainer,
 	CheckBoxSelections,
@@ -44,7 +44,7 @@ interface Props {
 	setCurrentPage?: Dispatch<SetStateAction<number>>;
 	pageSize: number;
 	data: any;
-	columns: Column<any>[];
+	columns: any; //Column<any>[];
 	noRecordText: string;
 	onSearch: (keyword: string) => void;
 	onTableSort: (columneId: string, isSortedDesc: boolean) => void;
@@ -70,6 +70,10 @@ interface Props {
 	exportDisplayNames?: any;
 	onExcelExport?: (data: APIExportData) => void;
 	onPdfExport?: (data: APIExportData) => void;
+	///
+	onColumnFiltersChange?: React.Dispatch<
+		React.SetStateAction<ColumnFiltersState>
+	>;
 	///
 	classNameTable?: string;
 }
@@ -105,6 +109,8 @@ const PaginatedTable: FC<Props> = ({
 	exportDisplayNames,
 	onExcelExport = emptyFunction,
 	onPdfExport = emptyFunction,
+	///////////////////////////
+	onColumnFiltersChange,
 	////////////////////
 	classNameTable,
 }) => {
@@ -378,6 +384,7 @@ const PaginatedTable: FC<Props> = ({
 					onSort={onTableSort}
 					noRecordsText={noRecordText}
 					columnsToHide={columnsToHide}
+					onColumnFiltersChange={onColumnFiltersChange}
 					className={classNameTable}
 				/>
 				<div>

@@ -4,7 +4,7 @@ import { useStore } from "../../../utils/store";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { DropdownOption, Props as DropdownProps } from "../../Dropdown";
 import { Id } from "../../../utils";
-import { Column } from "react-table";
+import { Column } from "@tanstack/react-table";
 import { getProjectUsers } from "../../../api/projects/get/getProjectUsers";
 import { APIProjectUserTable } from "../../PaginatedTable/types";
 import { getDepartmentsByProject } from "../../../api/departments/get/getDepartmentsByProject";
@@ -52,24 +52,24 @@ const AllocatedUsersTable: FC<Props> = ({ projectId }) => {
 	const privilege = t("privilege.name", { framework: "React" });
 	const department = t("department.name", { framework: "React" });
 
-	const columns: Column<APIProjectUserTable>[] = [
-		{
-			Header: employeeNumber,
-			accessor: (p) => p.userId,
-		},
-		{
-			Header: userName,
-			accessor: (p) => p.userName,
-		},
-		{
-			Header: privilege,
-			accessor: (p) => p.privilege,
-		},
-		{
-			Header: department,
-			accessor: (p) => p.department,
-		},
-	];
+	// const columns: Column<APIProjectUserTable>[] = [
+	// 	{
+	// 		Header: employeeNumber,
+	// 		accessor: (p) => p.userId,
+	// 	},
+	// 	{
+	// 		Header: userName,
+	// 		accessor: (p) => p.userName,
+	// 	},
+	// 	{
+	// 		Header: privilege,
+	// 		accessor: (p) => p.privilege,
+	// 	},
+	// 	{
+	// 		Header: department,
+	// 		accessor: (p) => p.department,
+	// 	},
+	// ];
 
 	const fetchDepartments = useCallback(async () => {
 		const { data } = await getDepartmentsByProject(projectId);
@@ -229,7 +229,7 @@ const AllocatedUsersTable: FC<Props> = ({ projectId }) => {
 
 	return (
 		<>
-			<PaginatedTable
+			{/* <PaginatedTable
 				totalCountText={t("user.count", { framework: "React" })}
 				totalCount={totalCount}
 				currentPage={currentPage}
@@ -250,7 +250,7 @@ const AllocatedUsersTable: FC<Props> = ({ projectId }) => {
 				exportDisplayNames={propertyDisplayNames}
 				onExcelExport={exportDataHandler}
 				// hideActiveStatusDropdown
-			/>
+			/> */}
 		</>
 	);
 };

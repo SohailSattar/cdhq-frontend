@@ -10,7 +10,7 @@ import { APIQRCodeItem } from "../../../api/qr-codes/types";
 import { useTranslation } from "react-i18next";
 import { useStore } from "../../../utils/store";
 import { QRCodeItemColumns } from "../../PaginatedTable/types";
-import { Column } from "react-table";
+import { Column } from "@tanstack/react-table";
 import { DropdownOption } from "../../Dropdown";
 import { getQRCodes } from "../../../api/qr-codes/get/getQRCodes";
 import { Id } from "../../../utils";
@@ -146,73 +146,73 @@ const QRCodesTable: FC<Props> = ({ canEdit = false, canDelete = false }) => {
 	const actions = t("global.actions", { framework: "React" });
 	const edit = t("button.edit", { framework: "React" });
 
-	const columns: Column<QRCodeItemColumns>[] = [
-		{
-			Header: id,
-			id: "id",
-			accessor: (p) => p.id,
-		},
-		{
-			id: "image",
-			accessor: (p) => (
-				<img
-					src={p.imageName}
-					alt={p.name}
-					className={styles.image}
-				/>
-			),
-		},
-		{
-			Header: name,
-			id: "name",
-			accessor: (p) => (
-				<div>
-					{p.iconName && (
-						<span>
-							<img
-								src={p.iconName}
-								alt={p.name}
-								className={styles.icon}
-							/>{" "}
-						</span>
-					)}
-					{language !== "ar" ? p.name : p.nameEnglish}
-				</div>
-			),
-		},
-		{
-			Header: status,
-			id: "activeStatus",
-			accessor: (p) => p,
-			Cell: ({ value }: any) => (
-				<ActiveStatus
-					code={value.activeStatus.id === 1 ? 1 : 9}
-					text={
-						language !== "ar"
-							? value.activeStatus.nameArabic
-							: value.activeStatus.nameEnglish
-					}
-				/>
-			),
-		},
+	// const columns: Column<QRCodeItemColumns>[] = [
+	// 	{
+	// 		Header: id,
+	// 		id: "id",
+	// 		accessor: (p) => p.id,
+	// 	},
+	// 	{
+	// 		id: "image",
+	// 		accessor: (p) => (
+	// 			<img
+	// 				src={p.imageName}
+	// 				alt={p.name}
+	// 				className={styles.image}
+	// 			/>
+	// 		),
+	// 	},
+	// 	{
+	// 		Header: name,
+	// 		id: "name",
+	// 		accessor: (p) => (
+	// 			<div>
+	// 				{p.iconName && (
+	// 					<span>
+	// 						<img
+	// 							src={p.iconName}
+	// 							alt={p.name}
+	// 							className={styles.icon}
+	// 						/>{" "}
+	// 					</span>
+	// 				)}
+	// 				{language !== "ar" ? p.name : p.nameEnglish}
+	// 			</div>
+	// 		),
+	// 	},
+	// 	{
+	// 		Header: status,
+	// 		id: "activeStatus",
+	// 		accessor: (p) => p,
+	// 		Cell: ({ value }: any) => (
+	// 			<ActiveStatus
+	// 				code={value.activeStatus.id === 1 ? 1 : 9}
+	// 				text={
+	// 					language !== "ar"
+	// 						? value.activeStatus.nameArabic
+	// 						: value.activeStatus.nameEnglish
+	// 				}
+	// 			/>
+	// 		),
+	// 	},
 
-		{
-			Header: actions,
-			accessor: (p) => p,
-			Cell: ({ value }: any) => (
-				<ActionButtons
-					id={""}
-					showActivate={value.activeStatus.id !== 1}
-					onActivate={() => activateClickHandler(value.id)}
-					// editPageLink={`${RoutePath.USER}/${value.id}/edit`}
-					showEdit={canEdit}
-					onEdit={() => editClickHandler(value.id)}
-					showDelete={canDelete && value.activeStatus.id === 1}
-					onDelete={() => deleteClickHandler(value.id)}
-				/>
-			),
-		},
-	];
+	// 	{
+	// 		Header: actions,
+	// 		accessor: (p) => p,
+	// 		Cell: ({ value }: any) => (
+	// 			<ActionButtons
+	// 				id={""}
+	// 				showActivate={value.activeStatus.id !== 1}
+	// 				onActivate={() => activateClickHandler(value.id)}
+	// 				// editPageLink={`${RoutePath.USER}/${value.id}/edit`}
+	// 				showEdit={canEdit}
+	// 				onEdit={() => editClickHandler(value.id)}
+	// 				showDelete={canDelete && value.activeStatus.id === 1}
+	// 				onDelete={() => deleteClickHandler(value.id)}
+	// 			/>
+	// 		),
+	// 	},
+	// ];
 
 	const searchClickHandler = (keyword: string) => {
 		setKeyword(keyword);
@@ -252,7 +252,7 @@ const QRCodesTable: FC<Props> = ({ canEdit = false, canDelete = false }) => {
 
 	return (
 		<>
-			<PaginatedTable
+			{/* <PaginatedTable
 				totalCountText={t("menu.count", { framework: "React" })}
 				totalCount={totalCount}
 				currentPage={currentPage}
@@ -266,7 +266,7 @@ const QRCodesTable: FC<Props> = ({ canEdit = false, canDelete = false }) => {
 				onTableSort={tableSortHandler}
 				onPageChange={pageChangeHandler}
 				onPageViewSelectionChange={pageViewSelectionHandler}
-			/>
+			/> */}
 		</>
 	);
 };

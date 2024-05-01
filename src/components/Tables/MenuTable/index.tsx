@@ -3,7 +3,7 @@ import { getMenuListPaginated } from "../../../api/menu/get/getMenuListPaginated
 import PaginatedTable from "../../PaginatedTable";
 import { DropdownOption, Props as DropdownProps } from "../../Dropdown";
 import { MenuItemColumns } from "../../PaginatedTable/types";
-import { Column } from "react-table";
+import { Column } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
 import { ActionButtons, ActiveStatus, RedirectButton, StatusIcon } from "../..";
 import { APIMenuItemDetail } from "../../../api/menu/types";
@@ -245,122 +245,122 @@ const MenuTable = () => {
 	const actions = t("global.actions", { framework: "React" });
 	const edit = t("button.edit", { framework: "React" });
 
-	const columns: Column<MenuItemColumns>[] = [
-		{
-			Header: id,
-			id: "id",
-			accessor: (p) => p.id,
-		},
-		{
-			Header: menuType,
-			id: "menuType",
-			accessor: (p) =>
-				language !== "ar" ? p.menuType?.name : p.menuType?.nameEnglish,
-		},
-		{
-			Header: menuName,
-			id: "name",
-			accessor: (p) => (language !== "ar" ? p.name : p.nameEnglish),
-		},
-		{
-			Header: parent,
-			id: "parentId",
-			accessor: (p) =>
-				language !== "ar" ? p.parent?.name : p.parent?.nameEnglish,
-		},
-		{
-			Header: linkPath,
-			id: "linkPath",
-			accessor: (p) => p.linkPath,
-		},
-		{
-			Header: orderNo,
-			id: "orderNo",
-			accessor: (p) => p.orderNo,
-		},
-		{
-			Header: linkType,
-			accessor: (p) =>
-				language !== "ar" ? p.linkType?.name : p.linkType?.nameEnglish,
-		},
-		{
-			Header: isVisible,
-			accessor: (p) => <StatusIcon status={p.isVisible} />,
-		},
-		{
-			Header: isExternalPath,
-			accessor: (p) => <StatusIcon status={p.isExternalPath} />,
-		},
-		// {
-		// 	Header: status,
-		// 	id: "activeStatus",
-		// 	accessor: (p) => p,
-		// 	Cell: ({ value }: any) => (
-		// 		<ActiveStatus
-		// 			code={value.activeStatus?.id!}
-		// 			text={
-		// 				language !== "ar"
-		// 					? value.activeStatus.nameArabic
-		// 					: value.activeStatus.nameEnglish
-		// 			}
-		// 		/>
-		// 	),
-		// },
-		{
-			Header: status,
-			id: "activeStatus",
-			accessor: (p) => p,
-			Cell: ({ value }: any) => (
-				<div className={styles.name}>
-					<div className={styles.arabic}>
-						<ActiveStatus
-							code={value.activeStatus.id === 1 ? 1 : 9}
-							text={
-								language !== "ar"
-									? value.activeStatus.nameArabic
-									: value.activeStatus.nameEnglish
-							}
-						/>
-					</div>
-				</div>
-			),
-		},
-		{
-			Header: actions,
-			accessor: (p) => p,
-			Cell: ({ value }: any) => (
-				// <div className={styles.action}>
-				// 	<div className={styles.btnDiv}>
-				// 		<RedirectButton
-				// 			label={edit}
-				// 			redirectTo={`${RoutePath.CONTENT_MANAGEMENT_MENU_EDIT.replace(
-				// 				RoutePath.ID,
-				// 				value
-				// 			)}`}
-				// 			style={{ height: "20px", fontSize: "12px" }}
-				// 		/>
-				// 	</div>
-				// </div>
-				<ActionButtons
-					id={value.id}
-					editPageLink={`${RoutePath.CONTENT_MANAGEMENT_MENU_EDIT.replace(
-						RoutePath.ID,
-						value.id
-					)}`}
-					// showView={true}
-					// detailPageLink={`${RoutePath.USER}/${value.id}`}
-					showActivate={value.activeStatus?.id !== 1}
-					onActivate={(id) => activateClickHandler(id)}
-					showEdit={true}
-					onEdit={(id) => editClickHandler(value.id)}
-					showDelete={
-						privileges?.deletePrivilege && value.activeStatus?.id === 1
-					}
-					onDelete={deleteClickHandler}
-				/>
-			),
-		},
-	];
+	// const columns: Column<MenuItemColumns>[] = [
+	// 	{
+	// 		Header: id,
+	// 		id: "id",
+	// 		accessor: (p) => p.id,
+	// 	},
+	// 	{
+	// 		Header: menuType,
+	// 		id: "menuType",
+	// 		accessor: (p) =>
+	// 			language !== "ar" ? p.menuType?.name : p.menuType?.nameEnglish,
+	// 	},
+	// 	{
+	// 		Header: menuName,
+	// 		id: "name",
+	// 		accessor: (p) => (language !== "ar" ? p.name : p.nameEnglish),
+	// 	},
+	// 	{
+	// 		Header: parent,
+	// 		id: "parentId",
+	// 		accessor: (p) =>
+	// 			language !== "ar" ? p.parent?.name : p.parent?.nameEnglish,
+	// 	},
+	// 	{
+	// 		Header: linkPath,
+	// 		id: "linkPath",
+	// 		accessor: (p) => p.linkPath,
+	// 	},
+	// 	{
+	// 		Header: orderNo,
+	// 		id: "orderNo",
+	// 		accessor: (p) => p.orderNo,
+	// 	},
+	// 	{
+	// 		Header: linkType,
+	// 		accessor: (p) =>
+	// 			language !== "ar" ? p.linkType?.name : p.linkType?.nameEnglish,
+	// 	},
+	// 	{
+	// 		Header: isVisible,
+	// 		accessor: (p) => <StatusIcon status={p.isVisible} />,
+	// 	},
+	// 	{
+	// 		Header: isExternalPath,
+	// 		accessor: (p) => <StatusIcon status={p.isExternalPath} />,
+	// 	},
+	// 	// {
+	// 	// 	Header: status,
+	// 	// 	id: "activeStatus",
+	// 	// 	accessor: (p) => p,
+	// 	// 	Cell: ({ value }: any) => (
+	// 	// 		<ActiveStatus
+	// 	// 			code={value.activeStatus?.id!}
+	// 	// 			text={
+	// 	// 				language !== "ar"
+	// 	// 					? value.activeStatus.nameArabic
+	// 	// 					: value.activeStatus.nameEnglish
+	// 	// 			}
+	// 	// 		/>
+	// 	// 	),
+	// 	// },
+	// 	{
+	// 		Header: status,
+	// 		id: "activeStatus",
+	// 		accessor: (p) => p,
+	// 		Cell: ({ value }: any) => (
+	// 			<div className={styles.name}>
+	// 				<div className={styles.arabic}>
+	// 					<ActiveStatus
+	// 						code={value.activeStatus.id === 1 ? 1 : 9}
+	// 						text={
+	// 							language !== "ar"
+	// 								? value.activeStatus.nameArabic
+	// 								: value.activeStatus.nameEnglish
+	// 						}
+	// 					/>
+	// 				</div>
+	// 			</div>
+	// 		),
+	// 	},
+	// 	{
+	// 		Header: actions,
+	// 		accessor: (p) => p,
+	// 		Cell: ({ value }: any) => (
+	// 			// <div className={styles.action}>
+	// 			// 	<div className={styles.btnDiv}>
+	// 			// 		<RedirectButton
+	// 			// 			label={edit}
+	// 			// 			redirectTo={`${RoutePath.CONTENT_MANAGEMENT_MENU_EDIT.replace(
+	// 			// 				RoutePath.ID,
+	// 			// 				value
+	// 			// 			)}`}
+	// 			// 			style={{ height: "20px", fontSize: "12px" }}
+	// 			// 		/>
+	// 			// 	</div>
+	// 			// </div>
+	// 			<ActionButtons
+	// 				id={value.id}
+	// 				editPageLink={`${RoutePath.CONTENT_MANAGEMENT_MENU_EDIT.replace(
+	// 					RoutePath.ID,
+	// 					value.id
+	// 				)}`}
+	// 				// showView={true}
+	// 				// detailPageLink={`${RoutePath.USER}/${value.id}`}
+	// 				showActivate={value.activeStatus?.id !== 1}
+	// 				onActivate={(id) => activateClickHandler(id)}
+	// 				showEdit={true}
+	// 				onEdit={(id) => editClickHandler(value.id)}
+	// 				showDelete={
+	// 					privileges?.deletePrivilege && value.activeStatus?.id === 1
+	// 				}
+	// 				onDelete={deleteClickHandler}
+	// 			/>
+	// 		),
+	// 	},
+	// ];
 
 	const searchClickHandler = (keyword: string) => {
 		setKeyword(keyword);
@@ -417,7 +417,7 @@ const MenuTable = () => {
 
 	return (
 		<>
-			<PaginatedTable
+			{/* <PaginatedTable
 				totalCountText={t("menu.count", { framework: "React" })}
 				totalCount={totalCount}
 				currentPage={currentPage}
@@ -434,7 +434,7 @@ const MenuTable = () => {
 				hideWorkflowStatusDropdown={true}
 				onActiveStatusOptionSelectionChange={activeStatusSelectHandler}
 				// hideActiveStatusDropdown
-			/>
+			/> */}
 		</>
 	);
 };

@@ -1,7 +1,7 @@
-import { FC } from 'react';
-import { SearchBox, Table } from '../../../../../components';
+import { FC } from "react";
+import { SearchBox, Table } from "../../../../../components";
 
-import styles from './styles.module.scss';
+import styles from "./styles.module.scss";
 
 interface Data {
 	columns: any[];

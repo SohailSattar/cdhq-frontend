@@ -13,7 +13,7 @@ import { getProjects } from "../../../api/projects/get/getProjects";
 
 import { Id, ROLE } from "../../../utils";
 import { useStore } from "../../../utils/store";
-import { Column } from "react-table";
+import { Column } from "@tanstack/react-table";
 import { ProjectColumns } from "../../../components/PaginatedTable/types";
 
 import * as RoutePath from "../../../RouteConfig";
@@ -54,65 +54,65 @@ const ProjectManagementPage = () => {
 	const actions = t("global.actions", { framework: "React" });
 	const detail = t("button.detail", { framework: "React" });
 
-	const columns: Column<ProjectColumns>[] = [
-		{
-			Header: id,
-			id: "id",
-			accessor: (p) => p.id,
-		},
-		{
-			Header: projectName,
-			id: "name",
-			accessor: (p) => p.name,
-		},
-		{
-			Header: projectNameEng,
-			id: "nameEnglish",
-			accessor: (p) => p.nameEnglish,
-		},
-		{
-			Header: projectGroup,
-			id: "projectGroupId",
-			accessor: (p) => p.group?.nameArabic,
-		},
-		{
-			Header: projectGroupEnglish,
-			accessor: (p) => p.group?.nameEnglish,
-		},
-		{
-			Header: status,
-			id: "activeStatus",
-			accessor: (p) => p,
-			Cell: ({ value }: any) => (
-				<ActiveStatus
-					code={value.activeStatus?.id!}
-					text={
-						language !== "ar"
-							? value.activeStatus.nameArabic
-							: value.activeStatus.nameEnglish
-					}
-				/>
-			),
-		},
-		{
-			Header: actions,
-			accessor: (p) => p.id,
-			Cell: ({ value }: any) => (
-				<div className={styles.action}>
-					<div className={styles.btnDiv}>
-						<RedirectButton
-							label={detail}
-							redirectTo={`${RoutePath.PROJECT_DETAIL.replace(
-								RoutePath.ID,
-								value
-							)}`}
-							style={{ height: "20px", fontSize: "12px" }}
-						/>
-					</div>
-				</div>
-			),
-		},
-	];
+	// const columns: Column<ProjectColumns>[] = [
+	// 	{
+	// 		Header: id,
+	// 		id: "id",
+	// 		accessor: (p) => p.id,
+	// 	},
+	// 	{
+	// 		Header: projectName,
+	// 		id: "name",
+	// 		accessor: (p) => p.name,
+	// 	},
+	// 	{
+	// 		Header: projectNameEng,
+	// 		id: "nameEnglish",
+	// 		accessor: (p) => p.nameEnglish,
+	// 	},
+	// 	{
+	// 		Header: projectGroup,
+	// 		id: "projectGroupId",
+	// 		accessor: (p) => p.group?.nameArabic,
+	// 	},
+	// 	{
+	// 		Header: projectGroupEnglish,
+	// 		accessor: (p) => p.group?.nameEnglish,
+	// 	},
+	// 	{
+	// 		Header: status,
+	// 		id: "activeStatus",
+	// 		accessor: (p) => p,
+	// 		Cell: ({ value }: any) => (
+	// 			<ActiveStatus
+	// 				code={value.activeStatus?.id!}
+	// 				text={
+	// 					language !== "ar"
+	// 						? value.activeStatus.nameArabic
+	// 						: value.activeStatus.nameEnglish
+	// 				}
+	// 			/>
+	// 		),
+	// 	},
+	// 	{
+	// 		Header: actions,
+	// 		accessor: (p) => p.id,
+	// 		Cell: ({ value }: any) => (
+	// 			<div className={styles.action}>
+	// 				<div className={styles.btnDiv}>
+	// 					<RedirectButton
+	// 						label={detail}
+	// 						redirectTo={`${RoutePath.PROJECT_DETAIL.replace(
+	// 							RoutePath.ID,
+	// 							value
+	// 						)}`}
+	// 						style={{ height: "20px", fontSize: "12px" }}
+	// 					/>
+	// 				</div>
+	// 			</div>
+	// 		),
+	// 	},
+	// ];
 
 	const fetchProjects = useMemo(
 		() => async () => {
@@ -191,7 +191,7 @@ const ProjectManagementPage = () => {
 			btnAddLabel={t("button.addNewProject", { framework: "React" })}
 			btnAddUrlLink={RoutePath.PROJECT_NEW}
 			className={styles.projectsList}>
-			<PaginatedTable
+			{/* <PaginatedTable
 				totalCountText={t("project.count", { framework: "React" })}
 				totalCount={totalCount}
 				currentPage={currentPage}
@@ -207,7 +207,7 @@ const ProjectManagementPage = () => {
 				noRecordText={t("table.noProject", { framework: "React" })}
 				onActiveStatusOptionSelectionChange={statusSelectHandler}
 				onWorkflowStatusOptionSelectionChange={() => {}}
-			/>
+			/> */}
 		</PageContainer>
 	);
 };

@@ -3673,6 +3673,18 @@
   dependencies:
     tslib "^2.4.0"
 
+"@tanstack/react-table@^8.16.0":
+  version "8.16.0"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-table/-/react-table-8.16.0.tgz#92151210ff99d6925353d7a2205735d9c31af48c"
+  integrity sha512-rKRjnt8ostqN2fercRVOIH/dq7MAmOENCMvVlKx6P9Iokhh6woBGnIZEkqsY/vEJf1jN3TqLOb34xQGLVRuhAg==
+  dependencies:
+    "@tanstack/table-core" "8.16.0"
+
+"@tanstack/table-core@8.16.0":
+  version "8.16.0"
+  resolved "https://registry.yarnpkg.com/@tanstack/table-core/-/table-core-8.16.0.tgz#7b58018dd3cec8e0015fe22d6bb24d18d33c891f"
+  integrity sha512-dCG8vQGk4js5v88/k83tTedWOwjGnIyONrKpHpfmSJB8jwFHl8GSu1sBBxbtACVAPtAQgwNxl0rw1d3RqRM1Tg==
+
 "@testing-library/dom@^8.3.0", "@testing-library/dom@^8.5.0":
   version "8.20.1"
   resolved "https://registry.yarnpkg.com/@testing-library/dom/-/dom-8.20.1.tgz#2e52a32e46fc88369eef7eef634ac2a192decd9f"
@@ -4151,13 +4163,6 @@
     "@types/react" "*"
     "@types/react-dom" "*"
     "@types/react-transition-group" "*"
-
-"@types/react-table@^7.7.12":
-  version "7.7.14"
-  resolved "https://registry.yarnpkg.com/@types/react-table/-/react-table-7.7.14.tgz#b880f1ae140ed065bca2e21b3008ca1ebe71595a"
-  integrity sha512-TYrv7onCiakaG1uAu/UpQ9FojNEt/4/ht87EgJQaEGFoWV606ZLWUZAcUHzMxgc3v1mywP1cDyz3qB4ho3hWOw==
-  dependencies:
-    "@types/react" "*"
 
 "@types/react-transition-group@*", "@types/react-transition-group@^4.2.0", "@types/react-transition-group@^4.4.5", "@types/react-transition-group@^4.4.6":
   version "4.4.6"
@@ -12584,11 +12589,6 @@ react-simple-tree-menu@^1.1.18:
     fast-memoize "^2.5.1"
     is-empty "^1.2.0"
     tiny-debounce "^0.1.1"
-
-react-table@^7.6.3:
-  version "7.8.0"
-  resolved "https://registry.yarnpkg.com/react-table/-/react-table-7.8.0.tgz#07858c01c1718c09f7f1aed7034fcfd7bda907d2"
-  integrity sha512-hNaz4ygkZO4bESeFfnfOft73iBUj8K5oKi1EcSHPAibEydfsX2MyU6Z8KCr3mv3C9Kqqh71U+DhZkFvibbnPbA==
 
 react-tabs@^5.1.0:
   version "5.2.0"

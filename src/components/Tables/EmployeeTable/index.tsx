@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useStore } from "../../../utils/store";
-import { Column } from "react-table";
+import { Column } from "@tanstack/react-table";
 import { EmployeeColumns } from "../../PaginatedTable/types";
 import { useEffect, useMemo, useState } from "react";
 
@@ -83,139 +83,139 @@ const EmployeeTable = () => {
 	const actions = t("global.actions", { framework: "React" });
 	const edit = t("button.edit", { framework: "React" });
 
-	const columns: Column<EmployeeColumns>[] = useMemo(
-		() => [
-			// {
-			// 	id: "img",
-			// 	accessor: (p) => p.imageName,
-			// 	Cell: ({ value }: any) => <PhotoThumbnailImage src={value!} />,
-			// },
-			// {
-			// 	Header: txtId,
-			// 	id: "id",
-			// 	accessor: (p) => p.id,
-			// },
-			{
-				Header: employeeNo,
-				id: "employeeNo",
-				accessor: (p) => p.employeeNo,
-				Cell: ({ value }: any) => <div className={styles.cell}>{value}</div>,
-			},
-			{
-				Header: rank,
-				id: "rankId",
-				accessor: (p) => p.rank,
-				Cell: ({ value }: any) => (
-					<div className={styles.rank}>
-						{value
-							? language !== "ar"
-								? value?.name!
-								: value?.nameEnglish!
-							: "-"}
-					</div>
-				),
-			},
-			{
-				Header: name,
-				id: "name",
-				accessor: (p) => p,
-				Cell: ({ value }: any) => (
-					<div className={styles.name}>
-						<div className={styles.arabic}>{value.name}</div>
-						<div className={styles.english}>{value.nameEnglish}</div>
-					</div>
-				),
-			},
+	// const columns: Column<EmployeeColumns>[] = useMemo(
+	// 	() => [
+	// 		// {
+	// 		// 	id: "img",
+	// 		// 	accessor: (p) => p.imageName,
+	// 		// 	Cell: ({ value }: any) => <PhotoThumbnailImage src={value!} />,
+	// 		// },
+	// 		// {
+	// 		// 	Header: txtId,
+	// 		// 	id: "id",
+	// 		// 	accessor: (p) => p.id,
+	// 		// },
+	// 		{
+	// 			Header: employeeNo,
+	// 			id: "employeeNo",
+	// 			accessor: (p) => p.employeeNo,
+	// 			Cell: ({ value }: any) => <div className={styles.cell}>{value}</div>,
+	// 		},
+	// 		{
+	// 			Header: rank,
+	// 			id: "rankId",
+	// 			accessor: (p) => p.rank,
+	// 			Cell: ({ value }: any) => (
+	// 				<div className={styles.rank}>
+	// 					{value
+	// 						? language !== "ar"
+	// 							? value?.name!
+	// 							: value?.nameEnglish!
+	// 						: "-"}
+	// 				</div>
+	// 			),
+	// 		},
+	// 		{
+	// 			Header: name,
+	// 			id: "name",
+	// 			accessor: (p) => p,
+	// 			Cell: ({ value }: any) => (
+	// 				<div className={styles.name}>
+	// 					<div className={styles.arabic}>{value.name}</div>
+	// 					<div className={styles.english}>{value.nameEnglish}</div>
+	// 				</div>
+	// 			),
+	// 		},
 
-			{
-				Header: status,
-				id: "statusId",
-				accessor: (p) => p.status,
-				Cell: ({ value }: any) => (
-					<div>
-						{value
-							? language !== "ar"
-								? value?.name!
-								: value?.nameEnglish!
-							: "-"}
-					</div>
-				),
-			},
-			{
-				Header: department,
-				id: "departmentId",
-				accessor: (p) => p.department,
-				Cell: ({ value }: any) => (
-					<div>
-						{value
-							? language !== "ar"
-								? value?.name!
-								: value?.nameEnglish!
-							: "-"}
-					</div>
-				),
-			},
-			{
-				Header: section,
-				id: "sectionId",
-				accessor: (p) => p.section,
-				Cell: ({ value }: any) => (
-					<div>
-						{value
-							? language !== "ar"
-								? value?.name!
-								: value?.nameEnglish!
-							: "-"}
-					</div>
-				),
-			},
-			{
-				Header: recruiter,
-				id: "classId",
-				accessor: (p) => p.class,
-				Cell: ({ value }: any) => (
-					<div>
-						{value
-							? language !== "ar"
-								? value?.name!
-								: value?.nameEnglish!
-							: "-"}
-					</div>
-				),
-			},
-			{
-				Header: actions,
-				accessor: (p) => p.id,
-				Cell: ({ value }: any) => (
-					<div className={styles.action}>
-						<div className={styles.btnDiv}>
-							<RedirectButton
-								label={edit}
-								redirectTo={`${RoutePath.EMPLOYEE_EDIT.replace(
-									RoutePath.ID,
-									value
-								)}`}
-								// style={{ height: "20px", fontSize: "12px" }}
-							/>
-						</div>
-					</div>
-				),
-			},
-		],
-		[
-			actions,
-			age,
-			department,
-			edit,
-			employeeNo,
-			language,
-			name,
-			rank,
-			recruiter,
-			section,
-			status,
-		]
-	);
+	// 		{
+	// 			Header: status,
+	// 			id: "statusId",
+	// 			accessor: (p) => p.status,
+	// 			Cell: ({ value }: any) => (
+	// 				<div>
+	// 					{value
+	// 						? language !== "ar"
+	// 							? value?.name!
+	// 							: value?.nameEnglish!
+	// 						: "-"}
+	// 				</div>
+	// 			),
+	// 		},
+	// 		{
+	// 			Header: department,
+	// 			id: "departmentId",
+	// 			accessor: (p) => p.department,
+	// 			Cell: ({ value }: any) => (
+	// 				<div>
+	// 					{value
+	// 						? language !== "ar"
+	// 							? value?.name!
+	// 							: value?.nameEnglish!
+	// 						: "-"}
+	// 				</div>
+	// 			),
+	// 		},
+	// 		{
+	// 			Header: section,
+	// 			id: "sectionId",
+	// 			accessor: (p) => p.section,
+	// 			Cell: ({ value }: any) => (
+	// 				<div>
+	// 					{value
+	// 						? language !== "ar"
+	// 							? value?.name!
+	// 							: value?.nameEnglish!
+	// 						: "-"}
+	// 				</div>
+	// 			),
+	// 		},
+	// 		{
+	// 			Header: recruiter,
+	// 			id: "classId",
+	// 			accessor: (p) => p.class,
+	// 			Cell: ({ value }: any) => (
+	// 				<div>
+	// 					{value
+	// 						? language !== "ar"
+	// 							? value?.name!
+	// 							: value?.nameEnglish!
+	// 						: "-"}
+	// 				</div>
+	// 			),
+	// 		},
+	// 		{
+	// 			Header: actions,
+	// 			accessor: (p) => p.id,
+	// 			Cell: ({ value }: any) => (
+	// 				<div className={styles.action}>
+	// 					<div className={styles.btnDiv}>
+	// 						<RedirectButton
+	// 							label={edit}
+	// 							redirectTo={`${RoutePath.EMPLOYEE_EDIT.replace(
+	// 								RoutePath.ID,
+	// 								value
+	// 							)}`}
+	// 							// style={{ height: "20px", fontSize: "12px" }}
+	// 						/>
+	// 					</div>
+	// 				</div>
+	// 			),
+	// 		},
+	// 	],
+	// 	[
+	// 		actions,
+	// 		age,
+	// 		department,
+	// 		edit,
+	// 		employeeNo,
+	// 		language,
+	// 		name,
+	// 		rank,
+	// 		recruiter,
+	// 		section,
+	// 		status,
+	// 	]
+	// );
 
 	const searchClickHandler = (keyword: string) => {
 		setKeyword(keyword);
@@ -256,7 +256,7 @@ const EmployeeTable = () => {
 					/>
 				</div>
 			</ShadowedContainer>
-			<ShadowedContainer>
+			{/* <ShadowedContainer>
 				<PaginatedTable
 					totalCountText={t("menu.count", { framework: "React" })}
 					totalCount={totalCount}
@@ -271,7 +271,7 @@ const EmployeeTable = () => {
 					onPageViewSelectionChange={pageViewSelectionHandler}
 					// classNameTable={styles.empTable}
 				/>
-			</ShadowedContainer>
+			</ShadowedContainer> */}
 		</div>
 	);
 };

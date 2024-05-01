@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { Column } from "react-table";
+import { Column } from "@tanstack/react-table";
 import { deleteNews } from "../../../api/news/delete/deleteNews";
 import { getNews } from "../../../api/news/get/getNews";
 import { APINews } from "../../../api/news/types";
@@ -197,86 +197,86 @@ const NewsHomePage = () => {
 	const status = t("global.status", { framework: "React" });
 	const actions = t("global.actions", { framework: "React" });
 
-	const columns: Column<NewsColumns>[] = useMemo(
-		() => [
-			{
-				id: "img",
-				accessor: (p) => p.imageName,
-				Cell: ({ value }: any) => <PhotoThumbnailImage src={value!} />,
-			},
-			{
-				Header: txtId,
-				id: "id",
-				accessor: (p) => p.id,
-			},
-			{
-				Header: title,
-				id: "title",
-				accessor: (p) => p.title,
-			},
-			{
-				Header: department,
-				id: "department",
-				accessor: (p) => p.department,
-				Cell: ({ value }: any) => (
-					<div>
-						{value
-							? language !== "ar"
-								? value?.name!
-								: value?.nameEnglish!
-							: "-"}
-					</div>
-				),
-			},
-			{
-				Header: status,
-				id: "activeStatus",
-				accessor: (p) => p,
-				Cell: ({ value }: any) => (
-					<ActiveStatus
-						code={value.activeStatus.id === 1 ? 1 : 9}
-						text={
-							language !== "ar"
-								? value.activeStatus.nameArabic
-								: value.activeStatus.nameEnglish
-						}
-					/>
-				),
-			},
-			{
-				Header: actions,
-				accessor: (p) => p,
-				Cell: ({ value }: any) => (
-					<ActionButtons
-						id={value.id}
-						showActivate={value.activeStatus.id !== 1}
-						onActivate={activateClickHandler}
-						// detailPageLink={`${RoutePath.NEWS}/${value.id}`}
-						// showView={privileges?.readPrivilege}
-						showEdit={privileges?.updatePrivilege}
-						showDelete={
-							privileges?.deletePrivilege && value.activeStatus.id === 1
-						}
-						onDelete={deleteClickHandler}
-						onEdit={() => editClickHandler(value.id)}
-					/>
-				),
-			},
-		],
-		[
-			txtId,
-			title,
-			department,
-			status,
-			actions,
-			language,
-			activateClickHandler,
-			privileges?.updatePrivilege,
-			privileges?.deletePrivilege,
-			deleteClickHandler,
-			editClickHandler,
-		]
-	);
+	// const columns: Column<NewsColumns>[] = useMemo(
+	// 	() => [
+	// 		{
+	// 			id: "img",
+	// 			accessor: (p) => p.imageName,
+	// 			Cell: ({ value }: any) => <PhotoThumbnailImage src={value!} />,
+	// 		},
+	// 		{
+	// 			Header: txtId,
+	// 			id: "id",
+	// 			accessor: (p) => p.id,
+	// 		},
+	// 		{
+	// 			Header: title,
+	// 			id: "title",
+	// 			accessor: (p) => p.title,
+	// 		},
+	// 		{
+	// 			Header: department,
+	// 			id: "department",
+	// 			accessor: (p) => p.department,
+	// 			Cell: ({ value }: any) => (
+	// 				<div>
+	// 					{value
+	// 						? language !== "ar"
+	// 							? value?.name!
+	// 							: value?.nameEnglish!
+	// 						: "-"}
+	// 				</div>
+	// 			),
+	// 		},
+	// 		{
+	// 			Header: status,
+	// 			id: "activeStatus",
+	// 			accessor: (p) => p,
+	// 			Cell: ({ value }: any) => (
+	// 				<ActiveStatus
+	// 					code={value.activeStatus.id === 1 ? 1 : 9}
+	// 					text={
+	// 						language !== "ar"
+	// 							? value.activeStatus.nameArabic
+	// 							: value.activeStatus.nameEnglish
+	// 					}
+	// 				/>
+	// 			),
+	// 		},
+	// 		{
+	// 			Header: actions,
+	// 			accessor: (p) => p,
+	// 			Cell: ({ value }: any) => (
+	// 				<ActionButtons
+	// 					id={value.id}
+	// 					showActivate={value.activeStatus.id !== 1}
+	// 					onActivate={activateClickHandler}
+	// 					// detailPageLink={`${RoutePath.NEWS}/${value.id}`}
+	// 					// showView={privileges?.readPrivilege}
+	// 					showEdit={privileges?.updatePrivilege}
+	// 					showDelete={
+	// 						privileges?.deletePrivilege && value.activeStatus.id === 1
+	// 					}
+	// 					onDelete={deleteClickHandler}
+	// 					onEdit={() => editClickHandler(value.id)}
+	// 				/>
+	// 			),
+	// 		},
+	// 	],
+	// 	[
+	// 		txtId,
+	// 		title,
+	// 		department,
+	// 		status,
+	// 		actions,
+	// 		language,
+	// 		activateClickHandler,
+	// 		privileges?.updatePrivilege,
+	// 		privileges?.deletePrivilege,
+	// 		deleteClickHandler,
+	// 		editClickHandler,
+	// 	]
+	// );
 
 	const newsSearchClickHandler = (keyword: string) => {
 		setKeyword(keyword);
@@ -298,7 +298,7 @@ const NewsHomePage = () => {
 			btnAddUrlLink={RoutePath.NEWS_NEW}
 			btnAddLabel={t("button.add", { framework: "React" })}
 			className={styles.news}>
-			<PaginatedTable
+			{/* <PaginatedTable
 				totalCountText={t("news.count", { framework: "React" })}
 				totalCount={totalCount}
 				currentPage={currentPage}
@@ -314,7 +314,7 @@ const NewsHomePage = () => {
 				onActiveStatusOptionSelectionChange={statusSelectHandler}
 				hideWorkflowStatusDropdown
 				classNameTable={styles.table}
-			/>
+			/> */}
 		</PageContainer>
 	);
 };
