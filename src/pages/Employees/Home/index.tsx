@@ -13,7 +13,7 @@ import {
 } from "../../../components";
 
 import * as RoutePath from "../../../RouteConfig";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { APIExportData } from "../../../api";
 import { useStore } from "../../../utils/store";
 import { format } from "date-fns";
@@ -33,6 +33,10 @@ import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPri
 import { ROLE } from "../../../utils";
 import { Project } from "../../../data/projects";
 import { APIPrivileges } from "../../../api/privileges/type";
+import { getRanks } from "../../../api/ranks/get/getRanks";
+import { getDepartmentsByProject } from "../../../api/departments/get/getDepartmentsByProject";
+import { getEmployeeStatuses } from "../../../api/employees/get/getEmployeeStatuses";
+import { getClasses } from "../../../api/classes/get/getClasses";
 
 const EmployeeHomePage = () => {
 	const [t] = useTranslation("common");
@@ -59,6 +63,16 @@ const EmployeeHomePage = () => {
 	const [isExportLoading, setIsExportLoading] = useState<boolean>(false);
 
 	const [privileges, setPrivileges] = useState<APIPrivileges>();
+
+	const [rankOptions, setRankOptions] = useState<DropdownOption[]>([]);
+	const [empStatusOptions, setEmpStatusOptions] = useState<DropdownOption[]>(
+		[]
+	);
+	const [departmentOptions, setDepartmentOptions] = useState<DropdownOption[]>(
+		[]
+	);
+	const [sectionOptions, setSectionOptions] = useState<DropdownOption[]>([]);
+	const [classOptions, setClassOptions] = useState<DropdownOption[]>([]);
 
 	useEffect(() => {
 		const fetch = async () => {
@@ -151,6 +165,78 @@ const EmployeeHomePage = () => {
 		}
 	}, [departmentIds.length, fetch, fetchByDepartment]);
 
+	const fetchRanks = useCallback(async () => {
+		const { data } = await getRanks();
+		if (data) {
+			setRankOptions(
+				data?.map((x) => {
+					return {
+						label: `${language !== "ar" ? x.name : x.nameEnglish}`,
+						value: x.id,
+					};
+				})
+			);
+		}
+	}, [language]);
+
+	useEffect(() => {
+		fetchRanks();
+	}, [fetchRanks]);
+
+	const fetchEmpStatus = useCallback(async () => {
+		const { data } = await getEmployeeStatuses();
+		if (data) {
+			setEmpStatusOptions(
+				data?.map((x) => {
+					return {
+						label: `${language !== "ar" ? x.name : x.nameEnglish}`,
+						value: x.id,
+					};
+				})
+			);
+		}
+	}, [language]);
+
+	useEffect(() => {
+		fetchEmpStatus();
+	}, [fetchEmpStatus]);
+
+	const fetchDepartment = useCallback(async () => {
+		const { data } = await getDepartmentsByProject(Project.Employees);
+		if (data) {
+			setDepartmentOptions(
+				data?.map((x) => {
+					return {
+						label: `${language !== "ar" ? x.name : x.nameEnglish}`,
+						value: x.id,
+					};
+				})
+			);
+		}
+	}, [language]);
+
+	useEffect(() => {
+		fetchDepartment();
+	}, [fetchDepartment]);
+
+	const fetchClass = useCallback(async () => {
+		const { data } = await getClasses();
+		if (data) {
+			setClassOptions(
+				data?.map((x) => {
+					return {
+						label: `${language !== "ar" ? x.name : x.nameEnglish}`,
+						value: x.id,
+					};
+				})
+			);
+		}
+	}, [language]);
+
+	useEffect(() => {
+		fetchClass();
+	}, [fetchClass]);
+
 	const id = t("user.id", { framework: "React" });
 	const rank = t("rank.name", { framework: "React" });
 	const employeeNo = t("employee.militaryNo", { framework: "React" });
@@ -202,8 +288,6 @@ const EmployeeHomePage = () => {
 	const department = t("department.name", { framework: "React" });
 	const section = t("department.section", { framework: "React" });
 	const recruiter = t("class.name", { framework: "React" });
-
-	const email = t("user.email", { framework: "React" });
 
 	const status = t("global.status", { framework: "React" });
 
@@ -357,7 +441,7 @@ const EmployeeHomePage = () => {
 				id: "rankId",
 				header: rank,
 				cell: (info) => (
-					<div className={styles.cell}>
+					<div className={styles.name}>
 						{info.getValue()
 							? language !== "ar"
 								? info.getValue()?.name!
@@ -365,6 +449,10 @@ const EmployeeHomePage = () => {
 							: "-"}
 					</div>
 				),
+				meta: {
+					filterVariant: "select",
+					options: rankOptions,
+				},
 			}),
 			columnHelper.accessor((row) => row, {
 				id: "name",
@@ -379,7 +467,7 @@ const EmployeeHomePage = () => {
 			columnHelper.accessor((row) => row.status, {
 				id: "statusId",
 				cell: (info) => (
-					<div className={styles.cell}>
+					<div className={styles.name}>
 						{info.getValue()
 							? language !== "ar"
 								? info.getValue()?.name!
@@ -388,11 +476,15 @@ const EmployeeHomePage = () => {
 					</div>
 				),
 				header: () => status,
+				meta: {
+					filterVariant: "select",
+					options: empStatusOptions,
+				},
 			}),
 			columnHelper.accessor((row) => row.department, {
 				id: "departmentId",
 				cell: (info) => (
-					<div className={styles.cell}>
+					<div className={styles.name}>
 						{info.getValue()
 							? language !== "ar"
 								? info.getValue()?.name!
@@ -403,11 +495,15 @@ const EmployeeHomePage = () => {
 				header: () => (
 					<div className={styles.tableHeaderCell}>{department}</div>
 				),
+				meta: {
+					filterVariant: "select",
+					options: departmentOptions,
+				},
 			}),
 			columnHelper.accessor((row) => row.section, {
 				id: "sectionId",
 				cell: (info) => (
-					<div className={styles.cell}>
+					<div className={styles.name}>
 						{info.getValue()
 							? language !== "ar"
 								? info.getValue()?.name!
@@ -420,7 +516,7 @@ const EmployeeHomePage = () => {
 			columnHelper.accessor((row) => row.class, {
 				id: "classId",
 				cell: (info) => (
-					<div className={styles.cell}>
+					<div className={styles.name}>
 						{info.getValue()
 							? language !== "ar"
 								? info.getValue()?.name!
@@ -429,6 +525,10 @@ const EmployeeHomePage = () => {
 					</div>
 				),
 				header: () => <div className={styles.tableHeaderCell}>{recruiter}</div>,
+				meta: {
+					filterVariant: "select",
+					options: classOptions,
+				},
 			}),
 
 			// 		{
@@ -533,12 +633,18 @@ const EmployeeHomePage = () => {
 			// }),
 		],
 		[
+			actions,
+			classOptions,
 			columnHelper,
 			department,
+			departmentOptions,
+			edit,
+			empStatusOptions,
 			employeeNo,
 			language,
 			name,
 			rank,
+			rankOptions,
 			recruiter,
 			section,
 			status,

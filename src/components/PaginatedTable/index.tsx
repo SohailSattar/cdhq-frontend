@@ -37,6 +37,7 @@ import styles from "./styles.module.scss";
 import { getProjectsList } from "../../api/projects/get/getProjectsList";
 import { Portal } from "@mui/material";
 import { APIExportData, PropertyDisplayNames } from "../../api";
+import clsx from "clsx";
 interface Props {
 	totalCountText: string;
 	totalCount: number;
@@ -377,6 +378,7 @@ const PaginatedTable: FC<Props> = ({
 					showExport={displayExportButton}
 					onExportClick={() => setIsOpen(true)}
 				/>
+
 				<Table
 					reference={tableRef}
 					columns={columns}
@@ -385,7 +387,7 @@ const PaginatedTable: FC<Props> = ({
 					noRecordsText={noRecordText}
 					columnsToHide={columnsToHide}
 					onColumnFiltersChange={onColumnFiltersChange}
-					className={classNameTable}
+					className={clsx(classNameTable, styles.scrollable)}
 				/>
 				<div>
 					<Pagination

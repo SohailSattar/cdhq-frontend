@@ -11,8 +11,6 @@ import { getUsers } from "../../../api/users/get/getUsers";
 import {
 	ActionButtons,
 	ActiveStatus,
-	Button,
-	CollapsibleDiv,
 	DepartmentTree,
 	PageContainer,
 	PaginatedTable,
@@ -30,11 +28,7 @@ import * as RoutePath from "../../../RouteConfig";
 
 import { Id, ROLE } from "../../../utils";
 
-import {
-	Column,
-	ColumnFiltersState,
-	createColumnHelper,
-} from "@tanstack/react-table";
+import { ColumnFiltersState, createColumnHelper } from "@tanstack/react-table";
 import { UserColumns } from "../../../components/PaginatedTable/types";
 
 import styles from "./styles.module.scss";
@@ -65,14 +59,14 @@ const UserAccountPage = () => {
 
 	const [users, setUsers] = useState<APIUserName[]>([]);
 
-	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([
+		{ id: "activeStatusId", value: "1" },
+	]);
 
 	const [rankOptions, setRankOptions] = useState<DropdownOption[]>([]);
 	const [departmentOptions, setDepartmentOptions] = useState<DropdownOption[]>(
 		[]
 	);
-
-	console.log(columnFilters);
 
 	//Parameters
 	const [toggleSort, setToggleSort] = useState(false);
@@ -226,12 +220,12 @@ const UserAccountPage = () => {
 			// }),
 			columnHelper.accessor((row) => row.employeeNo, {
 				id: "employeeNo",
-				cell: (info) => <div className={styles.cell}>{info.getValue()}</div>,
+				cell: (info) => <div className={styles.name}>{info.getValue()}</div>,
 				header: () => <span>{employeeNo}</span>,
 			}),
 			columnHelper.accessor((row) => row.logName, {
 				id: "logName",
-				cell: (info) => <div className={styles.cell}>{info.getValue()}</div>,
+				cell: (info) => <div className={styles.name}>{info.getValue()}</div>,
 				header: () => <span>{logName}</span>,
 			}),
 			columnHelper.accessor((row) => row, {
@@ -300,7 +294,7 @@ const UserAccountPage = () => {
 						/>
 					</div>
 				),
-				header: () => status,
+				header: () => <div className={styles.tableHeaderCell}>{status}</div>,
 				meta: {
 					filterVariant: "select",
 					options: activeStatusOptions,
@@ -492,18 +486,6 @@ const UserAccountPage = () => {
 		[]
 	);
 
-	const statusSelectHandler = useMemo(
-		() => (option: DropdownOption) => {
-			if (option) {
-				setSelectedStatusCode((prevState) => (prevState = option?.value!));
-			} else {
-				setSelectedStatusCode(1);
-			}
-			setCurrentPage(1);
-		},
-		[]
-	);
-
 	const handleColumnFiltersChange = async (
 		newColumnFilters: SetStateAction<ColumnFiltersState>
 	) => {
@@ -612,8 +594,7 @@ const UserAccountPage = () => {
 						hideWorkflowStatusDropdown
 						showProjectDropdown
 						onProjectOptonSelectionHandler={projectSelectionHandler}
-						activeStatusPlaceHolder={t("user.status", { framework: "React" })}
-						onActiveStatusOptionSelectionChange={statusSelectHandler}
+						hideActiveStatusDropdown
 						onWorkflowStatusOptionSelectionChange={() => {}}
 						showRoleOption
 						onRoleOptonSelectionHandler={roleSelectHandler}
