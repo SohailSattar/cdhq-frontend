@@ -15,7 +15,7 @@ import { useEffect, useMemo, useState } from "react";
 import { APIDepartmentItem } from "../../../api/departments/types";
 import { Id, ROLE } from "../../../utils";
 import { DepartmentColumns } from "../../../components/PaginatedTable/types";
-import { Column } from "@tanstack/react-table";
+import { Column, createColumnHelper } from "@tanstack/react-table";
 import * as RoutePath from "../../../RouteConfig";
 import { getDepartments } from "../../../api/departments/get/getDepartments";
 import { getEmirates } from "../../../api/emirates/get/getEmirates";
@@ -100,6 +100,189 @@ const DepartmentHomePage = () => {
 
 		fetch();
 	}, [language]);
+
+	const columnHelper = createColumnHelper<DepartmentColumns>();
+	const columns = useMemo(
+		() => [
+			columnHelper.accessor("id", {
+				header: id,
+			}),
+			columnHelper.accessor((row) => row, {
+				id: "fullName",
+				cell: (info) => (
+					<div className={styles.name}>
+						<div className={styles.arabic}>{info.getValue()!.fullName}</div>
+						<div className={styles.english}>
+							{info.getValue()!.fullNameEnglish}
+						</div>
+					</div>
+				),
+				header: () => <span>{departmentName}</span>,
+			}),
+			columnHelper.accessor((row) => row.level, {
+				id: "levelId",
+				cell: (info) =>
+					info.getValue()! ? (
+						<div className={styles.name}>
+							<div className={styles.arabic}>{info.getValue()!.name!}</div>
+							<div className={styles.english}>
+								{info.getValue()!.nameEnglish}
+							</div>
+						</div>
+					) : (
+						<div className={styles.name}>-</div>
+					),
+				header: () => <span>{level}</span>,
+				meta: {
+					filterVariant: "select",
+					options: levelOptions,
+				},
+			}),
+			columnHelper.accessor((row) => row.emirate, {
+				id: "emirateId",
+				cell: (info) =>
+					info.getValue()! ? (
+						<div className={styles.name}>
+							<div className={styles.arabic}>{info.getValue()!.name!}</div>
+							<div className={styles.english}>
+								{info.getValue()!.nameEnglish}
+							</div>
+						</div>
+					) : (
+						<div className={styles.name}>-</div>
+					),
+				header: () => <span>{emirate}</span>,
+				meta: {
+					filterVariant: "select",
+					options: emirateOptions,
+				},
+			}),
+			columnHelper.accessor((row) => row.id, {
+				id: "actions",
+				cell: (info) => (
+					<ActionButtons
+						id={""}
+						// showView={true}
+						detailPageLink={`${RoutePath.DEPARTMENT}/${info
+							.getValue()
+							.toString()}`}
+						editPageLink={`${RoutePath.DEPARTMENT}/${info
+							.getValue()
+							.toString()}/edit`}
+						showEdit={true}
+					/>
+				),
+				header: "",
+				enableColumnFilter: false,
+			}),
+			// 		id: "actions",
+			// 		accessor: (p) => p,
+			// 		Cell: ({ value }: any) => (
+			// 			<ActionButtons
+			// 				id={""}
+			// 				// showView={true}
+			// 				detailPageLink={`${RoutePath.DEPARTMENT}/${value.id}`}
+			// 				editPageLink={`${RoutePath.DEPARTMENT}/${value.id}/edit`}
+			// 				showEdit={true}
+			// 			/>
+			// 		),
+
+			// columnHelper.accessor((row) => row.logName, {
+			// 	id: "logName",
+			// 	cell: (info) => <div className={styles.name}>{info.getValue()}</div>,
+			// 	header: () => <span>{logName}</span>,
+			// }),
+			// columnHelper.accessor((row) => row, {
+			// 	id: "fullName",
+			// 	cell: (info) => (
+			// 		<div className={styles.name}>
+			// 			<div className={styles.arabic}>{info.getValue().name}</div>
+			// 			<div className={styles.english}>
+			// 				{info.getValue().nameEnglish}
+			// 			</div>
+			// 		</div>
+			// 	),
+			// 	header: () => <span>{fullName}</span>,
+			// }),
+			// columnHelper.accessor((row) => row.rank, {
+			// 	id: "rankId",
+			// 	cell: (info) => (
+			// 		<div className={styles.name}>
+			// 			{info.getValue() && (
+			// 				<>
+			// 					<div className={styles.arabic}>{info.getValue().name}</div>
+			// 					<div className={styles.english}>
+			// 						{info.getValue().nameEnglish}
+			// 					</div>
+			// 				</>
+			// 			)}
+			// 		</div>
+			// 	),
+			// 	header: () => <div className={styles.tableHeaderCell}>{rank}</div>,
+			// 	meta: {
+			// 		filterVariant: "select",
+			// 		options: rankOptions,
+			// 	},
+			// }),
+			// columnHelper.accessor((row) => row.department, {
+			// 	id: "departmentId",
+			// 	cell: (info) => (
+			// 		<div className={styles.name}>
+			// 			{info.getValue() && (
+			// 				<>
+			// 					<div className={styles.arabic}>{info.getValue().name}</div>
+			// 					<div className={styles.english}>
+			// 						{info.getValue().nameEnglish}
+			// 					</div>
+			// 				</>
+			// 			)}
+			// 		</div>
+			// 	),
+			// 	header: () => (
+			// 		<div className={styles.tableHeaderCell}>{department}</div>
+			// 	),
+			// 	meta: {
+			// 		filterVariant: "select",
+			// 		options: departmentOptions,
+			// 	},
+			// }),
+			// columnHelper.accessor((row) => row.activeStatus, {
+			// 	id: "activeStatusId",
+			// 	cell: (info) => (
+			// 		<div className={styles.name}>
+			// 			<ActiveStatus
+			// 				code={info.getValue().id === 1 ? 1 : 9}
+			// 				text={
+			// 					language !== "ar"
+			// 						? info.getValue().nameArabic
+			// 						: info.getValue().nameEnglish
+			// 				}
+			// 			/>
+			// 		</div>
+			// 	),
+			// 	header: () => <div className={styles.tableHeaderCell}>{status}</div>,
+			// 	meta: {
+			// 		filterVariant: "select",
+			// 		options: activeStatusOptions,
+			// 		initialValue: {
+			// 			label: t("status.active", {
+			// 				framework: "React",
+			// 			}),
+			// 			value: 1,
+			// 		},
+			// 	},
+			// }),
+		],
+		[
+			columnHelper,
+			departmentName,
+			emirate,
+			emirateOptions,
+			id,
+			level,
+			levelOptions,
+		]
+	);
 
 	// const columns: Column<DepartmentColumns>[] = [
 	// 	{
@@ -308,7 +491,7 @@ const DepartmentHomePage = () => {
 			btnAddUrlLink={RoutePath.DEPARTMENT_NEW}
 			className={styles.departmentsList}>
 			<div className={styles.content}>
-				{/* <ShadowedContainer className={styles.table}>
+				<ShadowedContainer className={styles.table}>
 					<PaginatedTable
 						totalCountText={"Total Count"}
 						totalCount={totalCount}
@@ -325,7 +508,7 @@ const DepartmentHomePage = () => {
 						onPageViewSelectionChange={pageViewSelectionHandler}
 						onActiveStatusOptionSelectionChange={statusSelectHandler}
 					/>
-				</ShadowedContainer> */}
+				</ShadowedContainer>
 			</div>
 		</PageContainer>
 	);

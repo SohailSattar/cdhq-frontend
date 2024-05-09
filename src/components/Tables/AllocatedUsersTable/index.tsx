@@ -4,7 +4,7 @@ import { useStore } from "../../../utils/store";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { DropdownOption, Props as DropdownProps } from "../../Dropdown";
 import { Id } from "../../../utils";
-import { Column } from "@tanstack/react-table";
+import { Column, createColumnHelper } from "@tanstack/react-table";
 import { getProjectUsers } from "../../../api/projects/get/getProjectUsers";
 import { APIProjectUserTable } from "../../PaginatedTable/types";
 import { getDepartmentsByProject } from "../../../api/departments/get/getDepartmentsByProject";
@@ -14,6 +14,7 @@ import { ar, enGB } from "date-fns/locale";
 import { APIExportAllocatedUser } from "../../../api/projects/types";
 import { exportAllocatedUsers } from "../../../api/projects/export/exportAllocatedUsers";
 import { toast } from "react-toastify";
+import { getPrivileges } from "../../../api/privileges/get/getPrivileges";
 
 interface Props {
 	projectId: Id;
@@ -27,7 +28,9 @@ const AllocatedUsersTable: FC<Props> = ({ projectId }) => {
 	const [departmentOptions, setDepartmentOptions] = useState<DropdownOption[]>(
 		[]
 	);
-	const [linkTypeOptions, setLinkTypeOptions] = useState<DropdownOption[]>([]);
+	const [privilegesOptions, setPrivilegesOptions] = useState<DropdownOption[]>(
+		[]
+	);
 
 	const [users, setUsers] = useState<APIProjectUserTable[]>([]);
 	const [totalCount, setTotalCount] = useState<number>(0);
@@ -52,24 +55,58 @@ const AllocatedUsersTable: FC<Props> = ({ projectId }) => {
 	const privilege = t("privilege.name", { framework: "React" });
 	const department = t("department.name", { framework: "React" });
 
-	// const columns: Column<APIProjectUserTable>[] = [
-	// 	{
-	// 		Header: employeeNumber,
-	// 		accessor: (p) => p.userId,
-	// 	},
-	// 	{
-	// 		Header: userName,
-	// 		accessor: (p) => p.userName,
-	// 	},
-	// 	{
-	// 		Header: privilege,
-	// 		accessor: (p) => p.privilege,
-	// 	},
-	// 	{
-	// 		Header: department,
-	// 		accessor: (p) => p.department,
-	// 	},
-	// ];
+	const columnHelper = createColumnHelper<APIProjectUserTable>();
+	const columns = useMemo(
+		() => [
+			columnHelper.accessor((row) => row.userId, {
+				header: employeeNumber,
+			}),
+			columnHelper.accessor((row) => row.userName, {
+				header: userName,
+			}),
+			columnHelper.accessor((row) => row.privilege, {
+				header: privilege,
+				meta: {
+					filterVariant: "select",
+					options: privilegesOptions,
+				},
+			}),
+			columnHelper.accessor((row) => row.department, {
+				header: department,
+				meta: {
+					filterVariant: "select",
+					options: departmentOptions,
+				},
+			}),
+		],
+		[
+			columnHelper,
+			department,
+			departmentOptions,
+			employeeNumber,
+			privilege,
+			privilegesOptions,
+			userName,
+		]
+	);
+
+	const fetchPrivileges = useCallback(async () => {
+		const { data } = await getPrivileges();
+		if (data) {
+			setPrivilegesOptions(
+				data?.map((x) => {
+					return {
+						label: `${language !== "ar" ? x.name : x.nameEnglish}`,
+						value: x.privilegeId!,
+					};
+				})
+			);
+		}
+	}, [language]);
+
+	useEffect(() => {
+		fetchPrivileges();
+	}, [fetchPrivileges]);
 
 	const fetchDepartments = useCallback(async () => {
 		const { data } = await getDepartmentsByProject(projectId);
@@ -229,7 +266,7 @@ const AllocatedUsersTable: FC<Props> = ({ projectId }) => {
 
 	return (
 		<>
-			{/* <PaginatedTable
+			<PaginatedTable
 				totalCountText={t("user.count", { framework: "React" })}
 				totalCount={totalCount}
 				currentPage={currentPage}
@@ -250,7 +287,7 @@ const AllocatedUsersTable: FC<Props> = ({ projectId }) => {
 				exportDisplayNames={propertyDisplayNames}
 				onExcelExport={exportDataHandler}
 				// hideActiveStatusDropdown
-			/> */}
+			/>
 		</>
 	);
 };

@@ -13,7 +13,13 @@ import {
 } from "../../../components";
 
 import * as RoutePath from "../../../RouteConfig";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+	SetStateAction,
+	useCallback,
+	useEffect,
+	useMemo,
+	useState,
+} from "react";
 import { APIExportData } from "../../../api";
 import { useStore } from "../../../utils/store";
 import { format } from "date-fns";
@@ -21,7 +27,11 @@ import { ar, enGB } from "date-fns/locale";
 import { Id, toast } from "react-toastify";
 
 import styles from "./styles.module.scss";
-import { Column, createColumnHelper } from "@tanstack/react-table";
+import {
+	Column,
+	ColumnFiltersState,
+	createColumnHelper,
+} from "@tanstack/react-table";
 import { EmployeeColumns } from "../../../components/PaginatedTable/types";
 import { DropdownOption } from "../../../components/Dropdown";
 import { getPagedEmployees } from "../../../api/employees/get/getPagedEmployees";
@@ -37,6 +47,7 @@ import { getRanks } from "../../../api/ranks/get/getRanks";
 import { getDepartmentsByProject } from "../../../api/departments/get/getDepartmentsByProject";
 import { getEmployeeStatuses } from "../../../api/employees/get/getEmployeeStatuses";
 import { getClasses } from "../../../api/classes/get/getClasses";
+import { getFilteredEmployees } from "../../../api/employees/get/getFilteredEmployees";
 
 const EmployeeHomePage = () => {
 	const [t] = useTranslation("common");
@@ -73,6 +84,8 @@ const EmployeeHomePage = () => {
 	);
 	const [sectionOptions, setSectionOptions] = useState<DropdownOption[]>([]);
 	const [classOptions, setClassOptions] = useState<DropdownOption[]>([]);
+
+	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
 	useEffect(() => {
 		const fetch = async () => {
@@ -118,20 +131,36 @@ const EmployeeHomePage = () => {
 
 	const fetch = useMemo(
 		() => async () => {
-			const { data } = await getPagedEmployees({
-				page,
-				postsPerPage: pageSize,
-				keyword,
-				orderBy,
-				isDescending: toggleSort,
-			});
-			if (data) {
-				setItems(data.employees);
-				setTotalCount(data.totalItems);
-				setPageSize(data?.pageSize);
+			if (columnFilters.length > 0) {
+				const { data } = await getFilteredEmployees(columnFilters, {
+					page,
+					postsPerPage: pageSize,
+					keyword,
+					orderBy,
+					isDescending: toggleSort,
+				});
+
+				if (data) {
+					setItems(data.employees);
+					setTotalCount(data.totalItems);
+					setPageSize(data?.pageSize);
+				}
+			} else {
+				const { data } = await getPagedEmployees({
+					page,
+					postsPerPage: pageSize,
+					keyword,
+					orderBy,
+					isDescending: toggleSort,
+				});
+				if (data) {
+					setItems(data.employees);
+					setTotalCount(data.totalItems);
+					setPageSize(data?.pageSize);
+				}
 			}
 		},
-		[keyword, orderBy, page, pageSize, toggleSort]
+		[columnFilters, keyword, orderBy, page, pageSize, toggleSort]
 	);
 
 	useEffect(() => {
@@ -297,145 +326,15 @@ const EmployeeHomePage = () => {
 	const actions = t("global.actions", { framework: "React" });
 	const edit = t("button.edit", { framework: "React" });
 
-	// const columns: Column<EmployeeColumns>[] = useMemo(
-	// 	() => [
-	// 		// {
-	// 		// 	id: "img",
-	// 		// 	accessor: (p) => p.imageName,
-	// 		// 	Cell: ({ value }: any) => <PhotoThumbnailImage src={value!} />,
-	// 		// },
-	// 		// {
-	// 		// 	Header: txtId,
-	// 		// 	id: "id",
-	// 		// 	accessor: (p) => p.id,
-	// 		// },
-	// 		{
-	// 			Header: employeeNo,
-	// 			id: "employeeNo",
-	// 			accessor: (p) => p.employeeNo,
-	// 			Cell: ({ value }: any) => <div className={styles.cell}>{value}</div>,
-	// 		},
-	// 		{
-	// 			Header: rank,
-	// 			id: "rankId",
-	// 			accessor: (p) => p.rank,
-	// 			Cell: ({ value }: any) => (
-	// 				<div className={styles.rank}>
-	// 					{value
-	// 						? language !== "ar"
-	// 							? value?.name!
-	// 							: value?.nameEnglish!
-	// 						: "-"}
-	// 				</div>
-	// 			),
-	// 		},
-	// 		{
-	// 			Header: name,
-	// 			id: "name",
-	// 			accessor: (p) => p,
-	// 			Cell: ({ value }: any) => (
-	// 				<div className={styles.name}>
-	// 					<div className={styles.arabic}>{value.name}</div>
-	// 					<div className={styles.english}>{value.nameEnglish}</div>
-	// 				</div>
-	// 			),
-	// 		},
-	// 		{
-	// 			Header: status,
-	// 			id: "statusId",
-	// 			accessor: (p) => p.status,
-	// 			Cell: ({ value }: any) => (
-	// 				<div>
-	// 					{value
-	// 						? language !== "ar"
-	// 							? value?.name!
-	// 							: value?.nameEnglish!
-	// 						: "-"}
-	// 				</div>
-	// 			),
-	// 		},
-	// 		{
-	// 			Header: department,
-	// 			id: "departmentId",
-	// 			accessor: (p) => p.department,
-	// 			Cell: ({ value }: any) => (
-	// 				<div>
-	// 					{value
-	// 						? language !== "ar"
-	// 							? value?.name!
-	// 							: value?.nameEnglish!
-	// 						: "-"}
-	// 				</div>
-	// 			),
-	// 		},
-	// 		{
-	// 			Header: section,
-	// 			id: "sectionId",
-	// 			accessor: (p) => p.section,
-	// 			Cell: ({ value }: any) => (
-	// 				<div>
-	// 					{value
-	// 						? language !== "ar"
-	// 							? value?.name!
-	// 							: value?.nameEnglish!
-	// 						: "-"}
-	// 				</div>
-	// 			),
-	// 		},
-	// 		{
-	// 			Header: recruiter,
-	// 			id: "classId",
-	// 			accessor: (p) => p.class,
-	// 			Cell: ({ value }: any) => (
-	// 				<div>
-	// 					{value
-	// 						? language !== "ar"
-	// 							? value?.name!
-	// 							: value?.nameEnglish!
-	// 						: "-"}
-	// 				</div>
-	// 			),
-	// 		},
-	// 		{
-	// 			Header: actions,
-	// 			accessor: (p) => p.id,
-	// 			Cell: ({ value }: any) => (
-	// 				<div className={styles.action}>
-	// 					<div className={styles.btnDiv}>
-	// 						<RedirectButton
-	// 							label={edit}
-	// 							redirectTo={`${RoutePath.EMPLOYEE_EDIT.replace(
-	// 								RoutePath.ID,
-	// 								value
-	// 							)}`}
-	// 							// style={{ height: "20px", fontSize: "12px" }}
-	// 						/>
-	// 					</div>
-	// 				</div>
-	// 			),
-	// 		},
-	// 	],
-	// 	[
-	// 		actions,
-	// 		department,
-	// 		edit,
-	// 		employeeNo,
-	// 		language,
-	// 		name,
-	// 		rank,
-	// 		recruiter,
-	// 		section,
-	// 		status,
-	// 	]
-	// );
-
 	const columnHelper = createColumnHelper<EmployeeColumns>();
 	const columns = useMemo(
 		() => [
 			columnHelper.accessor((row) => row.employeeNo, {
 				id: "employeeNo",
-				cell: (info) => <div className={styles.cell}>{info.getValue()}</div>,
-				header: () => employeeNo,
+				cell: (info) => <div className={styles.name}>{info.getValue()}</div>,
+				header: () => (
+					<div className={styles.tableHeaderCell}>{employeeNo}</div>
+				),
 			}),
 			columnHelper.accessor((row) => row.rank, {
 				id: "rankId",
@@ -531,25 +430,6 @@ const EmployeeHomePage = () => {
 				},
 			}),
 
-			// 		{
-			// 			Header: actions,
-			// 			accessor: (p) => p.id,
-			// 			Cell: ({ value }: any) => (
-			// 				<div className={styles.action}>
-			// 					<div className={styles.btnDiv}>
-			// 						<RedirectButton
-			// 							label={edit}
-			// 							redirectTo={`${RoutePath.EMPLOYEE_EDIT.replace(
-			// 								RoutePath.ID,
-			// 								value
-			// 							)}`}
-			// 							// style={{ height: "20px", fontSize: "12px" }}
-			// 						/>
-			// 					</div>
-			// 				</div>
-			// 			),
-			// 		},
-
 			columnHelper.accessor((row) => row.id, {
 				id: "id",
 				cell: (info) => (
@@ -569,68 +449,6 @@ const EmployeeHomePage = () => {
 				header: () => actions,
 				enableColumnFilter: false,
 			}),
-			// columnHelper.accessor((row) => row.employeeNo, {
-			// 	id: "employeeNo",
-			// 	cell: (info) => <div className={styles.cell}>{info.getValue()}</div>,
-			// 	header: () => <span>{employeeNo}</span>,
-			// }),
-			// columnHelper.accessor((row) => row.logName, {
-			// 	id: "logName",
-			// 	cell: (info) => <div className={styles.cell}>{info.getValue()}</div>,
-			// 	header: () => <span>{logName}</span>,
-			// }),
-
-			// columnHelper.accessor((row) => row.rank, {
-			// 	id: "rankId",
-			// 	cell: (info) => (
-			// 		<div className={styles.name}>
-			// 			{info.getValue() && (
-			// 				<>
-			// 					<div className={styles.arabic}>{info.getValue().name}</div>
-			// 					<div className={styles.english}>
-			// 						{info.getValue().nameEnglish}
-			// 					</div>
-			// 				</>
-			// 			)}
-			// 		</div>
-			// 	),
-			// 	header: () => <div className={styles.tableHeaderCell}>{rank}</div>,
-			// }),
-			// columnHelper.accessor((row) => row.department, {
-			// 	id: "departmentId",
-			// 	cell: (info) => (
-			// 		<div className={styles.name}>
-			// 			{info.getValue() && (
-			// 				<>
-			// 					<div className={styles.arabic}>{info.getValue().name}</div>
-			// 					<div className={styles.english}>
-			// 						{info.getValue().nameEnglish}
-			// 					</div>
-			// 				</>
-			// 			)}
-			// 		</div>
-			// 	),
-			// 	header: () => (
-			// 		<div className={styles.tableHeaderCell}>{department}</div>
-			// 	),
-			// }),
-			// columnHelper.accessor((row) => row.activeStatus, {
-			// 	id: "activeStatus",
-			// 	cell: (info) => (
-			// 		<div className={styles.cell}>
-			// 			<ActiveStatus
-			// 				code={info.getValue().id === 1 ? 1 : 9}
-			// 				text={
-			// 					language !== "ar"
-			// 						? info.getValue().nameArabic
-			// 						: info.getValue().nameEnglish
-			// 				}
-			// 			/>
-			// 		</div>
-			// 	),
-			// 	header: () => status,
-			// 	enableColumnFilter: false,
-			// }),
 		],
 		[
 			actions,
@@ -676,6 +494,12 @@ const EmployeeHomePage = () => {
 	const departmentNodeCheckHandler = (ids: any) => {
 		setDepartmentIds(ids);
 		setPage(1);
+	};
+
+	const handleColumnFiltersChange = async (
+		newColumnFilters: SetStateAction<ColumnFiltersState>
+	) => {
+		setColumnFilters(newColumnFilters);
 	};
 
 	// For Export
@@ -807,13 +631,14 @@ const EmployeeHomePage = () => {
 						pageSize={pageSize}
 						currentPage={page}
 						data={items}
-						columns={columns as Column<any>[]}
+						columns={columns}
 						noRecordText={""}
 						onSearch={searchClickHandler}
 						onTableSort={tableSortHandler}
 						onPageChange={pageChangeHandler}
 						onPageViewSelectionChange={pageViewSelectionHandler}
 						hideActiveStatusDropdown
+						onColumnFiltersChange={handleColumnFiltersChange}
 						// classNameTable={styles.empTable}
 					/>
 				</ShadowedContainer>

@@ -1,10 +1,14 @@
-import { APIQueryParams, APIResponse, getConfig } from "../..";
+import { ColumnFiltersState } from "@tanstack/react-table";
+import { getConfig } from "../..";
 import { instance } from "../../../network";
+import { Id } from "../../../utils";
+import { APIQueryParams, APIResponse } from "../../types";
 import { APIPaginatedEmployees } from "../types";
 
 import { EMPLOYEES } from "../../ROUTES";
 
-export async function getPagedEmployees(
+export async function getFilteredEmployees(
+	filters: ColumnFiltersState,
 	queryParams: APIQueryParams
 ): Promise<APIResponse<APIPaginatedEmployees>> {
 	try {
@@ -27,13 +31,16 @@ export async function getPagedEmployees(
 			queryParam += `&orderBy=${orderBy}&isDescending=${isDescending}`;
 		}
 
-		const url = `${EMPLOYEES}?page=${page}&postsperpage=${postsPerPage}${queryParam}`;
+		const url = `${EMPLOYEES}/filter?page=${page}&postsperpage=${postsPerPage}${queryParam}`;
 
-		const response = await instance.get<APIPaginatedEmployees>(url, config);
+		const response = await instance.post<APIPaginatedEmployees>(
+			url,
+			filters,
+			config
+		);
 		const data = response.data;
 		return { data };
 	} catch (err: any) {
-		const error = err.response.data;
-		return { error };
+		return { error: err };
 	}
 }

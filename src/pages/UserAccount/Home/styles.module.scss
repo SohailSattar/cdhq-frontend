@@ -68,6 +68,7 @@
 	.name {
 		display: flex;
 		flex-direction: column;
+		width: max-content !important;
 
 		.arabic {
 			display: flex;

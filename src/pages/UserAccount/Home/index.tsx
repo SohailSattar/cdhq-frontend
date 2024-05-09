@@ -283,7 +283,7 @@ const UserAccountPage = () => {
 			columnHelper.accessor((row) => row.activeStatus, {
 				id: "activeStatusId",
 				cell: (info) => (
-					<div className={styles.cell}>
+					<div className={styles.name}>
 						<ActiveStatus
 							code={info.getValue().id === 1 ? 1 : 9}
 							text={

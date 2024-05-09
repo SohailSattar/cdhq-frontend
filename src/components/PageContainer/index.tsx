@@ -271,7 +271,7 @@ const PageContainer: FC<Props> = ({
 							</LoaderOverlay>
 						</Modal>
 					</Portal>
-					{errors.length > 0 && (
+					{errors?.length! > 0 && (
 						<Portal>
 							<ErrorAlert
 								message="Error"

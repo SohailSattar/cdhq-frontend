@@ -3,6 +3,11 @@
 		margin-top: 0px;
 	}
 
+	.cell {
+		display: flex;
+		justify-content: center;
+	}
+
 	.content {
 		display: flex;
 	}
@@ -43,5 +48,22 @@
 
 	.btnDivLTR {
 		margin-right: 5px;
+	}
+
+	.name {
+		display: flex;
+		flex-direction: column;
+
+		.arabic {
+			display: flex;
+			justify-content: center;
+			justify-content: right;
+		}
+
+		.english {
+			display: flex;
+			// justify-content: center;
+			justify-content: left;
+		}
 	}
 }

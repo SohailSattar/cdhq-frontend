@@ -33,7 +33,7 @@ export type EmployeeColumns = {
 	assignedJob: APIAssignedJob;
 };
 
-export interface DepartmentColumns {
+export type DepartmentColumns = {
 	id: number;
 	name: string;
 	nameEnglish: string;
@@ -43,17 +43,17 @@ export interface DepartmentColumns {
 	parent: APIDepartmentName;
 	emirate: APIEmirate;
 	status: string;
-}
+};
 
-export interface CivilDefenseBuildingColumns {
+export type CivilDefenseBuildingColumns = {
 	id: number;
 	name: string;
 	nameEnglish: string;
 	owner: APICivilDefenseBuildingOwner;
 	section: APIDepartmentName;
-}
+};
 
-export interface PhoneDirectoryColumns {
+export type PhoneDirectoryColumns = {
 	id: number;
 	employeeNo: number;
 	rank: APIRank;
@@ -63,7 +63,7 @@ export interface PhoneDirectoryColumns {
 	phone?: string;
 	phone2?: string;
 	phoneOffice?: string;
-}
+};
 
 export type UserColumns = {
 	id: number;
@@ -76,7 +76,7 @@ export type UserColumns = {
 	activeStatus: APIActiveStatus;
 };
 
-export interface HonorColumn {
+export type HonorColumn = {
 	id: number;
 	imageName: string;
 	mmm: string;
@@ -89,9 +89,10 @@ export interface HonorColumn {
 	locationFullName: string;
 	type: string;
 	createdOn: string;
-}
+	activeStatus: APIActiveStatus;
+};
 
-export interface ImageColumn {
+export type ImageColumn = {
 	id: number;
 	name: string;
 	imageName: string;
@@ -99,32 +100,33 @@ export interface ImageColumn {
 	imageType: APIImageType;
 	stars: number;
 	activeStatus: APIActiveStatus;
-}
+};
 
-export interface NewsColumns {
+export type NewsColumns = {
 	id: number;
 	imageName: string;
 	title: string;
-	department: string;
+	department: APIDepartmentName;
 	activeStatus: APIActiveStatus;
-}
+	action: any;
+};
 
-export interface ProjectColumns {
+export type ProjectColumns = {
 	id: number;
 	name: string;
 	nameEnglish: string;
 	nameArabic: string;
 	group: APIProjectGroup;
-	activeStatus: string;
-}
+	activeStatus: APIActiveStatus;
+};
 
-export interface APIProjectUserTable {
+export type APIProjectUserTable = {
 	id: number;
 	userName: string;
 	department: string;
 	privilege: string;
 	userId: number;
-}
+};
 
 export interface LinkTypeColumns {
 	id: number;
@@ -133,7 +135,7 @@ export interface LinkTypeColumns {
 	isFile: boolean;
 }
 
-export interface MenuItemColumns {
+export type MenuItemColumns = {
 	id: number;
 	name: string;
 	nameEnglish: string;
@@ -144,14 +146,14 @@ export interface MenuItemColumns {
 	linkType?: APIType;
 	menuType?: APIType;
 	isExternalPath: boolean;
-	activeStatus: string;
-}
+	activeStatus: APIActiveStatus;
+};
 
-export interface QRCodeItemColumns {
+export type QRCodeItemColumns = {
 	id: number;
 	name: string;
 	nameEnglish: string;
 	imageName: string;
 	iconName: string;
 	activeStatus: APIActiveStatus;
-}
+};

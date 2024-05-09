@@ -66,34 +66,38 @@
 .name {
 	display: flex;
 	flex-direction: column;
-
-	.arabic {
-		display: flex;
-		justify-content: center;
-		justify-content: right;
-	}
-
-	.english {
-		display: flex;
-		// justify-content: center;
-		justify-content: left;
-	}
-}
-
-.name {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
 	width: max-content !important;
+	// align-items: center !important;
 
 	.arabic {
-		display: flex;
-		justify-content: right;
+		// display: flex;
+		// justify-content: center;
+		// width: 100% !important;
 	}
 
 	.english {
-		display: flex;
+		// display: flex;
+		// justify-content: center;
+		// justify-content: center;
 		color: blue;
-		justify-content: left;
+		// width: 100% !important;
 	}
 }
+
+// .name {
+// 	display: flex;
+// 	flex-direction: column;
+// 	// justify-content: center;
+// 	width: max-content !important;
+
+// 	.arabic {
+// 		display: flex;
+// 		justify-content: right;
+// 	}
+
+// 	.english {
+// 		display: flex;
+// 		color: blue;
+// 		justify-content: left;
+// 	}
+// }

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Column } from "@tanstack/react-table";
+import { Column, createColumnHelper } from "@tanstack/react-table";
 import { toast } from "react-toastify";
 import { enGB, ar } from "date-fns/locale";
 import { APIPrivileges } from "../../../api/privileges/type";
@@ -34,6 +34,7 @@ import { getPhoneDirectoryList } from "../../../api/phoneDirectory/get/getPhoneD
 import styles from "./styles.module.scss";
 import { getEmployeeStatuses } from "../../../api/employees/get/getEmployeeStatuses";
 import { Id } from "../../../utils";
+import { getRanks } from "../../../api/ranks/get/getRanks";
 
 const PhoneDirectoryPage = () => {
 	const language = useStore((state) => state.language);
@@ -59,6 +60,11 @@ const PhoneDirectoryPage = () => {
 
 	const [statusOptions, setStatusOptions] = useState<DropdownOption[]>([]);
 
+	const [rankOptions, setRankOptions] = useState<DropdownOption[]>([]);
+	const [departmentOptions, setDepartmentOptions] = useState<DropdownOption[]>(
+		[]
+	);
+
 	const id = t("user.id", { framework: "React" });
 	const employeeNo = t("user.employeeNumber", { framework: "React" });
 	const rank = t("rank.name", { framework: "React" });
@@ -73,6 +79,268 @@ const PhoneDirectoryPage = () => {
 
 	const [isExportLoading, setIsExportLoading] = useState<boolean>(false);
 	const [orderBy, setOrderBy] = useState<string>("rankId");
+
+	const fetchRanks = useCallback(async () => {
+		const { data } = await getRanks();
+		if (data) {
+			setRankOptions(
+				data?.map((x) => {
+					return {
+						label: `${language !== "ar" ? x.name : x.nameEnglish}`,
+						value: x.id,
+					};
+				})
+			);
+		}
+	}, [language]);
+
+	useEffect(() => {
+		fetchRanks();
+	}, [fetchRanks]);
+
+	const columnHelper = createColumnHelper<PhoneDirectoryColumns>();
+	const columns = useMemo(
+		() => [
+			columnHelper.accessor((row) => row.employeeNo, {
+				id: "employeeNo",
+				header: employeeNo,
+				cell: (info) => <div className={styles.name}>{info.getValue()}</div>,
+			}),
+			columnHelper.accessor((row) => row.rank, {
+				id: "rankId",
+				header: rank,
+				cell: (info) => (
+					<div className={styles.name}>
+						{language !== "ar"
+							? info.getValue().name
+							: info.getValue().nameEnglish}
+					</div>
+				),
+				meta: {
+					filterVariant: "select",
+					options: rankOptions,
+				},
+			}),
+			columnHelper.accessor((row) => row, {
+				id: "fullName",
+				header: fullName,
+				cell: (info) => (
+					<div className={styles.name}>
+						{language !== "ar"
+							? info.getValue().name!
+							: info.getValue().nameEnglish!}
+					</div>
+				),
+			}),
+			columnHelper.accessor((row) => row.department, {
+				id: "departmentId",
+				header: department,
+				cell: (info) => (
+					<div className={styles.name}>
+						{language !== "ar"
+							? info.getValue().name
+							: info.getValue().nameEnglish}
+					</div>
+				),
+				meta: {
+					filterVariant: "select",
+					// options: departmentOp,
+					// initialValue: {
+					// 	label: t("status.active", {
+					// 		framework: "React",
+					// 	}),
+					// 	value: 1,
+					// },
+				},
+			}),
+			columnHelper.accessor((row) => row.phone, {
+				id: "phone",
+				header: phone,
+			}),
+			columnHelper.accessor((row) => row.phone2, {
+				id: "phone2",
+				header: phone,
+			}),
+			columnHelper.accessor((row) => row.phoneOffice, {
+				id: "phoneOffice",
+				header: phoneOffice,
+			}),
+			columnHelper.accessor((row) => row, {
+				id: "actions",
+				header: "",
+				enableColumnFilter: false,
+				cell: (info) => (
+					<div className={styles.action}>
+						<div
+							className={language !== "ar" ? styles.btnDiv : styles.btnDivLTR}>
+							{privileges?.updatePrivilege! === true && (
+								<Button
+									onClick={() => {
+										editClickHandler(info.getValue());
+									}}
+									style={{ height: "20px", fontSize: "12px" }}>
+									{edit}
+								</Button>
+							)}
+						</div>
+					</div>
+				),
+			}),
+
+			////////////////////////////
+
+			// 			Header: actions,
+			// 			accessor: (p) => p,
+			// 			Cell: ({ row, value }: any) => (
+			// 				<div className={styles.action}>
+			// 					<div
+			// 						className={language !== "ar" ? styles.btnDiv : styles.btnDivLTR}>
+			// 						{privileges?.updatePrivilege! === true && (
+			// 							<Button
+			// 								onClick={() => {
+			// 									editClickHandler(row.values.name!);
+			// 								}}
+			// 								style={{ height: "20px", fontSize: "12px" }}>
+			// 								{edit}
+			// 							</Button>
+			// 						)}
+			// 					</div>
+			// 				</div>
+			// 			),
+
+			////////////////////////////
+
+			//
+			// 		{
+			// 			Header: phone,
+			// 			id: "phone",
+			// 			accessor: (p) => p.phone,
+			// 		},
+			// 		{
+			// 			Header: phone,
+			// 			id: "phone2",
+			// 			accessor: (p) => p.phone2,
+			// 		},
+			// 		{
+			// 			Header: phoneOffice,
+			// 			id: "phoneOffice",
+			// 			accessor: (p) => p.phoneOffice,
+			// 		},
+			//
+
+			// 			Header: rank,
+			// 			id: "rankId",
+			// 			accessor: (p) => p.rank,
+			// 			Cell: ({ value }: any) => (
+			// 				<div className={styles.name}>
+			// 					{language !== "ar" ? value.name : value.nameEnglish}
+			// 				</div>
+			// 			),
+			// 		},
+			// // columnHelper.accessor("id", {
+			// // 	header: id,
+			// // 	cell: (info) => <div className={styles.cell}>{info.getValue()}</div>,
+			// // }),
+			// columnHelper.accessor((row) => row.employeeNo, {
+			// 	id: "employeeNo",
+			// 	cell: (info) => <div className={styles.name}>{info.getValue()}</div>,
+			// 	header: () => <span>{employeeNo}</span>,
+			// }),
+			// columnHelper.accessor((row) => row.logName, {
+			// 	id: "logName",
+			// 	cell: (info) => <div className={styles.name}>{info.getValue()}</div>,
+			// 	header: () => <span>{logName}</span>,
+			// }),
+			// columnHelper.accessor((row) => row, {
+			// 	id: "fullName",
+			// 	cell: (info) => (
+			// 		<div className={styles.name}>
+			// 			<div className={styles.arabic}>{info.getValue().name}</div>
+			// 			<div className={styles.english}>{info.getValue().nameEnglish}</div>
+			// 		</div>
+			// 	),
+			// 	header: () => <span>{fullName}</span>,
+			// }),
+			// columnHelper.accessor((row) => row.rank, {
+			// 	id: "rankId",
+			// 	cell: (info) => (
+			// 		<div className={styles.name}>
+			// 			{info.getValue() && (
+			// 				<>
+			// 					<div className={styles.arabic}>{info.getValue().name}</div>
+			// 					<div className={styles.english}>
+			// 						{info.getValue().nameEnglish}
+			// 					</div>
+			// 				</>
+			// 			)}
+			// 		</div>
+			// 	),
+			// 	header: () => <div className={styles.tableHeaderCell}>{rank}</div>,
+			// 	meta: {
+			// 		filterVariant: "select",
+			// 		options: rankOptions,
+			// 	},
+			// }),
+			// columnHelper.accessor((row) => row.department, {
+			// 	id: "departmentId",
+			// 	cell: (info) => (
+			// 		<div className={styles.name}>
+			// 			{info.getValue() && (
+			// 				<>
+			// 					<div className={styles.arabic}>{info.getValue().name}</div>
+			// 					<div className={styles.english}>
+			// 						{info.getValue().nameEnglish}
+			// 					</div>
+			// 				</>
+			// 			)}
+			// 		</div>
+			// 	),
+			// 	header: () => (
+			// 		<div className={styles.tableHeaderCell}>{department}</div>
+			// 	),
+			// 	meta: {
+			// 		filterVariant: "select",
+			// 		options: departmentOptions,
+			// 	},
+			// }),
+			// columnHelper.accessor((row) => row.activeStatus, {
+			// 	id: "activeStatusId",
+			// 	cell: (info) => (
+			// 		<div className={styles.name}>
+			// 			<ActiveStatus
+			// 				code={info.getValue().id === 1 ? 1 : 9}
+			// 				text={
+			// 					language !== "ar"
+			// 						? info.getValue().nameArabic
+			// 						: info.getValue().nameEnglish
+			// 				}
+			// 			/>
+			// 		</div>
+			// 	),
+			// 	header: () => <div className={styles.tableHeaderCell}>{status}</div>,
+			// 	meta: {
+			// 		filterVariant: "select",
+			// 		options: activeStatusOptions,
+			// 		initialValue: {
+			// 			label: t("status.active", {
+			// 				framework: "React",
+			// 			}),
+			// 			value: 1,
+			// 		},
+			// 	},
+			// }),
+		],
+		[
+			columnHelper,
+			department,
+			employeeNo,
+			fullName,
+			language,
+			phone,
+			phoneOffice,
+			rank,
+		]
+	);
 
 	// const columns: Column<PhoneDirectoryColumns>[] = useMemo(
 	// 	() => [
@@ -377,7 +645,7 @@ const PhoneDirectoryPage = () => {
 			title={t("page.phoneDirectoryHome", { framework: "React" })}
 			className={styles.phoneDirectory}>
 			<div className={styles.content}>
-				<div>
+				<div className={styles.hierarchyContainer}>
 					<ShadowedContainer
 						className={
 							language === "ar" ? styles.hierarchyLTR : styles.hierarchy
@@ -389,7 +657,7 @@ const PhoneDirectoryPage = () => {
 					</ShadowedContainer>
 				</div>
 				<div className={styles.table}>
-					{/* <PaginatedTable
+					<PaginatedTable
 						totalCountText={t("user.count", { framework: "React" })}
 						totalCount={totalCount}
 						pageSize={pageSize}
@@ -408,7 +676,7 @@ const PhoneDirectoryPage = () => {
 						hideActiveStatusDropdown
 						hideWorkflowStatusDropdown
 						onWorkflowStatusOptionSelectionChange={() => {}}
-					/> */}
+					/>
 				</div>
 				<div></div>
 				<Modal

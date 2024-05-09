@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { PaginatedTable, RedirectButton, StatusIcon } from "../..";
 import { useStore } from "../../../utils/store";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { APILinkTypeDetail } from "../../../api/linkTypes/types";
 import { getLinkTypesPaginated } from "../../../api/linkTypes/get/getLinkTypesPaginated";
 import { DropdownOption, Props as DropdownProps } from "../../Dropdown";
@@ -10,11 +10,12 @@ import * as RoutePath from "../../../RouteConfig";
 
 import styles from "./styles.module.scss";
 import { CivilDefenseBuildingColumns } from "../../PaginatedTable/types";
-import { Column } from "@tanstack/react-table";
+import { Column, createColumnHelper } from "@tanstack/react-table";
 import { getPagedCdBuildings } from "../../../api/civilDefenseBuildings/get/getPagedCdBuildings";
 import { APICivilDefenseBuildingItem } from "../../../api/civilDefenseBuildings/types";
 import { Id } from "../../../utils";
 import { getCdBuildingsOwners } from "../../../api/civilDefenseBuildingsOwners/get/getCdBuildingsOwners";
+import { getCategorizedDepartments } from "../../../api/departments/get/getCategorizedDepartments";
 
 const CivilDefenseBuildingsTable = () => {
 	const [t] = useTranslation("common");
@@ -28,9 +29,8 @@ const CivilDefenseBuildingsTable = () => {
 
 	const [keyword, setKeyword] = useState("");
 
-	const [ownerId, setOwnerId] = useState<Id>("");
-
 	const [ownerOptions, setOwnerOptions] = useState<DropdownOption[]>([]);
+	const [sectionOptions, setSectionOptions] = useState<DropdownOption[]>([]);
 
 	// This variable is to set the status code which we can pass to the API
 	const [statusCode, setStatusCode] = useState<Id>(1);
@@ -45,7 +45,6 @@ const CivilDefenseBuildingsTable = () => {
 				currentPage,
 				pageSize,
 				keyword,
-				ownerId,
 				statusCode,
 				orderBy,
 				toggleSort
@@ -58,15 +57,7 @@ const CivilDefenseBuildingsTable = () => {
 		};
 
 		fetch();
-	}, [
-		currentPage,
-		keyword,
-		orderBy,
-		ownerId,
-		pageSize,
-		statusCode,
-		toggleSort,
-	]);
+	}, [currentPage, keyword, orderBy, pageSize, statusCode, toggleSort]);
 
 	useEffect(() => {
 		const fetch = async () => {
@@ -86,6 +77,27 @@ const CivilDefenseBuildingsTable = () => {
 		fetch();
 	}, [language]);
 
+	const fetchDpartments = useCallback(async () => {
+		const { data } = await getCategorizedDepartments();
+
+		if (data) {
+			setSectionOptions(
+				data?.map((d) => {
+					return {
+						label: `${d.id} - ${
+							language !== "ar" ? d.fullName : d.fullNameEnglish
+						}`,
+						value: d.id,
+					};
+				})
+			);
+		}
+	}, [language]);
+
+	useEffect(() => {
+		fetchDpartments();
+	}, [fetchDpartments]);
+
 	const id = t("global.id", { framework: "React" });
 	const name = t("cd.building.name", { framework: "React" });
 	const nameEng = t("cd.building.nameEnglish", { framework: "React" });
@@ -96,53 +108,79 @@ const CivilDefenseBuildingsTable = () => {
 	const actions = t("global.actions", { framework: "React" });
 	const edit = t("button.edit", { framework: "React" });
 
-	// const columns: Column<CivilDefenseBuildingColumns>[] = [
-	// 	{
-	// 		Header: id,
-	// 		id: "id",
-	// 		accessor: (p) => p.id,
-	// 	},
-	// 	{
-	// 		Header: name,
-	// 		id: "name",
-	// 		accessor: (p) => p.name,
-	// 	},
-	// 	{
-	// 		Header: nameEng,
-	// 		id: "nameEnglish",
-	// 		accessor: (p) => p.nameEnglish,
-	// 	},
-	// 	{
-	// 		Header: owner,
-	// 		id: "owner",
-	// 		accessor: (p) =>
-	// 			language !== "ar" ? p.owner?.name! : p.owner?.nameEnglish!,
-	// 	},
-	// 	{
-	// 		Header: section,
-	// 		id: "section",
-	// 		accessor: (p) =>
-	// 			language !== "ar" ? p.section?.name! : p.section?.nameEnglish!,
-	// 	},
-	// 	{
-	// 		Header: actions,
-	// 		accessor: (p) => p.id,
-	// 		Cell: ({ value }: any) => (
-	// 			<div className={styles.action}>
-	// 				<div className={styles.btnDiv}>
-	// 					<RedirectButton
-	// 						label={edit}
-	// 						redirectTo={`${RoutePath.CONTENT_MANAGEMENT_CD_BUILDING_EDIT.replace(
-	// 							RoutePath.ID,
-	// 							value
-	// 						)}`}
-	// 						// style={{ height: "20px", fontSize: "12px" }}
-	// 					/>
-	// 				</div>
-	// 			</div>
-	// 		),
-	// 	},
-	// ];
+	const columnHelper = createColumnHelper<CivilDefenseBuildingColumns>();
+	const columns = useMemo(
+		() => [
+			columnHelper.accessor((row) => row.id, {
+				id: "id",
+				header: id,
+			}),
+			columnHelper.accessor((row) => row.name, {
+				id: "name",
+				header: name,
+			}),
+			columnHelper.accessor((row) => row.nameEnglish, {
+				id: "nameEnglish",
+				header: nameEng,
+			}),
+			columnHelper.accessor((row) => row.owner, {
+				id: "ownerId",
+				header: owner,
+				cell: (info) =>
+					language !== "ar"
+						? info.getValue().name!
+						: info.getValue().nameEnglish!,
+				meta: {
+					filterVariant: "select",
+					options: ownerOptions,
+				},
+			}),
+			columnHelper.accessor((row) => row.section, {
+				id: "sectionId",
+				header: section,
+				cell: (info) =>
+					language !== "ar"
+						? info.getValue()?.name!
+						: info.getValue()?.nameEnglish!,
+				meta: {
+					filterVariant: "select",
+					options: sectionOptions,
+				},
+			}),
+			columnHelper.accessor((row) => row.id, {
+				id: "actions",
+				header: actions,
+				cell: (info) => (
+					<div className={styles.action}>
+						<div className={styles.btnDiv}>
+							<RedirectButton
+								label={edit}
+								redirectTo={`${RoutePath.CONTENT_MANAGEMENT_CD_BUILDING_EDIT.replace(
+									RoutePath.ID,
+									info.getValue().toString()
+								)}`}
+								// style={{ height: "20px", fontSize: "12px" }}
+							/>
+						</div>
+					</div>
+				),
+				enableColumnFilter: false,
+			}),
+		],
+		[
+			actions,
+			columnHelper,
+			edit,
+			id,
+			language,
+			name,
+			nameEng,
+			owner,
+			ownerOptions,
+			section,
+			sectionOptions,
+		]
+	);
 
 	const searchClickHandler = (keyword: string) => {
 		setKeyword(keyword);
@@ -170,21 +208,9 @@ const CivilDefenseBuildingsTable = () => {
 		setStatusCode(option?.value);
 	};
 
-	const ownerSelectHandler = (option: DropdownOption) => {
-		setOwnerId(option?.value!);
-	};
-
-	const dropdowns: { [key: string]: DropdownProps } = {
-		owners: {
-			options: ownerOptions,
-			onSelect: ownerSelectHandler,
-			placeholder: t("cd.owner.name", { framework: "React" }),
-		},
-	};
-
 	return (
 		<>
-			{/* <PaginatedTable
+			<PaginatedTable
 				totalCountText={t("menu.count", { framework: "React" })}
 				totalCount={totalCount}
 				currentPage={currentPage}
@@ -192,7 +218,6 @@ const CivilDefenseBuildingsTable = () => {
 				pageSize={pageSize}
 				data={items}
 				columns={columns}
-				dropdowns={dropdowns}
 				noRecordText={""}
 				onSearch={searchClickHandler}
 				onTableSort={tableSortHandler}
@@ -200,7 +225,7 @@ const CivilDefenseBuildingsTable = () => {
 				onPageViewSelectionChange={pageViewSelectionHandler}
 				hideWorkflowStatusDropdown={true}
 				onActiveStatusOptionSelectionChange={activeStatusChangeHandler}
-			/> */}
+			/>
 		</>
 	);
 };

@@ -7,9 +7,6 @@ export async function getMenuListPaginated(
 	currentPage: number,
 	pageSize: number,
 	keyword?: string,
-	parentId?: Id,
-	menuTypeId?: Id,
-	categoryId?: Id,
 	statusCode?: Id,
 	orderBy?: string,
 	isDescending: boolean = false
@@ -19,18 +16,6 @@ export async function getMenuListPaginated(
 
 		if (keyword) {
 			queryParam += `&keyword=${keyword}`;
-		}
-
-		if (parentId) {
-			queryParam += `&parentId=${parentId}`;
-		}
-
-		if (menuTypeId) {
-			queryParam += `&type=${menuTypeId}`;
-		}
-
-		if (categoryId) {
-			queryParam += `&categoryId=${categoryId}`;
 		}
 
 		if (statusCode) {

@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import React, {
+	Fragment,
 	MutableRefObject,
 	PropsWithChildren,
 	ReactElement,
@@ -83,13 +84,6 @@ Table.defaultProps = {
 export function Table<T extends object>(props: Props<T>): ReactElement {
 	const language = useStore((state) => state.language);
 
-	// Define initial filter values here
-	const initialFilterValues: ColumnFiltersState = [
-		// Example: Set initial filter value for activeStatusId column
-		{ id: "activeStatusId", value: "1" }, // Set the initial value as per your requirement
-		// Add more initial filter values as needed for other columns
-	];
-
 	const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
 		[]
 	);
@@ -97,7 +91,6 @@ export function Table<T extends object>(props: Props<T>): ReactElement {
 	const handleColumnFiltersChange = (
 		newColumnFilters: React.SetStateAction<ColumnFiltersState>
 	) => {
-		// console.log(newColumnFilters);
 		setColumnFilters(newColumnFilters);
 		if (props.onColumnFiltersChange) {
 			props.onColumnFiltersChange(newColumnFilters!);
@@ -148,11 +141,16 @@ export function Table<T extends object>(props: Props<T>): ReactElement {
 		debugColumns: false,
 	});
 
-	// UNCOMMENT
-	// const columnHeadersLength = getHeaderGroups().map(
-	// 	(headerGroup) => headerGroup.headers.length
-	// );
-	// const maxColCount = Math.max(...columnHeadersLength);
+	const columnHeadersLength = tableInstance
+		.getHeaderGroups()
+		.map((headerGroup) => headerGroup.headers.length);
+	const maxColCount = Math.max(...columnHeadersLength);
+
+	console.log(
+		tableInstance
+			.getHeaderGroups()
+			.map((headerGroup) => headerGroup.headers.length)
+	);
 
 	return (
 		<ShadowedContainer className={clsx(styles.tableWrapper, props.className)}>
@@ -167,58 +165,76 @@ export function Table<T extends object>(props: Props<T>): ReactElement {
 							language === "ar" && styles.tableHeadLTR
 						)}>
 						{tableInstance.getHeaderGroups().map((headerGroup) => (
-							<tr key={headerGroup.id}>
-								{headerGroup.headers.map((header) => {
-									return (
-										<th
+							<Fragment key={headerGroup.id + "__"}>
+								<tr key={headerGroup.id}>
+									{headerGroup.headers.map((header) => {
+										return (
+											<th
+												key={header.id}
+												colSpan={header.colSpan}
+												style={{
+													color: props.headerColor,
+													padding: props.headerPadding,
+													background: props.headerBackground,
+													height: "50px",
+													whiteSpace: "nowrap",
+												}}>
+												{header.isPlaceholder ? null : (
+													<>
+														<div
+															{...{
+																className: header.column.getCanSort()
+																	? "cursor-pointer select-none"
+																	: "",
+																onClick: () => {
+																	if (
+																		header.column.getIsSorted() === undefined
+																	) {
+																		header.column.toggleSorting(); //.isSortedDesc = false;
+																	}
+
+																	props.onSort &&
+																		props.onSort(
+																			header.column.id,
+																			Boolean(header.column.getIsSorted())
+																		);
+																	header.column.toggleSorting();
+																},
+															}}
+															className={styles.heading}>
+															{flexRender(
+																header.column.columnDef.header,
+																header.getContext()
+															)}
+															{{
+																asc: " 🔼",
+																desc: " 🔽",
+															}[header.column.getIsSorted() as string] ?? null}
+														</div>
+													</>
+												)}
+											</th>
+										);
+									})}
+								</tr>
+								<tr key={headerGroup.id + "_"}>
+									{headerGroup.headers.map((header) => (
+										<td
 											key={header.id}
 											colSpan={header.colSpan}
 											style={{
 												color: props.headerColor,
 												padding: props.headerPadding,
-												background: props.headerBackground,
 											}}>
-											{header.isPlaceholder ? null : (
-												<>
-													<div
-														{...{
-															className: header.column.getCanSort()
-																? "cursor-pointer select-none"
-																: "",
-															onClick: () => {
-																if (header.column.getIsSorted() === undefined) {
-																	header.column.toggleSorting(); //.isSortedDesc = false;
-																}
-
-																props.onSort &&
-																	props.onSort(
-																		header.column.id,
-																		Boolean(header.column.getIsSorted())
-																	);
-																header.column.toggleSorting();
-															},
-														}}
-														className={styles.heading}>
-														{flexRender(
-															header.column.columnDef.header,
-															header.getContext()
-														)}
-														{{
-															asc: " 🔼",
-															desc: " 🔽",
-														}[header.column.getIsSorted() as string] ?? null}
-													</div>
-													{header.column.getCanFilter() ? (
-														<div>
-															<Filter column={header.column} />
-														</div>
-													) : null}
-												</>
-											)}
-										</th>
-									);
-								})}
-							</tr>
+											{header.column.getCanFilter() ? (
+												<div>
+													<Filter column={header.column} />
+												</div>
+											) : null}
+										</td>
+									))}
+								</tr>
+							</Fragment>
 						))}
 					</thead>
 					<tbody className={styles.tableBody}>
@@ -231,8 +247,7 @@ export function Table<T extends object>(props: Props<T>): ReactElement {
 								style={{ background: props.rowColor }}>
 								<td
 									className={styles.noRecordsRow}
-									// colSpan={maxColCount}
-								>
+									colSpan={maxColCount}>
 									{props.noRecordsText}
 								</td>
 							</tr>
@@ -269,202 +284,10 @@ export function Table<T extends object>(props: Props<T>): ReactElement {
 					</tbody>
 				</table>
 				<div className="h-2" />
-				{/* <div className="flex items-center gap-2">
-					<button
-						className="border rounded p-1"
-						onClick={() => tableInstance.setPageIndex(0)}
-						disabled={!tableInstance.getCanPreviousPage()}>
-						{"<<"}
-					</button>
-					<button
-						className="border rounded p-1"
-						onClick={() => tableInstance.previousPage()}
-						disabled={!tableInstance.getCanPreviousPage()}>
-						{"<"}
-					</button>
-					<button
-						className="border rounded p-1"
-						onClick={() => tableInstance.nextPage()}
-						disabled={!tableInstance.getCanNextPage()}>
-						{">"}
-					</button>
-					<button
-						className="border rounded p-1"
-						onClick={() =>
-							tableInstance.setPageIndex(tableInstance.getPageCount() - 1)
-						}
-						disabled={!tableInstance.getCanNextPage()}>
-						{">>"}
-					</button>
-					<span className="flex items-center gap-1">
-						<div>Page</div>
-						<strong>
-							{tableInstance.getState().pagination.pageIndex + 1} of{" "}
-							{tableInstance.getPageCount()}
-						</strong>
-					</span>
-					<span className="flex items-center gap-1">
-						| Go to page:
-						<input
-							type="number"
-							defaultValue={tableInstance.getState().pagination.pageIndex + 1}
-							onChange={(e) => {
-								const page = e.target.value ? Number(e.target.value) - 1 : 0;
-								tableInstance.setPageIndex(page);
-							}}
-							className="border p-1 rounded w-16"
-						/>
-					</span>
-					<select
-						value={tableInstance.getState().pagination.pageSize}
-						onChange={(e) => {
-							tableInstance.setPageSize(Number(e.target.value));
-						}}>
-						{[10, 20, 30, 40, 50].map((pageSize) => (
-							<option
-								key={pageSize}
-								value={pageSize}>
-								Show {pageSize}
-							</option>
-						))}
-					</select>
-				</div>
-				<div>{tableInstance.getPrePaginationRowModel().rows.length} Rows</div> */}
-				{/* <div>
-					<button onClick={() => rerender()}>Force Rerender</button>
-				</div>
-				<div>
-					<button onClick={() => refreshData()}>Refresh Data</button>
-				</div>*/}
-				{/* <pre>
-					{JSON.stringify(
-						{ columnFilters: tableInstance.getState().columnFilters },
-						null,
-						2
-					)}
-				</pre> */}
 			</div>
-			{/* <table
-				// {...getTableProps()}
-				className={styles.table}
-				cellSpacing="0"
-				cellPadding="0"
-				style={{ borderSpacing: `0 ${props.rowSpacing}` }}
-				ref={props.reference}>
-				<thead
-					className={clsx(
-						styles.tableHead,
-						language === "ar" && styles.tableHeadLTR
-					)}>
-					<tr>
-						{tableInstance.getColumn().map((column) => {
-							const sortByToggleProps = column.getSortByToggleProps({
-								onClick: () => {
-									if (column.isSortedDesc === undefined) {
-										column.isSortedDesc = false;
-									}
-
-									props.onSort && props.onSort(column.id, column.isSortedDesc);
-									column.toggleSortBy(!column.isSortedDesc);
-								},
-							});
-
-							return (
-								<th
-									{...column.getHeaderProps(sortByToggleProps)}
-									style={{
-										color: props.headerColor,
-										padding: props.headerPadding,
-										background: props.headerBackground,
-									}}
-									key={column.id}>
-									{!(column as any).tooltip && column.render("header")}
-								</th>
-							);
-						})}
-						{props.isPrintable && <th>Print</th>}
-					</tr>
-				</thead>
-
-				<tbody
-					{...getTableBodyProps()}
-					className={styles.tableBody}>
-					{!rows.length && (
-						<tr
-							className={clsx(
-								styles.tableRow,
-								language === "ar" && styles.tableRowLTR
-							)}
-							style={{ background: props.rowColor }}>
-							<td
-								className={styles.noRecordsRow}
-								colSpan={maxColCount}>
-								{props.noRecordsText}
-							</td>
-						</tr>
-					)}
-					{rows.map((row) => {
-						prepareRow(row);
-						return (
-							<React.Fragment key={row.getRowProps().key}>
-								<tr
-									{...row.getRowProps()}
-									className={clsx(
-										styles.tableRow,
-										language === "ar" && styles.tableRowLTR
-									)}
-									style={{
-										background: props.rowColor,
-										height: props.rowHeight,
-									}}
-									onClick={() =>
-										props.onRowClick && props.onRowClick(row.original)
-									}>
-									{row.cells.map((cell, index) => {
-										return (
-											<td
-												// {props.isPrintable && index === row.cells.length ? }
-												style={{
-													fontSize: props.fontSize,
-												}}
-												{...cell.getCellProps([
-													{ className: styles[(cell.column as any).className] },
-												])}
-												onClick={(e) => {
-													if (index === row.cells.length - 1)
-														e.stopPropagation();
-												}}>
-												<>{cell.render("Cell")}</>
-											</td>
-										);
-									})}
-								</tr>
-
-								{(row as any).isExpanded && props.renderSubComponent && (
-									<tr
-										className={clsx(
-											styles.tableRow,
-											language === "ar" && styles.tableRowLTR,
-											styles.subRow
-										)}>
-										<td
-											colSpan={visibleColumns.length}
-											style={{ background: props.rowColor }}
-											className={styles.nested}>
-											{props.renderSubComponent(row.original)}
-										</td>
-									</tr>
-								)}
-							</React.Fragment>
-						);
-					})}
-				</tbody>
-			</table> */}
 		</ShadowedContainer>
 	);
 }
-
-console.log("asdsad");
 
 function Filter({ column }: { column: Column<any, unknown> }) {
 	const [columnFilterValue, setColumnFilterValue] = React.useState(
@@ -537,6 +360,7 @@ function Filter({ column }: { column: Column<any, unknown> }) {
 					<Dropdown
 						options={options}
 						onSelect={selectHandler}
+						className={styles.ddl}
 					/>
 					// <select
 					// 	onChange={(e) => column.setFilterValue(e.target.value)}
@@ -549,10 +373,9 @@ function Filter({ column }: { column: Column<any, unknown> }) {
 				);
 			}
 			default: {
-				console.log("hereee????");
 				return (
 					<DebouncedInput
-						className="w-36 border shadow rounded"
+						// className="w-36 border shadow rounded"
 						onChange={(value) => column.setFilterValue(value)}
 						placeholder="Search..."
 						type="text"
@@ -564,7 +387,7 @@ function Filter({ column }: { column: Column<any, unknown> }) {
 	} else {
 		return (
 			<DebouncedInput
-				className="w-36 border shadow rounded"
+				// className="w-36 border shadow rounded"
 				onChange={(value) => column.setFilterValue(value)}
 				placeholder="Search..."
 				type="text"
@@ -604,6 +427,7 @@ function DebouncedInput({
 			{...props}
 			value={value}
 			onChange={(e) => setValue(e.target.value)}
+			className={styles.txtFilter}
 		/>
 	);
 }

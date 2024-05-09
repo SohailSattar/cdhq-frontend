@@ -1,2 +1,17 @@
-.menuTable {
+.name {
+	display: flex;
+	flex-direction: column;
+	width: max-content !important;
+
+	.arabic {
+		display: flex;
+		justify-content: center;
+		justify-content: right;
+	}
+
+	.english {
+		display: flex;
+		// justify-content: center;
+		justify-content: left;
+	}
 }

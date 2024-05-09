@@ -1,7 +1,17 @@
-import { useEffect, useMemo, useState } from "react";
+import {
+	SetStateAction,
+	useCallback,
+	useEffect,
+	useMemo,
+	useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { Column } from "@tanstack/react-table";
+import {
+	Column,
+	ColumnFiltersState,
+	createColumnHelper,
+} from "@tanstack/react-table";
 import { deleteNews } from "../../../api/news/delete/deleteNews";
 import { getNews } from "../../../api/news/get/getNews";
 import { APINews } from "../../../api/news/types";
@@ -26,6 +36,8 @@ import { toast } from "react-toastify";
 import { APIStatus } from "../../../api";
 import { updateNewsStatus } from "../../../api/news/update/updateNewsStatus";
 import { useStore } from "../../../utils/store";
+import { getDepartmentsByProject } from "../../../api/departments/get/getDepartmentsByProject";
+import { getFilteredNews } from "../../../api/news/get/getFilteredNews";
 
 const NewsHomePage = () => {
 	const [t] = useTranslation("common");
@@ -41,12 +53,22 @@ const NewsHomePage = () => {
 	const [news, setNews] = useState<APINews[]>([]);
 	const [keyword, setKeyword] = useState("");
 
+	// Dropdowns
+
+	const [departmentOptions, setDepartmentOptions] = useState<DropdownOption[]>(
+		[]
+	);
+
 	// This variable is to set the status code which we can pass to the API
-	const [selectedStatusCode, setSelectedStatusCode] = useState<Id>(1);
+	const [selectedStatusCode, setSelectedStatusCode] = useState<Id>();
 
 	//Parameters
 	const [toggleSort, setToggleSort] = useState(true);
 	const [orderBy, setOrderBy] = useState<string>("Id");
+
+	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([
+		{ id: "activeStatusId", value: "1" },
+	]);
 
 	const fetchData = useMemo(
 		() => async (currentPage: number, keyword?: string) => {
@@ -67,24 +89,78 @@ const NewsHomePage = () => {
 					deletePrivilege,
 				});
 
-				const { data } = await getNews(
-					currentPage,
-					pageSize,
-					keyword,
-					selectedStatusCode,
-					orderBy,
-					toggleSort
-				);
+				if (columnFilters.length > 0) {
+					const { data } = await getFilteredNews(
+						columnFilters,
+						currentPage,
+						pageSize,
+						keyword,
+						selectedStatusCode,
+						orderBy,
+						toggleSort
+					);
 
-				if (data) {
-					setNews(data.news);
-					setTotalCount(data.totalItems);
+					if (data) {
+						setNews(data.news);
+						setTotalCount(data.totalItems);
+					} else {
+						// navigate(RoutePath.ROOT);
+					}
 				} else {
-					// navigate(RoutePath.ROOT);
+					const { data } = await getNews(
+						currentPage,
+						pageSize,
+						keyword,
+						selectedStatusCode,
+						orderBy,
+						toggleSort
+					);
+
+					if (data) {
+						setNews(data.news);
+						setTotalCount(data.totalItems);
+					} else {
+					}
 				}
 			}
 		},
-		[orderBy, pageSize, selectedStatusCode, toggleSort]
+		[columnFilters, orderBy, pageSize, selectedStatusCode, toggleSort]
+	);
+
+	const fetchDepartment = useCallback(async () => {
+		const { data } = await getDepartmentsByProject(Project.News);
+		if (data) {
+			setDepartmentOptions(
+				data?.map((x) => {
+					return {
+						label: `${language !== "ar" ? x.name : x.nameEnglish}`,
+						value: x.id,
+					};
+				})
+			);
+		}
+	}, [language]);
+
+	useEffect(() => {
+		fetchDepartment();
+	}, [fetchDepartment]);
+
+	const activeStatusOptions: DropdownOption[] = useMemo(
+		() => [
+			{
+				label: t("status.active", {
+					framework: "React",
+				}),
+				value: 1,
+			},
+			{
+				label: t("status.deactive", {
+					framework: "React",
+				}),
+				value: 9,
+			},
+		],
+		[t]
 	);
 
 	useEffect(() => {
@@ -109,29 +185,6 @@ const NewsHomePage = () => {
 		},
 		[navigate]
 	);
-
-	// const deleteClickHandler = useCallback(
-	// 	() => async (id: Id) => {
-	// 		const { data } = await deleteNews(id);
-
-	// 		console.log(data);
-
-	// 		if (data) {
-	// 			fetchData(currentPage);
-	// 		}
-	// 	},
-	// 	[currentPage, fetchData]
-	// );
-
-	// const deleteClickHandler = async (id: Id) => {
-	// 	const { data } = await deleteNews(id);
-
-	// 	console.log(data);
-
-	// 	if (data) {
-	// 		fetchData(currentPage);
-	// 	}
-	// };
 
 	const activateClickHandler = useMemo(
 		() => async (upId: Id) => {
@@ -197,86 +250,105 @@ const NewsHomePage = () => {
 	const status = t("global.status", { framework: "React" });
 	const actions = t("global.actions", { framework: "React" });
 
-	// const columns: Column<NewsColumns>[] = useMemo(
-	// 	() => [
-	// 		{
-	// 			id: "img",
-	// 			accessor: (p) => p.imageName,
-	// 			Cell: ({ value }: any) => <PhotoThumbnailImage src={value!} />,
-	// 		},
-	// 		{
-	// 			Header: txtId,
-	// 			id: "id",
-	// 			accessor: (p) => p.id,
-	// 		},
-	// 		{
-	// 			Header: title,
-	// 			id: "title",
-	// 			accessor: (p) => p.title,
-	// 		},
-	// 		{
-	// 			Header: department,
-	// 			id: "department",
-	// 			accessor: (p) => p.department,
-	// 			Cell: ({ value }: any) => (
-	// 				<div>
-	// 					{value
-	// 						? language !== "ar"
-	// 							? value?.name!
-	// 							: value?.nameEnglish!
-	// 						: "-"}
-	// 				</div>
-	// 			),
-	// 		},
-	// 		{
-	// 			Header: status,
-	// 			id: "activeStatus",
-	// 			accessor: (p) => p,
-	// 			Cell: ({ value }: any) => (
-	// 				<ActiveStatus
-	// 					code={value.activeStatus.id === 1 ? 1 : 9}
-	// 					text={
-	// 						language !== "ar"
-	// 							? value.activeStatus.nameArabic
-	// 							: value.activeStatus.nameEnglish
-	// 					}
-	// 				/>
-	// 			),
-	// 		},
-	// 		{
-	// 			Header: actions,
-	// 			accessor: (p) => p,
-	// 			Cell: ({ value }: any) => (
-	// 				<ActionButtons
-	// 					id={value.id}
-	// 					showActivate={value.activeStatus.id !== 1}
-	// 					onActivate={activateClickHandler}
-	// 					// detailPageLink={`${RoutePath.NEWS}/${value.id}`}
-	// 					// showView={privileges?.readPrivilege}
-	// 					showEdit={privileges?.updatePrivilege}
-	// 					showDelete={
-	// 						privileges?.deletePrivilege && value.activeStatus.id === 1
-	// 					}
-	// 					onDelete={deleteClickHandler}
-	// 					onEdit={() => editClickHandler(value.id)}
-	// 				/>
-	// 			),
-	// 		},
-	// 	],
-	// 	[
-	// 		txtId,
-	// 		title,
-	// 		department,
-	// 		status,
-	// 		actions,
-	// 		language,
-	// 		activateClickHandler,
-	// 		privileges?.updatePrivilege,
-	// 		privileges?.deletePrivilege,
-	// 		deleteClickHandler,
-	// 		editClickHandler,
-	// 	]
-	// );
+	const columnHelper = createColumnHelper<NewsColumns>();
+	const columns = useMemo(
+		() => [
+			columnHelper.accessor((row) => row.imageName, {
+				id: "imageName",
+				header: "",
+				cell: (info) => <PhotoThumbnailImage src={info.getValue()!} />,
+				enableColumnFilter: false,
+			}),
+			columnHelper.accessor((row) => row.id, {
+				id: "id",
+				header: txtId,
+			}),
+			columnHelper.accessor((row) => row.title, {
+				id: "title",
+				cell: (info) => <div className={styles.name}>{info.getValue()}</div>,
+				header: () => title,
+			}),
+			columnHelper.accessor((row) => row.department, {
+				id: "departmentId",
+				cell: (info) => (
+					<div className={styles.name}>
+						{info.getValue()
+							? language !== "ar"
+								? info.getValue()?.name!
+								: info.getValue()?.nameEnglish!
+							: "-"}
+					</div>
+				),
+				header: () => department,
+				meta: {
+					filterVariant: "select",
+					options: departmentOptions,
+				},
+			}),
+			columnHelper.accessor((row) => row.activeStatus, {
+				id: "activeStatusId",
+				cell: (info) => (
+					<div className={styles.name}>
+						<ActiveStatus
+							code={info.getValue().id === 1 ? 1 : 9}
+							text={
+								language !== "ar"
+									? info.getValue().nameArabic
+									: info.getValue().nameEnglish
+							}
+						/>
+					</div>
+				),
+				header: () => <div className={styles.tableHeaderCell}>{status}</div>,
+				meta: {
+					filterVariant: "select",
+					options: activeStatusOptions,
+					initialValue: {
+						label: t("status.active", {
+							framework: "React",
+						}),
+						value: 1,
+					},
+				},
+			}),
+			columnHelper.accessor((row) => row, {
+				id: "action",
+				header: actions,
+				cell: (info) => (
+					<ActionButtons
+						id={info.getValue().id}
+						showActivate={info.getValue().activeStatus.id !== 1}
+						onActivate={activateClickHandler}
+						showEdit={privileges?.updatePrivilege}
+						showDelete={
+							privileges?.deletePrivilege &&
+							info.getValue().activeStatus.id === 1
+						}
+						onDelete={deleteClickHandler}
+						onEdit={() => editClickHandler(info.getValue().id.toString())}
+					/>
+				),
+				enableColumnFilter: false,
+			}),
+		],
+		[
+			actions,
+			activateClickHandler,
+			activeStatusOptions,
+			columnHelper,
+			deleteClickHandler,
+			department,
+			departmentOptions,
+			editClickHandler,
+			language,
+			privileges?.deletePrivilege,
+			privileges?.updatePrivilege,
+			status,
+			t,
+			title,
+			txtId,
+		]
+	);
 
 	const newsSearchClickHandler = (keyword: string) => {
 		setKeyword(keyword);
@@ -286,8 +358,13 @@ const NewsHomePage = () => {
 		setToggleSort(!toggleSort);
 
 		setOrderBy(columnId);
-		// fetchData(currentPage, orderByParam);
 		setCurrentPage(1);
+	};
+
+	const handleColumnFiltersChange = async (
+		newColumnFilters: SetStateAction<ColumnFiltersState>
+	) => {
+		setColumnFilters(newColumnFilters);
 	};
 
 	return (
@@ -298,7 +375,7 @@ const NewsHomePage = () => {
 			btnAddUrlLink={RoutePath.NEWS_NEW}
 			btnAddLabel={t("button.add", { framework: "React" })}
 			className={styles.news}>
-			{/* <PaginatedTable
+			<PaginatedTable
 				totalCountText={t("news.count", { framework: "React" })}
 				totalCount={totalCount}
 				currentPage={currentPage}
@@ -311,10 +388,12 @@ const NewsHomePage = () => {
 				onPageChange={pageChangeHandler}
 				onPageViewSelectionChange={pageViewSelectionHandler}
 				noRecordText={t("table.noNews", { framework: "React" })}
-				onActiveStatusOptionSelectionChange={statusSelectHandler}
+				// onActiveStatusOptionSelectionChange={statusSelectHandler}
+				hideActiveStatusDropdown
 				hideWorkflowStatusDropdown
 				classNameTable={styles.table}
-			/> */}
+				onColumnFiltersChange={handleColumnFiltersChange}
+			/>
 		</PageContainer>
 	);
 };

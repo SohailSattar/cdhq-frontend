@@ -1,7 +1,17 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+	SetStateAction,
+	useCallback,
+	useEffect,
+	useMemo,
+	useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { Column } from "@tanstack/react-table";
+import {
+	Column,
+	ColumnFiltersState,
+	createColumnHelper,
+} from "@tanstack/react-table";
 import { getHonors } from "../../../api/honors/get/getHonors";
 import { APIExportHonor, APIHonor } from "../../../api/honors/types";
 import { APIPrivileges } from "../../../api/privileges/type";
@@ -12,10 +22,7 @@ import {
 	PaginatedTable,
 	PageContainer,
 } from "../../../components";
-import {
-	DropdownOption,
-	Props as DropdownProps,
-} from "../../../components/Dropdown";
+import { DropdownOption } from "../../../components/Dropdown";
 import { HonorColumn } from "../../../components/PaginatedTable/types";
 import { Project } from "../../../data/projects";
 import { enGB, ar } from "date-fns/locale";
@@ -31,6 +38,8 @@ import { useStore } from "../../../utils/store";
 import { format } from "date-fns";
 import { getDepartmentsByProject } from "../../../api/departments/get/getDepartmentsByProject";
 import { exportHonors } from "../../../api/honors/export/exportHonors";
+import { getRanks } from "../../../api/ranks/get/getRanks";
+import { getFilteredHonors } from "../../../api/honors/get/getFilteredHonors";
 
 const HonorsHomePage = () => {
 	const [t] = useTranslation("common");
@@ -51,8 +60,14 @@ const HonorsHomePage = () => {
 		[]
 	);
 
+	const [rankOptions, setRankOptions] = useState<DropdownOption[]>([]);
+
 	// This variable is to set the status code which we can pass to the API
-	const [selectedStatusCode, setSelectedStatusCode] = useState<Id>(1);
+	const [selectedStatusCode, setSelectedStatusCode] = useState<Id>();
+
+	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([
+		{ id: "activeStatusId", value: "1" },
+	]);
 
 	//Parameters
 	const [toggleSort, setToggleSort] = useState(true);
@@ -79,11 +94,12 @@ const HonorsHomePage = () => {
 					deletePrivilege,
 				});
 
-				const { data } = await getHonors(
+				// if (columnFilters.length > 0) {
+				const { data } = await getFilteredHonors(
+					columnFilters,
 					currentPage,
 					pageSize,
 					keyword,
-					departmentId,
 					selectedStatusCode,
 					orderBy,
 					toggleSort
@@ -95,11 +111,28 @@ const HonorsHomePage = () => {
 				} else {
 					// navigate(RoutePath.ROOT);
 				}
+				// } else {
+				// 	const { data } = await getHonors(
+				// 		currentPage,
+				// 		pageSize,
+				// 		keyword,
+				// 		selectedStatusCode,
+				// 		orderBy,
+				// 		toggleSort
+				// 	);
+
+				// 	if (data) {
+				// 		setHonors(data.honors);
+				// 		setTotalCount(data.totalItems);
+				// 	} else {
+				// 		// navigate(RoutePath.ROOT);
+				// 	}
+				// }
 			}
 		},
 		[
+			columnFilters,
 			currentPage,
-			departmentId,
 			keyword,
 			orderBy,
 			pageSize,
@@ -183,6 +216,20 @@ const HonorsHomePage = () => {
 		[fetchData, t]
 	);
 
+	const typeOptions: DropdownOption[] = useMemo(
+		() => [
+			{
+				label: "موهوب",
+				value: "موهوب",
+			},
+			{
+				label: "متميز",
+				value: "متميز",
+			},
+		],
+		[]
+	);
+
 	const txtId = t("honor.id", { framework: "React" });
 	const honoredOn = t("honor.honoredOn", { framework: "React" });
 	const name = t("honor.name", { framework: "React" });
@@ -194,6 +241,116 @@ const HonorsHomePage = () => {
 	//Actions
 	const actions = t("global.actions", { framework: "React" });
 	const status = t("global.status", { framework: "React" });
+
+	const columnHelper = createColumnHelper<HonorColumn>();
+	const columns = useMemo(
+		() => [
+			columnHelper.accessor((row) => row.imageName, {
+				id: "imageName",
+				header: "",
+				cell: (info) => <PhotoThumbnailImage src={info.getValue()!} />,
+				enableColumnFilter: false,
+			}),
+			columnHelper.accessor((row) => row.id, {
+				id: "id",
+				header: txtId,
+			}),
+			columnHelper.accessor((row) => row.createdOn, {
+				id: "honoredOn",
+				cell: (info) => (
+					<>
+						{format(new Date(info.getValue()!), "dd MMMM yyyy", {
+							locale: language !== "ar" ? ar : enGB,
+						})}
+					</>
+				),
+				header: () => honoredOn,
+				enableColumnFilter: false,
+			}),
+			columnHelper.accessor((row) => row, {
+				id: "fullName",
+				cell: (info) => (
+					<div className={styles.name}>
+						{language !== "ar"
+							? info.getValue()!.name
+							: info.getValue()!.nameEnglish}
+					</div>
+				),
+				header: () => name,
+			}),
+			columnHelper.accessor((row) => row, {
+				id: "rank",
+				cell: (info) => (
+					<div className={styles.name}>
+						{language !== "ar"
+							? info.getValue()!.rank!
+							: info.getValue()!.rankEnglish}
+					</div>
+				),
+				header: () => rank,
+				meta: {
+					filterVariant: "select",
+					options: rankOptions,
+				},
+			}),
+			columnHelper.accessor((row) => row.department, {
+				id: "departmentId",
+				cell: (info) => (
+					<div className={styles.name}>
+						{info.getValue()
+							? language !== "ar"
+								? info.getValue()?.name!
+								: info.getValue()?.nameEnglish!
+							: "-"}
+					</div>
+				),
+				header: () => department,
+				meta: {
+					filterVariant: "select",
+					options: departmentOptions,
+				},
+			}),
+			columnHelper.accessor((row) => row.type, {
+				id: "type",
+				cell: (info) => <div className={styles.name}>{info.getValue()!}</div>,
+				header: () => honorType,
+				meta: {
+					filterVariant: "select",
+					options: typeOptions,
+				},
+			}),
+			columnHelper.accessor((row) => row, {
+				id: "action",
+				header: "",
+				cell: (info) => (
+					<ActionButtons
+						id={info.getValue()?.id}
+						showActivate={info.getValue()?.activeStatus.id !== 1}
+						onActivate={(id) => activateClickHandler(id)}
+						showEdit={privileges?.updatePrivilege}
+						onEdit={(id) => editClickHandler(info.getValue()?.id!.toString())}
+					/>
+				),
+				enableColumnFilter: false,
+			}),
+		],
+		[
+			activateClickHandler,
+			columnHelper,
+			department,
+			departmentOptions,
+			editClickHandler,
+			honorType,
+			honoredOn,
+			language,
+			name,
+			privileges?.updatePrivilege,
+			rank,
+			rankOptions,
+			txtId,
+			typeOptions,
+		]
+	);
 
 	// const columns: Column<HonorColumn>[] = useMemo(
 	// 	() => [
@@ -285,6 +442,24 @@ const HonorsHomePage = () => {
 	// 		editClickHandler,
 	// 	]
 	// );
+
+	const fetchRanks = useCallback(async () => {
+		const { data } = await getRanks();
+		if (data) {
+			setRankOptions(
+				data?.map((x) => {
+					return {
+						label: language !== "ar" ? x.name : x.nameEnglish,
+						value: language !== "ar" ? x.name : x.nameEnglish,
+					};
+				})
+			);
+		}
+	}, [language]);
+
+	useEffect(() => {
+		fetchRanks();
+	}, [fetchRanks]);
 
 	const fetchDepartments = useCallback(async () => {
 		const { data } = await getDepartmentsByProject(Project.Honors);
@@ -386,11 +561,10 @@ const HonorsHomePage = () => {
 		setDepartmentId(option?.value!);
 	};
 
-	const dropdowns: { [key: string]: DropdownProps } = {
-		department: {
-			options: departmentOptions,
-			onSelect: departmentSelectHandler,
-		},
+	const handleColumnFiltersChange = async (
+		newColumnFilters: SetStateAction<ColumnFiltersState>
+	) => {
+		setColumnFilters(newColumnFilters);
 	};
 
 	return (
@@ -401,12 +575,12 @@ const HonorsHomePage = () => {
 			btnAddUrlLink={RoutePath.HONORS_NEW}
 			btnAddLabel={t("button.add", { framework: "React" })}
 			isExportSelectionLoading={isExportLoading}
-			displayExportButton={true}
+			displayExportButton={false}
 			exportDisplayNames={propertyDisplayNames}
 			onExcelExport={exportDataHandler}
 			onPdfExport={exportDataHandler}
 			className={styles.honors}>
-			{/* <PaginatedTable
+			<PaginatedTable
 				totalCountText={t("news.count", { framework: "React" })}
 				totalCount={totalCount}
 				pageSize={pageSize}
@@ -414,7 +588,6 @@ const HonorsHomePage = () => {
 				setCurrentPage={setCurrentPage}
 				data={honors}
 				columns={columns}
-				dropdowns={dropdowns}
 				onSearch={searchHandler}
 				onTableSort={tableSortHandler}
 				onPageChange={pageChangeHandler}
@@ -427,9 +600,15 @@ const HonorsHomePage = () => {
 						? []
 						: ["actions"]
 				}
-			/> */}
+				onColumnFiltersChange={handleColumnFiltersChange}
+			/>
 		</PageContainer>
 	);
 };
 
 export default HonorsHomePage;
+function setColumnFilters(
+	newColumnFilters: SetStateAction<ColumnFiltersState>
+) {
+	throw new Error("Function not implemented.");
+}
