@@ -43,6 +43,8 @@
 	.selectionContainer {
 		display: flex;
 		padding: 15px;
+		z-index: 44;
+		position: relative;
 	}
 
 	.detailBar {

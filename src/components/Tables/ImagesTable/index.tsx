@@ -7,10 +7,20 @@ import {
 } from "../../";
 
 import { useNavigate } from "react-router";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+	SetStateAction,
+	useCallback,
+	useEffect,
+	useMemo,
+	useState,
+} from "react";
 import { APIPrivileges } from "../../../api/privileges/type";
 import { DropdownOption, Props as DropdownProps } from "../../Dropdown";
-import { Column, createColumnHelper } from "@tanstack/react-table";
+import {
+	Column,
+	ColumnFiltersState,
+	createColumnHelper,
+} from "@tanstack/react-table";
 import { ImageColumn } from "../../PaginatedTable/types";
 import { useStore } from "../../../utils/store";
 import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPrivilege";
@@ -29,6 +39,7 @@ import * as RoutePath from "../../../RouteConfig";
 
 import styles from "./styles.module.scss";
 import { getImageTypes } from "../../../api/imageType/get/getImageTypes";
+import { getFilteredImages } from "../../../api/images/get/getFilteredImages";
 
 const ImagesTable = () => {
 	const [t] = useTranslation("common");
@@ -49,12 +60,16 @@ const ImagesTable = () => {
 	const [typeId, setTypeId] = useState<Id>();
 
 	// This variable is to set the status code which we can pass to the API
-	const [selectedStatusCode, setSelectedStatusCode] = useState<Id>(1);
+	const [selectedStatusCode, setSelectedStatusCode] = useState<Id>();
 	const [orderBy, setOrderBy] = useState<string>("");
 
 	const [privileges, setPrivileges] = useState<APIPrivileges>();
 
 	const [typeOptions, setTypeOptions] = useState<DropdownOption[]>([]);
+
+	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([
+		{ id: "activeStatusId", value: "1" },
+	]);
 
 	// check if authorized to access
 	useEffect(() => {
@@ -101,14 +116,12 @@ const ImagesTable = () => {
 
 	const fetch = useMemo(
 		() => async () => {
-			const { data, error } = await getImagesList(
-				currentPage,
-				pageSize,
+			const { data, error } = await getFilteredImages(columnFilters, {
+				page: currentPage,
+				postsPerPage: pageSize,
 				keyword,
-				typeId,
-				selectedStatusCode,
-				orderBy
-			);
+				orderBy,
+			});
 
 			// if (error?.response!.status! === 401) {
 			// 	navigate(RoutePath.LOGIN);
@@ -121,7 +134,7 @@ const ImagesTable = () => {
 				setTotalCount(data.totalItems);
 			}
 		},
-		[currentPage, pageSize, keyword, typeId, selectedStatusCode, orderBy]
+		[columnFilters, currentPage, pageSize, keyword, orderBy]
 	);
 
 	const activateClickHandler = useMemo(
@@ -220,6 +233,7 @@ const ImagesTable = () => {
 						/>
 					</div>
 				),
+				enableColumnFilter: false,
 			}),
 			columnHelper.accessor((row) => row.id, {
 				id: "id",
@@ -237,7 +251,7 @@ const ImagesTable = () => {
 				),
 			}),
 			columnHelper.accessor((row) => row.imageType, {
-				id: "typeId",
+				id: "imageTypeId",
 				header: type,
 				cell: (info) => (
 					<div className={styles.name}>
@@ -356,31 +370,10 @@ const ImagesTable = () => {
 		setCurrentPage(1);
 	};
 
-	const statusSelectHandler = useMemo(
-		() => (option: DropdownOption) => {
-			if (option) {
-				setSelectedStatusCode((prevState) => (prevState = option?.value!));
-			} else {
-				setSelectedStatusCode(1);
-			}
-			setCurrentPage(1);
-		},
-		[]
-	);
-
-	const typeSelectHandler = (option: DropdownOption) => {
-		setTypeId(option?.value);
-	};
-
-	const dropdowns: { [key: string]: DropdownProps } = {
-		typeDropdown: {
-			options: typeOptions,
-			onSelect: typeSelectHandler,
-		},
-		// linkTypeDropdown: {
-		// 	options: linkTypeOptions,
-		// 	onSelect: () => {},
-		// },
+	const handleColumnFiltersChange = async (
+		newColumnFilters: SetStateAction<ColumnFiltersState>
+	) => {
+		setColumnFilters(newColumnFilters);
 	};
 
 	return (
@@ -396,8 +389,8 @@ const ImagesTable = () => {
 				onPageChange={pageChangeHandler}
 				onPageViewSelectionChange={pageViewSelectionHandler}
 				noRecordText={t("table.noNews", { framework: "React" })}
-				onActiveStatusOptionSelectionChange={statusSelectHandler}
-				dropdowns={dropdowns}
+				hideActiveStatusDropdown
+				onColumnFiltersChange={handleColumnFiltersChange}
 			/>
 		</>
 	);

@@ -1,6 +1,16 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+	SetStateAction,
+	useCallback,
+	useEffect,
+	useMemo,
+	useState,
+} from "react";
 import { useTranslation } from "react-i18next";
-import { Column, createColumnHelper } from "@tanstack/react-table";
+import {
+	Column,
+	ColumnFiltersState,
+	createColumnHelper,
+} from "@tanstack/react-table";
 import { toast } from "react-toastify";
 import { enGB, ar } from "date-fns/locale";
 import { APIPrivileges } from "../../../api/privileges/type";
@@ -35,6 +45,7 @@ import styles from "./styles.module.scss";
 import { getEmployeeStatuses } from "../../../api/employees/get/getEmployeeStatuses";
 import { Id } from "../../../utils";
 import { getRanks } from "../../../api/ranks/get/getRanks";
+import { getFilteredPhoneDirectory } from "../../../api/phoneDirectory/get/getFilteredPhoneDirectory";
 
 const PhoneDirectoryPage = () => {
 	const language = useStore((state) => state.language);
@@ -79,6 +90,10 @@ const PhoneDirectoryPage = () => {
 
 	const [isExportLoading, setIsExportLoading] = useState<boolean>(false);
 	const [orderBy, setOrderBy] = useState<string>("rankId");
+
+	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([
+		{ id: "activeStatusId", value: "1" },
+	]);
 
 	const fetchRanks = useCallback(async () => {
 		const { data } = await getRanks();
@@ -333,12 +348,15 @@ const PhoneDirectoryPage = () => {
 		[
 			columnHelper,
 			department,
+			edit,
 			employeeNo,
 			fullName,
 			language,
 			phone,
 			phoneOffice,
+			privileges?.updatePrivilege,
 			rank,
+			rankOptions,
 		]
 	);
 
@@ -466,14 +484,14 @@ const PhoneDirectoryPage = () => {
 			}
 
 			if (privilege?.readPrivilege) {
-				const { data } = await getPhoneDirectoryList(
-					currentPage,
-					pageSize,
+				const { data } = await getFilteredPhoneDirectory(columnFilters, {
+					page: currentPage,
+					postsPerPage: pageSize,
 					keyword,
-					statusId,
+					statusCode: statusId,
 					orderBy,
-					toggleSort
-				);
+					isDescending: toggleSort,
+				});
 
 				if (data) {
 					setEmployees(data?.employees!);
@@ -481,7 +499,7 @@ const PhoneDirectoryPage = () => {
 				}
 			}
 		},
-		[pageSize, keyword, statusId, orderBy, toggleSort]
+		[columnFilters, pageSize, keyword, statusId, orderBy, toggleSort]
 	);
 
 	const fetchByDepartment = useMemo(
@@ -640,6 +658,12 @@ const PhoneDirectoryPage = () => {
 		},
 	};
 
+	const handleColumnFiltersChange = async (
+		newColumnFilters: SetStateAction<ColumnFiltersState>
+	) => {
+		setColumnFilters(newColumnFilters);
+	};
+
 	return (
 		<PageContainer
 			title={t("page.phoneDirectoryHome", { framework: "React" })}
@@ -676,6 +700,7 @@ const PhoneDirectoryPage = () => {
 						hideActiveStatusDropdown
 						hideWorkflowStatusDropdown
 						onWorkflowStatusOptionSelectionChange={() => {}}
+						onColumnFiltersChange={handleColumnFiltersChange}
 					/>
 				</div>
 				<div></div>

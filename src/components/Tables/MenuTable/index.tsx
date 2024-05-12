@@ -1,11 +1,16 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { getMenuListPaginated } from "../../../api/menu/get/getMenuListPaginated";
+import {
+	SetStateAction,
+	useCallback,
+	useEffect,
+	useMemo,
+	useState,
+} from "react";
 import PaginatedTable from "../../PaginatedTable";
 import { DropdownOption, Props as DropdownProps } from "../../Dropdown";
 import { MenuItemColumns } from "../../PaginatedTable/types";
-import { Column, createColumnHelper } from "@tanstack/react-table";
+import { ColumnFiltersState, createColumnHelper } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
-import { ActionButtons, ActiveStatus, RedirectButton, StatusIcon } from "../..";
+import { ActionButtons, ActiveStatus, StatusIcon } from "../..";
 import { APIMenuItemDetail } from "../../../api/menu/types";
 
 import * as RoutePath from "../../../RouteConfig";
@@ -13,7 +18,6 @@ import * as RoutePath from "../../../RouteConfig";
 import { useStore } from "../../../utils/store";
 
 import { getAllMenuTypes } from "../../../api/menuTypes/get/getAllMenuTypes";
-import { APIType } from "../../../api/menuTypes/types";
 import { getLinkTypes } from "../../../api/linkTypes/get/getLinkTypes";
 import { getParentMenuItems } from "../../../api/menu/get/getParentMenuItems";
 import { Id, toast } from "react-toastify";
@@ -25,6 +29,7 @@ import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPri
 import { Project } from "../../../data/projects";
 
 import styles from "./styles.module.scss";
+import { getFilteredMenuList } from "../../../api/menu/get/getFilteredMenuList";
 
 const MenuTable = () => {
 	const navigate = useNavigate();
@@ -45,11 +50,15 @@ const MenuTable = () => {
 
 	const [keyword, setKeyword] = useState("");
 
-	const [statusCode, setStatusCode] = useState<Id>("1");
+	const [statusCode, setStatusCode] = useState<Id>();
 
 	//Parameters
 	const [orderBy, setOrderBy] = useState<string>("");
 	const [toggleSort, setToggleSort] = useState(false);
+
+	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([
+		{ id: "activeStatusId", value: "1" },
+	]);
 
 	// check if authorized to access
 	useEffect(() => {
@@ -131,21 +140,29 @@ const MenuTable = () => {
 	}, [fetchLinkTypes]);
 
 	const fetch = useCallback(async () => {
-		const { data } = await getMenuListPaginated(
-			currentPage,
-			pageSize,
+		const { data } = await getFilteredMenuList(columnFilters, {
+			page: currentPage,
+			postsPerPage: pageSize,
 			keyword,
 			statusCode,
 			orderBy,
-			toggleSort
-		);
+			isDescending: toggleSort,
+		});
 
 		if (data) {
 			setItems(data.menuItems);
 			setTotalCount(data.totalItems);
 			setPageSize(data?.pageSize);
 		}
-	}, [currentPage, keyword, orderBy, pageSize, statusCode, toggleSort]);
+	}, [
+		columnFilters,
+		currentPage,
+		keyword,
+		orderBy,
+		pageSize,
+		statusCode,
+		toggleSort,
+	]);
 
 	useEffect(() => {
 		fetch();
@@ -451,6 +468,12 @@ const MenuTable = () => {
 		setStatusCode(option?.value);
 	};
 
+	const handleColumnFiltersChange = async (
+		newColumnFilters: SetStateAction<ColumnFiltersState>
+	) => {
+		setColumnFilters(newColumnFilters);
+	};
+
 	return (
 		<div className={styles.menuItem}>
 			<PaginatedTable
@@ -467,8 +490,9 @@ const MenuTable = () => {
 				onTableSort={tableSortHandler}
 				onPageChange={pageChangeHandler}
 				onPageViewSelectionChange={pageViewSelectionHandler}
+				hideActiveStatusDropdown
 				hideWorkflowStatusDropdown={true}
-				onActiveStatusOptionSelectionChange={activeStatusSelectHandler}
+				onColumnFiltersChange={handleColumnFiltersChange}
 				// hideActiveStatusDropdown
 			/>
 		</div>

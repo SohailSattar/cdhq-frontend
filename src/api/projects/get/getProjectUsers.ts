@@ -6,7 +6,6 @@ import { Id } from "../../../utils";
 export async function getProjectUsers(
 	id: Id,
 	keyword?: string,
-	departmentId?: Id,
 	currentPage: number = 1,
 	pageSize: number = 50
 ): Promise<APIResponse<APIPaginatedProjectUser>> {
@@ -27,9 +26,9 @@ export async function getProjectUsers(
 		// 	queryParam += `&type=${roleId}`;
 		// }
 
-		if (departmentId) {
-			queryParam += `&departmentId=${departmentId}`;
-		}
+		// if (departmentId) {
+		// 	queryParam += `&departmentId=${departmentId}`;
+		// }
 
 		// if (orderBy) {
 		// 	queryParam += `${orderBy}`;

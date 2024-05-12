@@ -106,23 +106,6 @@ export function Table<T extends object>(props: Props<T>): ReactElement {
 	);
 	const data = useMemo(() => props.data, [props.data]);
 
-	// const {
-	// 	getTableProps,
-	// 	getTableBodyProps,
-	// 	headerGroups,
-	// 	rows,
-	// 	prepareRow,
-	// 	visibleColumns,
-	// } = useReactTable(
-	// 	{
-	// 		columns,
-	// 		data,
-	// 		initialState: { hiddenColumns: props.columnsToHide },
-	// 	},
-	// 	getSortedRowModel: getSortedRowModel(),
-	// 	useExpanded
-	// );
-
 	const tableInstance = useReactTable({
 		columns: columns,
 		data: data,

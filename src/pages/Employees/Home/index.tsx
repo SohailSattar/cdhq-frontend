@@ -48,6 +48,7 @@ import { getDepartmentsByProject } from "../../../api/departments/get/getDepartm
 import { getEmployeeStatuses } from "../../../api/employees/get/getEmployeeStatuses";
 import { getClasses } from "../../../api/classes/get/getClasses";
 import { getFilteredEmployees } from "../../../api/employees/get/getFilteredEmployees";
+import { getCategorizedDepartments } from "../../../api/departments/get/getCategorizedDepartments";
 
 const EmployeeHomePage = () => {
 	const [t] = useTranslation("common");
@@ -248,6 +249,26 @@ const EmployeeHomePage = () => {
 		fetchDepartment();
 	}, [fetchDepartment]);
 
+	const fetchSections = useCallback(async () => {
+		const { data } = await getCategorizedDepartments();
+		if (data) {
+			setSectionOptions(
+				data?.map((x) => {
+					return {
+						label: `${x.id} - ${
+							language !== "ar" ? x.fullName : x.fullNameEnglish
+						}`,
+						value: x.id,
+					};
+				})
+			);
+		}
+	}, [language]);
+
+	useEffect(() => {
+		fetchSections();
+	}, [fetchSections]);
+
 	const fetchClass = useCallback(async () => {
 		const { data } = await getClasses();
 		if (data) {
@@ -411,6 +432,10 @@ const EmployeeHomePage = () => {
 					</div>
 				),
 				header: () => <div className={styles.tableHeaderCell}>{section}</div>,
+				meta: {
+					filterVariant: "select",
+					options: sectionOptions,
+				},
 			}),
 			columnHelper.accessor((row) => row.class, {
 				id: "classId",
@@ -579,6 +604,7 @@ const EmployeeHomePage = () => {
 				isDescending: toggleSort,
 			},
 			departmentIds: departmentIds,
+			filters: columnFilters,
 		};
 
 		// saving to the file

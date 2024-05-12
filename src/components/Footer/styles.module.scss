@@ -3,6 +3,7 @@
 .footer {
 	position: fixed;
 	padding-top: 15px;
+	z-index: 999;
 	// margin-top: 30px;
 	height: 60px;
 	background-color: $PRIMARY;

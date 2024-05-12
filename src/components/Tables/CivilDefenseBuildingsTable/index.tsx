@@ -1,7 +1,13 @@
 import { useTranslation } from "react-i18next";
 import { PaginatedTable, RedirectButton, StatusIcon } from "../..";
 import { useStore } from "../../../utils/store";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+	SetStateAction,
+	useCallback,
+	useEffect,
+	useMemo,
+	useState,
+} from "react";
 import { APILinkTypeDetail } from "../../../api/linkTypes/types";
 import { getLinkTypesPaginated } from "../../../api/linkTypes/get/getLinkTypesPaginated";
 import { DropdownOption, Props as DropdownProps } from "../../Dropdown";
@@ -10,12 +16,17 @@ import * as RoutePath from "../../../RouteConfig";
 
 import styles from "./styles.module.scss";
 import { CivilDefenseBuildingColumns } from "../../PaginatedTable/types";
-import { Column, createColumnHelper } from "@tanstack/react-table";
+import {
+	Column,
+	ColumnFiltersState,
+	createColumnHelper,
+} from "@tanstack/react-table";
 import { getPagedCdBuildings } from "../../../api/civilDefenseBuildings/get/getPagedCdBuildings";
 import { APICivilDefenseBuildingItem } from "../../../api/civilDefenseBuildings/types";
 import { Id } from "../../../utils";
 import { getCdBuildingsOwners } from "../../../api/civilDefenseBuildingsOwners/get/getCdBuildingsOwners";
 import { getCategorizedDepartments } from "../../../api/departments/get/getCategorizedDepartments";
+import { getFilteredCdBuildings } from "../../../api/civilDefenseBuildings/get/getFilteredCdBuildings";
 
 const CivilDefenseBuildingsTable = () => {
 	const [t] = useTranslation("common");
@@ -39,16 +50,20 @@ const CivilDefenseBuildingsTable = () => {
 	const [orderBy, setOrderBy] = useState<string>("Id");
 	const [toggleSort, setToggleSort] = useState(true);
 
+	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([
+		{ id: "activeStatusId", value: "1" },
+	]);
+
 	useEffect(() => {
 		const fetch = async () => {
-			const { data } = await getPagedCdBuildings(
-				currentPage,
-				pageSize,
+			const { data } = await getFilteredCdBuildings(columnFilters, {
+				page: currentPage,
+				postsPerPage: pageSize,
 				keyword,
 				statusCode,
 				orderBy,
-				toggleSort
-			);
+				isDescending: toggleSort,
+			});
 			if (data) {
 				setItems(data.buildings);
 				setTotalCount(data.totalItems);
@@ -57,7 +72,15 @@ const CivilDefenseBuildingsTable = () => {
 		};
 
 		fetch();
-	}, [currentPage, keyword, orderBy, pageSize, statusCode, toggleSort]);
+	}, [
+		columnFilters,
+		currentPage,
+		keyword,
+		orderBy,
+		pageSize,
+		statusCode,
+		toggleSort,
+	]);
 
 	useEffect(() => {
 		const fetch = async () => {
@@ -208,6 +231,12 @@ const CivilDefenseBuildingsTable = () => {
 		setStatusCode(option?.value);
 	};
 
+	const handleColumnFiltersChange = async (
+		newColumnFilters: SetStateAction<ColumnFiltersState>
+	) => {
+		setColumnFilters(newColumnFilters);
+	};
+
 	return (
 		<>
 			<PaginatedTable
@@ -225,6 +254,7 @@ const CivilDefenseBuildingsTable = () => {
 				onPageViewSelectionChange={pageViewSelectionHandler}
 				hideWorkflowStatusDropdown={true}
 				onActiveStatusOptionSelectionChange={activeStatusChangeHandler}
+				onColumnFiltersChange={handleColumnFiltersChange}
 			/>
 		</>
 	);

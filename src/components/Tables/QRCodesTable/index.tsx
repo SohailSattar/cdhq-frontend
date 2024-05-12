@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, SetStateAction, useEffect, useMemo, useState } from "react";
 import {
 	ActionButtons,
 	ActiveStatus,
@@ -10,7 +10,11 @@ import { APIQRCodeItem } from "../../../api/qr-codes/types";
 import { useTranslation } from "react-i18next";
 import { useStore } from "../../../utils/store";
 import { QRCodeItemColumns } from "../../PaginatedTable/types";
-import { Column, createColumnHelper } from "@tanstack/react-table";
+import {
+	Column,
+	ColumnFiltersState,
+	createColumnHelper,
+} from "@tanstack/react-table";
 import { DropdownOption } from "../../Dropdown";
 import { getQRCodes } from "../../../api/qr-codes/get/getQRCodes";
 import { Id } from "../../../utils";
@@ -22,6 +26,7 @@ import { useNavigate } from "react-router-dom";
 import { APIStatus } from "../../../api";
 import { toast } from "react-toastify";
 import { updateQRCodeStatus } from "../../../api/qr-codes/update/updateQRCodeStatus";
+import { getFilteredQRCodes } from "../../../api/qr-codes/get/getFilteredQRCodes";
 
 interface Props {
 	canEdit: boolean;
@@ -43,7 +48,7 @@ const QRCodesTable: FC<Props> = ({ canEdit = false, canDelete = false }) => {
 	const [keyword, setKeyword] = useState("");
 
 	// This variable is to set the status code which we can pass to the API
-	const [statusCode, setStatusCode] = useState<Id>(1);
+	const [statusCode, setStatusCode] = useState<Id>();
 
 	//Parameters
 	const [orderBy, setOrderBy] = useState<string>("");
@@ -51,16 +56,20 @@ const QRCodesTable: FC<Props> = ({ canEdit = false, canDelete = false }) => {
 
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
+	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([
+		{ id: "activeStatusId", value: "1" },
+	]);
+
 	const fetchData = useMemo(
 		() => async () => {
-			const { data } = await getQRCodes(
-				currentPage,
-				pageSize,
+			const { data } = await getFilteredQRCodes(columnFilters, {
+				page: currentPage,
+				postsPerPage: pageSize,
 				keyword,
 				statusCode,
 				orderBy,
-				toggleSort
-			);
+				isDescending: toggleSort,
+			});
 
 			if (data) {
 				setItems(data.codes);
@@ -68,7 +77,15 @@ const QRCodesTable: FC<Props> = ({ canEdit = false, canDelete = false }) => {
 				setPageSize(data?.pageSize);
 			}
 		},
-		[currentPage, keyword, orderBy, pageSize, statusCode, toggleSort]
+		[
+			columnFilters,
+			currentPage,
+			keyword,
+			orderBy,
+			pageSize,
+			statusCode,
+			toggleSort,
+		]
 	);
 
 	useEffect(() => {
@@ -295,7 +312,11 @@ const QRCodesTable: FC<Props> = ({ canEdit = false, canDelete = false }) => {
 		setCurrentPage(currentpage);
 	};
 
-	const deleteQRCodeCancelHandler = () => {};
+	const handleColumnFiltersChange = async (
+		newColumnFilters: SetStateAction<ColumnFiltersState>
+	) => {
+		setColumnFilters(newColumnFilters);
+	};
 
 	return (
 		<>
@@ -313,6 +334,7 @@ const QRCodesTable: FC<Props> = ({ canEdit = false, canDelete = false }) => {
 				onTableSort={tableSortHandler}
 				onPageChange={pageChangeHandler}
 				onPageViewSelectionChange={pageViewSelectionHandler}
+				onColumnFiltersChange={handleColumnFiltersChange}
 			/>
 		</>
 	);
