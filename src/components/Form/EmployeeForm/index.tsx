@@ -1749,7 +1749,7 @@ const EmployeeForm: FC<Props> = ({
 								render={({ field: { value, onChange } }) => (
 									<TextBox
 										type="text"
-										label={t("employee.area", {
+										label={t("common.area", {
 											framework: "React",
 										})}
 										value={value}
