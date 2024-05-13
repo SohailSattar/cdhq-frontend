@@ -1,11 +1,16 @@
-import { useEffect, useMemo, useState } from "react";
+import {
+	SetStateAction,
+	useCallback,
+	useEffect,
+	useMemo,
+	useState,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { getUsers } from "../../../api/users/get/getUsers";
 import {
 	ActionButtons,
 	ActiveStatus,
-	Button,
 	DepartmentTree,
 	PageContainer,
 	PaginatedTable,
@@ -23,7 +28,7 @@ import * as RoutePath from "../../../RouteConfig";
 
 import { Id, ROLE } from "../../../utils";
 
-import { Column } from "react-table";
+import { ColumnFiltersState, createColumnHelper } from "@tanstack/react-table";
 import { UserColumns } from "../../../components/PaginatedTable/types";
 
 import styles from "./styles.module.scss";
@@ -36,6 +41,9 @@ import { APIExportData } from "../../../api";
 import { exportUsers } from "../../../api/users/export/exportUsers";
 import { toast } from "react-toastify";
 import { format } from "date-fns";
+import { getFilteredUsers } from "../../../api/users/get/getFilteredUsers";
+import { getRanks } from "../../../api/ranks/get/getRanks";
+import { getDepartmentsByProject } from "../../../api/departments/get/getDepartmentsByProject";
 
 const UserAccountPage = () => {
 	const [t] = useTranslation("common");
@@ -51,13 +59,22 @@ const UserAccountPage = () => {
 
 	const [users, setUsers] = useState<APIUserName[]>([]);
 
+	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([
+		{ id: "activeStatusId", value: "1" },
+	]);
+
+	const [rankOptions, setRankOptions] = useState<DropdownOption[]>([]);
+	const [departmentOptions, setDepartmentOptions] = useState<DropdownOption[]>(
+		[]
+	);
+
 	//Parameters
 	const [toggleSort, setToggleSort] = useState(false);
 
 	const [selectedRole, setSelectedRole] = useState<Id>();
 	const [selectedProject, setSelectedProject] = useState<Id>();
 	// This variable is to set the status code which we can pass to the API
-	const [selectedStatusCode, setSelectedStatusCode] = useState<Id>(1);
+	const [selectedStatusCode, setSelectedStatusCode] = useState<Id>();
 	const [orderBy, setOrderBy] = useState<string>("rankId");
 
 	const [privileges, setPrivileges] = useState<APIPrivileges>();
@@ -109,6 +126,60 @@ const UserAccountPage = () => {
 		fetch();
 	}, [role?.name, setPrivileges]);
 
+	const fetchRanks = useCallback(async () => {
+		const { data } = await getRanks();
+		if (data) {
+			setRankOptions(
+				data?.map((x) => {
+					return {
+						label: `${language !== "ar" ? x.name : x.nameEnglish}`,
+						value: x.id,
+					};
+				})
+			);
+		}
+	}, [language]);
+
+	useEffect(() => {
+		fetchRanks();
+	}, [fetchRanks]);
+
+	const fetchDepartment = useCallback(async () => {
+		const { data } = await getDepartmentsByProject(Project.UserManagement);
+		if (data) {
+			setDepartmentOptions(
+				data?.map((x) => {
+					return {
+						label: `${language !== "ar" ? x.name : x.nameEnglish}`,
+						value: x.id,
+					};
+				})
+			);
+		}
+	}, [language]);
+
+	useEffect(() => {
+		fetchDepartment();
+	}, [fetchDepartment]);
+
+	const activeStatusOptions: DropdownOption[] = useMemo(
+		() => [
+			{
+				label: t("status.active", {
+					framework: "React",
+				}),
+				value: 1,
+			},
+			{
+				label: t("status.deactive", {
+					framework: "React",
+				}),
+				value: 9,
+			},
+		],
+		[t]
+	);
+
 	const id = t("user.id", { framework: "React" });
 	const employeeNo = t("user.employeeNumber", { framework: "React" });
 	const logName = t("user.logName", { framework: "React" });
@@ -127,105 +198,136 @@ const UserAccountPage = () => {
 	//Actions
 	const actions = t("global.actions", { framework: "React" });
 
-	const columns: Column<UserColumns>[] = useMemo(
+	const columnHelper = createColumnHelper<UserColumns>();
+	const columns = useMemo(
 		() => [
-			{
-				id: "actions",
-				accessor: (p) => p,
-				Cell: ({ value }: any) => (
+			columnHelper.accessor("id", {
+				enableColumnFilter: false,
+				header: "",
+				cell: (info) => (
 					<ActionButtons
 						id={""}
 						// showView={true}
-						detailPageLink={`${RoutePath.USER}/${value.id}`}
-						editPageLink={`${RoutePath.USER}/${value.id}/edit`}
+						detailPageLink={`${RoutePath.USER}/${info.getValue()}`}
+						editPageLink={`${RoutePath.USER}/${info.getValue()}/edit`}
 						showEdit={true}
 					/>
 				),
-			},
-			// {
-			// 	Header: id,
-			// 	id: "id",
-			// 	accessor: (p) => p.id,
-			// 	Cell: ({ value }: any) => <div className={styles.cell}>{value}</div>,
-			// },
-			{
-				Header: employeeNo,
+			}),
+			// columnHelper.accessor("id", {
+			// 	header: id,
+			// 	cell: (info) => <div className={styles.cell}>{info.getValue()}</div>,
+			// }),
+			columnHelper.accessor((row) => row.employeeNo, {
 				id: "employeeNo",
-				accessor: (p) => p.employeeNo,
-				Cell: ({ value }: any) => <div className={styles.cell}>{value}</div>,
-			},
-			{
-				Header: logName,
+				cell: (info) => <div className={styles.name}>{info.getValue()}</div>,
+				header: () => <span>{employeeNo}</span>,
+			}),
+			columnHelper.accessor((row) => row.logName, {
 				id: "logName",
-				accessor: (p) => p.logName,
-				Cell: ({ value }: any) => <div className={styles.cell}>{value}</div>,
-			},
-			{
-				Header: fullName,
-				id: "name",
-				accessor: (p) => p,
-				Cell: ({ value }: any) => (
+				cell: (info) => <div className={styles.name}>{info.getValue()}</div>,
+				header: () => <span>{logName}</span>,
+			}),
+			columnHelper.accessor((row) => row, {
+				id: "fullName",
+				cell: (info) => (
 					<div className={styles.name}>
-						<div className={styles.arabic}>{value.name}</div>
-						<div className={styles.english}>{value.nameEnglish}</div>
+						<div className={styles.arabic}>{info.getValue().name}</div>
+						<div className={styles.english}>{info.getValue().nameEnglish}</div>
 					</div>
 				),
-			},
-			{
-				Header: <div className={styles.tableHeaderCell}>{rank}</div>,
+				header: () => <span>{fullName}</span>,
+			}),
+			columnHelper.accessor((row) => row.rank, {
 				id: "rankId",
-				accessor: (p) => p,
-				Cell: ({ value }: any) => (
+				cell: (info) => (
 					<div className={styles.name}>
-						{value.rank && (
+						{info.getValue() && (
 							<>
-								<div className={styles.arabic}>{value.rank.name}</div>
-								<div className={styles.english}>{value.rank.nameEnglish}</div>
-							</>
-						)}
-					</div>
-				),
-			},
-			{
-				Header: <div className={styles.tableHeaderCell}>{department}</div>,
-				id: "departmentId",
-				accessor: (p) => p,
-				Cell: ({ value }: any) => (
-					<div className={styles.name}>
-						{value.department && (
-							<>
-								<div className={styles.arabic}>{value.department.name}</div>
+								<div className={styles.arabic}>{info.getValue().name}</div>
 								<div className={styles.english}>
-									{value.department.nameEnglish}
+									{info.getValue().nameEnglish}
 								</div>
 							</>
 						)}
 					</div>
 				),
-			},
-			{
-				Header: status,
-				id: "activeStatus",
-				accessor: (p) => p,
-				Cell: ({ value }: any) => (
-					<ActiveStatus
-						code={value.activeStatus.id === 1 ? 1 : 9}
-						text={
-							language !== "ar"
-								? value.activeStatus.nameArabic
-								: value.activeStatus.nameEnglish
-						}
-					/>
+				header: () => <div className={styles.tableHeaderCell}>{rank}</div>,
+				meta: {
+					filterVariant: "select",
+					options: rankOptions,
+				},
+			}),
+			columnHelper.accessor((row) => row.department, {
+				id: "departmentId",
+				cell: (info) => (
+					<div className={styles.name}>
+						{info.getValue() && (
+							<>
+								<div className={styles.arabic}>{info.getValue().name}</div>
+								<div className={styles.english}>
+									{info.getValue().nameEnglish}
+								</div>
+							</>
+						)}
+					</div>
 				),
-			},
+				header: () => (
+					<div className={styles.tableHeaderCell}>{department}</div>
+				),
+				meta: {
+					filterVariant: "select",
+					options: departmentOptions,
+				},
+			}),
+			columnHelper.accessor((row) => row.activeStatus, {
+				id: "activeStatusId",
+				cell: (info) => (
+					<div className={styles.name}>
+						<ActiveStatus
+							code={info.getValue().id === 1 ? 1 : 9}
+							text={
+								language !== "ar"
+									? info.getValue().nameArabic
+									: info.getValue().nameEnglish
+							}
+						/>
+					</div>
+				),
+				header: () => <div className={styles.tableHeaderCell}>{status}</div>,
+				meta: {
+					filterVariant: "select",
+					options: activeStatusOptions,
+					initialValue: {
+						label: t("status.active", {
+							framework: "React",
+						}),
+						value: 1,
+					},
+				},
+			}),
 		],
-		[department, employeeNo, fullName, language, logName, rank, status]
+		[
+			activeStatusOptions,
+			columnHelper,
+			department,
+			departmentOptions,
+			employeeNo,
+			fullName,
+			language,
+			logName,
+			rank,
+			rankOptions,
+			status,
+			t,
+		]
 	);
 
 	// New maybe
 	const fetch = useMemo(
 		() => async () => {
-			const { data, error } = await getUsers(
+			const { data, error } = await getFilteredUsers(
+				columnFilters,
 				currentPage,
 				pageSize,
 				keyword,
@@ -248,6 +350,7 @@ const UserAccountPage = () => {
 			}
 		},
 		[
+			columnFilters,
 			currentPage,
 			pageSize,
 			keyword,
@@ -327,18 +430,6 @@ const UserAccountPage = () => {
 		setCurrentPage(1);
 	};
 
-	// const fetchUsersByDepartment = useMemo(
-	// 	() => async () => {
-	// 		const { data } = await getUsersByDepartments(1, 10, departmentIds);
-
-	// 		if (data) {
-	// 			setUsers(data?.users);
-	// 			setTotalCount(data?.totalItems);
-	// 		}
-	// 	},
-	// 	[departmentIds]
-	// );
-
 	const filterByDepartmentClickHandler = () => {
 		if (departmentIds.length > 0) {
 			fetchByDepartment();
@@ -371,17 +462,11 @@ const UserAccountPage = () => {
 		[]
 	);
 
-	const statusSelectHandler = useMemo(
-		() => (option: DropdownOption) => {
-			if (option) {
-				setSelectedStatusCode((prevState) => (prevState = option?.value!));
-			} else {
-				setSelectedStatusCode(1);
-			}
-			setCurrentPage(1);
-		},
-		[]
-	);
+	const handleColumnFiltersChange = async (
+		newColumnFilters: SetStateAction<ColumnFiltersState>
+	) => {
+		setColumnFilters(newColumnFilters);
+	};
 
 	// For Export
 	const propertyDisplayNames: Record<
@@ -411,10 +496,14 @@ const UserAccountPage = () => {
 				projectId: selectedProject,
 				statusCode: selectedStatusCode,
 				orderBy: orderBy,
+				type: selectedRole?.toString()!,
 				isDescending: toggleSort,
 			},
 			departmentIds: departmentIds,
+			filters: columnFilters,
 		};
+
+		console.log(dataValues);
 
 		// saving to the file
 		const us = t("user.names", { framework: "React" });
@@ -481,11 +570,11 @@ const UserAccountPage = () => {
 						hideWorkflowStatusDropdown
 						showProjectDropdown
 						onProjectOptonSelectionHandler={projectSelectionHandler}
-						activeStatusPlaceHolder={t("user.status", { framework: "React" })}
-						onActiveStatusOptionSelectionChange={statusSelectHandler}
+						hideActiveStatusDropdown
 						onWorkflowStatusOptionSelectionChange={() => {}}
 						showRoleOption
 						onRoleOptonSelectionHandler={roleSelectHandler}
+						onColumnFiltersChange={handleColumnFiltersChange}
 					/>
 				</ShadowedContainer>
 			</div>

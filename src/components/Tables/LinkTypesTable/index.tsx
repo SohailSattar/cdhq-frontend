@@ -10,7 +10,7 @@ import * as RoutePath from "../../../RouteConfig";
 
 import styles from "./styles.module.scss";
 import { LinkTypeColumns } from "../../PaginatedTable/types";
-import { Column } from "react-table";
+import { Column } from "@tanstack/react-table";
 
 const LinkTypesTable = () => {
 	const [t] = useTranslation("common");
@@ -58,66 +58,66 @@ const LinkTypesTable = () => {
 	const actions = t("global.actions", { framework: "React" });
 	const edit = t("button.edit", { framework: "React" });
 
-	const columns: Column<LinkTypeColumns>[] = [
-		{
-			Header: id,
-			id: "id",
-			accessor: (p) => p.id,
-		},
-		{
-			Header: linkName,
-			id: "name",
-			accessor: (p) => p.name,
-		},
-		{
-			Header: linkNameEng,
-			id: "nameEnglish",
-			accessor: (p) => p.nameEnglish,
-		},
-		{
-			Header: isFile,
-			id: "isFile",
-			accessor: (p) => <StatusIcon status={p.isFile} />,
-		},
-		// {
-		// 	Header: linkType,
-		// 	accessor: (p) =>
-		// 		language !== "ar" ? p.linkType?.name : p.linkType?.nameEnglish,
-		// },
-		// {
-		// 	Header: status,
-		// 	id: "activeStatus",
-		// 	accessor: (p) => p,
-		// 	Cell: ({ value }: any) => (
-		// 		<ActiveStatus
-		// 			code={value.activeStatus?.id!}
-		// 			text={
-		// 				language !== "ar"
-		// 					? value.activeStatus.nameArabic
-		// 					: value.activeStatus.nameEnglish
-		// 			}
-		// 		/>
-		// 	),
-		// },
-		{
-			Header: actions,
-			accessor: (p) => p.id,
-			Cell: ({ value }: any) => (
-				<div className={styles.action}>
-					<div className={styles.btnDiv}>
-						<RedirectButton
-							label={edit}
-							redirectTo={`${RoutePath.CONTENT_MANAGEMENT_LINK_TYPES_EDIT.replace(
-								RoutePath.ID,
-								value
-							)}`}
-							style={{ height: "20px", fontSize: "12px" }}
-						/>
-					</div>
-				</div>
-			),
-		},
-	];
+	// const columns: Column<LinkTypeColumns>[] = [
+	// 	{
+	// 		Header: id,
+	// 		id: "id",
+	// 		accessor: (p) => p.id,
+	// 	},
+	// 	{
+	// 		Header: linkName,
+	// 		id: "name",
+	// 		accessor: (p) => p.name,
+	// 	},
+	// 	{
+	// 		Header: linkNameEng,
+	// 		id: "nameEnglish",
+	// 		accessor: (p) => p.nameEnglish,
+	// 	},
+	// 	{
+	// 		Header: isFile,
+	// 		id: "isFile",
+	// 		accessor: (p) => <StatusIcon status={p.isFile} />,
+	// 	},
+	// 	// {
+	// 	// 	Header: linkType,
+	// 	// 	accessor: (p) =>
+	// 	// 		language !== "ar" ? p.linkType?.name : p.linkType?.nameEnglish,
+	// 	// },
+	// 	// {
+	// 	// 	Header: status,
+	// 	// 	id: "activeStatus",
+	// 	// 	accessor: (p) => p,
+	// 	// 	Cell: ({ value }: any) => (
+	// 	// 		<ActiveStatus
+	// 	// 			code={value.activeStatus?.id!}
+	// 	// 			text={
+	// 	// 				language !== "ar"
+	// 	// 					? value.activeStatus.nameArabic
+	// 	// 					: value.activeStatus.nameEnglish
+	// 	// 			}
+	// 	// 		/>
+	// 	// 	),
+	// 	// },
+	// 	{
+	// 		Header: actions,
+	// 		accessor: (p) => p.id,
+	// 		Cell: ({ value }: any) => (
+	// 			<div className={styles.action}>
+	// 				<div className={styles.btnDiv}>
+	// 					<RedirectButton
+	// 						label={edit}
+	// 						redirectTo={`${RoutePath.CONTENT_MANAGEMENT_LINK_TYPES_EDIT.replace(
+	// 							RoutePath.ID,
+	// 							value
+	// 						)}`}
+	// 						style={{ height: "20px", fontSize: "12px" }}
+	// 					/>
+	// 				</div>
+	// 			</div>
+	// 		),
+	// 	},
+	// ];
 
 	const searchClickHandler = (keyword: string) => {
 		setKeyword(keyword);
@@ -148,22 +148,23 @@ const LinkTypesTable = () => {
 	};
 
 	return (
-		<PaginatedTable
-			totalCountText={t("menu.count", { framework: "React" })}
-			totalCount={totalCount}
-			currentPage={currentPage}
-			setCurrentPage={setCurrentPage}
-			pageSize={pageSize}
-			data={items}
-			columns={columns}
-			noRecordText={""}
-			onSearch={searchClickHandler}
-			onTableSort={tableSortHandler}
-			onPageChange={pageChangeHandler}
-			onPageViewSelectionChange={pageViewSelectionHandler}
-			hideWorkflowStatusDropdown={true}
-			hideActiveStatusDropdown
-		/>
+		<></>
+		// <PaginatedTable
+		// 	totalCountText={t("menu.count", { framework: "React" })}
+		// 	totalCount={totalCount}
+		// 	currentPage={currentPage}
+		// 	setCurrentPage={setCurrentPage}
+		// 	pageSize={pageSize}
+		// 	data={items}
+		// 	columns={columns}
+		// 	noRecordText={""}
+		// 	onSearch={searchClickHandler}
+		// 	onTableSort={tableSortHandler}
+		// 	onPageChange={pageChangeHandler}
+		// 	onPageViewSelectionChange={pageViewSelectionHandler}
+		// 	hideWorkflowStatusDropdown={true}
+		// 	hideActiveStatusDropdown
+		// />
 	);
 };
 

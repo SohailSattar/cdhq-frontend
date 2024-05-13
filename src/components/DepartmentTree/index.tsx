@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { Tree } from "..";
+import { CollapsibleDiv, Tree } from "..";
 
 // import { Node } from '../';
 
@@ -101,19 +101,23 @@ const DepartmentTree: FC<Props> = ({
 	};
 
 	return showCheckbox ? (
-		<CheckboxedTree
-			nodes={hierarchies!}
-			direction={language !== "ar" ? "rtl" : "ltr"}
-			onNodeCheck={onNodeCheck}
-			isExpanded
-		/>
+		<CollapsibleDiv>
+			<CheckboxedTree
+				nodes={hierarchies!}
+				direction={language !== "ar" ? "rtl" : "ltr"}
+				onNodeCheck={onNodeCheck}
+				isExpanded
+			/>
+		</CollapsibleDiv>
 	) : (
-		<Tree
-			nodes={hierarchies!}
-			direction={language !== "ar" ? "rtl" : "ltr"}
-			onNodeCheck={onNodeCheck}
-			isExpanded
-		/>
+		<CollapsibleDiv>
+			<Tree
+				nodes={hierarchies!}
+				direction={language !== "ar" ? "rtl" : "ltr"}
+				onNodeCheck={onNodeCheck}
+				isExpanded
+			/>
+		</CollapsibleDiv>
 	);
 };
 

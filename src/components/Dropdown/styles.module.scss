@@ -1,3 +1,9 @@
+.dropdown {
+	position: relative; /* Ensure the dropdown position */
+	z-index: 9999; /* Ensure the dropdown appears above other elements */
+	/* Add any other styles as needed */
+}
+
 .label {
 	color: rgba(0, 0, 0, 1);
 	font-weight: 400;

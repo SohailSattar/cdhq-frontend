@@ -1,0 +1,13 @@
+@import "../../assets/css/colors.scss";
+
+.collapsible {
+	.btn {
+		background-color: unset;
+		border: unset !important;
+		box-shadow: unset !important;
+	}
+
+	.pin {
+		color: $PRIMARY;
+	}
+}

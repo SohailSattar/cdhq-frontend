@@ -1,11 +1,21 @@
 import { useTranslation } from "react-i18next";
 import { PaginatedTable } from "../..";
 import { useStore } from "../../../utils/store";
-import { FC, useCallback, useEffect, useMemo, useState } from "react";
-import { DropdownOption, Props as DropdownProps } from "../../Dropdown";
+import {
+	FC,
+	SetStateAction,
+	useCallback,
+	useEffect,
+	useMemo,
+	useState,
+} from "react";
+import { DropdownOption } from "../../Dropdown";
 import { Id } from "../../../utils";
-import { Column } from "react-table";
-import { getProjectUsers } from "../../../api/projects/get/getProjectUsers";
+import {
+	Column,
+	ColumnFiltersState,
+	createColumnHelper,
+} from "@tanstack/react-table";
 import { APIProjectUserTable } from "../../PaginatedTable/types";
 import { getDepartmentsByProject } from "../../../api/departments/get/getDepartmentsByProject";
 import { APIExportData } from "../../../api";
@@ -14,6 +24,8 @@ import { ar, enGB } from "date-fns/locale";
 import { APIExportAllocatedUser } from "../../../api/projects/types";
 import { exportAllocatedUsers } from "../../../api/projects/export/exportAllocatedUsers";
 import { toast } from "react-toastify";
+import { getPrivileges } from "../../../api/privileges/get/getPrivileges";
+import { getFilteredUsersByProjects } from "../../../api/projects/get/getFilteredUsersByProjects";
 
 interface Props {
 	projectId: Id;
@@ -27,7 +39,9 @@ const AllocatedUsersTable: FC<Props> = ({ projectId }) => {
 	const [departmentOptions, setDepartmentOptions] = useState<DropdownOption[]>(
 		[]
 	);
-	const [linkTypeOptions, setLinkTypeOptions] = useState<DropdownOption[]>([]);
+	const [privilegesOptions, setPrivilegesOptions] = useState<DropdownOption[]>(
+		[]
+	);
 
 	const [users, setUsers] = useState<APIProjectUserTable[]>([]);
 	const [totalCount, setTotalCount] = useState<number>(0);
@@ -43,6 +57,8 @@ const AllocatedUsersTable: FC<Props> = ({ projectId }) => {
 
 	const [isExportLoading, setIsExportLoading] = useState<boolean>(false);
 
+	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+
 	//Parameters
 	const [orderBy, setOrderBy] = useState<string>("");
 	const [toggleSort, setToggleSort] = useState(false);
@@ -52,24 +68,63 @@ const AllocatedUsersTable: FC<Props> = ({ projectId }) => {
 	const privilege = t("privilege.name", { framework: "React" });
 	const department = t("department.name", { framework: "React" });
 
-	const columns: Column<APIProjectUserTable>[] = [
-		{
-			Header: employeeNumber,
-			accessor: (p) => p.userId,
-		},
-		{
-			Header: userName,
-			accessor: (p) => p.userName,
-		},
-		{
-			Header: privilege,
-			accessor: (p) => p.privilege,
-		},
-		{
-			Header: department,
-			accessor: (p) => p.department,
-		},
-	];
+	const columnHelper = createColumnHelper<APIProjectUserTable>();
+	const columns = useMemo(
+		() => [
+			columnHelper.accessor((row) => row.userId, {
+				id: "employeeNo",
+				header: employeeNumber,
+			}),
+			columnHelper.accessor((row) => row.userName, {
+				id: "userName",
+				header: userName,
+			}),
+			columnHelper.accessor((row) => row.privilege, {
+				id: "privilegeId",
+				header: privilege,
+				meta: {
+					filterVariant: "select",
+					options: privilegesOptions,
+				},
+			}),
+			columnHelper.accessor((row) => row.department, {
+				id: "departmentId",
+				header: department,
+				meta: {
+					filterVariant: "select",
+					options: departmentOptions,
+				},
+			}),
+		],
+		[
+			columnHelper,
+			department,
+			departmentOptions,
+			employeeNumber,
+			privilege,
+			privilegesOptions,
+			userName,
+		]
+	);
+
+	const fetchPrivileges = useCallback(async () => {
+		const { data } = await getPrivileges();
+		console.log(data);
+		if (data) {
+			setPrivilegesOptions(
+				data?.map((x) => {
+					return {
+						label: `${language !== "ar" ? x.name : x.nameEnglish}`,
+						value: x.sequenceNumber!,
+					};
+				})
+			);
+		}
+	}, [language]);
+
+	useEffect(() => {
+		fetchPrivileges();
+	}, [fetchPrivileges]);
 
 	const fetchDepartments = useCallback(async () => {
 		const { data } = await getDepartmentsByProject(projectId);
@@ -91,13 +146,23 @@ const AllocatedUsersTable: FC<Props> = ({ projectId }) => {
 
 	const fetchData = useMemo(
 		() => async (keyword: string) => {
-			const { data } = await getProjectUsers(
-				projectId!,
-				keyword,
-				departmentId,
+			const { data } = await getFilteredUsersByProjects(
+				projectId,
+				columnFilters,
 				currentPage,
-				pageSize
+				pageSize,
+				keyword
 			);
+
+			// const { data } = await getProjectUsers(
+			// 	projectId!,
+			// 	keyword,
+			// 	departmentId,
+			// 	currentPage,
+			// 	pageSize
+			// );
+
+			console.log(data);
 
 			if (data) {
 				setUsers(
@@ -128,7 +193,7 @@ const AllocatedUsersTable: FC<Props> = ({ projectId }) => {
 				setTotalCount(data?.totalItems);
 			}
 		},
-		[currentPage, departmentId, language, pageSize, projectId]
+		[columnFilters, currentPage, language, pageSize, projectId]
 	);
 
 	useEffect(() => {
@@ -170,13 +235,6 @@ const AllocatedUsersTable: FC<Props> = ({ projectId }) => {
 
 	const departmentSelectHandler = (option: DropdownOption) => {
 		setDepartmentId(option?.value!);
-	};
-
-	const dropdowns: { [key: string]: DropdownProps } = {
-		department: {
-			options: departmentOptions,
-			onSelect: departmentSelectHandler,
-		},
 	};
 
 	// For Export
@@ -227,6 +285,12 @@ const AllocatedUsersTable: FC<Props> = ({ projectId }) => {
 		setIsExportLoading(false);
 	};
 
+	const handleColumnFiltersChange = async (
+		newColumnFilters: SetStateAction<ColumnFiltersState>
+	) => {
+		setColumnFilters(newColumnFilters);
+	};
+
 	return (
 		<>
 			<PaginatedTable
@@ -238,7 +302,6 @@ const AllocatedUsersTable: FC<Props> = ({ projectId }) => {
 				data={users}
 				columns={columns}
 				noRecordText={t("table.noUser", { framework: "React" })}
-				dropdowns={dropdowns}
 				onSearch={userSearchHandler}
 				onTableSort={tableSortHandler}
 				onPageChange={pageChangeHandler}
@@ -249,6 +312,7 @@ const AllocatedUsersTable: FC<Props> = ({ projectId }) => {
 				displayPdfExportButton={false}
 				exportDisplayNames={propertyDisplayNames}
 				onExcelExport={exportDataHandler}
+				onColumnFiltersChange={handleColumnFiltersChange}
 				// hideActiveStatusDropdown
 			/>
 		</>

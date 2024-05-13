@@ -1,9 +1,11 @@
 @import "../../assets/css/variable.scss";
 @import "../../assets/css/mixins.scss";
+@import "../../assets/css/colors.scss";
 
 $border-radius: 0px;
 
 .tableWrapper {
+	position: relative;
 	padding: unset;
 	overflow: auto;
 	width: 100%;
@@ -21,8 +23,49 @@ $border-radius: 0px;
 
 		background-color: white;
 
+		.txtFilter {
+			color: blue;
+			width: 100%;
+			font-size: 16px;
+			//
+			flex-direction: column;
+			position: relative;
+			min-width: 0;
+			padding: 2px 8px;
+			// margin: 0;
+			// border: 0;
+			vertical-align: top;
+			width: 100%;
+			margin: 8px;
+			min-height: 38px;
+			background-color: rgb(255, 255, 255);
+			border-radius: 4px;
+			border-style: solid;
+			border-width: 1px;
+			border-color: rgb(204, 204, 204);
+			border-style: solid;
+			border-width: 1px;
+		}
+
+		.ddl {
+			color: $PRIMARY;
+			font-size: 16px;
+			min-height: 38px;
+			min-width: 150px;
+			// width: 100%;
+		}
+
 		.tableHead {
-			height: 50px;
+			position: sticky; /* Make the header sticky */
+			top: 0; /* Position it at the top of the wrapper */
+			z-index: 2; /* Ensure it's above the table body */
+			background-color: white; /* Set a background color for better visibility */
+			height: 60px;
+
+			.heading {
+				margin-bottom: 5px;
+				// width: max-content;
+			}
 
 			.info {
 				display: flex;
@@ -61,7 +104,13 @@ $border-radius: 0px;
 
 		.tableHeadLTR {
 			th {
-				text-align: center;
+				justify-content: center;
+				// display: flex; <- uncomment
+				align-items: center;
+			}
+
+			.heading {
+				margin-bottom: 5px;
 			}
 		}
 

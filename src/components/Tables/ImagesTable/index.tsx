@@ -7,10 +7,20 @@ import {
 } from "../../";
 
 import { useNavigate } from "react-router";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+	SetStateAction,
+	useCallback,
+	useEffect,
+	useMemo,
+	useState,
+} from "react";
 import { APIPrivileges } from "../../../api/privileges/type";
 import { DropdownOption, Props as DropdownProps } from "../../Dropdown";
-import { Column } from "react-table";
+import {
+	Column,
+	ColumnFiltersState,
+	createColumnHelper,
+} from "@tanstack/react-table";
 import { ImageColumn } from "../../PaginatedTable/types";
 import { useStore } from "../../../utils/store";
 import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPrivilege";
@@ -29,6 +39,7 @@ import * as RoutePath from "../../../RouteConfig";
 
 import styles from "./styles.module.scss";
 import { getImageTypes } from "../../../api/imageType/get/getImageTypes";
+import { getFilteredImages } from "../../../api/images/get/getFilteredImages";
 
 const ImagesTable = () => {
 	const [t] = useTranslation("common");
@@ -49,12 +60,16 @@ const ImagesTable = () => {
 	const [typeId, setTypeId] = useState<Id>();
 
 	// This variable is to set the status code which we can pass to the API
-	const [selectedStatusCode, setSelectedStatusCode] = useState<Id>(1);
+	const [selectedStatusCode, setSelectedStatusCode] = useState<Id>();
 	const [orderBy, setOrderBy] = useState<string>("");
 
 	const [privileges, setPrivileges] = useState<APIPrivileges>();
 
 	const [typeOptions, setTypeOptions] = useState<DropdownOption[]>([]);
+
+	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([
+		{ id: "activeStatusId", value: "1" },
+	]);
 
 	// check if authorized to access
 	useEffect(() => {
@@ -101,14 +116,12 @@ const ImagesTable = () => {
 
 	const fetch = useMemo(
 		() => async () => {
-			const { data, error } = await getImagesList(
-				currentPage,
-				pageSize,
+			const { data, error } = await getFilteredImages(columnFilters, {
+				page: currentPage,
+				postsPerPage: pageSize,
 				keyword,
-				typeId,
-				selectedStatusCode,
-				orderBy
-			);
+				orderBy,
+			});
 
 			// if (error?.response!.status! === 401) {
 			// 	navigate(RoutePath.LOGIN);
@@ -121,7 +134,7 @@ const ImagesTable = () => {
 				setTotalCount(data.totalItems);
 			}
 		},
-		[currentPage, pageSize, keyword, typeId, selectedStatusCode, orderBy]
+		[columnFilters, currentPage, pageSize, keyword, orderBy]
 	);
 
 	const activateClickHandler = useMemo(
@@ -187,59 +200,79 @@ const ImagesTable = () => {
 	const edit = t("button.edit", { framework: "React" });
 	const deleteBtn = t("button.deactivate", { framework: "React" });
 
-	const columns: Column<ImageColumn>[] = useMemo(
+	const activeStatusOptions: DropdownOption[] = useMemo(
 		() => [
 			{
+				label: t("status.active", {
+					framework: "React",
+				}),
+				value: 1,
+			},
+			{
+				label: t("status.deactive", {
+					framework: "React",
+				}),
+				value: 9,
+			},
+		],
+		[t]
+	);
+
+	const columnHelper = createColumnHelper<ImageColumn>();
+	const columns = useMemo(
+		() => [
+			columnHelper.accessor((row) => row.imageName, {
 				id: "imageName",
-				accessor: (p) => p.imageName,
-				Cell: ({ value }: any) => (
+				header: name,
+				cell: (info) => (
 					<div className={styles.cell}>
 						<img
-							src={value}
+							src={info.getValue()}
 							alt="#"
 							className={styles.thumbnail}
 						/>
 					</div>
 				),
-			},
-			{
-				Header: id,
+				enableColumnFilter: false,
+			}),
+			columnHelper.accessor((row) => row.id, {
 				id: "id",
-				accessor: (p) => p.id,
-				Cell: ({ value }: any) => <div className={styles.cell}>{value}</div>,
-			},
-			{
-				Header: name,
+				header: id,
+				cell: (info) => <div className={styles.cell}>{info.getValue()}</div>,
+			}),
+			columnHelper.accessor((row) => row, {
 				id: "name",
-				accessor: (p) => p,
-				Cell: ({ value }: any) => (
+				header: name,
+				cell: (info) => (
 					<div className={styles.name}>
-						<div className={styles.arabic}>{value.name}</div>
-						<div className={styles.english}>{value.nameEnglish}</div>
+						<div className={styles.arabic}>{info.getValue().name}</div>
+						<div className={styles.english}>{info.getValue().nameEnglish}</div>
 					</div>
 				),
-			},
-			{
-				Header: type,
-				id: "type",
-				accessor: (p) => p.imageType,
-				Cell: ({ value }: any) => (
+			}),
+			columnHelper.accessor((row) => row.imageType, {
+				id: "imageTypeId",
+				header: type,
+				cell: (info) => (
 					<div className={styles.name}>
-						<div className={styles.arabic}>{value.name}</div>
-						<div className={styles.english}>{value.nameEnglish}</div>
+						<div className={styles.arabic}>{info.getValue().name}</div>
+						<div className={styles.english}>{info.getValue().nameEnglish}</div>
 					</div>
 				),
-			},
-			{
-				Header: ratings,
+				meta: {
+					filterVariant: "select",
+					options: typeOptions,
+				},
+			}),
+			columnHelper.accessor((row) => row, {
 				id: "stars",
-				accessor: (p) => p,
-				Cell: ({ value }: any) => (
+				header: ratings,
+				cell: (info) => (
 					<div className={styles.name}>
 						<div className={styles.arabic}>
-							{value.imageType.id === 2 && (
+							{info.getValue()!.imageType.id === 2 && (
 								<Rating
-									value={value.stars}
+									value={info.getValue()!.stars}
 									readOnly
 									size="large"
 								/>
@@ -247,48 +280,56 @@ const ImagesTable = () => {
 						</div>
 					</div>
 				),
-			},
-			{
-				Header: status,
-				id: "activeStatus",
-				accessor: (p) => p,
-				Cell: ({ value }: any) => (
+				enableColumnFilter: false,
+			}),
+			columnHelper.accessor((row) => row.activeStatus, {
+				id: "activeStatusId",
+				header: status,
+				cell: (info) => (
 					<div className={styles.name}>
 						<div className={styles.arabic}>
 							<ActiveStatus
-								code={value.activeStatus.id === 1 ? 1 : 9}
+								code={info.getValue()!.id === 1 ? 1 : 9}
 								text={
 									language !== "ar"
-										? value.activeStatus.nameArabic
-										: value.activeStatus.nameEnglish
+										? info.getValue()!.nameArabic
+										: info.getValue()!.nameEnglish
 								}
 							/>
 						</div>
 					</div>
 				),
-			},
-			{
+				meta: {
+					filterVariant: "select",
+					options: activeStatusOptions,
+				},
+			}),
+
+			columnHelper.accessor((row) => row, {
 				id: "actions",
-				accessor: (p) => p,
-				Cell: ({ value }: any) => (
+				header: actions,
+				cell: (info) => (
 					<ActionButtons
-						id={value.id}
-						// showView={true}
-						// detailPageLink={`${RoutePath.USER}/${value.id}`}
-						showActivate={value.activeStatus.id !== 1}
+						id={info.getValue().id}
+						showActivate={info.getValue().activeStatus.id !== 1}
 						onActivate={(id) => activateClickHandler(id)}
 						showEdit={true}
-						onEdit={(id) => editClickHandler(value.id)}
+						onEdit={(id) => editClickHandler(id)}
 						showDelete={
-							privileges?.deletePrivilege && value.activeStatus.id === 1
+							privileges?.deletePrivilege &&
+							info.getValue().activeStatus.id === 1
 						}
 						onDelete={deleteClickHandler}
 					/>
 				),
-			},
+				enableColumnFilter: false,
+			}),
 		],
 		[
+			actions,
 			activateClickHandler,
+			activeStatusOptions,
+			columnHelper,
 			deleteClickHandler,
 			editClickHandler,
 			id,
@@ -298,6 +339,7 @@ const ImagesTable = () => {
 			ratings,
 			status,
 			type,
+			typeOptions,
 		]
 	);
 
@@ -318,7 +360,6 @@ const ImagesTable = () => {
 
 	const pageChangeHandler = (currentpage: number) => {
 		setCurrentPage(currentpage);
-		// fetchData(currentpage);
 	};
 
 	// Dropdown selection handlers
@@ -329,48 +370,29 @@ const ImagesTable = () => {
 		setCurrentPage(1);
 	};
 
-	const statusSelectHandler = useMemo(
-		() => (option: DropdownOption) => {
-			if (option) {
-				setSelectedStatusCode((prevState) => (prevState = option?.value!));
-			} else {
-				setSelectedStatusCode(1);
-			}
-			setCurrentPage(1);
-		},
-		[]
-	);
-
-	const typeSelectHandler = (option: DropdownOption) => {
-		setTypeId(option?.value);
-	};
-
-	const dropdowns: { [key: string]: DropdownProps } = {
-		typeDropdown: {
-			options: typeOptions,
-			onSelect: typeSelectHandler,
-		},
-		// linkTypeDropdown: {
-		// 	options: linkTypeOptions,
-		// 	onSelect: () => {},
-		// },
+	const handleColumnFiltersChange = async (
+		newColumnFilters: SetStateAction<ColumnFiltersState>
+	) => {
+		setColumnFilters(newColumnFilters);
 	};
 
 	return (
-		<PaginatedTable
-			totalCountText={t("news.count", { framework: "React" })}
-			totalCount={totalCount}
-			pageSize={pageSize}
-			data={images}
-			columns={columns}
-			onSearch={searchHandler}
-			onTableSort={() => {}}
-			onPageChange={pageChangeHandler}
-			onPageViewSelectionChange={pageViewSelectionHandler}
-			noRecordText={t("table.noNews", { framework: "React" })}
-			onActiveStatusOptionSelectionChange={statusSelectHandler}
-			dropdowns={dropdowns}
-		/>
+		<>
+			<PaginatedTable
+				totalCountText={t("news.count", { framework: "React" })}
+				totalCount={totalCount}
+				pageSize={pageSize}
+				data={images}
+				columns={columns}
+				onSearch={searchHandler}
+				onTableSort={() => {}}
+				onPageChange={pageChangeHandler}
+				onPageViewSelectionChange={pageViewSelectionHandler}
+				noRecordText={t("table.noNews", { framework: "React" })}
+				hideActiveStatusDropdown
+				onColumnFiltersChange={handleColumnFiltersChange}
+			/>
+		</>
 	);
 };
 

@@ -1,18 +1,19 @@
-import { APIResponse, getConfig } from "../..";
+import { ColumnFiltersState } from "@tanstack/react-table";
+import { getConfig } from "../..";
 import { instance } from "../../../network";
 import { Id } from "../../../utils";
-import { APIPaginatedCivilDefenseBuilding } from "../types";
+import { APIResponse } from "../../types";
+import { APIPaginatedProject } from "../types";
 
-import { CD_BUILDINGS } from "../../ROUTES";
-
-export async function getPagedCdBuildings(
+export async function getFilteredProjects(
+	filters: ColumnFiltersState,
 	currentPage: number,
 	pageSize: number,
 	keyword?: string,
 	statusCode?: Id,
 	orderBy?: string,
 	isDescending: boolean = false
-): Promise<APIResponse<APIPaginatedCivilDefenseBuilding>> {
+): Promise<APIResponse<APIPaginatedProject>> {
 	try {
 		const config = getConfig();
 
@@ -30,16 +31,18 @@ export async function getPagedCdBuildings(
 			queryParam += `&orderBy=${orderBy}&isDescending=${isDescending}`;
 		}
 
-		const url = `${CD_BUILDINGS}/paged?page=${currentPage}&postsperpage=${pageSize}${queryParam}`;
+		const url =
+			`/projects/filter?page=${currentPage}&postsperpage=${pageSize}` +
+			queryParam!;
 
-		const response = await instance.get<APIPaginatedCivilDefenseBuilding>(
+		const response = await instance.post<APIPaginatedProject>(
 			url,
+			filters,
 			config
 		);
 		const data = response.data;
 		return { data };
 	} catch (err: any) {
-		const error = err.response.data;
-		return { error };
+		return { error: err };
 	}
 }

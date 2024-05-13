@@ -5,6 +5,7 @@
 		"lastUpdate": "Last Update",
 		"dated": "Dated",
 		"city": "City",
+		"area": "Area",
 		"year": "Year",
 		"month": "Month",
 		"day": "Day"
@@ -442,6 +443,7 @@
 	"status": {
 		"active": "Active",
 		"deactive": "Deactive",
+		"expiringexpired": "Employees with Expiring/Expired Cards",
 		"on": "On",
 		"off": "Off"
 	},

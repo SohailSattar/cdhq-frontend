@@ -1,6 +1,13 @@
 .paginatedTable {
 	margin-bottom: 15px;
 
+	.scrollable {
+		// overflow: auto; /* Enable scrolling */
+		-webkit-overflow-scrolling: touch; /* Enable smooth scrolling on iOS devices */
+		max-height: 800px; /* Set maximum height to enable scrolling */
+		/* Add additional styling as needed */
+	}
+
 	.searchContainer {
 		margin-top: 0;
 		display: flex;
@@ -36,6 +43,8 @@
 	.selectionContainer {
 		display: flex;
 		padding: 15px;
+		z-index: 44;
+		position: relative;
 	}
 
 	.detailBar {

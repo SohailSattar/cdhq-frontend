@@ -1,11 +1,16 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { getMenuListPaginated } from "../../../api/menu/get/getMenuListPaginated";
+import {
+	SetStateAction,
+	useCallback,
+	useEffect,
+	useMemo,
+	useState,
+} from "react";
 import PaginatedTable from "../../PaginatedTable";
 import { DropdownOption, Props as DropdownProps } from "../../Dropdown";
 import { MenuItemColumns } from "../../PaginatedTable/types";
-import { Column } from "react-table";
+import { ColumnFiltersState, createColumnHelper } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
-import { ActionButtons, ActiveStatus, RedirectButton, StatusIcon } from "../..";
+import { ActionButtons, ActiveStatus, StatusIcon } from "../..";
 import { APIMenuItemDetail } from "../../../api/menu/types";
 
 import * as RoutePath from "../../../RouteConfig";
@@ -13,7 +18,6 @@ import * as RoutePath from "../../../RouteConfig";
 import { useStore } from "../../../utils/store";
 
 import { getAllMenuTypes } from "../../../api/menuTypes/get/getAllMenuTypes";
-import { APIType } from "../../../api/menuTypes/types";
 import { getLinkTypes } from "../../../api/linkTypes/get/getLinkTypes";
 import { getParentMenuItems } from "../../../api/menu/get/getParentMenuItems";
 import { Id, toast } from "react-toastify";
@@ -25,6 +29,7 @@ import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPri
 import { Project } from "../../../data/projects";
 
 import styles from "./styles.module.scss";
+import { getFilteredMenuList } from "../../../api/menu/get/getFilteredMenuList";
 
 const MenuTable = () => {
 	const navigate = useNavigate();
@@ -45,15 +50,15 @@ const MenuTable = () => {
 
 	const [keyword, setKeyword] = useState("");
 
-	const [parentId, setParentId] = useState<Id>("");
-	const [menuTypeId, setMenuTypeId] = useState<Id>("");
-	const [linkTypeId, setLinkTypeId] = useState<Id>("");
-
-	const [statusCode, setStatusCode] = useState<Id>("1");
+	const [statusCode, setStatusCode] = useState<Id>();
 
 	//Parameters
 	const [orderBy, setOrderBy] = useState<string>("");
 	const [toggleSort, setToggleSort] = useState(false);
+
+	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([
+		{ id: "activeStatusId", value: "1" },
+	]);
 
 	// check if authorized to access
 	useEffect(() => {
@@ -135,17 +140,14 @@ const MenuTable = () => {
 	}, [fetchLinkTypes]);
 
 	const fetch = useCallback(async () => {
-		const { data } = await getMenuListPaginated(
-			currentPage,
-			pageSize,
+		const { data } = await getFilteredMenuList(columnFilters, {
+			page: currentPage,
+			postsPerPage: pageSize,
 			keyword,
-			parentId,
-			menuTypeId,
-			linkTypeId,
 			statusCode,
 			orderBy,
-			toggleSort
-		);
+			isDescending: toggleSort,
+		});
 
 		if (data) {
 			setItems(data.menuItems);
@@ -153,13 +155,11 @@ const MenuTable = () => {
 			setPageSize(data?.pageSize);
 		}
 	}, [
+		columnFilters,
 		currentPage,
 		keyword,
-		linkTypeId,
-		menuTypeId,
 		orderBy,
 		pageSize,
-		parentId,
 		statusCode,
 		toggleSort,
 	]);
@@ -245,122 +245,186 @@ const MenuTable = () => {
 	const actions = t("global.actions", { framework: "React" });
 	const edit = t("button.edit", { framework: "React" });
 
-	const columns: Column<MenuItemColumns>[] = [
-		{
-			Header: id,
-			id: "id",
-			accessor: (p) => p.id,
-		},
-		{
-			Header: menuType,
-			id: "menuType",
-			accessor: (p) =>
-				language !== "ar" ? p.menuType?.name : p.menuType?.nameEnglish,
-		},
-		{
-			Header: menuName,
-			id: "name",
-			accessor: (p) => (language !== "ar" ? p.name : p.nameEnglish),
-		},
-		{
-			Header: parent,
-			id: "parentId",
-			accessor: (p) =>
-				language !== "ar" ? p.parent?.name : p.parent?.nameEnglish,
-		},
-		{
-			Header: linkPath,
-			id: "linkPath",
-			accessor: (p) => p.linkPath,
-		},
-		{
-			Header: orderNo,
-			id: "orderNo",
-			accessor: (p) => p.orderNo,
-		},
-		{
-			Header: linkType,
-			accessor: (p) =>
-				language !== "ar" ? p.linkType?.name : p.linkType?.nameEnglish,
-		},
-		{
-			Header: isVisible,
-			accessor: (p) => <StatusIcon status={p.isVisible} />,
-		},
-		{
-			Header: isExternalPath,
-			accessor: (p) => <StatusIcon status={p.isExternalPath} />,
-		},
-		// {
-		// 	Header: status,
-		// 	id: "activeStatus",
-		// 	accessor: (p) => p,
-		// 	Cell: ({ value }: any) => (
-		// 		<ActiveStatus
-		// 			code={value.activeStatus?.id!}
-		// 			text={
-		// 				language !== "ar"
-		// 					? value.activeStatus.nameArabic
-		// 					: value.activeStatus.nameEnglish
-		// 			}
-		// 		/>
-		// 	),
-		// },
-		{
-			Header: status,
-			id: "activeStatus",
-			accessor: (p) => p,
-			Cell: ({ value }: any) => (
-				<div className={styles.name}>
-					<div className={styles.arabic}>
-						<ActiveStatus
-							code={value.activeStatus.id === 1 ? 1 : 9}
-							text={
-								language !== "ar"
-									? value.activeStatus.nameArabic
-									: value.activeStatus.nameEnglish
-							}
-						/>
+	const activeStatusOptions: DropdownOption[] = useMemo(
+		() => [
+			{
+				label: t("status.active", {
+					framework: "React",
+				}),
+				value: 1,
+			},
+			{
+				label: t("status.deactive", {
+					framework: "React",
+				}),
+				value: 9,
+			},
+		],
+		[t]
+	);
+
+	const columnHelper = createColumnHelper<MenuItemColumns>();
+	const columns = useMemo(
+		() => [
+			columnHelper.accessor((row) => row.id, {
+				id: "id",
+				header: id,
+			}),
+			columnHelper.accessor((row) => row.menuType, {
+				id: "menuTypeId",
+				header: menuType,
+				cell: (info) =>
+					info.getValue() ? (
+						<div className={styles.name}>
+							{language !== "ar"
+								? info.getValue()!.name
+								: info.getValue()!.nameEnglish}
+						</div>
+					) : (
+						<div>-</div>
+					),
+				meta: {
+					filterVariant: "select",
+					options: menuTypeOptions,
+				},
+			}),
+			columnHelper.accessor((row) => row, {
+				id: "fullName",
+				header: menuName,
+				cell: (info) => (
+					<div className={styles.name}>
+						{language !== "ar"
+							? info.getValue().name!
+							: info.getValue().nameEnglish!}
 					</div>
-				</div>
-			),
-		},
-		{
-			Header: actions,
-			accessor: (p) => p,
-			Cell: ({ value }: any) => (
-				// <div className={styles.action}>
-				// 	<div className={styles.btnDiv}>
-				// 		<RedirectButton
-				// 			label={edit}
-				// 			redirectTo={`${RoutePath.CONTENT_MANAGEMENT_MENU_EDIT.replace(
-				// 				RoutePath.ID,
-				// 				value
-				// 			)}`}
-				// 			style={{ height: "20px", fontSize: "12px" }}
-				// 		/>
-				// 	</div>
-				// </div>
-				<ActionButtons
-					id={value.id}
-					editPageLink={`${RoutePath.CONTENT_MANAGEMENT_MENU_EDIT.replace(
-						RoutePath.ID,
-						value.id
-					)}`}
-					// showView={true}
-					// detailPageLink={`${RoutePath.USER}/${value.id}`}
-					showActivate={value.activeStatus?.id !== 1}
-					onActivate={(id) => activateClickHandler(id)}
-					showEdit={true}
-					onEdit={(id) => editClickHandler(value.id)}
-					showDelete={
-						privileges?.deletePrivilege && value.activeStatus?.id === 1
-					}
-					onDelete={deleteClickHandler}
-				/>
-			),
-		},
-	];
+				),
+			}),
+			columnHelper.accessor((row) => row.parent, {
+				id: "parentId",
+				header: parent,
+				cell: (info) =>
+					info.getValue() ? (
+						<div className={styles.name}>
+							{language !== "ar"
+								? info.getValue()!.name
+								: info.getValue()!.nameEnglish}
+						</div>
+					) : (
+						<div>-</div>
+					),
+				meta: {
+					filterVariant: "select",
+					options: parentOptions,
+				},
+			}),
+			columnHelper.accessor((row) => row.linkPath, {
+				id: "linkPath",
+				header: linkPath,
+			}),
+			columnHelper.accessor((row) => row.orderNo, {
+				id: "orderNo",
+				header: orderNo,
+			}),
+			columnHelper.accessor((row) => row.linkType, {
+				id: "linkTypeId",
+				header: linkType,
+				cell: (info) =>
+					info.getValue() ? (
+						<div className={styles.name}>
+							{language !== "ar"
+								? info.getValue()!.name
+								: info.getValue()!.nameEnglish}
+						</div>
+					) : (
+						<div>-</div>
+					),
+				meta: {
+					filterVariant: "select",
+					options: linkTypeOptions,
+				},
+			}),
+			columnHelper.accessor((row) => row.isVisible, {
+				id: "isVisible",
+				header: isVisible,
+				cell: (info) => <StatusIcon status={info.getValue()} />,
+				enableColumnFilter: false,
+			}),
+			columnHelper.accessor((row) => row.isExternalPath, {
+				id: "isExternal",
+				header: isExternalPath,
+				cell: (info) => <StatusIcon status={info.getValue()} />,
+				enableColumnFilter: false,
+			}),
+			columnHelper.accessor((row) => row.activeStatus, {
+				id: "activeStatusId",
+				header: status,
+				cell: (info) => (
+					<div className={styles.name}>
+						<div className={styles.arabic}>
+							<ActiveStatus
+								code={info.getValue()!.id === 1 ? 1 : 9}
+								text={
+									language !== "ar"
+										? info.getValue()!.nameArabic
+										: info.getValue()!.nameEnglish
+								}
+							/>
+						</div>
+					</div>
+				),
+				meta: {
+					filterVariant: "select",
+					options: activeStatusOptions,
+				},
+			}),
+			columnHelper.accessor((row) => row, {
+				id: "actions",
+				header: actions,
+				cell: (info) => (
+					<ActionButtons
+						id={info.getValue().id}
+						editPageLink={`${RoutePath.CONTENT_MANAGEMENT_MENU_EDIT.replace(
+							RoutePath.ID,
+							info.getValue().id.toString()
+						)}`}
+						showActivate={info.getValue().activeStatus?.id !== 1}
+						onActivate={(id) => activateClickHandler(id)}
+						showEdit={true}
+						onEdit={(id) => editClickHandler(id)}
+						showDelete={
+							privileges?.deletePrivilege &&
+							info.getValue().activeStatus?.id === 1
+						}
+						onDelete={deleteClickHandler}
+					/>
+				),
+				enableColumnFilter: false,
+			}),
+		],
+		[
+			actions,
+			activateClickHandler,
+			activeStatusOptions,
+			columnHelper,
+			deleteClickHandler,
+			editClickHandler,
+			id,
+			isExternalPath,
+			isVisible,
+			language,
+			linkPath,
+			linkType,
+			linkTypeOptions,
+			menuName,
+			menuType,
+			menuTypeOptions,
+			orderNo,
+			parent,
+			parentOptions,
+			privileges?.deletePrivilege,
+			status,
+		]
+	);
 
 	const searchClickHandler = (keyword: string) => {
 		setKeyword(keyword);
@@ -385,38 +449,33 @@ const MenuTable = () => {
 		setPageSize(size);
 	};
 
-	const parentSelectHandler = (option: DropdownOption) => {
-		setParentId(option?.value!);
-	};
-	const menuTypeSelectHandler = (option: DropdownOption) => {
-		setMenuTypeId(option?.value!);
-	};
-
-	const linkTypeSelectHandler = (option: DropdownOption) => {
-		setLinkTypeId(option?.value!);
-	};
-
 	const dropdowns: { [key: string]: DropdownProps } = {
-		parentDropdown: {
-			options: parentOptions,
-			onSelect: parentSelectHandler,
-		},
-		menuTypeDropdown: {
-			options: menuTypeOptions,
-			onSelect: menuTypeSelectHandler,
-		},
-		linkTypeDropdown: {
-			options: linkTypeOptions,
-			onSelect: linkTypeSelectHandler,
-		},
+		// parentDropdown: {
+		// 	options: parentOptions,
+		// 	onSelect: parentSelectHandler,
+		// },
+		// menuTypeDropdown: {
+		// 	options: menuTypeOptions,
+		// 	onSelect: menuTypeSelectHandler,
+		// },
+		// linkTypeDropdown: {
+		// 	options: linkTypeOptions,
+		// 	onSelect: linkTypeSelectHandler,
+		// },
 	};
 
 	const activeStatusSelectHandler = (option: DropdownOption) => {
 		setStatusCode(option?.value);
 	};
 
+	const handleColumnFiltersChange = async (
+		newColumnFilters: SetStateAction<ColumnFiltersState>
+	) => {
+		setColumnFilters(newColumnFilters);
+	};
+
 	return (
-		<>
+		<div className={styles.menuItem}>
 			<PaginatedTable
 				totalCountText={t("menu.count", { framework: "React" })}
 				totalCount={totalCount}
@@ -431,11 +490,12 @@ const MenuTable = () => {
 				onTableSort={tableSortHandler}
 				onPageChange={pageChangeHandler}
 				onPageViewSelectionChange={pageViewSelectionHandler}
+				hideActiveStatusDropdown
 				hideWorkflowStatusDropdown={true}
-				onActiveStatusOptionSelectionChange={activeStatusSelectHandler}
+				onColumnFiltersChange={handleColumnFiltersChange}
 				// hideActiveStatusDropdown
 			/>
-		</>
+		</div>
 	);
 };
 

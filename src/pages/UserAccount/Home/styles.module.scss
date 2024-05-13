@@ -39,7 +39,7 @@
 	}
 
 	.table {
-		width: 80%;
+		width: 100%;
 	}
 
 	.tableHeaderCell {
@@ -68,6 +68,7 @@
 	.name {
 		display: flex;
 		flex-direction: column;
+		width: max-content !important;
 
 		.arabic {
 			display: flex;

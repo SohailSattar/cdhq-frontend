@@ -5,6 +5,7 @@
 		"lastUpdate": "اخر تحديث",
 		"dated": "بتاريخ",
 		"city": "المدينة",
+		"area": "Area",
 		"year": "سنة",
 		"month": "شهر",
 		"day": "يوم"
@@ -442,6 +443,7 @@
 	"status": {
 		"active": "فعال",
 		"deactive": "غير فعال",
+		"expiringexpired": "Employees with Expiring/Expired Cards",
 		"on": "مع",
 		"off": "بدون"
 	},

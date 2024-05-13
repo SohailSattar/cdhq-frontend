@@ -15,20 +15,44 @@
 		margin-right: 15px;
 	}
 
+	.hierarchyContainer,
+	.table {
+		flex-grow: 1; /* Both containers will grow equally */
+		padding: 10px; /* Add padding for spacing */
+		box-sizing: border-box; /* Include padding in width/height calculations */
+		overflow-y: auto; /* Add scrollbars if content overflows */
+	}
+
 	.hierarchy {
-		// height: 610px;
+		height: 10px;
+		min-height: 774px;
 		margin-left: 15px;
 		overflow: auto;
 	}
 
 	.hierarchyLTR {
-		height: 610px;
+		height: 10px;
+		min-height: 774px;
 		margin-right: 15px;
 		overflow: auto;
 	}
 
-	.table {
-		width: 80%;
+	.name {
+		display: flex;
+		flex-direction: column;
+		width: max-content !important;
+
+		.arabic {
+			display: flex;
+			justify-content: center;
+			justify-content: right;
+		}
+
+		.english {
+			display: flex;
+			// justify-content: center;
+			justify-content: left;
+		}
 	}
 
 	.action {

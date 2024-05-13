@@ -23,6 +23,8 @@ const ChangePasswordPage = () => {
 		};
 		const { data, error } = await updatePassword(params);
 
+		console.log(data);
+
 		if (data) {
 			if (data.success === false) {
 				setErrors(data.errors!);

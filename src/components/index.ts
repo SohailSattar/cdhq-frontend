@@ -27,6 +27,7 @@ export { default as ChangeLanguage } from "./ChangeLanguage";
 export { default as Checkbox } from "./Checkbox";
 export { default as CheckboxedTree } from "./CheckboxedTree";
 export { default as CheckBoxSelections } from "./CheckBoxSelections";
+export { default as CollapsibleDiv } from "./CollapsibleDiv";
 export { default as Counter } from "./Counter";
 export { default as DeleteConfirmation } from "./DeleteConfirmation";
 export { default as DepartmentTree } from "./DepartmentTree";

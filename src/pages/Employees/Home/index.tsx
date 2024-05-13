@@ -13,7 +13,13 @@ import {
 } from "../../../components";
 
 import * as RoutePath from "../../../RouteConfig";
-import { useEffect, useMemo, useState } from "react";
+import {
+	SetStateAction,
+	useCallback,
+	useEffect,
+	useMemo,
+	useState,
+} from "react";
 import { APIExportData } from "../../../api";
 import { useStore } from "../../../utils/store";
 import { format } from "date-fns";
@@ -21,9 +27,16 @@ import { ar, enGB } from "date-fns/locale";
 import { Id, toast } from "react-toastify";
 
 import styles from "./styles.module.scss";
-import { Column } from "react-table";
+import {
+	Column,
+	ColumnFiltersState,
+	createColumnHelper,
+} from "@tanstack/react-table";
 import { EmployeeColumns } from "../../../components/PaginatedTable/types";
-import { DropdownOption } from "../../../components/Dropdown";
+import {
+	DropdownOption,
+	Props as DropdownProps,
+} from "../../../components/Dropdown";
 import { getPagedEmployees } from "../../../api/employees/get/getPagedEmployees";
 import { exportEmployees } from "../../../api/employees/export/exportEmployees";
 import { getEmployeesByDepartments } from "../../../api/employees/get/getEmployeesByDepartments";
@@ -33,6 +46,12 @@ import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPri
 import { ROLE } from "../../../utils";
 import { Project } from "../../../data/projects";
 import { APIPrivileges } from "../../../api/privileges/type";
+import { getRanks } from "../../../api/ranks/get/getRanks";
+import { getDepartmentsByProject } from "../../../api/departments/get/getDepartmentsByProject";
+import { getEmployeeStatuses } from "../../../api/employees/get/getEmployeeStatuses";
+import { getClasses } from "../../../api/classes/get/getClasses";
+import { getFilteredEmployees } from "../../../api/employees/get/getFilteredEmployees";
+import { getCategorizedDepartments } from "../../../api/departments/get/getCategorizedDepartments";
 
 const EmployeeHomePage = () => {
 	const [t] = useTranslation("common");
@@ -59,6 +78,18 @@ const EmployeeHomePage = () => {
 	const [isExportLoading, setIsExportLoading] = useState<boolean>(false);
 
 	const [privileges, setPrivileges] = useState<APIPrivileges>();
+
+	const [rankOptions, setRankOptions] = useState<DropdownOption[]>([]);
+	const [empStatusOptions, setEmpStatusOptions] = useState<DropdownOption[]>(
+		[]
+	);
+	const [departmentOptions, setDepartmentOptions] = useState<DropdownOption[]>(
+		[]
+	);
+	const [sectionOptions, setSectionOptions] = useState<DropdownOption[]>([]);
+	const [classOptions, setClassOptions] = useState<DropdownOption[]>([]);
+
+	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
 	useEffect(() => {
 		const fetch = async () => {
@@ -104,20 +135,22 @@ const EmployeeHomePage = () => {
 
 	const fetch = useMemo(
 		() => async () => {
-			const { data } = await getPagedEmployees({
+			const { data } = await getFilteredEmployees(columnFilters, {
 				page,
 				postsPerPage: pageSize,
+				statusCode: statusCode,
 				keyword,
 				orderBy,
 				isDescending: toggleSort,
 			});
+
 			if (data) {
 				setItems(data.employees);
 				setTotalCount(data.totalItems);
 				setPageSize(data?.pageSize);
 			}
 		},
-		[keyword, orderBy, page, pageSize, toggleSort]
+		[columnFilters, keyword, orderBy, page, pageSize, statusCode, toggleSort]
 	);
 
 	useEffect(() => {
@@ -151,6 +184,98 @@ const EmployeeHomePage = () => {
 		}
 	}, [departmentIds.length, fetch, fetchByDepartment]);
 
+	const fetchRanks = useCallback(async () => {
+		const { data } = await getRanks();
+		if (data) {
+			setRankOptions(
+				data?.map((x) => {
+					return {
+						label: `${language !== "ar" ? x.name : x.nameEnglish}`,
+						value: x.id,
+					};
+				})
+			);
+		}
+	}, [language]);
+
+	useEffect(() => {
+		fetchRanks();
+	}, [fetchRanks]);
+
+	const fetchEmpStatus = useCallback(async () => {
+		const { data } = await getEmployeeStatuses();
+		if (data) {
+			setEmpStatusOptions(
+				data?.map((x) => {
+					return {
+						label: `${language !== "ar" ? x.name : x.nameEnglish}`,
+						value: x.id,
+					};
+				})
+			);
+		}
+	}, [language]);
+
+	useEffect(() => {
+		fetchEmpStatus();
+	}, [fetchEmpStatus]);
+
+	const fetchDepartment = useCallback(async () => {
+		const { data } = await getDepartmentsByProject(Project.Employees);
+		if (data) {
+			setDepartmentOptions(
+				data?.map((x) => {
+					return {
+						label: `${language !== "ar" ? x.name : x.nameEnglish}`,
+						value: x.id,
+					};
+				})
+			);
+		}
+	}, [language]);
+
+	useEffect(() => {
+		fetchDepartment();
+	}, [fetchDepartment]);
+
+	const fetchSections = useCallback(async () => {
+		const { data } = await getCategorizedDepartments();
+		if (data) {
+			setSectionOptions(
+				data?.map((x) => {
+					return {
+						label: `${x.id} - ${
+							language !== "ar" ? x.fullName : x.fullNameEnglish
+						}`,
+						value: x.id,
+					};
+				})
+			);
+		}
+	}, [language]);
+
+	useEffect(() => {
+		fetchSections();
+	}, [fetchSections]);
+
+	const fetchClass = useCallback(async () => {
+		const { data } = await getClasses();
+		if (data) {
+			setClassOptions(
+				data?.map((x) => {
+					return {
+						label: `${language !== "ar" ? x.name : x.nameEnglish}`,
+						value: x.id,
+					};
+				})
+			);
+		}
+	}, [language]);
+
+	useEffect(() => {
+		fetchClass();
+	}, [fetchClass]);
+
 	const id = t("user.id", { framework: "React" });
 	const rank = t("rank.name", { framework: "React" });
 	const employeeNo = t("employee.militaryNo", { framework: "React" });
@@ -175,6 +300,19 @@ const EmployeeHomePage = () => {
 	const nationalService = t("employee.nationalService", { framework: "React" });
 	const militaryTrained = t("employee.militaryTrained", { framework: "React" });
 	const militaryUniform = t("employee.militaryUniform", { framework: "React" });
+
+	const qualification = t("employee.academicQualification", {
+		framework: "React",
+	});
+	const degreeDate = t("employee.academicQualificationDate", {
+		framework: "React",
+	});
+	const degreeName = t("employee.qualificationName", { framework: "React" });
+	const degreeCountry = t("employee.qualificationCountry", {
+		framework: "React",
+	});
+	const universityName = t("employee.universityName", { framework: "React" });
+
 	const maritalStatus = t("employee.maritalStatus", { framework: "React" });
 	const joinDate = t("employee.joinDate", { framework: "React" });
 	const hireDate = t("employee.hireDate", { framework: "React" });
@@ -203,8 +341,6 @@ const EmployeeHomePage = () => {
 	const section = t("department.section", { framework: "React" });
 	const recruiter = t("class.name", { framework: "React" });
 
-	const email = t("user.email", { framework: "React" });
-
 	const status = t("global.status", { framework: "React" });
 
 	const position = t("employee.position", { framework: "React" });
@@ -213,134 +349,181 @@ const EmployeeHomePage = () => {
 	const actions = t("global.actions", { framework: "React" });
 	const edit = t("button.edit", { framework: "React" });
 
-	const columns: Column<EmployeeColumns>[] = useMemo(
+	const empCatOptions: DropdownOption[] = useMemo(
 		() => [
-			// {
-			// 	id: "img",
-			// 	accessor: (p) => p.imageName,
-			// 	Cell: ({ value }: any) => <PhotoThumbnailImage src={value!} />,
-			// },
-			// {
-			// 	Header: txtId,
-			// 	id: "id",
-			// 	accessor: (p) => p.id,
-			// },
 			{
-				Header: employeeNo,
+				label: t("status.active", {
+					framework: "React",
+				}),
+				value: 1,
+			},
+			{
+				label: t("status.expiringexpired", {
+					framework: "React",
+				}),
+				value: 99,
+			},
+		],
+		[t]
+	);
+
+	const columnHelper = createColumnHelper<EmployeeColumns>();
+	const columns = useMemo(
+		() => [
+			columnHelper.accessor((row) => row.employeeNo, {
 				id: "employeeNo",
-				accessor: (p) => p.employeeNo,
-				Cell: ({ value }: any) => <div className={styles.cell}>{value}</div>,
-			},
-			{
-				Header: rank,
+				cell: (info) => <div className={styles.name}>{info.getValue()}</div>,
+				header: () => (
+					<div className={styles.tableHeaderCell}>{employeeNo}</div>
+				),
+			}),
+			columnHelper.accessor((row) => row.rank, {
 				id: "rankId",
-				accessor: (p) => p.rank,
-				Cell: ({ value }: any) => (
-					<div className={styles.rank}>
-						{value
-							? language !== "ar"
-								? value?.name!
-								: value?.nameEnglish!
-							: "-"}
-					</div>
-				),
-			},
-			{
-				Header: name,
-				id: "name",
-				accessor: (p) => p,
-				Cell: ({ value }: any) => (
+				header: rank,
+				cell: (info) => (
 					<div className={styles.name}>
-						<div className={styles.arabic}>{value.name}</div>
-						<div className={styles.english}>{value.nameEnglish}</div>
+						{info.getValue()
+							? language !== "ar"
+								? info.getValue()?.name!
+								: info.getValue()?.nameEnglish!
+							: "-"}
 					</div>
 				),
-			},
-			{
-				Header: status,
+				meta: {
+					filterVariant: "select",
+					options: rankOptions,
+				},
+			}),
+			columnHelper.accessor((row) => row, {
+				id: "name",
+				cell: (info) => (
+					<div className={styles.name}>
+						<div className={styles.arabic}>{info.getValue().name}</div>
+						<div className={styles.english}>{info.getValue().nameEnglish}</div>
+					</div>
+				),
+				header: () => name,
+			}),
+			columnHelper.accessor((row) => row.status, {
 				id: "statusId",
-				accessor: (p) => p.status,
-				Cell: ({ value }: any) => (
-					<div>
-						{value
+				cell: (info) => (
+					<div className={styles.name}>
+						{info.getValue()
 							? language !== "ar"
-								? value?.name!
-								: value?.nameEnglish!
+								? info.getValue()?.name!
+								: info.getValue()?.nameEnglish!
 							: "-"}
 					</div>
 				),
-			},
-			{
-				Header: department,
+				header: () => status,
+				meta: {
+					filterVariant: "select",
+					options: empStatusOptions,
+				},
+			}),
+			columnHelper.accessor((row) => row.department, {
 				id: "departmentId",
-				accessor: (p) => p.department,
-				Cell: ({ value }: any) => (
-					<div>
-						{value
+				cell: (info) => (
+					<div className={styles.name}>
+						{info.getValue()
 							? language !== "ar"
-								? value?.name!
-								: value?.nameEnglish!
+								? info.getValue()?.name!
+								: info.getValue()?.nameEnglish!
 							: "-"}
 					</div>
 				),
-			},
-			{
-				Header: section,
+				header: () => (
+					<div className={styles.tableHeaderCell}>{department}</div>
+				),
+				meta: {
+					filterVariant: "select",
+					options: departmentOptions,
+				},
+			}),
+			columnHelper.accessor((row) => row.section, {
 				id: "sectionId",
-				accessor: (p) => p.section,
-				Cell: ({ value }: any) => (
-					<div>
-						{value
+				cell: (info) => (
+					<div className={styles.name}>
+						{info.getValue()
 							? language !== "ar"
-								? value?.name!
-								: value?.nameEnglish!
+								? info.getValue()?.name!
+								: info.getValue()?.nameEnglish!
 							: "-"}
 					</div>
 				),
-			},
-			{
-				Header: recruiter,
+				header: () => <div className={styles.tableHeaderCell}>{section}</div>,
+				meta: {
+					filterVariant: "select",
+					options: sectionOptions,
+				},
+			}),
+			columnHelper.accessor((row) => row.class, {
 				id: "classId",
-				accessor: (p) => p.class,
-				Cell: ({ value }: any) => (
-					<div>
-						{value
+				cell: (info) => (
+					<div className={styles.name}>
+						{info.getValue()
 							? language !== "ar"
-								? value?.name!
-								: value?.nameEnglish!
+								? info.getValue()?.name!
+								: info.getValue()?.nameEnglish!
 							: "-"}
 					</div>
 				),
-			},
-			{
-				Header: actions,
-				accessor: (p) => p.id,
-				Cell: ({ value }: any) => (
+				header: () => <div className={styles.tableHeaderCell}>{recruiter}</div>,
+				meta: {
+					filterVariant: "select",
+					options: classOptions,
+				},
+			}),
+			columnHelper.accessor((row) => row.militaryCardExpiryDate, {
+				id: "militaryCardExpiryDate",
+				cell: (info) => (
+					<>
+						{format(new Date(info.getValue()!), "dd MMMM yyyy", {
+							locale: language !== "ar" ? ar : enGB,
+						})}
+					</>
+				),
+				header: () => milCardExpDate,
+				enableColumnFilter: false,
+			}),
+
+			columnHelper.accessor((row) => row.id, {
+				id: "id",
+				cell: (info) => (
 					<div className={styles.action}>
 						<div className={styles.btnDiv}>
 							<RedirectButton
 								label={edit}
 								redirectTo={`${RoutePath.EMPLOYEE_EDIT.replace(
 									RoutePath.ID,
-									value
+									info.getValue().toString()
 								)}`}
 								// style={{ height: "20px", fontSize: "12px" }}
 							/>
 						</div>
 					</div>
 				),
-			},
+				header: () => actions,
+				enableColumnFilter: false,
+			}),
 		],
 		[
 			actions,
+			classOptions,
+			columnHelper,
 			department,
+			departmentOptions,
 			edit,
+			empStatusOptions,
 			employeeNo,
 			language,
+			milCardExpDate,
 			name,
 			rank,
+			rankOptions,
 			recruiter,
 			section,
+			sectionOptions,
 			status,
 		]
 	);
@@ -370,6 +553,12 @@ const EmployeeHomePage = () => {
 	const departmentNodeCheckHandler = (ids: any) => {
 		setDepartmentIds(ids);
 		setPage(1);
+	};
+
+	const handleColumnFiltersChange = async (
+		newColumnFilters: SetStateAction<ColumnFiltersState>
+	) => {
+		setColumnFilters(newColumnFilters);
 	};
 
 	// For Export
@@ -402,6 +591,11 @@ const EmployeeHomePage = () => {
 		militaryTrain: { value: "MilitaryTrain", text: militaryTrained },
 		militaryWear: { value: "MilitaryWear", text: militaryUniform },
 		maritalStatus: { value: "MaritalStatus", text: maritalStatus },
+		qualification: { value: "Qualification", text: qualification },
+		degreeDate: { value: "DegreeDate", text: degreeDate },
+		degreeName: { value: "DegreeName", text: degreeName },
+		degreeCountry: { value: "DegreeCountry", text: degreeCountry },
+		universityName: { value: "UniversityName", text: universityName },
 		joinDate: { value: "JoinDate", text: joinDate },
 		hireDate: { value: "HireDate", text: hireDate },
 		healthStatus: { value: "HealthStatus", text: healthStatus },
@@ -449,6 +643,7 @@ const EmployeeHomePage = () => {
 				isDescending: toggleSort,
 			},
 			departmentIds: departmentIds,
+			filters: columnFilters,
 		};
 
 		// saving to the file
@@ -468,6 +663,21 @@ const EmployeeHomePage = () => {
 			);
 		}
 		setIsExportLoading(false);
+	};
+
+	const empCatSelectHandler = (option: DropdownOption) => {
+		setStatusCode(option?.value);
+	};
+
+	const dropdowns: { [key: string]: DropdownProps } = {
+		typeDropdown: {
+			options: empCatOptions,
+			onSelect: empCatSelectHandler,
+		},
+		// linkTypeDropdown: {
+		// 	options: linkTypeOptions,
+		// 	onSelect: () => {},
+		// },
 	};
 
 	return (
@@ -501,13 +711,15 @@ const EmployeeHomePage = () => {
 						pageSize={pageSize}
 						currentPage={page}
 						data={items}
-						columns={columns as Column<any>[]}
+						columns={columns}
+						dropdowns={dropdowns}
 						noRecordText={""}
 						onSearch={searchClickHandler}
 						onTableSort={tableSortHandler}
 						onPageChange={pageChangeHandler}
 						onPageViewSelectionChange={pageViewSelectionHandler}
 						hideActiveStatusDropdown
+						onColumnFiltersChange={handleColumnFiltersChange}
 						// classNameTable={styles.empTable}
 					/>
 				</ShadowedContainer>

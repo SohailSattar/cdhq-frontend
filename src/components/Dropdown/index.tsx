@@ -101,7 +101,7 @@ export const Dropdown: FC<Props> = ({
 				// fontFamily: 'Spartan',
 				fontSize: placeHolderFontSize ? placeHolderFontSize : "16px",
 				textTransform: "capitalize",
-				color: "blue",
+				// color: "blue",
 			}),
 		[placeHolderFontSize]
 	);
@@ -139,7 +139,7 @@ export const Dropdown: FC<Props> = ({
 			{label !== "" && <label className={style.label}>{label}</label>}
 			<Select
 				ref={reference}
-				className={clsx("react-select-container", className)}
+				className={clsx("react-select-container", className, "dropdown")}
 				classNamePrefix="react-select"
 				options={options}
 				placeholder={
