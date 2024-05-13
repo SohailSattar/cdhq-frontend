@@ -368,9 +368,14 @@ export interface APIExportEmployee {
 	professionalTraining: string;
 	workMode: string;
 	workGroup: string;
+	degreeCountry: string;
 	assignedJob: string;
 	militaryTrain: string;
 	militaryWear: string;
+	qualification: string;
+	degreeDate: string;
+	degreeName: string;
+	universityName: string;
 	residenceEmirate: string;
 	phone: string;
 	phoneOffice: string;

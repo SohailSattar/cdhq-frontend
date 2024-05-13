@@ -442,6 +442,7 @@
 	"status": {
 		"active": "Active",
 		"deactive": "Deactive",
+		"expiringexpired": "Employees with Expiring/Expired Cards",
 		"on": "On",
 		"off": "Off"
 	},

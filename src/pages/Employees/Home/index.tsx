@@ -33,7 +33,10 @@ import {
 	createColumnHelper,
 } from "@tanstack/react-table";
 import { EmployeeColumns } from "../../../components/PaginatedTable/types";
-import { DropdownOption } from "../../../components/Dropdown";
+import {
+	DropdownOption,
+	Props as DropdownProps,
+} from "../../../components/Dropdown";
 import { getPagedEmployees } from "../../../api/employees/get/getPagedEmployees";
 import { exportEmployees } from "../../../api/employees/export/exportEmployees";
 import { getEmployeesByDepartments } from "../../../api/employees/get/getEmployeesByDepartments";
@@ -132,36 +135,22 @@ const EmployeeHomePage = () => {
 
 	const fetch = useMemo(
 		() => async () => {
-			if (columnFilters.length > 0) {
-				const { data } = await getFilteredEmployees(columnFilters, {
-					page,
-					postsPerPage: pageSize,
-					keyword,
-					orderBy,
-					isDescending: toggleSort,
-				});
+			const { data } = await getFilteredEmployees(columnFilters, {
+				page,
+				postsPerPage: pageSize,
+				statusCode: statusCode,
+				keyword,
+				orderBy,
+				isDescending: toggleSort,
+			});
 
-				if (data) {
-					setItems(data.employees);
-					setTotalCount(data.totalItems);
-					setPageSize(data?.pageSize);
-				}
-			} else {
-				const { data } = await getPagedEmployees({
-					page,
-					postsPerPage: pageSize,
-					keyword,
-					orderBy,
-					isDescending: toggleSort,
-				});
-				if (data) {
-					setItems(data.employees);
-					setTotalCount(data.totalItems);
-					setPageSize(data?.pageSize);
-				}
+			if (data) {
+				setItems(data.employees);
+				setTotalCount(data.totalItems);
+				setPageSize(data?.pageSize);
 			}
 		},
-		[columnFilters, keyword, orderBy, page, pageSize, toggleSort]
+		[columnFilters, keyword, orderBy, page, pageSize, statusCode, toggleSort]
 	);
 
 	useEffect(() => {
@@ -311,6 +300,19 @@ const EmployeeHomePage = () => {
 	const nationalService = t("employee.nationalService", { framework: "React" });
 	const militaryTrained = t("employee.militaryTrained", { framework: "React" });
 	const militaryUniform = t("employee.militaryUniform", { framework: "React" });
+
+	const qualification = t("employee.academicQualification", {
+		framework: "React",
+	});
+	const degreeDate = t("employee.academicQualificationDate", {
+		framework: "React",
+	});
+	const degreeName = t("employee.qualificationName", { framework: "React" });
+	const degreeCountry = t("employee.qualificationCountry", {
+		framework: "React",
+	});
+	const universityName = t("employee.universityName", { framework: "React" });
+
 	const maritalStatus = t("employee.maritalStatus", { framework: "React" });
 	const joinDate = t("employee.joinDate", { framework: "React" });
 	const hireDate = t("employee.hireDate", { framework: "React" });
@@ -346,6 +348,24 @@ const EmployeeHomePage = () => {
 	//Actions
 	const actions = t("global.actions", { framework: "React" });
 	const edit = t("button.edit", { framework: "React" });
+
+	const empCatOptions: DropdownOption[] = useMemo(
+		() => [
+			{
+				label: t("status.active", {
+					framework: "React",
+				}),
+				value: 1,
+			},
+			{
+				label: t("status.expiringexpired", {
+					framework: "React",
+				}),
+				value: 99,
+			},
+		],
+		[t]
+	);
 
 	const columnHelper = createColumnHelper<EmployeeColumns>();
 	const columns = useMemo(
@@ -454,6 +474,18 @@ const EmployeeHomePage = () => {
 					options: classOptions,
 				},
 			}),
+			columnHelper.accessor((row) => row.militaryCardExpiryDate, {
+				id: "militaryCardExpiryDate",
+				cell: (info) => (
+					<>
+						{format(new Date(info.getValue()!), "dd MMMM yyyy", {
+							locale: language !== "ar" ? ar : enGB,
+						})}
+					</>
+				),
+				header: () => milCardExpDate,
+				enableColumnFilter: false,
+			}),
 
 			columnHelper.accessor((row) => row.id, {
 				id: "id",
@@ -485,11 +517,13 @@ const EmployeeHomePage = () => {
 			empStatusOptions,
 			employeeNo,
 			language,
+			milCardExpDate,
 			name,
 			rank,
 			rankOptions,
 			recruiter,
 			section,
+			sectionOptions,
 			status,
 		]
 	);
@@ -557,6 +591,11 @@ const EmployeeHomePage = () => {
 		militaryTrain: { value: "MilitaryTrain", text: militaryTrained },
 		militaryWear: { value: "MilitaryWear", text: militaryUniform },
 		maritalStatus: { value: "MaritalStatus", text: maritalStatus },
+		qualification: { value: "Qualification", text: qualification },
+		degreeDate: { value: "DegreeDate", text: degreeDate },
+		degreeName: { value: "DegreeName", text: degreeName },
+		degreeCountry: { value: "DegreeCountry", text: degreeCountry },
+		universityName: { value: "UniversityName", text: universityName },
 		joinDate: { value: "JoinDate", text: joinDate },
 		hireDate: { value: "HireDate", text: hireDate },
 		healthStatus: { value: "HealthStatus", text: healthStatus },
@@ -626,6 +665,21 @@ const EmployeeHomePage = () => {
 		setIsExportLoading(false);
 	};
 
+	const empCatSelectHandler = (option: DropdownOption) => {
+		setStatusCode(option?.value);
+	};
+
+	const dropdowns: { [key: string]: DropdownProps } = {
+		typeDropdown: {
+			options: empCatOptions,
+			onSelect: empCatSelectHandler,
+		},
+		// linkTypeDropdown: {
+		// 	options: linkTypeOptions,
+		// 	onSelect: () => {},
+		// },
+	};
+
 	return (
 		<PageContainer
 			lockFor={[ROLE.USER]}
@@ -658,6 +712,7 @@ const EmployeeHomePage = () => {
 						currentPage={page}
 						data={items}
 						columns={columns}
+						dropdowns={dropdowns}
 						noRecordText={""}
 						onSearch={searchClickHandler}
 						onTableSort={tableSortHandler}

@@ -326,51 +326,27 @@ const UserAccountPage = () => {
 	// New maybe
 	const fetch = useMemo(
 		() => async () => {
-			if (columnFilters.length > 0) {
-				const { data, error } = await getFilteredUsers(
-					columnFilters,
-					currentPage,
-					pageSize,
-					keyword,
-					selectedProject,
-					selectedStatusCode,
-					selectedRole,
-					orderBy,
-					toggleSort
-				);
+			const { data, error } = await getFilteredUsers(
+				columnFilters,
+				currentPage,
+				pageSize,
+				keyword,
+				selectedProject,
+				selectedStatusCode,
+				selectedRole,
+				orderBy,
+				toggleSort
+			);
 
-				if (error?.response!.status! === 401) {
-					navigate(RoutePath.LOGIN);
-				} else if (error?.response!.status! === 403) {
-					return;
-				}
+			if (error?.response!.status! === 401) {
+				navigate(RoutePath.LOGIN);
+			} else if (error?.response!.status! === 403) {
+				return;
+			}
 
-				if (data) {
-					setUsers(data.users);
-					setTotalCount(data.totalItems);
-				}
-			} else {
-				const { data, error } = await getUsers(
-					currentPage,
-					pageSize,
-					keyword,
-					selectedProject,
-					selectedStatusCode,
-					selectedRole,
-					orderBy,
-					toggleSort
-				);
-
-				if (error?.response!.status! === 401) {
-					navigate(RoutePath.LOGIN);
-				} else if (error?.response!.status! === 403) {
-					return;
-				}
-
-				if (data) {
-					setUsers(data.users);
-					setTotalCount(data.totalItems);
-				}
+			if (data) {
+				setUsers(data.users);
+				setTotalCount(data.totalItems);
 			}
 		},
 		[

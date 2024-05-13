@@ -442,6 +442,7 @@
 	"status": {
 		"active": "فعال",
 		"deactive": "غير فعال",
+		"expiringexpired": "Employees with Expiring/Expired Cards",
 		"on": "مع",
 		"off": "بدون"
 	},
