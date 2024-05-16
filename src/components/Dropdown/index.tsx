@@ -93,7 +93,7 @@ export const Dropdown: FC<Props> = ({
 	reference,
 }) => {
 	const [t] = useTranslation("common");
-	const zIndexFunc = (base: any) => mergeProps(base, { zIndex: 0 });
+	const zIndexFunc = (base: any) => mergeProps(base, { zIndex: 999 });
 	const zIndexFunc2 = (base: any) => mergeProps(base, { zIndex: 5 });
 	const fontStyle = useMemo(
 		() => (base: any) =>
@@ -130,6 +130,7 @@ export const Dropdown: FC<Props> = ({
 		() => ({
 			// control: compose(arabicStyle),
 			singleValue: fontStyle, // Apply custom style to the single value (selected option) text
+			menu: (base: any) => zIndexFunc(base),
 		}),
 		[fontStyle]
 	);

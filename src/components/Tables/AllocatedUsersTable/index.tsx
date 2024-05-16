@@ -109,7 +109,6 @@ const AllocatedUsersTable: FC<Props> = ({ projectId }) => {
 
 	const fetchPrivileges = useCallback(async () => {
 		const { data } = await getPrivileges();
-		console.log(data);
 		if (data) {
 			setPrivilegesOptions(
 				data?.map((x) => {
@@ -161,8 +160,6 @@ const AllocatedUsersTable: FC<Props> = ({ projectId }) => {
 			// 	currentPage,
 			// 	pageSize
 			// );
-
-			console.log(data);
 
 			if (data) {
 				setUsers(

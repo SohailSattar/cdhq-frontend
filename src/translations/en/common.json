@@ -154,7 +154,8 @@
 		"cancel": "Cancel",
 		"assignToUser": "Assign to User",
 		"selectChild": "Select Child",
-		"export": "Export"
+		"export": "Export",
+		"history": "History"
 	},
 	"home": {
 		"welcome": "Welcome"

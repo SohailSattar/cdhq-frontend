@@ -84,6 +84,7 @@ interface Props {
 	onSubmit: (data: IEmployeeFormInputs) => void;
 	onImageUpload?: (image: File) => void;
 	serverErrors?: string[];
+	canUpdate?: boolean;
 }
 
 const EmployeeForm: FC<Props> = ({
@@ -92,6 +93,7 @@ const EmployeeForm: FC<Props> = ({
 	onSubmit,
 	onImageUpload = () => {},
 	serverErrors = [],
+	canUpdate = false,
 }) => {
 	const [t] = useTranslation("common");
 	const language = useStore((state: { language: any }) => state.language);
@@ -1078,14 +1080,16 @@ const EmployeeForm: FC<Props> = ({
 									defaultValue={""}
 								/>
 							</div>
-							<div className={styles.browse}>
-								<input
-									type="file"
-									name="thumbnail"
-									onChange={imageChangeHandler}
-									accept="image/*"
-								/>
-							</div>
+							{canUpdate && (
+								<div className={styles.browse}>
+									<input
+										type="file"
+										name="thumbnail"
+										onChange={imageChangeHandler}
+										accept="image/*"
+									/>
+								</div>
+							)}
 							{!hideUploadButton && (
 								<div className={styles.uploadSection}>
 									<Button
@@ -1109,6 +1113,7 @@ const EmployeeForm: FC<Props> = ({
 												value={value}
 												onChange={onChange}
 												className={styles.txtBox}
+												disabled={!canUpdate}
 											/>
 										)}
 										name="employeeNo"
@@ -1124,6 +1129,7 @@ const EmployeeForm: FC<Props> = ({
 												label={t("global.name", { framework: "React" })}
 												value={value}
 												onChange={onChange}
+												disabled={!canUpdate}
 											/>
 										)}
 										name="name"
@@ -1139,6 +1145,7 @@ const EmployeeForm: FC<Props> = ({
 												label={t("global.nameEnglish", { framework: "React" })}
 												value={value}
 												onChange={onChange}
+												disabled={!canUpdate}
 											/>
 										)}
 										name="nameEnglish"
@@ -1154,6 +1161,7 @@ const EmployeeForm: FC<Props> = ({
 												options={dropdownOptions.classes}
 												onSelect={onChange}
 												value={value}
+												disabled={!canUpdate}
 											/>
 										)}
 										name="class"
@@ -1171,6 +1179,7 @@ const EmployeeForm: FC<Props> = ({
 												labeltext={t("employee.hireDate", {
 													framework: "React",
 												})}
+												disabled={!canUpdate}
 											/>
 										)}
 										name="hireDate"
@@ -1187,6 +1196,7 @@ const EmployeeForm: FC<Props> = ({
 												labeltext={t("employee.joinDate", {
 													framework: "React",
 												})}
+												disabled={!canUpdate}
 											/>
 										)}
 										name="joinDate"
@@ -1202,6 +1212,7 @@ const EmployeeForm: FC<Props> = ({
 												options={dropdownOptions.ranks}
 												onSelect={onChange}
 												value={value}
+												disabled={!canUpdate}
 											/>
 										)}
 										name="rank"
@@ -1218,6 +1229,7 @@ const EmployeeForm: FC<Props> = ({
 												options={dropdownOptions.contractTypes}
 												onSelect={onChange}
 												value={value}
+												disabled={!canUpdate}
 											/>
 										)}
 										name="contractType"
@@ -1234,6 +1246,7 @@ const EmployeeForm: FC<Props> = ({
 												options={dropdownOptions.professions}
 												onSelect={onChange}
 												value={value}
+												disabled={!canUpdate}
 											/>
 										)}
 										name="profession"
@@ -1250,6 +1263,7 @@ const EmployeeForm: FC<Props> = ({
 												options={dropdownOptions.countries}
 												onSelect={onChange}
 												value={value}
+												disabled={!canUpdate}
 											/>
 										)}
 										name="nationality"
@@ -1266,6 +1280,7 @@ const EmployeeForm: FC<Props> = ({
 												options={dropdownOptions.nationalServices}
 												onSelect={onChange}
 												value={value}
+												disabled={!canUpdate}
 											/>
 										)}
 										name="nationalService"
@@ -1282,6 +1297,7 @@ const EmployeeForm: FC<Props> = ({
 												})}
 												value={value}
 												onChange={onChange}
+												disabled={!canUpdate}
 											/>
 										)}
 										name="nationalServiceGroup"
@@ -1299,6 +1315,7 @@ const EmployeeForm: FC<Props> = ({
 												options={dropdownOptions.statuses}
 												onSelect={onChange}
 												value={value}
+												disabled={!canUpdate}
 											/>
 										)}
 										name="status"
@@ -1315,6 +1332,7 @@ const EmployeeForm: FC<Props> = ({
 												})}
 												value={value || ""}
 												onChange={onChange}
+												disabled={!canUpdate}
 											/>
 										)}
 										name="statusDetails"
@@ -1330,6 +1348,7 @@ const EmployeeForm: FC<Props> = ({
 												labeltext={t("employee.statusDate", {
 													framework: "React",
 												})}
+												disabled={!canUpdate}
 											/>
 										)}
 										name="statusDate"
@@ -1346,6 +1365,7 @@ const EmployeeForm: FC<Props> = ({
 												labeltext={t("employee.milCardExpDate", {
 													framework: "React",
 												})}
+												disabled={!canUpdate}
 											/>
 										)}
 										name="militaryCardExpiryDate"
@@ -1367,6 +1387,7 @@ const EmployeeForm: FC<Props> = ({
 										options={dropdownOptions.departments}
 										onSelect={onChange}
 										value={value}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="department"
@@ -1381,6 +1402,7 @@ const EmployeeForm: FC<Props> = ({
 										label={t("employee.isManager", { framework: "React" })}
 										checked={value}
 										onChange={onChange}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="isWorkLocationManager"
@@ -1400,6 +1422,7 @@ const EmployeeForm: FC<Props> = ({
 										options={dropdownOptions.section}
 										onSelect={onChange}
 										value={value}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="section"
@@ -1418,6 +1441,7 @@ const EmployeeForm: FC<Props> = ({
 										options={dropdownOptions.professionalTraining}
 										onSelect={onChange}
 										value={value}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="professionalTraining"
@@ -1433,6 +1457,7 @@ const EmployeeForm: FC<Props> = ({
 										options={dropdownOptions.workMode}
 										onSelect={onChange}
 										value={value}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="workMode"
@@ -1447,6 +1472,7 @@ const EmployeeForm: FC<Props> = ({
 										options={dropdownOptions.workGroup}
 										onSelect={onChange}
 										value={value}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="workGroup"
@@ -1461,6 +1487,7 @@ const EmployeeForm: FC<Props> = ({
 										options={dropdownOptions.signaturesLists}
 										onSelect={onChange}
 										value={value}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="signList"
@@ -1479,6 +1506,7 @@ const EmployeeForm: FC<Props> = ({
 										options={dropdownOptions.jobCategoryMoi}
 										onSelect={jobCategoryMoiChangeHandler}
 										value={value}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="jobCatMoi"
@@ -1494,6 +1522,7 @@ const EmployeeForm: FC<Props> = ({
 										options={actJobMoiOptions}
 										onSelect={onChange}
 										value={value}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="actJob"
@@ -1508,6 +1537,7 @@ const EmployeeForm: FC<Props> = ({
 										options={dropdownOptions.assignedJobs}
 										onSelect={onChange}
 										value={value}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="assignedJob"
@@ -1524,6 +1554,7 @@ const EmployeeForm: FC<Props> = ({
 										})}
 										value={value}
 										onChange={onChange}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="additionalJob"
@@ -1544,6 +1575,7 @@ const EmployeeForm: FC<Props> = ({
 											})}
 											value={value}
 											onChange={onChange}
+											disabled={!canUpdate}
 										/>
 									)}
 									name="previousExperienceYear"
@@ -1559,6 +1591,7 @@ const EmployeeForm: FC<Props> = ({
 											})}
 											value={value}
 											onChange={onChange}
+											disabled={!canUpdate}
 										/>
 									)}
 									name="previousExperienceMonth"
@@ -1574,6 +1607,7 @@ const EmployeeForm: FC<Props> = ({
 											})}
 											value={value}
 											onChange={onChange}
+											disabled={!canUpdate}
 										/>
 									)}
 									name="previousExperienceDay"
@@ -1592,6 +1626,7 @@ const EmployeeForm: FC<Props> = ({
 										options={dropdownOptions.militaryTrained}
 										onSelect={onChange}
 										value={value}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="militaryTrained"
@@ -1608,6 +1643,7 @@ const EmployeeForm: FC<Props> = ({
 										options={dropdownOptions.militaryUniform}
 										onSelect={onChange}
 										value={value}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="militaryWear"
@@ -1633,6 +1669,7 @@ const EmployeeForm: FC<Props> = ({
 										options={dropdownOptions.qualifications}
 										onSelect={onChange}
 										value={value}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="qualification"
@@ -1648,6 +1685,7 @@ const EmployeeForm: FC<Props> = ({
 										labeltext={t("employee.academicQualificationDate", {
 											framework: "React",
 										})}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="degreeDate"
@@ -1664,6 +1702,7 @@ const EmployeeForm: FC<Props> = ({
 										})}
 										value={value}
 										onChange={onChange}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="degreeName"
@@ -1681,6 +1720,7 @@ const EmployeeForm: FC<Props> = ({
 										options={dropdownOptions.countries}
 										onSelect={onChange}
 										value={value}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="degreeCountry"
@@ -1699,6 +1739,7 @@ const EmployeeForm: FC<Props> = ({
 										})}
 										value={value}
 										onChange={onChange}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="universityName"
@@ -1720,6 +1761,7 @@ const EmployeeForm: FC<Props> = ({
 										})}
 										value={value}
 										onChange={onChange}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="residenceEmirate"
@@ -1737,6 +1779,7 @@ const EmployeeForm: FC<Props> = ({
 										})}
 										value={value}
 										onChange={onChange}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="residenceCity"
@@ -1754,6 +1797,7 @@ const EmployeeForm: FC<Props> = ({
 										})}
 										value={value}
 										onChange={onChange}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="residenceArea"
@@ -1773,6 +1817,7 @@ const EmployeeForm: FC<Props> = ({
 										})}
 										value={value}
 										onChange={onChange}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="phone"
@@ -1790,6 +1835,7 @@ const EmployeeForm: FC<Props> = ({
 										})}
 										value={value}
 										onChange={onChange}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="phone2"
@@ -1807,6 +1853,7 @@ const EmployeeForm: FC<Props> = ({
 										})}
 										value={value}
 										onChange={onChange}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="phoneOffice"
@@ -1826,6 +1873,7 @@ const EmployeeForm: FC<Props> = ({
 										})}
 										value={value}
 										onChange={onChange}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="emailLan"
@@ -1843,6 +1891,7 @@ const EmployeeForm: FC<Props> = ({
 										})}
 										value={value}
 										onChange={onChange}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="emailNet"
@@ -1864,6 +1913,7 @@ const EmployeeForm: FC<Props> = ({
 										options={dropdownOptions.genders}
 										onSelect={onChange}
 										value={value}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="gender"
@@ -1880,6 +1930,7 @@ const EmployeeForm: FC<Props> = ({
 										options={dropdownOptions.maritalStatuses}
 										onSelect={onChange}
 										value={value}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="maritalStatus"
@@ -1896,6 +1947,7 @@ const EmployeeForm: FC<Props> = ({
 										options={dropdownOptions.religions}
 										onSelect={onChange}
 										value={value}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="religion"
@@ -1911,6 +1963,7 @@ const EmployeeForm: FC<Props> = ({
 										labeltext={t("employee.dob", {
 											framework: "React",
 										})}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="birthDate"
@@ -1930,6 +1983,7 @@ const EmployeeForm: FC<Props> = ({
 										})}
 										value={value}
 										onChange={onChange}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="birthPlace"
@@ -1947,6 +2001,7 @@ const EmployeeForm: FC<Props> = ({
 										options={dropdownOptions.specialNeeds}
 										onSelect={onChange}
 										value={value}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="specialNeed"
@@ -1963,6 +2018,7 @@ const EmployeeForm: FC<Props> = ({
 										options={dropdownOptions.healthStatuses}
 										onSelect={onChange}
 										value={value}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="healthStatus"
@@ -1979,6 +2035,7 @@ const EmployeeForm: FC<Props> = ({
 										})}
 										value={value || ""}
 										onChange={onChange}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="passportNo"
@@ -1998,6 +2055,7 @@ const EmployeeForm: FC<Props> = ({
 										})}
 										value={value || ""}
 										onChange={onChange}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="familyBookNo"
@@ -2014,6 +2072,7 @@ const EmployeeForm: FC<Props> = ({
 										})}
 										value={value}
 										onChange={onChange}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="emiratesIdNo"
@@ -2031,6 +2090,7 @@ const EmployeeForm: FC<Props> = ({
 										})}
 										value={value}
 										onChange={onChange}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="uidNo"
@@ -2048,6 +2108,7 @@ const EmployeeForm: FC<Props> = ({
 										})}
 										value={value || ""}
 										onChange={onChange}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="districtNo"
@@ -2067,6 +2128,7 @@ const EmployeeForm: FC<Props> = ({
 										})}
 										value={value}
 										onChange={onChange}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="districtName"
@@ -2083,6 +2145,7 @@ const EmployeeForm: FC<Props> = ({
 										labeltext={t("employee.lastMedTestDate", {
 											framework: "React",
 										})}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="lastMedicalTestDate"
@@ -2100,6 +2163,7 @@ const EmployeeForm: FC<Props> = ({
 										options={dropdownOptions.bloodTypes}
 										onSelect={onChange}
 										value={value}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="bloodType"
@@ -2116,6 +2180,7 @@ const EmployeeForm: FC<Props> = ({
 										})}
 										value={value || ""}
 										onChange={onChange}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="height"
@@ -2135,6 +2200,7 @@ const EmployeeForm: FC<Props> = ({
 										})}
 										value={value || ""}
 										onChange={onChange}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="weight"
@@ -2152,6 +2218,7 @@ const EmployeeForm: FC<Props> = ({
 										})}
 										value={value}
 										onChange={onChange}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="notes"
@@ -2178,6 +2245,7 @@ const EmployeeForm: FC<Props> = ({
 										})}
 										value={value}
 										onChange={onChange}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="emergencyCallName"
@@ -2195,6 +2263,7 @@ const EmployeeForm: FC<Props> = ({
 										})}
 										value={value}
 										onChange={onChange}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="emergencyCallRelation"
@@ -2212,6 +2281,7 @@ const EmployeeForm: FC<Props> = ({
 										})}
 										value={value}
 										onChange={onChange}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="emergencyCallPhone"
@@ -2229,6 +2299,7 @@ const EmployeeForm: FC<Props> = ({
 										})}
 										value={value}
 										onChange={onChange}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="emergencyCallAddress"
@@ -2248,6 +2319,7 @@ const EmployeeForm: FC<Props> = ({
 										})}
 										value={value}
 										onChange={onChange}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="emergencyOtherName"
@@ -2265,6 +2337,7 @@ const EmployeeForm: FC<Props> = ({
 										})}
 										value={value}
 										onChange={onChange}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="emergencyOtherRelation"
@@ -2282,6 +2355,7 @@ const EmployeeForm: FC<Props> = ({
 										})}
 										value={value}
 										onChange={onChange}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="emergencyOtherPhone"
@@ -2299,6 +2373,7 @@ const EmployeeForm: FC<Props> = ({
 										})}
 										value={value}
 										onChange={onChange}
+										disabled={!canUpdate}
 									/>
 								)}
 								name="emergencyOtherAddress"
@@ -3018,13 +3093,15 @@ const EmployeeForm: FC<Props> = ({
 						</ShadowedContainer>
 					)}
 				</div>
-				<ShadowedContainer className={styles.row}>
-					<div className={styles.actions}>
-						<div className={language !== "ar" ? styles.btn : styles.btnLTR}>
-							<Button type="submit">{actionButtonText}</Button>
+				{canUpdate && (
+					<ShadowedContainer className={styles.row}>
+						<div className={styles.actions}>
+							<div className={language !== "ar" ? styles.btn : styles.btnLTR}>
+								<Button type="submit">{actionButtonText}</Button>
+							</div>
 						</div>
-					</div>
-				</ShadowedContainer>
+					</ShadowedContainer>
+				)}
 			</div>
 		</form>
 	);

@@ -1,10 +1,9 @@
 import { FC, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Column } from "@tanstack/react-table";
+import { createColumnHelper } from "@tanstack/react-table";
 import { getUserProjects } from "../../api/userProjects/get/getUserProjects";
 import { useStore } from "../../utils/store";
 import Button from "../Button";
-import Table from "../Table";
 import { APIProjectTable } from "./types";
 import { updateUserProjectStatus } from "../../api/userProjects/update/updateUserProjectStatus";
 
@@ -13,17 +12,12 @@ import {
 	ActiveStatus,
 	DeleteConfirmation,
 	PaginatedTable,
-	Pagination,
-	ProjectSummary,
-	SearchBox,
-	ShadowedContainer,
 	StatusIcon,
-	TotalCount,
 } from "..";
 import { deleteProject } from "../../api/users/delete/deleteProject";
 import { toast } from "react-toastify";
 import { APIProjectStatus } from "../../api/userProjects/types";
-import { DropdownOption, Props as DropdownProps } from "../Dropdown";
+import { DropdownOption } from "../Dropdown";
 import { Id } from "../../utils";
 
 interface Props {
@@ -95,7 +89,7 @@ const UserProjectTable: FC<Props> = ({
 								canGrant: p.canGrant!,
 								status: p.activeStatus,
 							},
-							activeStatus: p.activeStatus.id,
+							activeStatus: p.activeStatus,
 						};
 					})
 				);
@@ -169,6 +163,153 @@ const UserProjectTable: FC<Props> = ({
 	const activate = t("button.activate", { framework: "React" });
 	const edit = t("button.edit", { framework: "React" });
 	const deleteBtn = t("button.deactivate", { framework: "React" });
+
+	const columnHelper = createColumnHelper<APIProjectTable>();
+	const columns = useMemo(
+		() => [
+			columnHelper.accessor((row) => row, {
+				id: "projectId",
+				header: projectName,
+				cell: (info) => (
+					<div
+						className={
+							info.getValue().isChildProject
+								? language !== "ar"
+									? styles.childProject
+									: styles.childProjectLTR
+								: ""
+						}>
+						{info.getValue().projectName}
+					</div>
+				),
+				enableColumnFilter: false,
+			}),
+			columnHelper.accessor((row) => row.privilege, {
+				id: "privilegeId",
+				header: privilege,
+				enableColumnFilter: false,
+			}),
+			columnHelper.accessor((row) => row.department, {
+				id: "departmentId",
+				header: department,
+				enableColumnFilter: false,
+			}),
+
+			columnHelper.accessor((row) => row.details.departmentStructureType, {
+				id: "deptStructure",
+				header: deptStructure,
+				cell: (info) => (
+					<div>
+						{info.getValue() === 9
+							? t("project.withChild", { framework: "React" })
+							: t("project.withoutChild", { framework: "React" })}
+					</div>
+				),
+				enableColumnFilter: false,
+			}),
+			columnHelper.accessor((row) => row.details.canGrant, {
+				id: "canGrant",
+				header: canGrant,
+				cell: (info) => (
+					<div className={styles.cell}>
+						<StatusIcon status={info.getValue()} />
+					</div>
+				),
+				enableColumnFilter: false,
+			}),
+			columnHelper.accessor((row) => row.activeStatus, {
+				id: "activeStatusId",
+				header: status,
+				cell: (info) => (
+					<ActiveStatus
+						code={info.getValue().id === 1 ? 1 : 9}
+						text={
+							language !== "ar"
+								? info.getValue().nameArabic
+								: info.getValue().nameEnglish
+						}
+					/>
+				),
+				enableColumnFilter: false,
+			}),
+			columnHelper.accessor((row) => row, {
+				id: "actions",
+				header: () => <div className={styles.tableHeaderCell}>{actions}</div>,
+				cell: (info) => (
+					<div className={language !== "ar" ? styles.action : styles.actionLTR}>
+						<div className={styles.btnDiv}>
+							<Button
+								onClick={(id) =>
+									editClickHandler(info.getValue().id.toString())
+								}>
+								{edit}
+							</Button>
+						</div>
+						{info.getValue().activeStatus.id !== 1 ? (
+							<div className={styles.btnDiv}>
+								<Button
+									onClick={(id) =>
+										activateClickHandler(info.getValue().id.toString())
+									}>
+									{activate}
+								</Button>
+							</div>
+						) : (
+							<div>
+								<Button
+									isCritical
+									onClick={(id) =>
+										deleteClickHandler(info.getValue().id.toString())
+									}>
+									{deleteBtn}
+								</Button>
+							</div>
+						)}
+					</div>
+				),
+				enableColumnFilter: false,
+			}),
+
+			// 	{
+			// 		Header: <div className={styles.tableHeaderCell}>{actions}</div>,
+			// 		id: "Actions",
+			// 		accessor: (p) => p,
+			// 		Cell: ({ value }: any) => (
+			// 			<div className={language !== "ar" ? styles.action : styles.actionLTR}>
+			// 				<div className={styles.btnDiv}>
+			// 					<Button onClick={(id) => editClickHandler(value.id)}>{edit}</Button>
+			// 				</div>
+			// 				{value.activeStatus !== 1 ? (
+			// 					<div className={styles.btnDiv}>
+			// 						<Button onClick={(id) => activateClickHandler(value.id)}>
+			// 							{activate}
+			// 						</Button>
+			// 					</div>
+			// 				) : (
+			// 					<div>
+			// 						<Button
+			// 							isCritical
+			// 							onClick={(id) => deleteClickHandler(value.id)}>
+			// 							{deleteBtn}
+			// 						</Button>
+			// 					</div>
+			// 				)}
+			// 			</div>
+			// 		),
+			// 	},
+		],
+		[
+			canGrant,
+			columnHelper,
+			department,
+			deptStructure,
+			language,
+			privilege,
+			projectName,
+			status,
+			t,
+		]
+	);
 
 	// const columns: Column<APIProjectTable>[] = [
 	// 	{ Header: projectId, accessor: (p) => p.projectId! },
@@ -355,7 +496,7 @@ const UserProjectTable: FC<Props> = ({
 
 	return (
 		<>
-			{/* <PaginatedTable
+			<PaginatedTable
 				totalCountText={t("project.count", { framework: "React" })}
 				totalCount={totalCount}
 				pageSize={pageSize}
@@ -370,7 +511,7 @@ const UserProjectTable: FC<Props> = ({
 				onPageViewSelectionChange={pageViewSelectionHandler}
 				onActiveStatusOptionSelectionChange={statusChangeHandler}
 				hideWorkflowStatusDropdown={true}
-			/> */}
+			/>
 
 			<DeleteConfirmation
 				isOpen={isModalOpen}

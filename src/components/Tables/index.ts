@@ -1,4 +1,5 @@
 export { default as AllocatedUsersTable } from "./AllocatedUsersTable";
+export { default as EmployeeHistoryTable } from "./EmployeeHistoryTable";
 export { default as EmployeeTable } from "./EmployeeTable";
 export { default as CivilDefenseBuildingsTable } from "./CivilDefenseBuildingsTable";
 export { default as ImagesTable } from "./ImagesTable";

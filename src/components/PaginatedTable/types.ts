@@ -33,6 +33,16 @@ export type EmployeeColumns = {
 	assignedJob: APIAssignedJob;
 };
 
+// Employee History
+export type EmployeeHistoryColumns = {
+	name: string;
+	updatedBy: string;
+	fieldName: string;
+	oldValue: string;
+	newValue: string;
+	auditDate: string;
+};
+
 export type DepartmentColumns = {
 	id: number;
 	name: string;

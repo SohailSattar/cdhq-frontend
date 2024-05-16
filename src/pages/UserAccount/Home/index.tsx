@@ -503,8 +503,6 @@ const UserAccountPage = () => {
 			filters: columnFilters,
 		};
 
-		console.log(dataValues);
-
 		// saving to the file
 		const us = t("user.names", { framework: "React" });
 		const currentDate = format(new Date(), "ddMMyyyyhhmmss", {

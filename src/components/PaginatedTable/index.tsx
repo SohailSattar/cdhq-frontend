@@ -47,7 +47,8 @@ interface Props {
 	data: any;
 	columns: any; //Column<any>[];
 	noRecordText: string;
-	onSearch: (keyword: string) => void;
+	showSearchBar?: boolean;
+	onSearch?: (keyword: string) => void;
 	onTableSort: (columneId: string, isSortedDesc: boolean) => void;
 	onPageChange: (pageNo: number) => void;
 	onPageViewSelectionChange: (option: DropdownOption) => void;
@@ -88,7 +89,8 @@ const PaginatedTable: FC<Props> = ({
 	data,
 	columns,
 	noRecordText,
-	onSearch,
+	showSearchBar = true,
+	onSearch = emptyFunction,
 	onTableSort,
 	onPageChange,
 	onPageViewSelectionChange,
@@ -266,12 +268,14 @@ const PaginatedTable: FC<Props> = ({
 		<>
 			<div className={styles.paginatedTable}>
 				<ShadowedContainer className={styles.searchContainer}>
-					<div className={styles.search}>
-						<SearchBox
-							onClick={onSearch}
-							className={styles.noShadow}
-						/>
-					</div>
+					{showSearchBar && (
+						<div className={styles.search}>
+							<SearchBox
+								onClick={onSearch}
+								className={styles.noShadow}
+							/>
+						</div>
+					)}
 					<div className={styles.bar}>
 						<div className={language !== "ar" ? styles.info : styles.infoLTR}>
 							<TotalCount
@@ -379,16 +383,18 @@ const PaginatedTable: FC<Props> = ({
 					onExportClick={() => setIsOpen(true)}
 				/>
 
-				<Table
-					reference={tableRef}
-					columns={columns}
-					data={data}
-					onSort={onTableSort}
-					noRecordsText={noRecordText}
-					columnsToHide={columnsToHide}
-					onColumnFiltersChange={onColumnFiltersChange}
-					className={clsx(classNameTable, styles.scrollable)}
-				/>
+				<div>
+					<Table
+						reference={tableRef}
+						columns={columns}
+						data={data}
+						onSort={onTableSort}
+						noRecordsText={noRecordText}
+						columnsToHide={columnsToHide}
+						onColumnFiltersChange={onColumnFiltersChange}
+						className={clsx(classNameTable, styles.scrollable)}
+					/>
+				</div>
 				<div>
 					<Pagination
 						className={styles.paginationBar}

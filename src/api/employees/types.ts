@@ -170,6 +170,15 @@ export interface APIEmployeeDetail {
 	updatedOn: string;
 }
 
+export interface APIEmployeeHistory {
+	name: string;
+	updatedBy?: string;
+	fieldName?: string;
+	oldValue?: string;
+	newValue?: string;
+	auditDate?: string;
+}
+
 export interface APIEmployeeSignature {
 	id: number;
 	imageName?: string;
@@ -339,6 +348,10 @@ export interface APIUpdateEmployeeSignature {
 
 export interface APIPaginatedEmployees extends APIPaginate {
 	employees: APIEmployeeListItem[];
+}
+
+export interface APIPaginatedEmployeeHistory extends APIPaginate {
+	changes: APIEmployeeHistory[];
 }
 
 /////////////////////////////////////////////////////////

@@ -129,12 +129,6 @@ export function Table<T extends object>(props: Props<T>): ReactElement {
 		.map((headerGroup) => headerGroup.headers.length);
 	const maxColCount = Math.max(...columnHeadersLength);
 
-	console.log(
-		tableInstance
-			.getHeaderGroups()
-			.map((headerGroup) => headerGroup.headers.length)
-	);
-
 	return (
 		<ShadowedContainer className={clsx(styles.tableWrapper, props.className)}>
 			<div className="p-2">
@@ -230,7 +224,12 @@ export function Table<T extends object>(props: Props<T>): ReactElement {
 								style={{ background: props.rowColor }}>
 								<td
 									className={styles.noRecordsRow}
-									colSpan={maxColCount}>
+									colSpan={maxColCount}
+									style={{
+										background: props.rowColor,
+										height: props.rowHeight,
+										textAlign: "center", // Center align the message
+									}}>
 									{props.noRecordsText}
 								</td>
 							</tr>

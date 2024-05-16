@@ -370,6 +370,25 @@ const EmployeeHomePage = () => {
 	const columnHelper = createColumnHelper<EmployeeColumns>();
 	const columns = useMemo(
 		() => [
+			columnHelper.accessor((row) => row.id, {
+				id: "id",
+				cell: (info) => (
+					<div className={styles.action}>
+						<div className={styles.btnDiv}>
+							<RedirectButton
+								label={edit}
+								redirectTo={`${RoutePath.EMPLOYEE_EDIT.replace(
+									RoutePath.ID,
+									info.getValue().toString()
+								)}`}
+								// style={{ height: "20px", fontSize: "12px" }}
+							/>
+						</div>
+					</div>
+				),
+				header: "",
+				enableColumnFilter: false,
+			}),
 			columnHelper.accessor((row) => row.employeeNo, {
 				id: "employeeNo",
 				cell: (info) => <div className={styles.name}>{info.getValue()}</div>,
@@ -405,7 +424,7 @@ const EmployeeHomePage = () => {
 				header: () => name,
 			}),
 			columnHelper.accessor((row) => row.status, {
-				id: "statusId",
+				id: "empStatusId",
 				cell: (info) => (
 					<div className={styles.name}>
 						{info.getValue()
@@ -484,26 +503,6 @@ const EmployeeHomePage = () => {
 					</>
 				),
 				header: () => milCardExpDate,
-				enableColumnFilter: false,
-			}),
-
-			columnHelper.accessor((row) => row.id, {
-				id: "id",
-				cell: (info) => (
-					<div className={styles.action}>
-						<div className={styles.btnDiv}>
-							<RedirectButton
-								label={edit}
-								redirectTo={`${RoutePath.EMPLOYEE_EDIT.replace(
-									RoutePath.ID,
-									info.getValue().toString()
-								)}`}
-								// style={{ height: "20px", fontSize: "12px" }}
-							/>
-						</div>
-					</div>
-				),
-				header: () => actions,
 				enableColumnFilter: false,
 			}),
 		],
@@ -682,10 +681,9 @@ const EmployeeHomePage = () => {
 
 	return (
 		<PageContainer
-			lockFor={[ROLE.USER]}
 			displayContent={privileges?.readPrivilege!}
-			title="Employees"
-			showAddButton
+			title={t("employee.names", { framework: "React" })}
+			showAddButton={privileges?.insertPrivilege!}
 			displayExportButton={role?.name! === ROLE.SUPERADMIN}
 			btnAddUrlLink={RoutePath.EMPLOYEE_NEW}
 			exportDisplayNames={propertyDisplayNames}
@@ -713,7 +711,7 @@ const EmployeeHomePage = () => {
 						data={items}
 						columns={columns}
 						dropdowns={dropdowns}
-						noRecordText={""}
+						noRecordText={t("table.noResult", { framework: "React" })}
 						onSearch={searchClickHandler}
 						onTableSort={tableSortHandler}
 						onPageChange={pageChangeHandler}

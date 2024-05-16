@@ -2,9 +2,11 @@
 	margin-bottom: 15px;
 
 	.scrollable {
-		// overflow: auto; /* Enable scrolling */
+		overflow: auto; /* Enable scrolling */
 		-webkit-overflow-scrolling: touch; /* Enable smooth scrolling on iOS devices */
 		max-height: 800px; /* Set maximum height to enable scrolling */
+		height: fit-content;
+		height: 500px;
 		/* Add additional styling as needed */
 	}
 

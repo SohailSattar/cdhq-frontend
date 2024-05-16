@@ -154,7 +154,8 @@
 		"cancel": "الغاء",
 		"assignToUser": "التعيين للمستخدم",
 		"selectChild": " مع الأقسام و الأفرع",
-		"export": "تحميل"
+		"export": "تحميل",
+		"history": "History"
 	},
 	"home": {
 		"welcome": "مرحبا بك"
