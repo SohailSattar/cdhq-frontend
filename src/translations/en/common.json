@@ -557,5 +557,13 @@
 		"shortSummary": "Short Summary",
 		"fullNews": "News",
 		"type": "News Type"
+	},
+	"history": {
+		"name": "Name",
+		"changedByEmpNo": "Changed By",
+		"fieldName": "Field Name",
+		"oldValue": "Old Value",
+		"newValue": "New Value",
+		"auditDate": "Audit Date"
 	}
 }

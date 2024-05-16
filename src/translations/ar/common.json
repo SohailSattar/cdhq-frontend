@@ -557,5 +557,13 @@
 		"shortSummary": "مقدمة",
 		"fullNews": "الخبر",
 		"type": "نوع الخبر"
+	},
+	"history": {
+		"name": "Name",
+		"changedByEmpNo": "Changed By",
+		"fieldName": "Field Name",
+		"oldValue": "Old Value",
+		"newValue": "New Value",
+		"auditDate": "Audit Date"
 	}
 }
