@@ -155,7 +155,7 @@
 		"assignToUser": "التعيين للمستخدم",
 		"selectChild": " مع الأقسام و الأفرع",
 		"export": "تحميل",
-		"history": "History"
+		"history": "سجل التحديثات"
 	},
 	"home": {
 		"welcome": "مرحبا بك"
@@ -444,7 +444,7 @@
 	"status": {
 		"active": "فعال",
 		"deactive": "غير فعال",
-		"expiringexpired": "Employees with Expiring/Expired Cards",
+		"expiringexpired": "بطاقات الموظفين (منتهي الصلاحية / على وشك الانتهاء)",
 		"on": "مع",
 		"off": "بدون"
 	},
@@ -559,11 +559,11 @@
 		"type": "نوع الخبر"
 	},
 	"history": {
-		"name": "Name",
-		"changedByEmpNo": "Changed By",
-		"fieldName": "Field Name",
-		"oldValue": "Old Value",
-		"newValue": "New Value",
-		"auditDate": "Audit Date"
+		"name": "اسم المحدث",
+		"changedByEmpNo": "الرقم العسكري للمحدث",
+		"fieldName": "اسم الحقل",
+		"oldValue": "القيمة السابقة",
+		"newValue": "القيمة الجديدة",
+		"auditDate": "تاريخ التحديث"
 	}
 }
