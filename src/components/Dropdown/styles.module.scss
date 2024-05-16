@@ -1,6 +1,7 @@
 .dropdown {
 	position: relative; /* Ensure the dropdown position */
-	z-index: 9999; /* Ensure the dropdown appears above other elements */
+	z-index: 9999 !important; /* Ensure the dropdown appears above other elements */
+	color: purple !important;
 	/* Add any other styles as needed */
 }
 

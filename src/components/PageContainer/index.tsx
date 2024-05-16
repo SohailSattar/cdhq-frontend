@@ -54,7 +54,9 @@ interface Props {
 	exportDisplayNames?: any;
 	onExcelExport?: (data: APIExportData) => void;
 	onPdfExport?: (data: APIExportData) => void;
-
+	////////////////////////////////
+	showHistoryButton?: boolean;
+	onHistoryClick?: () => void;
 	///////////////////////////////
 	className?: string;
 	children: any;
@@ -84,6 +86,9 @@ const PageContainer: FC<Props> = ({
 	exportDisplayNames,
 	onExcelExport = emptyFunction,
 	onPdfExport = emptyFunction,
+	////////////////
+	showHistoryButton = false,
+	onHistoryClick = emptyFunction,
 	className,
 	children,
 	////////////////
@@ -175,6 +180,15 @@ const PageContainer: FC<Props> = ({
 									</div>
 								</motion.div>
 							)}
+
+							{showHistoryButton && (
+								<motion.div
+									className={language !== "ar" ? styles.btn : styles.btnLTR}>
+									<Button onClick={onHistoryClick}>
+										{t("button.history", { framework: "React" })}
+									</Button>
+								</motion.div>
+							)}
 							{(showEditButton || showAddButton || showChangeStatusButton) && (
 								<motion.div
 									className={styles.action}
@@ -232,7 +246,6 @@ const PageContainer: FC<Props> = ({
 									</div>
 								</motion.div>
 							)}
-
 							{displayExportButton && (
 								<div>
 									<Button

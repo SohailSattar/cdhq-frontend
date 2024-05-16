@@ -2,8 +2,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
 	DeleteConfirmation,
 	EmployeeForm,
+	EmployeeHistoryTable,
 	IEmployeeFormInputs,
 	MetaDataDetails,
+	Modal,
 	PageContainer,
 } from "../../../components";
 import * as RoutePath from "../../../RouteConfig";
@@ -41,6 +43,7 @@ const EmployeeEditPage = () => {
 	const [privileges, setPrivileges] = useState<APIPrivileges>();
 
 	const [status, setStatus] = useState<APIActiveStatus>();
+	const [showHistoryModal, setShowHistoryModal] = useState(false);
 	const [showModal, setShowModal] = useState(false);
 
 	const fetch = useMemo(
@@ -65,7 +68,7 @@ const EmployeeEditPage = () => {
 					deletePrivilege,
 				});
 
-				if (updatePrivilege! !== false) {
+				if (readPrivilege! !== false) {
 					const { data } = await getEmployeeDetails(id!);
 
 					if (data) {
@@ -208,19 +211,24 @@ const EmployeeEditPage = () => {
 		setShowModal(false);
 	};
 
+	const historyModalCloseHandler = () => {
+		setShowHistoryModal(false);
+	};
+
 	return (
 		<PageContainer
-			lockFor={[ROLE.USER]}
 			title="Edit Employee"
 			showBackButton
-			displayContent={privileges?.updatePrivilege}
+			displayContent={privileges?.readPrivilege}
 			btnBackUrlLink={RoutePath.EMPLOYEE}
 			showChangeStatusButton={
 				privileges?.privilegeId !== 999 && privileges?.updatePrivilege
 			}
 			currentStatus={status?.id === 1 ? "ACTIVE" : "DEACTIVE"}
 			onDectivate={deleteButtonClickHandler}
-			loading={isLoading}>
+			loading={isLoading}
+			showHistoryButton={true}
+			onHistoryClick={() => setShowHistoryModal(true)}>
 			<EmployeeForm
 				data={employee}
 				actionButtonText={t("button.update", {
@@ -228,6 +236,7 @@ const EmployeeEditPage = () => {
 				}).toString()}
 				onSubmit={editEmployeeHandler}
 				onImageUpload={imageUploadHandler}
+				canUpdate={privileges?.updatePrivilege!}
 			/>
 			<MetaDataDetails
 				createdBy={employee?.createdBy!}
@@ -235,6 +244,11 @@ const EmployeeEditPage = () => {
 				updatedBy={employee?.updatedBy}
 				updatedOn={employee?.updatedOn}
 			/>
+			<Modal
+				isOpen={showHistoryModal}
+				onClose={historyModalCloseHandler}>
+				<EmployeeHistoryTable />
+			</Modal>
 			<DeleteConfirmation
 				isOpen={showModal}
 				onYesClick={deleteConfirmationClickHandler}

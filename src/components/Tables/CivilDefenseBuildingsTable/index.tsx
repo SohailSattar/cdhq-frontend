@@ -247,7 +247,7 @@ const CivilDefenseBuildingsTable = () => {
 				pageSize={pageSize}
 				data={items}
 				columns={columns}
-				noRecordText={""}
+				noRecordText={t("table.noResult", { framework: "React" })}
 				onSearch={searchClickHandler}
 				onTableSort={tableSortHandler}
 				onPageChange={pageChangeHandler}

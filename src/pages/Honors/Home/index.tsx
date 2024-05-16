@@ -7,12 +7,7 @@ import {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import {
-	Column,
-	ColumnFiltersState,
-	createColumnHelper,
-} from "@tanstack/react-table";
-import { getHonors } from "../../../api/honors/get/getHonors";
+import { ColumnFiltersState, createColumnHelper } from "@tanstack/react-table";
 import { APIExportHonor, APIHonor } from "../../../api/honors/types";
 import { APIPrivileges } from "../../../api/privileges/type";
 import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPrivilege";

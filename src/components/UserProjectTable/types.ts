@@ -1,7 +1,7 @@
 import { APIActiveStatus } from "../../api/activeStatus/types";
 import { Id } from "../../utils";
 
-export interface APIProjectTable {
+export type APIProjectTable = {
 	id: number;
 	projectId?: Id;
 	projectName: string;
@@ -12,9 +12,9 @@ export interface APIProjectTable {
 	deletePrivilege: boolean;
 	updatePrivilege: boolean;
 	readPrivilege: boolean;
-	activeStatus: Id;
+	activeStatus: APIActiveStatus;
 	details: ProjectDetailTable; // ProjectDetailTable[];
-}
+};
 
 export interface ProjectDetailTable {
 	canGrant: boolean;
