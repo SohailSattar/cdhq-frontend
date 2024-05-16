@@ -45,7 +45,7 @@ const EmployeeHistoryTable: FC<Props> = ({ id }) => {
 		};
 
 		fetch();
-	}, [currentPage, orderBy, pageSize, toggleSort]);
+	}, [currentPage, id, orderBy, pageSize, toggleSort]);
 
 	const name = t("history.name", { framework: "React" });
 	const updatedBy = t("history.changedByEmpNo", { framework: "React" });
