@@ -237,6 +237,7 @@ const EmployeeEditPage = () => {
 				onSubmit={editEmployeeHandler}
 				onImageUpload={imageUploadHandler}
 				canUpdate={privileges?.updatePrivilege!}
+				mode="UPDATE"
 			/>
 			<MetaDataDetails
 				createdBy={employee?.createdBy!}
@@ -247,7 +248,7 @@ const EmployeeEditPage = () => {
 			<Modal
 				isOpen={showHistoryModal}
 				onClose={historyModalCloseHandler}>
-				<EmployeeHistoryTable />
+				<EmployeeHistoryTable id={+id!} />
 			</Modal>
 			<DeleteConfirmation
 				isOpen={showModal}

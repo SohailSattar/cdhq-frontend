@@ -50,6 +50,8 @@ const ProjectManagementPage = () => {
 	const [orderBy, setOrderBy] = useState<string>("Id");
 	const [toggleSort, setToggleSort] = useState(false);
 
+	const [loadingData, setIsLoadingData] = useState<boolean>(false);
+
 	// This variable is to set the status code which we can pass to the API
 	const [selectedStatusCode, setSelectedStatusCode] = useState<Id>();
 
@@ -221,6 +223,7 @@ const ProjectManagementPage = () => {
 
 	const fetchProjects = useMemo(
 		() => async () => {
+			setIsLoadingData(true);
 			const { data, error } = await getFilteredProjects(
 				columnFilters,
 				currentPage,
@@ -241,25 +244,7 @@ const ProjectManagementPage = () => {
 				setTotalCount(data?.totalItems);
 				setPageSize(data?.pageSize);
 			}
-
-			// const { data, error } = await getProjects(
-			// 	currentPage,
-			// 	pageSize,
-			// 	keyword,
-			// 	selectedStatusCode,
-			// 	orderBy
-			// );
-			// if (error) {
-			// 	if (error?.response!.status! === 403) {
-			// 		setCanView(false);
-			// 	}
-			// }
-
-			// if (data) {
-			// 	setProjects(data?.projects);
-			// 	setTotalCount(data?.totalItems);
-			// 	setPageSize(data?.pageSize);
-			// }
+			setIsLoadingData(false);
 		},
 		[
 			columnFilters,
@@ -348,6 +333,7 @@ const ProjectManagementPage = () => {
 				onActiveStatusOptionSelectionChange={statusSelectHandler}
 				onWorkflowStatusOptionSelectionChange={() => {}}
 				onColumnFiltersChange={handleColumnFiltersChange}
+				isLoading={loadingData}
 			/>
 		</PageContainer>
 	);

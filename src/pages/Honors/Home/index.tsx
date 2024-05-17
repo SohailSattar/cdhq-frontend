@@ -70,8 +70,11 @@ const HonorsHomePage = () => {
 
 	const [isExportLoading, setIsExportLoading] = useState<boolean>(false);
 
+	const [loadingData, setIsLoadingData] = useState<boolean>(false);
+
 	const fetchData = useMemo(
 		() => async () => {
+			setIsLoadingData(true);
 			const { data: privilege } = await getProjectPrivilege(Project.Honors);
 
 			if (privilege) {
@@ -104,26 +107,10 @@ const HonorsHomePage = () => {
 					setHonors(data.honors);
 					setTotalCount(data.totalItems);
 				} else {
-					// navigate(RoutePath.ROOT);
 				}
-				// } else {
-				// 	const { data } = await getHonors(
-				// 		currentPage,
-				// 		pageSize,
-				// 		keyword,
-				// 		selectedStatusCode,
-				// 		orderBy,
-				// 		toggleSort
-				// 	);
-
-				// 	if (data) {
-				// 		setHonors(data.honors);
-				// 		setTotalCount(data.totalItems);
-				// 	} else {
-				// 		// navigate(RoutePath.ROOT);
-				// 	}
-				// }
 			}
+
+			setIsLoadingData(false);
 		},
 		[
 			columnFilters,
@@ -596,6 +583,7 @@ const HonorsHomePage = () => {
 						: ["actions"]
 				}
 				onColumnFiltersChange={handleColumnFiltersChange}
+				isLoading={loadingData}
 			/>
 		</PageContainer>
 	);

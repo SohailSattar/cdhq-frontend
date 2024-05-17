@@ -54,8 +54,11 @@ const CivilDefenseBuildingsTable = () => {
 		{ id: "activeStatusId", value: "1" },
 	]);
 
+	const [loadingData, setIsLoadingData] = useState<boolean>(false);
+
 	useEffect(() => {
 		const fetch = async () => {
+			setIsLoadingData(true);
 			const { data } = await getFilteredCdBuildings(columnFilters, {
 				page: currentPage,
 				postsPerPage: pageSize,
@@ -69,6 +72,7 @@ const CivilDefenseBuildingsTable = () => {
 				setTotalCount(data.totalItems);
 				setPageSize(data?.pageSize);
 			}
+			setIsLoadingData(false);
 		};
 
 		fetch();
@@ -255,6 +259,7 @@ const CivilDefenseBuildingsTable = () => {
 				hideWorkflowStatusDropdown={true}
 				onActiveStatusOptionSelectionChange={activeStatusChangeHandler}
 				onColumnFiltersChange={handleColumnFiltersChange}
+				isLoading={loadingData}
 			/>
 		</>
 	);

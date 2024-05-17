@@ -52,6 +52,7 @@ import { getEmployeeStatuses } from "../../../api/employees/get/getEmployeeStatu
 import { getClasses } from "../../../api/classes/get/getClasses";
 import { getFilteredEmployees } from "../../../api/employees/get/getFilteredEmployees";
 import { getCategorizedDepartments } from "../../../api/departments/get/getCategorizedDepartments";
+import { getMainDepartments } from "../../../api/departments/get/getMainDepartments";
 
 const EmployeeHomePage = () => {
 	const [t] = useTranslation("common");
@@ -90,6 +91,7 @@ const EmployeeHomePage = () => {
 	const [classOptions, setClassOptions] = useState<DropdownOption[]>([]);
 
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+	const [loadingData, setIsLoadingData] = useState<boolean>(false);
 
 	useEffect(() => {
 		const fetch = async () => {
@@ -135,6 +137,7 @@ const EmployeeHomePage = () => {
 
 	const fetch = useMemo(
 		() => async () => {
+			setIsLoadingData(true);
 			const { data } = await getFilteredEmployees(columnFilters, {
 				page,
 				postsPerPage: pageSize,
@@ -149,6 +152,7 @@ const EmployeeHomePage = () => {
 				setTotalCount(data.totalItems);
 				setPageSize(data?.pageSize);
 			}
+			setIsLoadingData(false);
 		},
 		[columnFilters, keyword, orderBy, page, pageSize, statusCode, toggleSort]
 	);
@@ -221,7 +225,7 @@ const EmployeeHomePage = () => {
 	}, [fetchEmpStatus]);
 
 	const fetchDepartment = useCallback(async () => {
-		const { data } = await getDepartmentsByProject(Project.Employees);
+		const { data } = await getMainDepartments("M1", Project.Employees);
 		if (data) {
 			setDepartmentOptions(
 				data?.map((x) => {
@@ -507,7 +511,6 @@ const EmployeeHomePage = () => {
 			}),
 		],
 		[
-			actions,
 			classOptions,
 			columnHelper,
 			department,
@@ -684,7 +687,7 @@ const EmployeeHomePage = () => {
 			displayContent={privileges?.readPrivilege!}
 			title={t("employee.names", { framework: "React" })}
 			showAddButton={privileges?.insertPrivilege!}
-			displayExportButton={role?.name! === ROLE.SUPERADMIN}
+			displayExportButton={privileges?.canExportExcel}
 			btnAddUrlLink={RoutePath.EMPLOYEE_NEW}
 			exportDisplayNames={propertyDisplayNames}
 			onExcelExport={exportDataHandler}
@@ -718,6 +721,7 @@ const EmployeeHomePage = () => {
 						onPageViewSelectionChange={pageViewSelectionHandler}
 						hideActiveStatusDropdown
 						onColumnFiltersChange={handleColumnFiltersChange}
+						isLoading={loadingData}
 						// classNameTable={styles.empTable}
 					/>
 				</ShadowedContainer>

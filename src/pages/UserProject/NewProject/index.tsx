@@ -51,11 +51,14 @@ const AssignProjectToUserPage = () => {
 			if (data) {
 				const { employeeNo, rank, name, nameEnglish } = data;
 
+				const rankNameArabic = rank?.name || "";
+				const rankNameEnglish = rank?.nameEnglish || "N/A";
+
 				if (language !== "ar") {
-					const formattedText = `${employeeNo} ${rank.name}/${name}`;
+					const formattedText = `${employeeNo} ${rankNameArabic}/${name}`;
 					setTitle(formattedText);
 				} else {
-					const formattedText = `${employeeNo} ${rank.nameEnglish}\\${nameEnglish}`;
+					const formattedText = `${employeeNo} ${rankNameEnglish}\\${nameEnglish}`;
 					setTitle(formattedText);
 				}
 			}

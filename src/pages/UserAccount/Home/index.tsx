@@ -83,6 +83,7 @@ const UserAccountPage = () => {
 	const [departmentIds, setDepartmentIds] = useState<string[]>([]);
 
 	const [isExportLoading, setIsExportLoading] = useState<boolean>(false);
+	const [loadingData, setIsLoadingData] = useState<boolean>(false);
 
 	useEffect(() => {
 		const fetch = async () => {
@@ -326,6 +327,7 @@ const UserAccountPage = () => {
 	// New maybe
 	const fetch = useMemo(
 		() => async () => {
+			setIsLoadingData(true);
 			const { data, error } = await getFilteredUsers(
 				columnFilters,
 				currentPage,
@@ -348,6 +350,7 @@ const UserAccountPage = () => {
 				setUsers(data.users);
 				setTotalCount(data.totalItems);
 			}
+			setIsLoadingData(false);
 		},
 		[
 			columnFilters,
@@ -365,6 +368,7 @@ const UserAccountPage = () => {
 
 	const fetchByDepartment = useMemo(
 		() => async () => {
+			setIsLoadingData(true);
 			const { data } = await getUsersByDepartments(
 				currentPage,
 				pageSize,
@@ -380,6 +384,7 @@ const UserAccountPage = () => {
 				setUsers(data?.users);
 				setTotalCount(data?.totalItems);
 			}
+			setIsLoadingData(false);
 		},
 		[
 			currentPage,
@@ -573,6 +578,7 @@ const UserAccountPage = () => {
 						showRoleOption
 						onRoleOptonSelectionHandler={roleSelectHandler}
 						onColumnFiltersChange={handleColumnFiltersChange}
+						isLoading={loadingData}
 					/>
 				</ShadowedContainer>
 			</div>

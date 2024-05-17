@@ -44,6 +44,8 @@ const DepartmentHomePage = () => {
 	// This variable is to set the status code which we can pass to the API
 	const [selectedStatusCode, setSelectedStatusCode] = useState<Id>();
 
+	const [loadingData, setIsLoadingData] = useState<boolean>(false);
+
 	const id = t("department.id", { framework: "React" });
 	const departmentName = t("department.name", { framework: "React" });
 	const level = t("department.level", { framework: "React" });
@@ -186,6 +188,7 @@ const DepartmentHomePage = () => {
 
 	const fetchDepartments = useMemo(
 		() => async () => {
+			setIsLoadingData(true);
 			const { data, error } = await getFilteredDepartments(columnFilters, {
 				page: currentPage,
 				postsPerPage: pageSize,
@@ -205,6 +208,7 @@ const DepartmentHomePage = () => {
 				setTotalCount(data?.totalItems);
 				setPageSize(data?.pageSize);
 			}
+			setIsLoadingData(false);
 		},
 		[
 			columnFilters,
@@ -290,6 +294,7 @@ const DepartmentHomePage = () => {
 						onPageViewSelectionChange={pageViewSelectionHandler}
 						onActiveStatusOptionSelectionChange={statusSelectHandler}
 						onColumnFiltersChange={handleColumnFiltersChange}
+						isLoading={loadingData}
 					/>
 				</ShadowedContainer>
 			</div>

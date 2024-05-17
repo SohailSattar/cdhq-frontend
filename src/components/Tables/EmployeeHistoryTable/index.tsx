@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useStore } from "../../../utils/store";
 import { APIEmployeeHistory } from "../../../api/employees/types";
-import { useEffect, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { getPagedEmployeeHistory } from "../../../api/employees/get/getPagedEmployeeHistory";
 import { EmployeeHistoryColumns } from "../../PaginatedTable/types";
 import { createColumnHelper } from "@tanstack/react-table";
@@ -9,8 +9,13 @@ import { format } from "date-fns";
 import { enGB, ar } from "date-fns/locale";
 import { PaginatedTable } from "../..";
 import { DropdownOption } from "../../Dropdown";
+import { Id } from "../../../utils";
 
-const EmployeeHistoryTable = () => {
+interface Props {
+	id: number;
+}
+
+const EmployeeHistoryTable: FC<Props> = ({ id }) => {
 	const [t] = useTranslation("common");
 	const language = useStore((state) => state.language);
 
@@ -21,12 +26,15 @@ const EmployeeHistoryTable = () => {
 	const [pageSize, setPageSize] = useState<number>(50);
 
 	//Parameters
-	const [orderBy, setOrderBy] = useState<string>("Id");
+	const [orderBy, setOrderBy] = useState<string>("recId");
 	const [toggleSort, setToggleSort] = useState(true);
+
+	const [loadingData, setIsLoadingData] = useState<boolean>(false);
 
 	useEffect(() => {
 		const fetch = async () => {
-			const { data } = await getPagedEmployeeHistory(310009138, {
+			setIsLoadingData(true);
+			const { data } = await getPagedEmployeeHistory(id, {
 				page: currentPage,
 				postsPerPage: pageSize,
 				orderBy,
@@ -37,10 +45,11 @@ const EmployeeHistoryTable = () => {
 				setTotalCount(data.totalItems);
 				setPageSize(data?.pageSize);
 			}
+			setIsLoadingData(false);
 		};
 
 		fetch();
-	}, [currentPage, orderBy, pageSize, toggleSort]);
+	}, [currentPage, id, orderBy, pageSize, toggleSort]);
 
 	const name = t("history.name", { framework: "React" });
 	const updatedBy = t("history.changedByEmpNo", { framework: "React" });
@@ -77,14 +86,20 @@ const EmployeeHistoryTable = () => {
 				header: newValue,
 				enableColumnFilter: false,
 			}),
+			// columnHelper.accessor((row) => row.auditDate, {
+			// 	id: "auditDate",
+			// 	header: auditDate,
+			// }),
 			columnHelper.accessor((row) => row.auditDate, {
 				id: "auditDate",
-				header: auditDate,
-				cell: (info) => {
-					format(new Date(info.getValue()!), "dd MMMM yyyy", {
-						locale: language !== "ar" ? ar : enGB,
-					});
-				},
+				cell: (info) => (
+					<>
+						{format(new Date(info.getValue()!), "dd MMMM yyyy", {
+							locale: language !== "ar" ? ar : enGB,
+						})}
+					</>
+				),
+				header: () => auditDate,
 				enableColumnFilter: false,
 			}),
 		],
@@ -135,6 +150,7 @@ const EmployeeHistoryTable = () => {
 				hideActiveStatusDropdown
 				showSearchBar={false}
 				hideWorkflowStatusDropdown={true}
+				isLoading={loadingData}
 			/>
 		</>
 	);

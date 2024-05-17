@@ -71,6 +71,8 @@ const ImagesTable = () => {
 		{ id: "activeStatusId", value: "1" },
 	]);
 
+	const [loadingData, setIsLoadingData] = useState<boolean>(false);
+
 	// check if authorized to access
 	useEffect(() => {
 		const fetch = async () => {
@@ -116,6 +118,7 @@ const ImagesTable = () => {
 
 	const fetch = useMemo(
 		() => async () => {
+			setIsLoadingData(true);
 			const { data, error } = await getFilteredImages(columnFilters, {
 				page: currentPage,
 				postsPerPage: pageSize,
@@ -133,6 +136,7 @@ const ImagesTable = () => {
 				setImages(data.images);
 				setTotalCount(data.totalItems);
 			}
+			setIsLoadingData(false);
 		},
 		[columnFilters, currentPage, pageSize, keyword, orderBy]
 	);
@@ -143,7 +147,7 @@ const ImagesTable = () => {
 				id: upId,
 				activeStatusId: 1,
 			};
-
+			setIsLoadingData(true);
 			const { data, error } = await updateImageStatus(params);
 
 			if (data) {
@@ -159,6 +163,7 @@ const ImagesTable = () => {
 
 			if (data) {
 			}
+			setIsLoadingData(false);
 		},
 		[fetch, t]
 	);
@@ -173,7 +178,7 @@ const ImagesTable = () => {
 	const deleteClickHandler = useMemo(
 		() => async (id: Id) => {
 			const { data, error } = await deleteImage(id);
-
+			setIsLoadingData(true);
 			if (error) {
 				toast.error(error.ErrorMessage);
 			}
@@ -184,6 +189,7 @@ const ImagesTable = () => {
 				);
 				fetch();
 			}
+			setIsLoadingData(false);
 		},
 		[fetch, t]
 	);
@@ -391,6 +397,7 @@ const ImagesTable = () => {
 				noRecordText={t("table.noNews", { framework: "React" })}
 				hideActiveStatusDropdown
 				onColumnFiltersChange={handleColumnFiltersChange}
+				isLoading={loadingData}
 			/>
 		</>
 	);

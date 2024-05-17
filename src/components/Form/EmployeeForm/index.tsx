@@ -49,6 +49,7 @@ import { ErrorMessage } from "@hookform/error-message";
 import { getDepartmentsByProject } from "../../../api/departments/get/getDepartmentsByProject";
 import { Project } from "../../../data/projects";
 import clsx from "clsx";
+import { getMainDepartments } from "../../../api/departments/get/getMainDepartments";
 
 // Define an interface for dropdown options
 interface DropdownOptions {
@@ -85,6 +86,7 @@ interface Props {
 	onImageUpload?: (image: File) => void;
 	serverErrors?: string[];
 	canUpdate?: boolean;
+	mode: "INSERT" | "UPDATE";
 }
 
 const EmployeeForm: FC<Props> = ({
@@ -94,6 +96,7 @@ const EmployeeForm: FC<Props> = ({
 	onImageUpload = () => {},
 	serverErrors = [],
 	canUpdate = false,
+	mode,
 }) => {
 	const [t] = useTranslation("common");
 	const language = useStore((state: { language: any }) => state.language);
@@ -213,7 +216,7 @@ const EmployeeForm: FC<Props> = ({
 						}`,
 					}))
 				) as Promise<DropdownOption[]>,
-				getDepartmentsByProject(Project.Employees).then((response) =>
+				getMainDepartments("M1", Project.Employees, mode).then((response) =>
 					response?.data?.map((item) => ({
 						value: item.id,
 						label: `${item.id} - ${
@@ -221,7 +224,7 @@ const EmployeeForm: FC<Props> = ({
 						}`,
 					}))
 				) as Promise<DropdownOption[]>,
-				getCategorizedDepartments().then((response) =>
+				getCategorizedDepartments(Project.Employees, mode).then((response) =>
 					response?.data?.map((item) => ({
 						value: item.id,
 						label: `${item.id} - ${
@@ -939,7 +942,7 @@ const EmployeeForm: FC<Props> = ({
 			);
 			setValue("religion", selectedReligion!);
 
-			setValue("birthDate", birthDate! || "");
+			setValue("birthDate", birthDate || "");
 			setValue("birthPlace", birthPlace! || "");
 
 			const selectedSpecialNeed = dropdownOptions.specialNeeds.find(
@@ -1958,7 +1961,7 @@ const EmployeeForm: FC<Props> = ({
 							<Controller
 								render={({ field: { onChange, value } }) => (
 									<DatePicker
-										date={value || new Date()}
+										date={value}
 										onChange={onChange}
 										labeltext={t("employee.dob", {
 											framework: "React",

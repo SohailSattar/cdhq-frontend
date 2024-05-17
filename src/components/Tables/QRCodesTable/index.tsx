@@ -60,8 +60,11 @@ const QRCodesTable: FC<Props> = ({ canEdit = false, canDelete = false }) => {
 		{ id: "activeStatusId", value: "1" },
 	]);
 
+	const [loadingData, setIsLoadingData] = useState<boolean>(false);
+
 	const fetchData = useMemo(
 		() => async () => {
+			setIsLoadingData(true);
 			const { data } = await getFilteredQRCodes(columnFilters, {
 				page: currentPage,
 				postsPerPage: pageSize,
@@ -76,6 +79,7 @@ const QRCodesTable: FC<Props> = ({ canEdit = false, canDelete = false }) => {
 				setTotalCount(data.totalItems);
 				setPageSize(data?.pageSize);
 			}
+			setIsLoadingData(false);
 		},
 		[
 			columnFilters,
@@ -111,6 +115,8 @@ const QRCodesTable: FC<Props> = ({ canEdit = false, canDelete = false }) => {
 				activeStatusId: 1,
 			};
 
+			setIsLoadingData(true);
+
 			const { data, error } = await updateQRCodeStatus(params);
 
 			if (data) {
@@ -126,6 +132,7 @@ const QRCodesTable: FC<Props> = ({ canEdit = false, canDelete = false }) => {
 
 			if (data) {
 			}
+			setIsLoadingData(false);
 		},
 		[fetchData, t]
 	);
@@ -136,7 +143,7 @@ const QRCodesTable: FC<Props> = ({ canEdit = false, canDelete = false }) => {
 				id: upId,
 				activeStatusId: 9,
 			};
-
+			setIsLoadingData(true);
 			const { data, error } = await updateQRCodeStatus(params);
 
 			if (data) {
@@ -152,6 +159,7 @@ const QRCodesTable: FC<Props> = ({ canEdit = false, canDelete = false }) => {
 
 			if (data) {
 			}
+			setIsLoadingData(false);
 		},
 		[fetchData, t]
 	);
@@ -335,6 +343,7 @@ const QRCodesTable: FC<Props> = ({ canEdit = false, canDelete = false }) => {
 				onPageChange={pageChangeHandler}
 				onPageViewSelectionChange={pageViewSelectionHandler}
 				onColumnFiltersChange={handleColumnFiltersChange}
+				isLoading={loadingData}
 			/>
 		</>
 	);
