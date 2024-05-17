@@ -60,6 +60,8 @@ const MenuTable = () => {
 		{ id: "activeStatusId", value: "1" },
 	]);
 
+	const [loadingData, setIsLoadingData] = useState<boolean>(false);
+
 	// check if authorized to access
 	useEffect(() => {
 		const fetch = async () => {
@@ -140,6 +142,7 @@ const MenuTable = () => {
 	}, [fetchLinkTypes]);
 
 	const fetch = useCallback(async () => {
+		setIsLoadingData(true);
 		const { data } = await getFilteredMenuList(columnFilters, {
 			page: currentPage,
 			postsPerPage: pageSize,
@@ -154,6 +157,7 @@ const MenuTable = () => {
 			setTotalCount(data.totalItems);
 			setPageSize(data?.pageSize);
 		}
+		setIsLoadingData(false);
 	}, [
 		columnFilters,
 		currentPage,
@@ -174,7 +178,7 @@ const MenuTable = () => {
 				id: upId,
 				activeStatusId: 1,
 			};
-
+			setIsLoadingData(true);
 			const { data, error } = await updateMenuItemStatus(params);
 
 			if (data) {
@@ -190,6 +194,7 @@ const MenuTable = () => {
 
 			if (data) {
 			}
+			setIsLoadingData(false);
 		},
 		[fetch, t]
 	);
@@ -207,6 +212,7 @@ const MenuTable = () => {
 				id: upId,
 				activeStatusId: 9,
 			};
+			setIsLoadingData(true);
 
 			const { data, error } = await updateMenuItemStatus(params);
 
@@ -223,6 +229,7 @@ const MenuTable = () => {
 
 			if (data) {
 			}
+			setIsLoadingData(false);
 		},
 		[fetch, t]
 	);
@@ -493,6 +500,7 @@ const MenuTable = () => {
 				hideActiveStatusDropdown
 				hideWorkflowStatusDropdown={true}
 				onColumnFiltersChange={handleColumnFiltersChange}
+				isLoading={loadingData}
 				// hideActiveStatusDropdown
 			/>
 		</div>

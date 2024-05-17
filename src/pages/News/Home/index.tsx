@@ -70,8 +70,11 @@ const NewsHomePage = () => {
 		{ id: "activeStatusId", value: "1" },
 	]);
 
+	const [loadingData, setIsLoadingData] = useState<boolean>(false);
+
 	const fetchData = useMemo(
 		() => async (currentPage: number, keyword?: string) => {
+			setIsLoadingData(true);
 			const { data: privilege } = await getProjectPrivilege(Project.News);
 
 			if (privilege) {
@@ -123,6 +126,8 @@ const NewsHomePage = () => {
 					}
 				}
 			}
+
+			setIsLoadingData(false);
 		},
 		[columnFilters, orderBy, pageSize, selectedStatusCode, toggleSort]
 	);
@@ -393,6 +398,7 @@ const NewsHomePage = () => {
 				hideWorkflowStatusDropdown
 				classNameTable={styles.table}
 				onColumnFiltersChange={handleColumnFiltersChange}
+				isLoading={loadingData}
 			/>
 		</PageContainer>
 	);

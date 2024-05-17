@@ -176,7 +176,7 @@ export interface APIEmployeeHistory {
 	fieldName?: string;
 	oldValue?: string;
 	newValue?: string;
-	auditDate?: string;
+	auditDate: string;
 }
 
 export interface APIEmployeeSignature {

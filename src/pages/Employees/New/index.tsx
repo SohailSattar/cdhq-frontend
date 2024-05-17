@@ -10,7 +10,7 @@ import { addEmployee } from "../../../api/employees/add/addEmployee";
 import { toast } from "react-toastify";
 import { APINewEmployee } from "../../../api/employees/types";
 import { ROLE } from "../../../utils";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { APIPrivileges } from "../../../api/privileges/type";
 import { getProjectPrivilege } from "../../../api/userProjects/get/getProjectPrivilege";
 import { Project } from "../../../data/projects";
@@ -49,6 +49,10 @@ const EmployeeNewPage = () => {
 		},
 		[navigate]
 	);
+
+	useEffect(() => {
+		fetch();
+	}, [fetch]);
 
 	const addEmployeeHandler = async (values: IEmployeeFormInputs) => {
 		const {
@@ -122,9 +126,10 @@ const EmployeeNewPage = () => {
 		}
 	};
 
+	console.log(privileges?.insertPrivilege);
+
 	return (
 		<PageContainer
-			lockFor={[ROLE.USER]}
 			displayContent={privileges?.updatePrivilege}
 			title="New Employee"
 			showBackButton
@@ -132,6 +137,8 @@ const EmployeeNewPage = () => {
 			<EmployeeForm
 				actionButtonText={t("button.save", { framework: "React" })}
 				onSubmit={addEmployeeHandler}
+				canUpdate={privileges?.insertPrivilege!}
+				mode="INSERT"
 			/>
 		</PageContainer>
 	);

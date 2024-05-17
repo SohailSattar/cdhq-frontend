@@ -237,6 +237,7 @@ const EmployeeEditPage = () => {
 				onSubmit={editEmployeeHandler}
 				onImageUpload={imageUploadHandler}
 				canUpdate={privileges?.updatePrivilege!}
+				mode="UPDATE"
 			/>
 			<MetaDataDetails
 				createdBy={employee?.createdBy!}

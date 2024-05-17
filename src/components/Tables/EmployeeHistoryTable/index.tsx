@@ -26,11 +26,14 @@ const EmployeeHistoryTable: FC<Props> = ({ id }) => {
 	const [pageSize, setPageSize] = useState<number>(50);
 
 	//Parameters
-	const [orderBy, setOrderBy] = useState<string>("Id");
+	const [orderBy, setOrderBy] = useState<string>("recId");
 	const [toggleSort, setToggleSort] = useState(true);
+
+	const [loadingData, setIsLoadingData] = useState<boolean>(false);
 
 	useEffect(() => {
 		const fetch = async () => {
+			setIsLoadingData(true);
 			const { data } = await getPagedEmployeeHistory(id, {
 				page: currentPage,
 				postsPerPage: pageSize,
@@ -42,6 +45,7 @@ const EmployeeHistoryTable: FC<Props> = ({ id }) => {
 				setTotalCount(data.totalItems);
 				setPageSize(data?.pageSize);
 			}
+			setIsLoadingData(false);
 		};
 
 		fetch();
@@ -82,14 +86,20 @@ const EmployeeHistoryTable: FC<Props> = ({ id }) => {
 				header: newValue,
 				enableColumnFilter: false,
 			}),
+			// columnHelper.accessor((row) => row.auditDate, {
+			// 	id: "auditDate",
+			// 	header: auditDate,
+			// }),
 			columnHelper.accessor((row) => row.auditDate, {
 				id: "auditDate",
-				header: auditDate,
-				cell: (info) => {
-					format(new Date(info.getValue()!), "dd MMMM yyyy", {
-						locale: language !== "ar" ? ar : enGB,
-					});
-				},
+				cell: (info) => (
+					<>
+						{format(new Date(info.getValue()!), "dd MMMM yyyy", {
+							locale: language !== "ar" ? ar : enGB,
+						})}
+					</>
+				),
+				header: () => auditDate,
 				enableColumnFilter: false,
 			}),
 		],
@@ -140,6 +150,7 @@ const EmployeeHistoryTable: FC<Props> = ({ id }) => {
 				hideActiveStatusDropdown
 				showSearchBar={false}
 				hideWorkflowStatusDropdown={true}
+				isLoading={loadingData}
 			/>
 		</>
 	);

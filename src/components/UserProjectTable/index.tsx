@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { createColumnHelper } from "@tanstack/react-table";
 import { getUserProjects } from "../../api/userProjects/get/getUserProjects";
@@ -52,10 +52,13 @@ const UserProjectTable: FC<Props> = ({
 
 	const [orderBy, setOrderBy] = useState<string>("id");
 
+	const [loadingData, setIsLoadingData] = useState<boolean>(false);
+
 	// const pageSize = 50;
 
 	const fetchProjects = useMemo(
 		() => async (id: string) => {
+			setIsLoadingData(true);
 			const { data } = await getUserProjects(
 				id!,
 				currentPage,
@@ -94,61 +97,32 @@ const UserProjectTable: FC<Props> = ({
 					})
 				);
 			}
+			setIsLoadingData(false);
 		},
 		[currentPage, keyword, language, orderBy, pageSize, statusCode]
 	);
 
 	useEffect(() => {
-		// const fetchData = async (id: string) => {
-		// 	const { data } = await getUserProjects(id!, currentPage);
-
-		// 	if (data) {
-		// 		setTotalCount(data?.totalItems);
-		// 		setProjects(
-		// 			data?.projects.map((p) => {
-		// 				return {
-		// 					...p,
-		// 					id: p.id,
-		// 					projectId: p.project.id,
-		// 					privilege:
-		// 						language !== "ar"
-		// 							? p.privilege?.name!
-		// 							: p.privilege?.nameEnglish!,
-		// 					projectName:
-		// 						language !== "ar" ? p.project!.name : p.project!.nameEnglish,
-		// 					isChildProject: p.project.parentId !== p.project.id,
-		// 					department:
-		// 						language !== "ar"
-		// 							? p.department.name
-		// 							: p.department.nameEnglish,
-		// 					details: {
-		// 						departmentChild: p.departmentChild,
-		// 						canGrant: p.canGrant!,
-		// 						status: p.activeStatus,
-		// 					},
-		// 					activeStatus:
-		// 						language !== "ar"
-		// 							? p.activeStatus.nameArabic
-		// 							: p.activeStatus.nameEnglish,
-		// 				};
-		// 			})
-		// 		);
-		// 	}
-		// };
 		if (id) {
 			fetchProjects(id);
 		}
 	}, [currentPage, fetchProjects, id, keyword, language, pageSize]);
 
-	const editClickHandler = (id: string) => {
-		onEditButtonClick(id);
-	};
+	const editClickHandler = useCallback(
+		(id: string) => {
+			onEditButtonClick(id);
+		},
+		[onEditButtonClick]
+	);
 
-	const deleteClickHandler = (id: string) => {
-		setSelectedProjectId(id);
-		setIsModalOpen(true);
-		onDeleteButtonClick(id);
-	};
+	const deleteClickHandler = useCallback(
+		(id: string) => {
+			setSelectedProjectId(id);
+			setIsModalOpen(true);
+			onDeleteButtonClick(id);
+		},
+		[onDeleteButtonClick]
+	);
 
 	const projectId = t("project.id", { framework: "React" });
 	const projectName = t("project.name", { framework: "React" });
@@ -163,6 +137,34 @@ const UserProjectTable: FC<Props> = ({
 	const activate = t("button.activate", { framework: "React" });
 	const edit = t("button.edit", { framework: "React" });
 	const deleteBtn = t("button.deactivate", { framework: "React" });
+
+	const activateClickHandler = useCallback(
+		async (upId: string) => {
+			const params: APIProjectStatus = {
+				id: upId,
+				statusId: 1,
+			};
+			setIsLoadingData(true);
+
+			const { data, error } = await updateUserProjectStatus(params);
+
+			if (data) {
+				fetchProjects(id);
+				toast.success(
+					t("message.userProjectActivated", { framework: "React" }).toString()
+				);
+			}
+
+			if (error) {
+				toast.error(error.ErrorMessage);
+			}
+
+			if (data) {
+			}
+			setIsLoadingData(false);
+		},
+		[fetchProjects, id, t]
+	);
 
 	const columnHelper = createColumnHelper<APIProjectTable>();
 	const columns = useMemo(
@@ -299,10 +301,17 @@ const UserProjectTable: FC<Props> = ({
 			// 	},
 		],
 		[
+			actions,
+			activate,
+			activateClickHandler,
 			canGrant,
 			columnHelper,
+			deleteBtn,
+			deleteClickHandler,
 			department,
 			deptStructure,
+			edit,
+			editClickHandler,
 			language,
 			privilege,
 			projectName,
@@ -409,29 +418,6 @@ const UserProjectTable: FC<Props> = ({
 		}
 	};
 
-	const activateClickHandler = async (upId: string) => {
-		const params: APIProjectStatus = {
-			id: upId,
-			statusId: 1,
-		};
-
-		const { data, error } = await updateUserProjectStatus(params);
-
-		if (data) {
-			fetchProjects(id);
-			toast.success(
-				t("message.userProjectActivated", { framework: "React" }).toString()
-			);
-		}
-
-		if (error) {
-			toast.error(error.ErrorMessage);
-		}
-
-		if (data) {
-		}
-	};
-
 	const deleteConfirmationClickHandler = async () => {
 		if (selectedProjectId !== "") {
 			const { data, error } = await deleteProject(selectedProjectId);
@@ -511,6 +497,7 @@ const UserProjectTable: FC<Props> = ({
 				onPageViewSelectionChange={pageViewSelectionHandler}
 				onActiveStatusOptionSelectionChange={statusChangeHandler}
 				hideWorkflowStatusDropdown={true}
+				isLoading={loadingData}
 			/>
 
 			<DeleteConfirmation

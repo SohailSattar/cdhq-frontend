@@ -4,26 +4,31 @@ import { APIDepartmentItem } from "../types";
 
 export async function getMainDepartments(
 	code?: string,
-	projectId?: number
+	projectId?: number,
+	accessType?: string
 ): Promise<APIResponse<APIDepartmentItem[]>> {
 	try {
 		const config = getConfig();
 
-		let keyword = "";
-		if (code) {
-			keyword = `keyword=${code}`;
+		if (!code) {
+			code = "M1";
 		}
 
+		let keyword = "";
 		let projectIdParam = "";
-		if (keyword !== "" && projectId) {
-			projectIdParam = "&";
+		if (projectId) {
+			projectIdParam = "?";
 		}
 
 		if (projectId) {
-			projectIdParam += `projectid=6110`;
+			projectIdParam += `projectid=${projectId}`;
 		}
 
-		const url = `/departments/main?` + keyword + projectIdParam;
+		if (accessType) {
+			projectIdParam += `&type=${accessType}`;
+		}
+
+		const url = `/departments/main/${code}` + keyword + projectIdParam;
 
 		const response = await instance.get<APIDepartmentItem[]>(url, config);
 		const data = response.data;

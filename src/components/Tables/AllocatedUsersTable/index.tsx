@@ -59,6 +59,8 @@ const AllocatedUsersTable: FC<Props> = ({ projectId }) => {
 
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
+	const [loadingData, setIsLoadingData] = useState<boolean>(false);
+
 	//Parameters
 	const [orderBy, setOrderBy] = useState<string>("");
 	const [toggleSort, setToggleSort] = useState(false);
@@ -145,6 +147,7 @@ const AllocatedUsersTable: FC<Props> = ({ projectId }) => {
 
 	const fetchData = useMemo(
 		() => async (keyword: string) => {
+			setIsLoadingData(true);
 			const { data } = await getFilteredUsersByProjects(
 				projectId,
 				columnFilters,
@@ -189,6 +192,7 @@ const AllocatedUsersTable: FC<Props> = ({ projectId }) => {
 
 				setTotalCount(data?.totalItems);
 			}
+			setIsLoadingData(false);
 		},
 		[columnFilters, currentPage, language, pageSize, projectId]
 	);
@@ -310,6 +314,7 @@ const AllocatedUsersTable: FC<Props> = ({ projectId }) => {
 				exportDisplayNames={propertyDisplayNames}
 				onExcelExport={exportDataHandler}
 				onColumnFiltersChange={handleColumnFiltersChange}
+				isLoading={loadingData}
 				// hideActiveStatusDropdown
 			/>
 		</>

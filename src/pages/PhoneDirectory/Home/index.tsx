@@ -95,6 +95,8 @@ const PhoneDirectoryPage = () => {
 		{ id: "activeStatusId", value: "1" },
 	]);
 
+	const [loadingData, setIsLoadingData] = useState<boolean>(false);
+
 	const fetchRanks = useCallback(async () => {
 		const { data } = await getRanks();
 		if (data) {
@@ -201,149 +203,6 @@ const PhoneDirectoryPage = () => {
 					</div>
 				),
 			}),
-
-			////////////////////////////
-
-			// 			Header: actions,
-			// 			accessor: (p) => p,
-			// 			Cell: ({ row, value }: any) => (
-			// 				<div className={styles.action}>
-			// 					<div
-			// 						className={language !== "ar" ? styles.btnDiv : styles.btnDivLTR}>
-			// 						{privileges?.updatePrivilege! === true && (
-			// 							<Button
-			// 								onClick={() => {
-			// 									editClickHandler(row.values.name!);
-			// 								}}
-			// 								style={{ height: "20px", fontSize: "12px" }}>
-			// 								{edit}
-			// 							</Button>
-			// 						)}
-			// 					</div>
-			// 				</div>
-			// 			),
-
-			////////////////////////////
-
-			//
-			// 		{
-			// 			Header: phone,
-			// 			id: "phone",
-			// 			accessor: (p) => p.phone,
-			// 		},
-			// 		{
-			// 			Header: phone,
-			// 			id: "phone2",
-			// 			accessor: (p) => p.phone2,
-			// 		},
-			// 		{
-			// 			Header: phoneOffice,
-			// 			id: "phoneOffice",
-			// 			accessor: (p) => p.phoneOffice,
-			// 		},
-			//
-
-			// 			Header: rank,
-			// 			id: "rankId",
-			// 			accessor: (p) => p.rank,
-			// 			Cell: ({ value }: any) => (
-			// 				<div className={styles.name}>
-			// 					{language !== "ar" ? value.name : value.nameEnglish}
-			// 				</div>
-			// 			),
-			// 		},
-			// // columnHelper.accessor("id", {
-			// // 	header: id,
-			// // 	cell: (info) => <div className={styles.cell}>{info.getValue()}</div>,
-			// // }),
-			// columnHelper.accessor((row) => row.employeeNo, {
-			// 	id: "employeeNo",
-			// 	cell: (info) => <div className={styles.name}>{info.getValue()}</div>,
-			// 	header: () => <span>{employeeNo}</span>,
-			// }),
-			// columnHelper.accessor((row) => row.logName, {
-			// 	id: "logName",
-			// 	cell: (info) => <div className={styles.name}>{info.getValue()}</div>,
-			// 	header: () => <span>{logName}</span>,
-			// }),
-			// columnHelper.accessor((row) => row, {
-			// 	id: "fullName",
-			// 	cell: (info) => (
-			// 		<div className={styles.name}>
-			// 			<div className={styles.arabic}>{info.getValue().name}</div>
-			// 			<div className={styles.english}>{info.getValue().nameEnglish}</div>
-			// 		</div>
-			// 	),
-			// 	header: () => <span>{fullName}</span>,
-			// }),
-			// columnHelper.accessor((row) => row.rank, {
-			// 	id: "rankId",
-			// 	cell: (info) => (
-			// 		<div className={styles.name}>
-			// 			{info.getValue() && (
-			// 				<>
-			// 					<div className={styles.arabic}>{info.getValue().name}</div>
-			// 					<div className={styles.english}>
-			// 						{info.getValue().nameEnglish}
-			// 					</div>
-			// 				</>
-			// 			)}
-			// 		</div>
-			// 	),
-			// 	header: () => <div className={styles.tableHeaderCell}>{rank}</div>,
-			// 	meta: {
-			// 		filterVariant: "select",
-			// 		options: rankOptions,
-			// 	},
-			// }),
-			// columnHelper.accessor((row) => row.department, {
-			// 	id: "departmentId",
-			// 	cell: (info) => (
-			// 		<div className={styles.name}>
-			// 			{info.getValue() && (
-			// 				<>
-			// 					<div className={styles.arabic}>{info.getValue().name}</div>
-			// 					<div className={styles.english}>
-			// 						{info.getValue().nameEnglish}
-			// 					</div>
-			// 				</>
-			// 			)}
-			// 		</div>
-			// 	),
-			// 	header: () => (
-			// 		<div className={styles.tableHeaderCell}>{department}</div>
-			// 	),
-			// 	meta: {
-			// 		filterVariant: "select",
-			// 		options: departmentOptions,
-			// 	},
-			// }),
-			// columnHelper.accessor((row) => row.activeStatus, {
-			// 	id: "activeStatusId",
-			// 	cell: (info) => (
-			// 		<div className={styles.name}>
-			// 			<ActiveStatus
-			// 				code={info.getValue().id === 1 ? 1 : 9}
-			// 				text={
-			// 					language !== "ar"
-			// 						? info.getValue().nameArabic
-			// 						: info.getValue().nameEnglish
-			// 				}
-			// 			/>
-			// 		</div>
-			// 	),
-			// 	header: () => <div className={styles.tableHeaderCell}>{status}</div>,
-			// 	meta: {
-			// 		filterVariant: "select",
-			// 		options: activeStatusOptions,
-			// 		initialValue: {
-			// 			label: t("status.active", {
-			// 				framework: "React",
-			// 			}),
-			// 			value: 1,
-			// 		},
-			// 	},
-			// }),
 		],
 		[
 			columnHelper,
@@ -456,6 +315,8 @@ const PhoneDirectoryPage = () => {
 
 	const fetchData = useMemo(
 		() => async (currentPage: number) => {
+			setIsLoadingData(true);
+
 			// Check Privilege
 			const { data: privilege, error } = await getProjectPrivilege(
 				Project.PhoneDirectory
@@ -497,6 +358,8 @@ const PhoneDirectoryPage = () => {
 					setEmployees(data?.employees!);
 					setTotalCount(data?.totalItems!);
 				}
+
+				setIsLoadingData(false);
 			}
 		},
 		[columnFilters, pageSize, keyword, statusId, orderBy, toggleSort]
@@ -504,6 +367,7 @@ const PhoneDirectoryPage = () => {
 
 	const fetchByDepartment = useMemo(
 		() => async () => {
+			setIsLoadingData(true);
 			// Check Privilege
 			const { data: privilege, error } = await getProjectPrivilege(
 				Project.PhoneDirectory
@@ -547,6 +411,8 @@ const PhoneDirectoryPage = () => {
 					setTotalCount(data?.totalItems!);
 				}
 			}
+
+			setIsLoadingData(false);
 		},
 		[
 			currentPage,
@@ -701,6 +567,7 @@ const PhoneDirectoryPage = () => {
 						hideWorkflowStatusDropdown
 						onWorkflowStatusOptionSelectionChange={() => {}}
 						onColumnFiltersChange={handleColumnFiltersChange}
+						isLoading={loadingData}
 					/>
 				</div>
 				<div></div>

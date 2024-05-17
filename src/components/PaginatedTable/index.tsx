@@ -78,6 +78,7 @@ interface Props {
 	>;
 	///
 	classNameTable?: string;
+	isLoading?: boolean;
 }
 
 const PaginatedTable: FC<Props> = ({
@@ -116,6 +117,7 @@ const PaginatedTable: FC<Props> = ({
 	onColumnFiltersChange,
 	////////////////////
 	classNameTable,
+	isLoading = false,
 }) => {
 	const [t] = useTranslation("common");
 
@@ -383,7 +385,7 @@ const PaginatedTable: FC<Props> = ({
 					onExportClick={() => setIsOpen(true)}
 				/>
 
-				<div>
+				<LoaderOverlay loading={isLoading}>
 					<Table
 						reference={tableRef}
 						columns={columns}
@@ -394,7 +396,7 @@ const PaginatedTable: FC<Props> = ({
 						onColumnFiltersChange={onColumnFiltersChange}
 						className={clsx(classNameTable, styles.scrollable)}
 					/>
-				</div>
+				</LoaderOverlay>
 				<div>
 					<Pagination
 						className={styles.paginationBar}

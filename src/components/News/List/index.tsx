@@ -1,7 +1,7 @@
 import { FC, useEffect, useMemo, useState } from "react";
 import { ActionButtons, Button, PaginatedTable } from "../..";
 import { useTranslation } from "react-i18next";
-import { Column } from "@tanstack/react-table";
+import { Column, createColumnHelper } from "@tanstack/react-table";
 import { NewsColumns } from "../../PaginatedTable/types";
 import { APINews } from "../../../api/news/types";
 import { DropdownOption } from "../../Dropdown";
@@ -30,6 +30,39 @@ const TableList: FC<Props> = ({ onViewClick }) => {
 	//Actions
 	const actions = t("global.actions", { framework: "React" });
 	const view = t("button.view", { framework: "React" });
+
+	const columnHelper = createColumnHelper<NewsColumns>();
+	const columns = useMemo(
+		() => [
+			columnHelper.accessor((row) => row.id, {
+				id: "id",
+				header: txtId,
+				enableColumnFilter: false,
+			}),
+			columnHelper.accessor((row) => row.title, {
+				id: "title",
+				header: () => title,
+				enableColumnFilter: false,
+			}),
+			columnHelper.accessor((row) => row.id, {
+				id: "action",
+				header: "",
+				cell: (info) => (
+					<Button onClick={() => onViewClick(info.getValue())}>{view}</Button>
+				),
+				enableColumnFilter: false,
+			}),
+
+			// 		{
+			// 			Header: actions,
+			// 			accessor: (p) => p,
+			// 			Cell: ({ value }: any) => (
+			// 				<Button onClick={() => onViewClick(value.id)}>{view}</Button>
+			// 			),
+			// 		},
+		],
+		[columnHelper, onViewClick, title, txtId, view]
+	);
 
 	// const columns: Column<NewsColumns>[] = useMemo(
 	// 	() => [
@@ -104,7 +137,7 @@ const TableList: FC<Props> = ({ onViewClick }) => {
 	};
 	return (
 		<>
-			{/* <PaginatedTable
+			<PaginatedTable
 				totalCountText={t("news.count", { framework: "React" })}
 				totalCount={totalCount}
 				pageSize={pageSize}
@@ -119,7 +152,7 @@ const TableList: FC<Props> = ({ onViewClick }) => {
 				noRecordText={t("table.noNews", { framework: "React" })}
 				hideActiveStatusDropdown
 				hideWorkflowStatusDropdown
-			/> */}
+			/>
 		</>
 	);
 };

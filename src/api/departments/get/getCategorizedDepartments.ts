@@ -1,14 +1,26 @@
 import { APIResponse, getConfig } from "../..";
 import { instance } from "../../../network";
+import { Id } from "../../../utils";
 import { APICategorizedDepartment } from "../types";
 
-export async function getCategorizedDepartments(): Promise<
-	APIResponse<APICategorizedDepartment[]>
-> {
+export async function getCategorizedDepartments(
+	projectId?: Id,
+	accessType?: string
+): Promise<APIResponse<APICategorizedDepartment[]>> {
 	try {
 		const config = getConfig();
 
-		const url = `/departments/categorized`;
+		let keyword = "";
+
+		if (projectId) {
+			keyword = `?projectId=${projectId}`;
+		}
+
+		if (accessType) {
+			keyword += `&type=${accessType}`;
+		}
+
+		const url = `/departments/categorized` + keyword;
 
 		const response = await instance.get<APICategorizedDepartment[]>(
 			url,
