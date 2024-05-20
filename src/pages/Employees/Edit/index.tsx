@@ -235,7 +235,7 @@ const EmployeeEditPage = () => {
 			}
 
 			toast.error(
-				t("message.recordActivated", { framework: "React" }).toString()
+				t("message.recordDeactivated", { framework: "React" }).toString()
 			);
 			setShowModal(false);
 			navigate(`${RoutePath.EMPLOYEE}`);
