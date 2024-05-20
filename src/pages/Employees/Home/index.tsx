@@ -362,6 +362,12 @@ const EmployeeHomePage = () => {
 				value: 1,
 			},
 			{
+				label: t("status.deactive", {
+					framework: "React",
+				}),
+				value: 9,
+			},
+			{
 				label: t("status.expiringexpired", {
 					framework: "React",
 				}),

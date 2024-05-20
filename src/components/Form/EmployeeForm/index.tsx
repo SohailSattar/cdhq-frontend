@@ -1054,7 +1054,9 @@ const EmployeeForm: FC<Props> = ({
 
 	const imageChangeHandler = (evnt: ChangeEvent<HTMLInputElement>) => {
 		if (evnt.target.files) {
-			setHideUploadButton(false);
+			if (mode === "UPDATE") {
+				setHideUploadButton(false);
+			}
 			const file = evnt.target.files[0];
 			const x = getFullPath(file);
 			setValue("thumbnail", file);
@@ -1130,10 +1132,15 @@ const EmployeeForm: FC<Props> = ({
 										render={({ field: { value, onChange } }) => (
 											<TextBox
 												type="text"
-												label={t("employee.militaryNo", { framework: "React" })}
+												label={`* ${t("employee.militaryNo", {
+													framework: "React",
+												})}`}
 												value={value}
 												onChange={onChange}
-												className={styles.txtBox}
+												className={clsx(
+													styles.txtBox,
+													errors.employeeNo ? styles.errorBorder : ""
+												)}
 												disabled={!canUpdate}
 											/>
 										)}
@@ -1147,10 +1154,11 @@ const EmployeeForm: FC<Props> = ({
 										render={({ field: { value, onChange } }) => (
 											<TextBox
 												type="text"
-												label={t("global.name", { framework: "React" })}
+												label={`* ${t("global.name", { framework: "React" })}`}
 												value={value}
 												onChange={onChange}
 												disabled={!canUpdate}
+												className={errors.name ? styles.errorBorder : ""}
 											/>
 										)}
 										name="name"
@@ -1163,10 +1171,13 @@ const EmployeeForm: FC<Props> = ({
 										render={({ field: { value, onChange } }) => (
 											<TextBox
 												type="text"
-												label={t("global.nameEnglish", { framework: "React" })}
+												label={`* ${t("global.nameEnglish", {
+													framework: "React",
+												})}`}
 												value={value}
 												onChange={onChange}
 												disabled={!canUpdate}
+												className={errors.nameEnglish ? styles.errorBorder : ""}
 											/>
 										)}
 										name="nameEnglish"
@@ -1178,11 +1189,12 @@ const EmployeeForm: FC<Props> = ({
 									<Controller
 										render={({ field: { value, onChange } }) => (
 											<Dropdown
-												label={t("class.name", { framework: "React" })}
+												label={`* ${t("class.name", { framework: "React" })}`}
 												options={dropdownOptions.classes}
 												onSelect={onChange}
 												value={value}
 												disabled={!canUpdate}
+												className={errors.class ? styles.ddlErrorBorder : ""}
 											/>
 										)}
 										name="class"
@@ -1229,11 +1241,12 @@ const EmployeeForm: FC<Props> = ({
 									<Controller
 										render={({ field: { value, onChange } }) => (
 											<Dropdown
-												label={t("rank.name", { framework: "React" })}
+												label={`* ${t("rank.name", { framework: "React" })}`}
 												options={dropdownOptions.ranks}
 												onSelect={onChange}
 												value={value}
 												disabled={!canUpdate}
+												className={errors.rank ? styles.ddlErrorBorder : ""}
 											/>
 										)}
 										name="rank"
@@ -1244,13 +1257,16 @@ const EmployeeForm: FC<Props> = ({
 									<Controller
 										render={({ field: { value, onChange } }) => (
 											<Dropdown
-												label={t("employee.contractType", {
+												label={`* ${t("employee.contractType", {
 													framework: "React",
-												})}
+												})}`}
 												options={dropdownOptions.contractTypes}
 												onSelect={onChange}
 												value={value}
 												disabled={!canUpdate}
+												className={
+													errors.contractType ? styles.ddlErrorBorder : ""
+												}
 											/>
 										)}
 										name="contractType"
@@ -1263,11 +1279,16 @@ const EmployeeForm: FC<Props> = ({
 									<Controller
 										render={({ field: { value, onChange } }) => (
 											<Dropdown
-												label={t("employee.profession", { framework: "React" })}
+												label={`* ${t("employee.profession", {
+													framework: "React",
+												})}`}
 												options={dropdownOptions.professions}
 												onSelect={onChange}
 												value={value}
 												disabled={!canUpdate}
+												className={
+													errors.profession ? styles.ddlErrorBorder : ""
+												}
 											/>
 										)}
 										name="profession"
@@ -1278,13 +1299,16 @@ const EmployeeForm: FC<Props> = ({
 									<Controller
 										render={({ field: { value, onChange } }) => (
 											<Dropdown
-												label={t("employee.nationality", {
+												label={`* ${t("employee.nationality", {
 													framework: "React",
-												})}
+												})}`}
 												options={dropdownOptions.countries}
 												onSelect={onChange}
 												value={value}
 												disabled={!canUpdate}
+												className={
+													errors.nationality ? styles.ddlErrorBorder : ""
+												}
 											/>
 										)}
 										name="nationality"
@@ -1295,13 +1319,16 @@ const EmployeeForm: FC<Props> = ({
 									<Controller
 										render={({ field: { value, onChange } }) => (
 											<Dropdown
-												label={t("employee.nationalService", {
+												label={`* ${t("employee.nationalService", {
 													framework: "React",
-												})}
+												})}`}
 												options={dropdownOptions.nationalServices}
 												onSelect={onChange}
 												value={value}
 												disabled={!canUpdate}
+												className={
+													errors.nationalService ? styles.ddlErrorBorder : ""
+												}
 											/>
 										)}
 										name="nationalService"
@@ -1332,11 +1359,14 @@ const EmployeeForm: FC<Props> = ({
 									<Controller
 										render={({ field: { value, onChange } }) => (
 											<Dropdown
-												label={t("employee.status", { framework: "React" })}
+												label={`* ${t("employee.status", {
+													framework: "React",
+												})}`}
 												options={dropdownOptions.statuses}
 												onSelect={onChange}
 												value={value}
 												disabled={!canUpdate}
+												className={errors.status ? styles.ddlErrorBorder : ""}
 											/>
 										)}
 										name="status"
@@ -1366,10 +1396,13 @@ const EmployeeForm: FC<Props> = ({
 											<DatePicker
 												date={value}
 												onChange={onChange}
-												labeltext={t("employee.statusDate", {
+												labeltext={`* ${t("employee.statusDate", {
 													framework: "React",
-												})}
+												})}`}
 												disabled={!canUpdate}
+												className={
+													errors.statusDate ? styles.dateErrorBorder : ""
+												}
 											/>
 										)}
 										name="statusDate"
@@ -1383,10 +1416,15 @@ const EmployeeForm: FC<Props> = ({
 											<DatePicker
 												date={value}
 												onChange={onChange}
-												labeltext={t("employee.milCardExpDate", {
+												labeltext={`* ${t("employee.milCardExpDate", {
 													framework: "React",
-												})}
+												})}`}
 												disabled={!canUpdate}
+												className={
+													errors.militaryCardExpiryDate
+														? styles.dateErrorBorder
+														: ""
+												}
 											/>
 										)}
 										name="militaryCardExpiryDate"
@@ -1404,11 +1442,14 @@ const EmployeeForm: FC<Props> = ({
 							<Controller
 								render={({ field: { value, onChange } }) => (
 									<Dropdown
-										label={t("employee.workplace", { framework: "React" })}
+										label={`* ${t("employee.workplace", {
+											framework: "React",
+										})}`}
 										options={dropdownOptions.departments}
 										onSelect={onChange}
 										value={value}
 										disabled={!canUpdate}
+										className={errors.department ? styles.ddlErrorBorder : ""}
 									/>
 								)}
 								name="department"
@@ -1437,13 +1478,14 @@ const EmployeeForm: FC<Props> = ({
 							<Controller
 								render={({ field: { value, onChange } }) => (
 									<Dropdown
-										label={t("employee.workLocation", {
+										label={`* ${t("employee.workLocation", {
 											framework: "React",
-										})}
+										})}`}
 										options={dropdownOptions.section}
 										onSelect={onChange}
 										value={value}
 										disabled={!canUpdate}
+										className={errors.section ? styles.ddlErrorBorder : ""}
 									/>
 								)}
 								name="section"
@@ -1456,13 +1498,16 @@ const EmployeeForm: FC<Props> = ({
 							<Controller
 								render={({ field: { value, onChange } }) => (
 									<Dropdown
-										label={t("employee.professionalTraining", {
+										label={`* ${t("employee.professionalTraining", {
 											framework: "React",
-										})}
+										})}`}
 										options={dropdownOptions.professionalTraining}
 										onSelect={onChange}
 										value={value}
 										disabled={!canUpdate}
+										className={
+											errors.professionalTraining ? styles.ddlErrorBorder : ""
+										}
 									/>
 								)}
 								name="professionalTraining"
@@ -1474,11 +1519,14 @@ const EmployeeForm: FC<Props> = ({
 							<Controller
 								render={({ field: { value, onChange } }) => (
 									<Dropdown
-										label={t("employee.workMode", { framework: "React" })}
+										label={`* ${t("employee.workMode", {
+											framework: "React",
+										})}`}
 										options={dropdownOptions.workMode}
 										onSelect={onChange}
 										value={value}
 										disabled={!canUpdate}
+										className={errors.workMode ? styles.ddlErrorBorder : ""}
 									/>
 								)}
 								name="workMode"
@@ -1489,11 +1537,14 @@ const EmployeeForm: FC<Props> = ({
 							<Controller
 								render={({ field: { value, onChange } }) => (
 									<Dropdown
-										label={t("employee.workGroup", { framework: "React" })}
+										label={`* ${t("employee.workGroup", {
+											framework: "React",
+										})}`}
 										options={dropdownOptions.workGroup}
 										onSelect={onChange}
 										value={value}
 										disabled={!canUpdate}
+										className={errors.workGroup ? styles.ddlErrorBorder : ""}
 									/>
 								)}
 								name="workGroup"
@@ -1504,11 +1555,14 @@ const EmployeeForm: FC<Props> = ({
 							<Controller
 								render={({ field: { value, onChange } }) => (
 									<Dropdown
-										label={t("employee.signList", { framework: "React" })}
+										label={`* ${t("employee.signList", {
+											framework: "React",
+										})}`}
 										options={dropdownOptions.signaturesLists}
 										onSelect={onChange}
 										value={value}
 										disabled={!canUpdate}
+										className={errors.signList ? styles.ddlErrorBorder : ""}
 									/>
 								)}
 								name="signList"
@@ -1539,11 +1593,12 @@ const EmployeeForm: FC<Props> = ({
 							<Controller
 								render={({ field: { value, onChange } }) => (
 									<Dropdown
-										label={t("employee.actJob", { framework: "React" })}
+										label={`* ${t("employee.actJob", { framework: "React" })}`}
 										options={actJobMoiOptions}
 										onSelect={onChange}
 										value={value}
 										disabled={!canUpdate}
+										className={errors.actJob ? styles.ddlErrorBorder : ""}
 									/>
 								)}
 								name="actJob"
@@ -1554,11 +1609,14 @@ const EmployeeForm: FC<Props> = ({
 							<Controller
 								render={({ field: { value, onChange } }) => (
 									<Dropdown
-										label={t("employee.assignedJob", { framework: "React" })}
+										label={`* ${t("employee.assignedJob", {
+											framework: "React",
+										})}`}
 										options={dropdownOptions.assignedJobs}
 										onSelect={onChange}
 										value={value}
 										disabled={!canUpdate}
+										className={errors.assignedJob ? styles.ddlErrorBorder : ""}
 									/>
 								)}
 								name="assignedJob"
@@ -1641,13 +1699,16 @@ const EmployeeForm: FC<Props> = ({
 							<Controller
 								render={({ field: { value, onChange } }) => (
 									<Dropdown
-										label={t("employee.militaryTrained", {
+										label={`* ${t("employee.militaryTrained", {
 											framework: "React",
-										})}
+										})}`}
 										options={dropdownOptions.militaryTrained}
 										onSelect={onChange}
 										value={value}
 										disabled={!canUpdate}
+										className={
+											errors.militaryTrained ? styles.ddlErrorBorder : ""
+										}
 									/>
 								)}
 								name="militaryTrained"
@@ -1658,13 +1719,14 @@ const EmployeeForm: FC<Props> = ({
 							<Controller
 								render={({ field: { value, onChange } }) => (
 									<Dropdown
-										label={t("employee.militaryUniform", {
+										label={`* ${t("employee.militaryUniform", {
 											framework: "React",
-										})}
+										})}`}
 										options={dropdownOptions.militaryUniform}
 										onSelect={onChange}
 										value={value}
 										disabled={!canUpdate}
+										className={errors.militaryWear ? styles.ddlErrorBorder : ""}
 									/>
 								)}
 								name="militaryWear"
@@ -1684,13 +1746,16 @@ const EmployeeForm: FC<Props> = ({
 									field: { value: any; onChange: any };
 								}) => (
 									<Dropdown
-										label={t("employee.academicQualification", {
+										label={`* ${t("employee.academicQualification", {
 											framework: "React",
-										})}
+										})}`}
 										options={dropdownOptions.qualifications}
 										onSelect={onChange}
 										value={value}
 										disabled={!canUpdate}
+										className={
+											errors.qualification ? styles.ddlErrorBorder : ""
+										}
 									/>
 								)}
 								name="qualification"
@@ -1735,13 +1800,16 @@ const EmployeeForm: FC<Props> = ({
 							<Controller
 								render={({ field: { value, onChange } }) => (
 									<Dropdown
-										label={t("employee.qualificationCountry", {
+										label={`* ${t("employee.qualificationCountry", {
 											framework: "React",
-										})}
+										})}`}
 										options={dropdownOptions.countries}
 										onSelect={onChange}
 										value={value}
 										disabled={!canUpdate}
+										className={
+											errors.degreeCountry ? styles.ddlErrorBorder : ""
+										}
 									/>
 								)}
 								name="degreeCountry"
@@ -1833,12 +1901,13 @@ const EmployeeForm: FC<Props> = ({
 								render={({ field: { value, onChange } }) => (
 									<TextBox
 										type="text"
-										label={t("employee.phone", {
+										label={`* ${t("employee.phone", {
 											framework: "React",
-										})}
+										})}`}
 										value={value}
 										onChange={onChange}
 										disabled={!canUpdate}
+										className={errors.phone ? styles.errorBorder : ""}
 									/>
 								)}
 								name="phone"
@@ -1928,13 +1997,14 @@ const EmployeeForm: FC<Props> = ({
 							<Controller
 								render={({ field: { value, onChange } }) => (
 									<Dropdown
-										label={t("employee.gender", {
+										label={`* ${t("employee.gender", {
 											framework: "React",
-										})}
+										})}`}
 										options={dropdownOptions.genders}
 										onSelect={onChange}
 										value={value}
 										disabled={!canUpdate}
+										className={errors.gender ? styles.ddlErrorBorder : ""}
 									/>
 								)}
 								name="gender"
@@ -1945,13 +2015,16 @@ const EmployeeForm: FC<Props> = ({
 							<Controller
 								render={({ field: { value, onChange } }) => (
 									<Dropdown
-										label={t("employee.maritalStatus", {
+										label={`* ${t("employee.maritalStatus", {
 											framework: "React",
-										})}
+										})}`}
 										options={dropdownOptions.maritalStatuses}
 										onSelect={onChange}
 										value={value}
 										disabled={!canUpdate}
+										className={
+											errors.maritalStatus ? styles.ddlErrorBorder : ""
+										}
 									/>
 								)}
 								name="maritalStatus"
@@ -1962,13 +2035,14 @@ const EmployeeForm: FC<Props> = ({
 							<Controller
 								render={({ field: { value, onChange } }) => (
 									<Dropdown
-										label={t("employee.religion", {
+										label={`* ${t("employee.religion", {
 											framework: "React",
-										})}
+										})}`}
 										options={dropdownOptions.religions}
 										onSelect={onChange}
 										value={value}
 										disabled={!canUpdate}
+										className={errors.religion ? styles.ddlErrorBorder : ""}
 									/>
 								)}
 								name="religion"
@@ -1981,10 +2055,11 @@ const EmployeeForm: FC<Props> = ({
 									<DatePicker
 										date={value}
 										onChange={onChange}
-										labeltext={t("employee.dob", {
+										labeltext={`* ${t("employee.dob", {
 											framework: "React",
-										})}
+										})}`}
 										disabled={!canUpdate}
+										className={errors.birthDate ? styles.dateErrorBorder : ""}
 									/>
 								)}
 								name="birthDate"
@@ -2016,13 +2091,14 @@ const EmployeeForm: FC<Props> = ({
 							<Controller
 								render={({ field: { value, onChange } }) => (
 									<Dropdown
-										label={t("employee.specialNeeds", {
+										label={`* ${t("employee.specialNeeds", {
 											framework: "React",
-										})}
+										})}`}
 										options={dropdownOptions.specialNeeds}
 										onSelect={onChange}
 										value={value}
 										disabled={!canUpdate}
+										className={errors.specialNeed ? styles.ddlErrorBorder : ""}
 									/>
 								)}
 								name="specialNeed"
@@ -2033,13 +2109,14 @@ const EmployeeForm: FC<Props> = ({
 							<Controller
 								render={({ field: { value, onChange } }) => (
 									<Dropdown
-										label={t("employee.healthStatus", {
+										label={`* ${t("employee.healthStatus", {
 											framework: "React",
-										})}
+										})}`}
 										options={dropdownOptions.healthStatuses}
 										onSelect={onChange}
 										value={value}
 										disabled={!canUpdate}
+										className={errors.healthStatus ? styles.ddlErrorBorder : ""}
 									/>
 								)}
 								name="healthStatus"
@@ -2088,12 +2165,13 @@ const EmployeeForm: FC<Props> = ({
 								render={({ field: { value, onChange } }) => (
 									<TextBox
 										type="text"
-										label={t("employee.eid", {
+										label={`* ${t("employee.eid", {
 											framework: "React",
-										})}
+										})}`}
 										value={value}
 										onChange={onChange}
 										disabled={!canUpdate}
+										className={errors.emiratesIdNo ? styles.errorBorder : ""}
 									/>
 								)}
 								name="emiratesIdNo"
@@ -2106,12 +2184,13 @@ const EmployeeForm: FC<Props> = ({
 								render={({ field: { value, onChange } }) => (
 									<TextBox
 										type="text"
-										label={t("employee.uid", {
+										label={`* ${t("employee.uid", {
 											framework: "React",
-										})}
+										})}`}
 										value={value}
 										onChange={onChange}
 										disabled={!canUpdate}
+										className={errors.uidNo ? styles.errorBorder : ""}
 									/>
 								)}
 								name="uidNo"
@@ -2178,13 +2257,14 @@ const EmployeeForm: FC<Props> = ({
 							<Controller
 								render={({ field: { value, onChange } }) => (
 									<Dropdown
-										label={t("employee.bloodType", {
+										label={`* ${t("employee.bloodType", {
 											framework: "React",
-										})}
+										})}`}
 										options={dropdownOptions.bloodTypes}
 										onSelect={onChange}
 										value={value}
 										disabled={!canUpdate}
+										className={errors.bloodType ? styles.ddlErrorBorder : ""}
 									/>
 								)}
 								name="bloodType"
@@ -2261,12 +2341,15 @@ const EmployeeForm: FC<Props> = ({
 								render={({ field: { value, onChange } }) => (
 									<TextBox
 										type="text"
-										label={t("employee.emergency.name", {
+										label={`* ${t("employee.emergency.name", {
 											framework: "React",
-										})}
+										})}`}
 										value={value}
 										onChange={onChange}
 										disabled={!canUpdate}
+										className={
+											errors.emergencyCallName ? styles.errorBorder : ""
+										}
 									/>
 								)}
 								name="emergencyCallName"
@@ -2279,12 +2362,15 @@ const EmployeeForm: FC<Props> = ({
 								render={({ field: { value, onChange } }) => (
 									<TextBox
 										type="text"
-										label={t("employee.emergency.relation", {
+										label={`* ${t("employee.emergency.relation", {
 											framework: "React",
-										})}
+										})}`}
 										value={value}
 										onChange={onChange}
 										disabled={!canUpdate}
+										className={
+											errors.emergencyCallRelation ? styles.errorBorder : ""
+										}
 									/>
 								)}
 								name="emergencyCallRelation"
@@ -2297,12 +2383,15 @@ const EmployeeForm: FC<Props> = ({
 								render={({ field: { value, onChange } }) => (
 									<TextBox
 										type="text"
-										label={t("employee.emergency.phone", {
+										label={`* ${t("employee.emergency.phone", {
 											framework: "React",
-										})}
+										})}`}
 										value={value}
 										onChange={onChange}
 										disabled={!canUpdate}
+										className={
+											errors.emergencyCallPhone ? styles.errorBorder : ""
+										}
 									/>
 								)}
 								name="emergencyCallPhone"
@@ -2315,12 +2404,15 @@ const EmployeeForm: FC<Props> = ({
 								render={({ field: { value, onChange } }) => (
 									<TextBox
 										type="text"
-										label={t("employee.emergency.address", {
+										label={`* ${t("employee.emergency.address", {
 											framework: "React",
-										})}
+										})}`}
 										value={value}
 										onChange={onChange}
 										disabled={!canUpdate}
+										className={
+											errors.emergencyCallAddress ? styles.errorBorder : ""
+										}
 									/>
 								)}
 								name="emergencyCallAddress"
@@ -2932,7 +3024,7 @@ const EmployeeForm: FC<Props> = ({
 							/> */}
 							<ErrorMessage
 								errors={errors}
-								name="specialNeeds"
+								name="specialNeed"
 								render={({ messages }) => {
 									return messages
 										? _.entries(messages).map(([type, message]) => (
@@ -3114,6 +3206,17 @@ const EmployeeForm: FC<Props> = ({
 						</ShadowedContainer>
 					)}
 				</div>
+				{serverErrors.length > 0 && (
+					<ShadowedContainer>
+						{serverErrors.map((error, index) => (
+							<div
+								className="error"
+								key={index}>
+								{error}
+							</div>
+						))}
+					</ShadowedContainer>
+				)}
 				{canUpdate && (
 					<ShadowedContainer className={styles.row}>
 						<div className={styles.actions}>

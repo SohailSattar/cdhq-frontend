@@ -1,4 +1,19 @@
 .empForm {
+	.errorBorder {
+		border-bottom: 1px solid red;
+		border-radius: 1px;
+	}
+
+	.ddlErrorBorder {
+		border: 1px solid red;
+		border-radius: 5px;
+	}
+
+	.dateErrorBorder {
+		border-bottom: 1px solid red;
+		border-radius: 5px;
+	}
+
 	.row {
 		// display: flex;
 		// justify-content: space-between;
