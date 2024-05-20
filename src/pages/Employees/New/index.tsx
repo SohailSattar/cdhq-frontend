@@ -20,6 +20,7 @@ const EmployeeNewPage = () => {
 	const navigate = useNavigate();
 
 	const [privileges, setPrivileges] = useState<APIPrivileges>();
+	const [serverErrors, setServerErrors] = useState<string[]>([]);
 
 	const fetch = useMemo(
 		() => async () => {
@@ -121,8 +122,11 @@ const EmployeeNewPage = () => {
 			toast.success(
 				t("message.employeeCreated", { framework: "React" }).toString()
 			);
+			navigate(RoutePath.EMPLOYEE);
 		} else {
-			toast.error(error?.ErrorMessage);
+			toast.error(data?.message!);
+
+			setServerErrors(data?.errors!);
 		}
 	};
 
@@ -137,6 +141,7 @@ const EmployeeNewPage = () => {
 				onSubmit={addEmployeeHandler}
 				canUpdate={privileges?.insertPrivilege!}
 				mode="INSERT"
+				serverErrors={serverErrors}
 			/>
 		</PageContainer>
 	);

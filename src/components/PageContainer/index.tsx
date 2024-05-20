@@ -22,6 +22,7 @@ import { Portal } from "@mui/material";
 import styles from "./styles.module.scss";
 import { checkLoginStatus } from "../../api/login/get/checkLoginStatus";
 import { APIExportData } from "../../api";
+import clsx from "clsx";
 
 interface Props {
 	lockFor?: ROLE[];
@@ -180,16 +181,10 @@ const PageContainer: FC<Props> = ({
 									</div>
 								</motion.div>
 							)}
-
-							{showHistoryButton && (
-								<motion.div
-									className={language !== "ar" ? styles.btn : styles.btnLTR}>
-									<Button onClick={onHistoryClick}>
-										{t("button.history", { framework: "React" })}
-									</Button>
-								</motion.div>
-							)}
-							{(showEditButton || showAddButton || showChangeStatusButton) && (
+							{(showHistoryButton ||
+								showEditButton ||
+								showAddButton ||
+								showChangeStatusButton) && (
 								<motion.div
 									className={styles.action}
 									initial={{ opacity: 0 }}
@@ -197,6 +192,16 @@ const PageContainer: FC<Props> = ({
 									exit={{ opacity: 0 }}
 									transition={{ duration: 0.2 }}>
 									<div className={styles.btnSection}>
+										{showHistoryButton && (
+											<div
+												className={
+													language !== "ar" ? styles.btn : styles.btnLTR
+												}>
+												<Button onClick={onHistoryClick}>
+													{t("button.history", { framework: "React" })}
+												</Button>
+											</div>
+										)}
 										{showEditButton && (
 											<div
 												className={

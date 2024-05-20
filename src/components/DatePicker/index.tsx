@@ -96,13 +96,13 @@ const DateSelector = (props: any) => {
 						autoOk
 						variant="inline"
 						inputVariant="outlined"
-						className={root}
+						className={clsx(root, props.className)}
 						format={dateFormat}
 						value={date}
 						InputAdornmentProps={{ position: "start" }}
 						onChange={onChange}
 						//disablePast={true}
-						{...props}
+						// {...props}
 					/>
 				</div>
 			</MuiPickersUtilsProvider>

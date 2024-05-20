@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { Route, useNavigate, useParams } from "react-router-dom";
 import {
 	DeleteConfirmation,
 	EmployeeForm,
@@ -41,6 +41,8 @@ const EmployeeEditPage = () => {
 
 	const [employee, setEmployee] = useState<APIEmployeeDetail>();
 	const [privileges, setPrivileges] = useState<APIPrivileges>();
+
+	const [serverErrors, setServerErrors] = useState<string[]>([]);
 
 	const [status, setStatus] = useState<APIActiveStatus>();
 	const [showHistoryModal, setShowHistoryModal] = useState(false);
@@ -160,8 +162,11 @@ const EmployeeEditPage = () => {
 			toast.success(
 				t("message.employeeUpdated", { framework: "React" }).toString()
 			);
+			navigate(
+				RoutePath.EMPLOYEE_EDIT.replace(RoutePath.ID, data?.id!.toString())
+			);
 		} else {
-			toast.error(error?.ErrorMessage);
+			setServerErrors(data?.errors!);
 		}
 	};
 
@@ -171,11 +176,41 @@ const EmployeeEditPage = () => {
 			thumbnail: image,
 		};
 
-		const { data } = await updateEmployeeImage(params);
+		const { data, error } = await updateEmployeeImage(params);
 		if (data) {
 			toast.success(
 				t("message.imageUpdated", { framework: "React" }).toString()
 			);
+		}
+	};
+
+	const activateClickHandler = async () => {
+		const statusCode = 1;
+
+		const params: APIStatus = {
+			id: id!,
+			activeStatusId: 1,
+		};
+
+		const { data, error } = await updateEmployeeStatus(params);
+
+		if (data) {
+			const { data: status } = await getActiveStatus(statusCode);
+			if (status) {
+				setStatus(status);
+			}
+
+			toast.success(
+				t("message.recordActivated", { framework: "React" }).toString()
+			);
+			setShowModal(false);
+			navigate(`${RoutePath.EMPLOYEE}`);
+		}
+
+		if (error) {
+			toast.error(error?.ErrorMessage);
+
+			setServerErrors(error?.ErrorMessage);
 		}
 	};
 
@@ -198,13 +233,19 @@ const EmployeeEditPage = () => {
 			if (status) {
 				setStatus(status);
 			}
+
+			toast.error(
+				t("message.recordActivated", { framework: "React" }).toString()
+			);
+			setShowModal(false);
+			navigate(`${RoutePath.EMPLOYEE}`);
 		}
 
-		toast.error(
-			t("message.honorDeactivated", { framework: "React" }).toString()
-		);
-		setShowModal(false);
-		navigate(`${RoutePath.EMPLOYEE}`);
+		if (error) {
+			toast.error(error?.ErrorMessage);
+
+			setServerErrors(error?.ErrorMessage);
+		}
 	};
 
 	const deleteCancelHandler = () => {
@@ -226,6 +267,7 @@ const EmployeeEditPage = () => {
 			}
 			currentStatus={status?.id === 1 ? "ACTIVE" : "DEACTIVE"}
 			onDectivate={deleteButtonClickHandler}
+			onActivate={activateClickHandler}
 			loading={isLoading}
 			showHistoryButton={true}
 			onHistoryClick={() => setShowHistoryModal(true)}>
@@ -238,6 +280,7 @@ const EmployeeEditPage = () => {
 				onImageUpload={imageUploadHandler}
 				canUpdate={privileges?.updatePrivilege!}
 				mode="UPDATE"
+				serverErrors={serverErrors}
 			/>
 			<MetaDataDetails
 				createdBy={employee?.createdBy!}
