@@ -5,7 +5,11 @@ import { APIBloodType } from "../bloodTypes/types";
 import { APIClass, APIClassItem } from "../classes/types";
 import { APIContractType } from "../contractType/types";
 import { APICountryItem } from "../countries/types";
-import { APIDepartmentItem, APIDepartmentName } from "../departments/types";
+import {
+	APICategorizedDepartment,
+	APIDepartmentItem,
+	APIDepartmentName,
+} from "../departments/types";
 import { APIGender } from "../genders/types";
 import { APIHealthStatus } from "../healthStatuses/types";
 import { APIMaritalStatus } from "../maritalStatus/types";
@@ -105,7 +109,7 @@ export interface APIEmployeeDetail {
 	militaryCardExpiryDate: string;
 	///////////////////////////////////////////////
 	department: APIDepartmentName;
-	section: APIDepartmentName;
+	section: APICategorizedDepartment;
 	isWorkLocationManager: boolean;
 	professionalTraining: APIProfessionalTraining;
 	workMode: APIWorkMode;

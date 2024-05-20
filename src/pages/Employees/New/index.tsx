@@ -126,8 +126,6 @@ const EmployeeNewPage = () => {
 		}
 	};
 
-	console.log(privileges?.insertPrivilege);
-
 	return (
 		<PageContainer
 			displayContent={privileges?.updatePrivilege}
