@@ -14,16 +14,19 @@ export async function getDepartmentsByProject(
 		let keyword = "";
 
 		if (all) {
-			keyword = `&keyword=all`;
+			keyword = `?keyword=all`;
 		}
 
 		if (accessType) {
-			keyword = `?type=${accessType}`;
+			let x = "&";
+			if (!all) {
+				x = "?";
+			}
+
+			keyword = `${x}type=${accessType}`;
 		}
 
 		const url = `/projects/${projectId}/departments${keyword}`;
-
-		console.log(url);
 
 		const response = await instance.get<APIDepartmentItem[]>(url, config);
 		const data = response.data;

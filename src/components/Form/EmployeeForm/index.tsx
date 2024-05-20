@@ -354,7 +354,7 @@ const EmployeeForm: FC<Props> = ({
 		} catch (error) {
 			console.error("Error fetching data:", error);
 		}
-	}, [language]);
+	}, [language, mode]);
 
 	useEffect(() => {
 		fetchData();
@@ -843,15 +843,32 @@ const EmployeeForm: FC<Props> = ({
 
 			setValue("militaryCardExpiryDate", militaryCardExpiryDate);
 
-			const selectedDepartment = dropdownOptions.departments.find(
-				(x: { value: any }) => x.value === department?.id!
-			);
-			setValue("department", selectedDepartment!);
+			// Department
+			if (!canUpdate) {
+				setValue("department", {
+					value: department?.id,
+					label: language !== "ar" ? department?.name : department?.nameEnglish,
+				});
+			} else {
+				const selectedDepartment = dropdownOptions.departments.find(
+					(x: { value: any }) => x.value === department?.id!
+				);
+				setValue("department", selectedDepartment!);
+			}
 
-			const selectedSection = dropdownOptions.section.find(
-				(x: { value: any }) => x.value === section?.id!
-			);
-			setValue("section", selectedSection!);
+			// Section
+			if (!canUpdate) {
+				setValue("section", {
+					value: section?.id,
+					label:
+						language !== "ar" ? section?.fullName : section?.fullNameEnglish,
+				});
+			} else {
+				const selectedSection = dropdownOptions.section.find(
+					(x: { value: any }) => x.value === section?.id!
+				);
+				setValue("section", selectedSection!);
+			}
 
 			setValue("isWorkLocationManager", isWorkLocationManager);
 
@@ -983,6 +1000,7 @@ const EmployeeForm: FC<Props> = ({
 			setValue("emergencyOtherAddress", emergencyOtherAddress! || "");
 		}
 	}, [
+		canUpdate,
 		data,
 		dropdownOptions.assignedJobs,
 		dropdownOptions.bloodTypes,
