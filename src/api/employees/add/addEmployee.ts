@@ -1,8 +1,7 @@
 import { instance } from "../../../network";
 import { APIResponse, APIResponseStatus, getConfig } from "../..";
 import { APINewEmployee } from "../types";
-
-import { EMPLOYEE } from "../../../RouteConfig";
+import { EMPLOYEES } from "../../ROUTES";
 
 export async function addEmployee(
 	employeeParams: APINewEmployee
@@ -11,7 +10,7 @@ export async function addEmployee(
 		const config = getConfig("multipart/form-data");
 
 		const response = await instance.post<APIResponseStatus>(
-			EMPLOYEE,
+			EMPLOYEES,
 			employeeParams,
 			config
 		);
