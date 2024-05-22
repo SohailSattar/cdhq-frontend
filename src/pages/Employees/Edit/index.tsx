@@ -258,7 +258,7 @@ const EmployeeEditPage = () => {
 
 	return (
 		<PageContainer
-			title="Edit Employee"
+			title="Employee"
 			showBackButton
 			displayContent={privileges?.readPrivilege}
 			btnBackUrlLink={RoutePath.EMPLOYEE}
