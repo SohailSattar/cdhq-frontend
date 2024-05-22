@@ -50,7 +50,8 @@ $border-radius: 0px;
 			color: $PRIMARY;
 			font-size: 16px;
 			min-height: 38px;
-			min-width: 150px;
+			// min-width: 150px;
+			width: 100%;
 			z-index: 9999;
 			// width: 100%;
 		}

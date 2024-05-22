@@ -1,4 +1,4 @@
-import { ChangeEventHandler, FC } from "react";
+import { ChangeEventHandler, FC, FocusEventHandler } from "react";
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -26,6 +26,7 @@ export interface Props {
 	variant?: Variant;
 	disabled?: boolean;
 	onChange?: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+	onBlur?: FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 	onKeyDown?: any;
 	reference?: any;
 	autocomplete?: string;
@@ -42,6 +43,7 @@ const TextBox: FC<Props> = ({
 	maxRows = 4,
 	disabled,
 	onChange,
+	onBlur,
 	onKeyDown,
 	reference,
 	autocomplete = "",
@@ -83,6 +85,7 @@ const TextBox: FC<Props> = ({
 							ref={reference}
 							autoComplete={autocomplete}
 							className={className}
+							onBlur={onBlur}
 						/>
 						{/* <FormHelperText id='component-error-text' className={styles.error}>
 					Error

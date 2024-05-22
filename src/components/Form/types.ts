@@ -81,10 +81,7 @@ export interface ICivilDefenseBuildingFormInputs {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
-export interface IEmployeeFormInputs {
-	thumbnail: File;
-	photo: string;
+export interface IEmployeeOfficialInfoFormInputs {
 	employeeNo: string;
 	name: string;
 	nameEnglish: string;
@@ -101,30 +98,9 @@ export interface IEmployeeFormInputs {
 	statusDetails?: string;
 	statusDate: string;
 	militaryCardExpiryDate: string;
-	//////////////////////////////
-	department: DropdownOption;
-	section: DropdownOption;
-	isWorkLocationManager: boolean;
-	professionalTraining: DropdownOption;
-	workMode: DropdownOption;
-	workGroup: DropdownOption;
-	signList: DropdownOption;
-	jobCatMoi: DropdownOption;
-	actJob: DropdownOption;
-	assignedJob: DropdownOption;
-	additionalJob: string;
-	previousExperienceYear: string;
-	previousExperienceMonth: string;
-	previousExperienceDay: string;
-	militaryTrained: DropdownOption;
-	militaryWear: DropdownOption;
-	//////////////////////////////
-	qualification: DropdownOption;
-	degreeDate: string;
-	degreeName: string;
-	degreeCountry: DropdownOption;
-	universityName: string;
-	//////////////////////////////
+}
+
+export interface IEmployeeContactInfoFormInputs {
 	residenceEmirate: string;
 	residenceCity: string;
 	residenceArea: string;
@@ -133,7 +109,8 @@ export interface IEmployeeFormInputs {
 	phoneOffice: string;
 	emailLan: string;
 	emailNet: string;
-	//////////////////////////////
+}
+export interface IEmployeePersonalInfoFormInputs {
 	gender: DropdownOption;
 	maritalStatus: DropdownOption;
 	religion: DropdownOption;
@@ -152,7 +129,36 @@ export interface IEmployeeFormInputs {
 	height: string;
 	weight: string;
 	notes: string;
-	//////////////////////////////
+}
+
+export interface IEmployeeProfessionalInfoFormInputs {
+	department: DropdownOption;
+	section: DropdownOption;
+	isWorkLocationManager: boolean;
+	professionalTraining: DropdownOption;
+	workMode: DropdownOption;
+	workGroup: DropdownOption;
+	signList: DropdownOption;
+	jobCatMoi: DropdownOption;
+	actJob: DropdownOption;
+	assignedJob: DropdownOption;
+	additionalJob: string;
+	previousExperienceYear: string;
+	previousExperienceMonth: string;
+	previousExperienceDay: string;
+	militaryTrained: DropdownOption;
+	militaryWear: DropdownOption;
+}
+
+export interface IEmployeeQualificationInfoFormInputs {
+	qualification: DropdownOption;
+	degreeDate: string;
+	degreeName: string;
+	degreeCountry: DropdownOption;
+	universityName: string;
+}
+
+export interface IEmployeeEmergencyContactInfoFormInputs {
 	emergencyCallName: string;
 	emergencyCallRelation: string;
 	emergencyCallPhone: string;
@@ -162,6 +168,19 @@ export interface IEmployeeFormInputs {
 	emergencyOtherPhone: string;
 	emergencyOtherAddress: string;
 }
+
+export interface IEmployeePhotoFormInputs {
+	thumbnail: File;
+	photo: string;
+}
+
+export type EmployeeFormData = IEmployeeContactInfoFormInputs &
+	IEmployeeEmergencyContactInfoFormInputs &
+	IEmployeeOfficialInfoFormInputs &
+	IEmployeePersonalInfoFormInputs &
+	IEmployeeProfessionalInfoFormInputs &
+	IEmployeePhotoFormInputs &
+	IEmployeeQualificationInfoFormInputs;
 
 export interface IEmployeeSignatureFormInputs {
 	thumbnail?: File;

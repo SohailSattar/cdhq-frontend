@@ -1,15 +1,20 @@
 import _ from "lodash/fp";
 import { ChangeEvent, FC, useEffect, useMemo, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, FormProvider } from "react-hook-form";
 import {
 	Button,
-	Checkbox,
-	Dropdown,
-	Hr,
-	IEmployeeFormInputs,
+	EmployeeFormData,
+	IEmployeeContactInfoFormInputs,
+	IEmployeeEmergencyContactInfoFormInputs,
+	IEmployeeOfficialInfoFormInputs,
+	IEmployeePersonalInfoFormInputs,
+	IEmployeePhotoFormInputs,
+	IEmployeeProfessionalInfoFormInputs,
+	IEmployeeQualificationInfoFormInputs,
 	ShadowedContainer,
-	TextBox,
 } from "../..";
+
+import { useFormContext } from "react-hook-form";
 
 import { useTranslation } from "react-i18next";
 import { useStore } from "../../../utils/store";
@@ -50,6 +55,15 @@ import { getDepartmentsByProject } from "../../../api/departments/get/getDepartm
 import { Project } from "../../../data/projects";
 import clsx from "clsx";
 import { getMainDepartments } from "../../../api/departments/get/getMainDepartments";
+import {
+	ContactInfo,
+	EmergencyContactInfo,
+	OfficialInfo,
+	PersonalInfo,
+	PhotoSection,
+	ProfessionalInfo,
+	QualificationInfo,
+} from "./components";
 
 // Define an interface for dropdown options
 interface DropdownOptions {
@@ -82,7 +96,7 @@ interface DropdownOptions {
 interface Props {
 	data?: APIEmployeeDetail;
 	actionButtonText: string;
-	onSubmit: (data: IEmployeeFormInputs) => void;
+	onSubmit: (data: EmployeeFormData) => void;
 	onImageUpload?: (image: File) => void;
 	serverErrors?: string[];
 	canUpdate?: boolean;
@@ -133,14 +147,47 @@ const EmployeeForm: FC<Props> = ({
 		[]
 	);
 
+	// type FormData = IEmployeeContactInfoFormInputs &
+	// 	IEmployeeEmergencyContactInfoFormInputs &
+	// 	IEmployeeOfficialInfoFormInputs &
+	// 	IEmployeePersonalInfoFormInputs &
+	// 	IEmployeeProfessionalInfoFormInputs &
+	// 	IEmployeePhotoFormInputs &
+	// 	IEmployeeQualificationInfoFormInputs;
+	const methods = useForm<EmployeeFormData>();
 	const {
-		register,
-		formState: { errors },
-		handleSubmit,
 		setValue,
-		getValues,
-		control,
-	} = useForm<IEmployeeFormInputs>({ criteriaMode: "all" });
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = methods;
+
+	// const {
+	// 	register,
+	// 	formState: { errors },
+	// 	handleSubmit,
+	// 	setValue,
+	// 	getValues,
+	// 	control,
+	// } = useForm<IEmployeeFormInputs>({ criteriaMode: "all" });
+
+	// If works fine then remove the above one
+	// const methods = useForm<IEmployeeFormInputs>({ criteriaMode: "all" });
+	// const {
+	// 	handleSubmit,
+	// 	setValue,
+	// 	// register,
+	// 	formState: { errors },
+	// 	control,
+	// 	getValues,
+	// } = methods;
+	// const {
+	// 	setValue,
+	// 	register,
+	// 	getValues,
+	// 	control,
+	// 	formState: { errors },
+	// } = methods;
 
 	const fetchData = useCallback(async () => {
 		try {
@@ -359,30 +406,6 @@ const EmployeeForm: FC<Props> = ({
 	useEffect(() => {
 		fetchData();
 	}, [fetchData]);
-
-	const fetchActJobMoi = useMemo(
-		() => async (categoryId: Id) => {
-			const { data: list } = await getMoiActJobs(categoryId);
-			if (list) {
-				setActJobMoiOptions(
-					list?.map((d) => {
-						return {
-							label: `${language !== "ar" ? d.name : d.nameEnglish}`,
-							value: d.id,
-						};
-					})
-				);
-			}
-		},
-		[language]
-	);
-
-	useEffect(() => {
-		if (data) {
-			const { actJobMOI } = data;
-			fetchActJobMoi(actJobMOI.groupId);
-		}
-	}, [data, fetchActJobMoi]);
 
 	useEffect(() => {
 		if (data) {
@@ -1032,2202 +1055,792 @@ const EmployeeForm: FC<Props> = ({
 		t,
 	]);
 
-	// const handleChange = (fieldName: any, value: any) => {
-	// 	setFormData((prevData) => ({
-	// 		...prevData,
-	// 		[fieldName]: value,
-	// 	}));
-	// };
+	const fetchActJobMoi = useMemo(
+		() => async (categoryId: Id) => {
+			const { data: list } = await getMoiActJobs(categoryId);
+			if (list) {
+				setActJobMoiOptions(
+					list?.map((d) => {
+						return {
+							label: `${language !== "ar" ? d.name : d.nameEnglish}`,
+							value: d.id,
+						};
+					})
+				);
+			}
+		},
+		[language]
+	);
 
-	////////////////////////////////////
-	const jobCategoryMoiChangeHandler = async (option: DropdownOption) => {
-		setValue("jobCatMoi", option);
-		if (option) {
-			setValue("jobCatMoi", option);
-			await fetchActJobMoi(option.value);
+	useEffect(() => {
+		if (data) {
+			const { actJobMOI } = data;
+			fetchActJobMoi(actJobMOI.groupId);
 		}
-	};
+	}, [data, fetchActJobMoi]);
 
-	const submitHandler = (values: IEmployeeFormInputs) => {
+	const submitHandler = (values: EmployeeFormData) => {
 		onSubmit(values);
 	};
 
-	const imageChangeHandler = (evnt: ChangeEvent<HTMLInputElement>) => {
-		if (evnt.target.files) {
-			if (mode === "UPDATE") {
-				setHideUploadButton(false);
-			}
-			const file = evnt.target.files[0];
-			const x = getFullPath(file);
-			setValue("thumbnail", file);
-			setValue("photo", x);
-		}
-	};
+	// const imageChangeHandler = (evnt: ChangeEvent<HTMLInputElement>) => {
+	// 	if (evnt.target.files) {
+	// 		if (mode === "UPDATE") {
+	// 			setHideUploadButton(false);
+	// 		}
+	// 		const file = evnt.target.files[0];
+	// 		const x = getFullPath(file);
+	// 		setValue("thumbnail", file);
+	// 		setValue("photo", x);
+	// 	}
+	// };
 
-	const imageUpdateHandler = () => {
-		const image = getValues("thumbnail");
-		setHideUploadButton(true);
-		onImageUpload(image!)!;
-	};
+	// const imageUpdateHandler = () => {
+	// 	const image = getValues("thumbnail");
+	// 	setHideUploadButton(true);
+	// 	onImageUpload(image!)!;
+	// };
 
 	return (
-		<form onSubmit={handleSubmit(submitHandler)}>
-			<div className={styles.empForm}>
-				<div className={styles.row}>
+		<FormProvider {...methods}>
+			<form onSubmit={handleSubmit(submitHandler)}>
+				<div className={styles.empForm}>
+					<div className={styles.row}>
+						<div>
+							<PhotoSection
+								canUpdate={canUpdate}
+								mode={mode}
+							/>
+						</div>
+						<div>
+							<OfficialInfo canUpdate={canUpdate} />
+						</div>
+					</div>
+					<ProfessionalInfo
+						canUpdate={canUpdate}
+						mode={mode}
+					/>
+					<ContactInfo canUpdate={canUpdate} />
+					<QualificationInfo canUpdate={canUpdate} />
+					<PersonalInfo canUpdate={canUpdate} />
+					<EmergencyContactInfo canUpdate={canUpdate} />
 					<div>
-						<ShadowedContainer
-							className={
-								language !== "ar"
-									? styles.thumbnailContainer
-									: styles.thumbnailContainerLTR
-							}>
-							<h4>{t("employee.photo", { framework: "React" })}</h4>
-							{/* <ImageUploader/> */}
-							<div>
-								<Controller
-									render={({ field: { value, onChange } }) =>
-										value ? (
-											<ShadowedContainer>
-												<img
-													src={value}
-													alt=""
-													className={styles.image}
-												/>
-											</ShadowedContainer>
-										) : (
-											<></>
-										)
-									}
-									name="photo"
-									control={control}
-									defaultValue={""}
+						{Object.keys(errors).length > 0 && (
+							<ShadowedContainer>
+								<ErrorMessage
+									errors={errors}
+									name="employeeNo"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
 								/>
-							</div>
-							{canUpdate && (
-								<div className={styles.browse}>
-									<input
-										type="file"
-										name="thumbnail"
-										onChange={imageChangeHandler}
-										accept="image/*"
-									/>
-								</div>
-							)}
-							{!hideUploadButton && (
-								<div className={styles.uploadSection}>
-									<Button
-										type="button"
-										onClick={imageUpdateHandler}>
-										{t("button.update", { framework: "React" })}
-									</Button>
-								</div>
-							)}
-						</ShadowedContainer>
-					</div>
-					<div>
-						<ShadowedContainer className={clsx(styles.basic)}>
-							<div className={styles.row}>
-								<div className={styles.field}>
-									<Controller
-										render={({ field: { value, onChange } }) => (
-											<TextBox
-												type="text"
-												label={`* ${t("employee.militaryNo", {
-													framework: "React",
-												})}`}
-												value={value}
-												onChange={onChange}
-												className={clsx(
-													styles.txtBox,
-													errors.employeeNo ? styles.errorBorder : ""
-												)}
-												disabled={!canUpdate}
-											/>
-										)}
-										name="employeeNo"
-										control={control}
-										defaultValue={""}
-									/>
-								</div>
-								<div className={styles.field}>
-									<Controller
-										render={({ field: { value, onChange } }) => (
-											<TextBox
-												type="text"
-												label={`* ${t("global.name", { framework: "React" })}`}
-												value={value}
-												onChange={onChange}
-												disabled={!canUpdate}
-												className={errors.name ? styles.errorBorder : ""}
-											/>
-										)}
-										name="name"
-										control={control}
-										defaultValue={""}
-									/>
-								</div>
-								<div className={styles.field}>
-									<Controller
-										render={({ field: { value, onChange } }) => (
-											<TextBox
-												type="text"
-												label={`* ${t("global.nameEnglish", {
-													framework: "React",
-												})}`}
-												value={value}
-												onChange={onChange}
-												disabled={!canUpdate}
-												className={errors.nameEnglish ? styles.errorBorder : ""}
-											/>
-										)}
-										name="nameEnglish"
-										control={control}
-										defaultValue={""}
-									/>
-								</div>
-								<div className={styles.ddlField}>
-									<Controller
-										render={({ field: { value, onChange } }) => (
-											<Dropdown
-												label={`* ${t("class.name", { framework: "React" })}`}
-												options={dropdownOptions.classes}
-												onSelect={onChange}
-												value={value}
-												disabled={!canUpdate}
-												className={errors.class ? styles.ddlErrorBorder : ""}
-											/>
-										)}
-										name="class"
-										control={control}
-									/>
-								</div>
-							</div>
-							<div className={styles.row}>
-								<div className={styles.field}>
-									<Controller
-										render={({ field: { onChange, value } }) => (
-											<DatePicker
-												date={value}
-												onChange={onChange}
-												labeltext={t("employee.hireDate", {
-													framework: "React",
-												})}
-												disabled={!canUpdate}
-											/>
-										)}
-										name="hireDate"
-										control={control}
-										defaultValue={new Date().toISOString()}
-									/>
-								</div>
-								<div className={styles.field}>
-									<Controller
-										render={({ field: { onChange, value } }) => (
-											<DatePicker
-												date={value}
-												onChange={onChange}
-												labeltext={t("employee.joinDate", {
-													framework: "React",
-												})}
-												disabled={!canUpdate}
-											/>
-										)}
-										name="joinDate"
-										control={control}
-										defaultValue={new Date().toISOString()}
-									/>
-								</div>
-								<div className={styles.ddlField}>
-									<Controller
-										render={({ field: { value, onChange } }) => (
-											<Dropdown
-												label={`* ${t("rank.name", { framework: "React" })}`}
-												options={dropdownOptions.ranks}
-												onSelect={onChange}
-												value={value}
-												disabled={!canUpdate}
-												className={errors.rank ? styles.ddlErrorBorder : ""}
-											/>
-										)}
-										name="rank"
-										control={control}
-									/>
-								</div>
-								<div className={styles.ddlField}>
-									<Controller
-										render={({ field: { value, onChange } }) => (
-											<Dropdown
-												label={`* ${t("employee.contractType", {
-													framework: "React",
-												})}`}
-												options={dropdownOptions.contractTypes}
-												onSelect={onChange}
-												value={value}
-												disabled={!canUpdate}
-												className={
-													errors.contractType ? styles.ddlErrorBorder : ""
-												}
-											/>
-										)}
-										name="contractType"
-										control={control}
-									/>
-								</div>
-							</div>
-							<div className={styles.row}>
-								<div className={styles.ddlField}>
-									<Controller
-										render={({ field: { value, onChange } }) => (
-											<Dropdown
-												label={`* ${t("employee.profession", {
-													framework: "React",
-												})}`}
-												options={dropdownOptions.professions}
-												onSelect={onChange}
-												value={value}
-												disabled={!canUpdate}
-												className={
-													errors.profession ? styles.ddlErrorBorder : ""
-												}
-											/>
-										)}
-										name="profession"
-										control={control}
-									/>
-								</div>
-								<div className={styles.ddlField}>
-									<Controller
-										render={({ field: { value, onChange } }) => (
-											<Dropdown
-												label={`* ${t("employee.nationality", {
-													framework: "React",
-												})}`}
-												options={dropdownOptions.countries}
-												onSelect={onChange}
-												value={value}
-												disabled={!canUpdate}
-												className={
-													errors.nationality ? styles.ddlErrorBorder : ""
-												}
-											/>
-										)}
-										name="nationality"
-										control={control}
-									/>
-								</div>{" "}
-								<div className={styles.ddlField}>
-									<Controller
-										render={({ field: { value, onChange } }) => (
-											<Dropdown
-												label={`* ${t("employee.nationalService", {
-													framework: "React",
-												})}`}
-												options={dropdownOptions.nationalServices}
-												onSelect={onChange}
-												value={value}
-												disabled={!canUpdate}
-												className={
-													errors.nationalService ? styles.ddlErrorBorder : ""
-												}
-											/>
-										)}
-										name="nationalService"
-										control={control}
-									/>
-								</div>{" "}
-								<div className={styles.field}>
-									<Controller
-										render={({ field: { value, onChange } }) => (
-											<TextBox
-												type="text"
-												label={t("employee.nationalServiceGroup", {
-													framework: "React",
-												})}
-												value={value}
-												onChange={onChange}
-												disabled={!canUpdate}
-											/>
-										)}
-										name="nationalServiceGroup"
-										control={control}
-										defaultValue={""}
-									/>
-								</div>
-							</div>
-							<div className={styles.row}>
-								<div className={styles.ddlField}>
-									<Controller
-										render={({ field: { value, onChange } }) => (
-											<Dropdown
-												label={`* ${t("employee.status", {
-													framework: "React",
-												})}`}
-												options={dropdownOptions.statuses}
-												onSelect={onChange}
-												value={value}
-												disabled={!canUpdate}
-												className={errors.status ? styles.ddlErrorBorder : ""}
-											/>
-										)}
-										name="status"
-										control={control}
-									/>
-								</div>
-								<div className={styles.field}>
-									<Controller
-										render={({ field: { value, onChange } }) => (
-											<TextBox
-												type="text"
-												label={t("employee.statusDetail", {
-													framework: "React",
-												})}
-												value={value || ""}
-												onChange={onChange}
-												disabled={!canUpdate}
-											/>
-										)}
-										name="statusDetails"
-										control={control}
-									/>
-								</div>
-								<div className={styles.field}>
-									<Controller
-										render={({ field: { onChange, value } }) => (
-											<DatePicker
-												date={value}
-												onChange={onChange}
-												labeltext={`* ${t("employee.statusDate", {
-													framework: "React",
-												})}`}
-												disabled={!canUpdate}
-												className={
-													errors.statusDate ? styles.dateErrorBorder : ""
-												}
-											/>
-										)}
-										name="statusDate"
-										control={control}
-										defaultValue={new Date().toISOString()}
-									/>
-								</div>
-								<div className={styles.field}>
-									<Controller
-										render={({ field: { onChange, value } }) => (
-											<DatePicker
-												date={value}
-												onChange={onChange}
-												labeltext={`* ${t("employee.milCardExpDate", {
-													framework: "React",
-												})}`}
-												disabled={!canUpdate}
-												className={
-													errors.militaryCardExpiryDate
-														? styles.dateErrorBorder
-														: ""
-												}
-											/>
-										)}
-										name="militaryCardExpiryDate"
-										control={control}
-										defaultValue={new Date().toISOString()}
-									/>
-								</div>
-							</div>
-						</ShadowedContainer>
-					</div>
-				</div>
-				<ShadowedContainer className={styles.basic}>
-					<div className={styles.row}>
-						<div className={styles.ddlField}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<Dropdown
-										label={`* ${t("employee.workplace", {
-											framework: "React",
-										})}`}
-										options={dropdownOptions.departments}
-										onSelect={onChange}
-										value={value}
-										disabled={!canUpdate}
-										className={errors.department ? styles.ddlErrorBorder : ""}
-									/>
-								)}
-								name="department"
-								control={control}
-							/>
-						</div>
-
-						<div className={clsx(styles.field, styles.checkbox)}>
-							<Controller
-								render={({ field: { onChange, value } }) => (
-									<Checkbox
-										label={t("employee.isManager", { framework: "React" })}
-										checked={value}
-										onChange={onChange}
-										disabled={!canUpdate}
-									/>
-								)}
-								name="isWorkLocationManager"
-								control={control}
-								defaultValue={false}
-							/>
-						</div>
-					</div>
-					<div className={styles.row}>
-						<div className={styles.ddlField}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<Dropdown
-										label={`* ${t("employee.workLocation", {
-											framework: "React",
-										})}`}
-										options={dropdownOptions.section}
-										onSelect={onChange}
-										value={value}
-										disabled={!canUpdate}
-										className={errors.section ? styles.ddlErrorBorder : ""}
-									/>
-								)}
-								name="section"
-								control={control}
-							/>
-						</div>
-					</div>
-					<div className={styles.row}>
-						<div className={styles.ddlField}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<Dropdown
-										label={`* ${t("employee.professionalTraining", {
-											framework: "React",
-										})}`}
-										options={dropdownOptions.professionalTraining}
-										onSelect={onChange}
-										value={value}
-										disabled={!canUpdate}
-										className={
-											errors.professionalTraining ? styles.ddlErrorBorder : ""
-										}
-									/>
-								)}
-								name="professionalTraining"
-								control={control}
-							/>
-						</div>
-
-						<div className={styles.ddlField}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<Dropdown
-										label={`* ${t("employee.workMode", {
-											framework: "React",
-										})}`}
-										options={dropdownOptions.workMode}
-										onSelect={onChange}
-										value={value}
-										disabled={!canUpdate}
-										className={errors.workMode ? styles.ddlErrorBorder : ""}
-									/>
-								)}
-								name="workMode"
-								control={control}
-							/>
-						</div>
-						<div className={styles.ddlField}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<Dropdown
-										label={`* ${t("employee.workGroup", {
-											framework: "React",
-										})}`}
-										options={dropdownOptions.workGroup}
-										onSelect={onChange}
-										value={value}
-										disabled={!canUpdate}
-										className={errors.workGroup ? styles.ddlErrorBorder : ""}
-									/>
-								)}
-								name="workGroup"
-								control={control}
-							/>
-						</div>
-						<div className={styles.ddlField}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<Dropdown
-										label={`* ${t("employee.signList", {
-											framework: "React",
-										})}`}
-										options={dropdownOptions.signaturesLists}
-										onSelect={onChange}
-										value={value}
-										disabled={!canUpdate}
-										className={errors.signList ? styles.ddlErrorBorder : ""}
-									/>
-								)}
-								name="signList"
-								control={control}
-							/>
-						</div>
-					</div>
-					<div className={styles.row}>
-						<div className={styles.ddlField}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<Dropdown
-										label={t("employee.jobCatMoi", {
-											framework: "React",
-										})}
-										options={dropdownOptions.jobCategoryMoi}
-										onSelect={jobCategoryMoiChangeHandler}
-										value={value}
-										disabled={!canUpdate}
-									/>
-								)}
-								name="jobCatMoi"
-								control={control}
-							/>
-						</div>
-
-						<div className={styles.ddlField}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<Dropdown
-										label={`* ${t("employee.actJob", { framework: "React" })}`}
-										options={actJobMoiOptions}
-										onSelect={onChange}
-										value={value}
-										disabled={!canUpdate}
-										className={errors.actJob ? styles.ddlErrorBorder : ""}
-									/>
-								)}
-								name="actJob"
-								control={control}
-							/>
-						</div>
-						<div className={styles.ddlField}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<Dropdown
-										label={`* ${t("employee.assignedJob", {
-											framework: "React",
-										})}`}
-										options={dropdownOptions.assignedJobs}
-										onSelect={onChange}
-										value={value}
-										disabled={!canUpdate}
-										className={errors.assignedJob ? styles.ddlErrorBorder : ""}
-									/>
-								)}
-								name="assignedJob"
-								control={control}
-							/>
-						</div>
-						<div className={styles.field}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<TextBox
-										type="text"
-										label={t("employee.additionalJob", {
-											framework: "React",
-										})}
-										value={value}
-										onChange={onChange}
-										disabled={!canUpdate}
-									/>
-								)}
-								name="additionalJob"
-								control={control}
-								defaultValue={""}
-							/>
-						</div>
-					</div>
-					<div className={styles.row}>
-						<div className={styles.ddlField}>
-							<div className={styles.exp}>
-								<Controller
-									render={({ field: { value, onChange } }) => (
-										<TextBox
-											type="text"
-											label={t("employee.expYear", {
-												framework: "React",
-											})}
-											value={value}
-											onChange={onChange}
-											disabled={!canUpdate}
-										/>
-									)}
-									name="previousExperienceYear"
-									control={control}
-									defaultValue={"0"}
+								<ErrorMessage
+									errors={errors}
+									name="name"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
 								/>
-								<Controller
-									render={({ field: { value, onChange } }) => (
-										<TextBox
-											type="text"
-											label={t("employee.expMonth", {
-												framework: "React",
-											})}
-											value={value}
-											onChange={onChange}
-											disabled={!canUpdate}
-										/>
-									)}
-									name="previousExperienceMonth"
-									control={control}
-									defaultValue={"0"}
+								<ErrorMessage
+									errors={errors}
+									name="nameEnglish"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
 								/>
-								<Controller
-									render={({ field: { value, onChange } }) => (
-										<TextBox
-											type="text"
-											label={t("employee.expDay", {
-												framework: "React",
-											})}
-											value={value}
-											onChange={onChange}
-											disabled={!canUpdate}
-										/>
-									)}
-									name="previousExperienceDay"
-									control={control}
-									defaultValue={"0"}
-								/>
-							</div>
-						</div>{" "}
-						<div className={styles.ddlField}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<Dropdown
-										label={`* ${t("employee.militaryTrained", {
-											framework: "React",
-										})}`}
-										options={dropdownOptions.militaryTrained}
-										onSelect={onChange}
-										value={value}
-										disabled={!canUpdate}
-										className={
-											errors.militaryTrained ? styles.ddlErrorBorder : ""
-										}
-									/>
-								)}
-								name="militaryTrained"
-								control={control}
-							/>
-						</div>{" "}
-						<div className={styles.ddlField}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<Dropdown
-										label={`* ${t("employee.militaryUniform", {
-											framework: "React",
-										})}`}
-										options={dropdownOptions.militaryUniform}
-										onSelect={onChange}
-										value={value}
-										disabled={!canUpdate}
-										className={errors.militaryWear ? styles.ddlErrorBorder : ""}
-									/>
-								)}
-								name="militaryWear"
-								control={control}
-							/>
-						</div>
-					</div>
-				</ShadowedContainer>
 
-				<ShadowedContainer className={styles.basic}>
-					<div className={styles.row}>
-						<div className={styles.field}>
-							<Controller
-								render={({
-									field: { value, onChange },
-								}: {
-									field: { value: any; onChange: any };
-								}) => (
-									<Dropdown
-										label={`* ${t("employee.academicQualification", {
-											framework: "React",
-										})}`}
-										options={dropdownOptions.qualifications}
-										onSelect={onChange}
-										value={value}
-										disabled={!canUpdate}
-										className={
-											errors.qualification ? styles.ddlErrorBorder : ""
-										}
-									/>
-								)}
-								name="qualification"
-								control={control}
-							/>
-						</div>
-						<div className={styles.field}>
-							<Controller
-								render={({ field: { onChange, value } }) => (
-									<DatePicker
-										date={value}
-										onChange={onChange}
-										labeltext={t("employee.academicQualificationDate", {
-											framework: "React",
-										})}
-										disabled={!canUpdate}
-									/>
-								)}
+								<ErrorMessage
+									errors={errors}
+									name="class"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
+								/>
+
+								<ErrorMessage
+									errors={errors}
+									name="hireDate"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
+								/>
+
+								<ErrorMessage
+									errors={errors}
+									name="joinDate"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
+								/>
+
+								<ErrorMessage
+									errors={errors}
+									name="rank"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
+								/>
+
+								<ErrorMessage
+									errors={errors}
+									name="contractType"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
+								/>
+
+								<ErrorMessage
+									errors={errors}
+									name="profession"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
+								/>
+
+								<ErrorMessage
+									errors={errors}
+									name="nationality"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
+								/>
+
+								<ErrorMessage
+									errors={errors}
+									name="nationalService"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
+								/>
+
+								<ErrorMessage
+									errors={errors}
+									name="status"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
+								/>
+
+								<ErrorMessage
+									errors={errors}
+									name="militaryCardExpiryDate"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
+								/>
+
+								<ErrorMessage
+									errors={errors}
+									name="department"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
+								/>
+
+								<ErrorMessage
+									errors={errors}
+									name="section"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
+								/>
+								<ErrorMessage
+									errors={errors}
+									name="professionalTraining"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
+								/>
+								<ErrorMessage
+									errors={errors}
+									name="workMode"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
+								/>
+								<ErrorMessage
+									errors={errors}
+									name="workGroup"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
+								/>
+								<ErrorMessage
+									errors={errors}
+									name="signList"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
+								/>
+								<ErrorMessage
+									errors={errors}
+									name="actJob"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
+								/>
+								<ErrorMessage
+									errors={errors}
+									name="assignedJob"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
+								/>
+								<ErrorMessage
+									errors={errors}
+									name="militaryTrained"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
+								/>
+								<ErrorMessage
+									errors={errors}
+									name="militaryWear"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
+								/>
+								<ErrorMessage
+									errors={errors}
+									name="qualification"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
+								/>
+								{/* <ErrorMessage
+								errors={errors}
 								name="degreeDate"
-								control={control}
-							/>
-						</div>{" "}
-						<div className={styles.field}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<TextBox
-										type="text"
-										label={t("employee.qualificationName", {
-											framework: "React",
-										})}
-										value={value}
-										onChange={onChange}
-										disabled={!canUpdate}
-									/>
-								)}
+								render={({ messages }) => {
+									return messages
+										? _.entries(messages).map(([type, message]) => (
+												<p
+													key={type}
+													className="error">
+													{message}
+												</p>
+										  ))
+										: null;
+								}}
+							/> */}
+								{/* <ErrorMessage
+								errors={errors}
 								name="degreeName"
-								control={control}
-								defaultValue={""}
-							/>
-						</div>
-						<div className={styles.ddlField}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<Dropdown
-										label={`* ${t("employee.qualificationCountry", {
-											framework: "React",
-										})}`}
-										options={dropdownOptions.countries}
-										onSelect={onChange}
-										value={value}
-										disabled={!canUpdate}
-										className={
-											errors.degreeCountry ? styles.ddlErrorBorder : ""
-										}
-									/>
-								)}
-								name="degreeCountry"
-								control={control}
-							/>
-						</div>
-					</div>{" "}
-					<div className={styles.row}>
-						<div className={styles.field}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<TextBox
-										type="text"
-										label={t("employee.universityName", {
-											framework: "React",
-										})}
-										value={value}
-										onChange={onChange}
-										disabled={!canUpdate}
-									/>
-								)}
-								name="universityName"
-								control={control}
-								defaultValue={""}
-							/>
-						</div>
-					</div>
-				</ShadowedContainer>
-				<ShadowedContainer className={styles.basic}>
-					<div className={styles.row}>
-						<div className={styles.field}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<TextBox
-										type="text"
-										label={t("emirate.name", {
-											framework: "React",
-										})}
-										value={value}
-										onChange={onChange}
-										disabled={!canUpdate}
-									/>
-								)}
-								name="residenceEmirate"
-								control={control}
-								defaultValue={""}
-							/>
-						</div>{" "}
-						<div className={styles.field}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<TextBox
-										type="text"
-										label={t("common.city", {
-											framework: "React",
-										})}
-										value={value}
-										onChange={onChange}
-										disabled={!canUpdate}
-									/>
-								)}
-								name="residenceCity"
-								control={control}
-								defaultValue={""}
-							/>
-						</div>
-						<div className={styles.field}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<TextBox
-										type="text"
-										label={t("common.area", {
-											framework: "React",
-										})}
-										value={value}
-										onChange={onChange}
-										disabled={!canUpdate}
-									/>
-								)}
-								name="residenceArea"
-								control={control}
-								defaultValue={""}
-							/>
-						</div>
-					</div>
-					<div className={styles.row}>
-						<div className={styles.field}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<TextBox
-										type="text"
-										label={`* ${t("employee.phone", {
-											framework: "React",
-										})}`}
-										value={value}
-										onChange={onChange}
-										disabled={!canUpdate}
-										className={errors.phone ? styles.errorBorder : ""}
-									/>
-								)}
-								name="phone"
-								control={control}
-								defaultValue={""}
-							/>
-						</div>{" "}
-						<div className={styles.field}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<TextBox
-										type="text"
-										label={t("employee.phone2", {
-											framework: "React",
-										})}
-										value={value}
-										onChange={onChange}
-										disabled={!canUpdate}
-									/>
-								)}
-								name="phone2"
-								control={control}
-								defaultValue={""}
-							/>
-						</div>
-						<div className={styles.field}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<TextBox
-										type="text"
-										label={t("user.phoneOffice", {
-											framework: "React",
-										})}
-										value={value}
-										onChange={onChange}
-										disabled={!canUpdate}
-									/>
-								)}
-								name="phoneOffice"
-								control={control}
-								defaultValue={""}
-							/>
-						</div>
-					</div>{" "}
-					<div className={styles.row}>
-						<div className={styles.field}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<TextBox
-										type="text"
-										label={t("employee.emailLan", {
-											framework: "React",
-										})}
-										value={value}
-										onChange={onChange}
-										disabled={!canUpdate}
-									/>
-								)}
-								name="emailLan"
-								control={control}
-								defaultValue={""}
-							/>
-						</div>{" "}
-						<div className={styles.field}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<TextBox
-										type="text"
-										label={t("employee.emailNet", {
-											framework: "React",
-										})}
-										value={value}
-										onChange={onChange}
-										disabled={!canUpdate}
-									/>
-								)}
-								name="emailNet"
-								control={control}
-								defaultValue={""}
-							/>
-						</div>
-					</div>
-				</ShadowedContainer>
-				<ShadowedContainer className={styles.basic}>
-					<div className={styles.row}>
-						<div className={styles.ddlField}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<Dropdown
-										label={`* ${t("employee.gender", {
-											framework: "React",
-										})}`}
-										options={dropdownOptions.genders}
-										onSelect={onChange}
-										value={value}
-										disabled={!canUpdate}
-										className={errors.gender ? styles.ddlErrorBorder : ""}
-									/>
-								)}
-								name="gender"
-								control={control}
-							/>
-						</div>
-						<div className={styles.ddlField}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<Dropdown
-										label={`* ${t("employee.maritalStatus", {
-											framework: "React",
-										})}`}
-										options={dropdownOptions.maritalStatuses}
-										onSelect={onChange}
-										value={value}
-										disabled={!canUpdate}
-										className={
-											errors.maritalStatus ? styles.ddlErrorBorder : ""
-										}
-									/>
-								)}
-								name="maritalStatus"
-								control={control}
-							/>
-						</div>
-						<div className={styles.ddlField}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<Dropdown
-										label={`* ${t("employee.religion", {
-											framework: "React",
-										})}`}
-										options={dropdownOptions.religions}
-										onSelect={onChange}
-										value={value}
-										disabled={!canUpdate}
-										className={errors.religion ? styles.ddlErrorBorder : ""}
-									/>
-								)}
-								name="religion"
-								control={control}
-							/>
-						</div>
-						<div className={styles.field}>
-							<Controller
-								render={({ field: { onChange, value } }) => (
-									<DatePicker
-										date={value}
-										onChange={onChange}
-										labeltext={`* ${t("employee.dob", {
-											framework: "React",
-										})}`}
-										disabled={!canUpdate}
-										className={errors.birthDate ? styles.dateErrorBorder : ""}
-									/>
-								)}
-								name="birthDate"
-								control={control}
-								defaultValue={new Date().toISOString()}
-							/>
-						</div>
-					</div>
-					<div className={styles.row}>
-						<div className={styles.field}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<TextBox
-										type="text"
-										label={t("employee.birthPlace", {
-											framework: "React",
-										})}
-										value={value}
-										onChange={onChange}
-										disabled={!canUpdate}
-									/>
-								)}
+								render={({ messages }) => {
+									return messages
+										? _.entries(messages).map(([type, message]) => (
+												<p
+													key={type}
+													className="error">
+													{message}
+												</p>
+										  ))
+										: null;
+								}}
+							/> */}
+								<ErrorMessage
+									errors={errors}
+									name="degreeCountry"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
+								/>
+								<ErrorMessage
+									errors={errors}
+									name="phone"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
+								/>
+								<ErrorMessage
+									errors={errors}
+									name="gender"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
+								/>
+								<ErrorMessage
+									errors={errors}
+									name="maritalStatus"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
+								/>
+								<ErrorMessage
+									errors={errors}
+									name="religion"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
+								/>
+								<ErrorMessage
+									errors={errors}
+									name="birthDate"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
+								/>
+								{/* <ErrorMessage
+								errors={errors}
 								name="birthPlace"
-								control={control}
-								defaultValue={""}
-							/>
-						</div>
-						<div className={styles.ddlField}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<Dropdown
-										label={`* ${t("employee.specialNeeds", {
-											framework: "React",
-										})}`}
-										options={dropdownOptions.specialNeeds}
-										onSelect={onChange}
-										value={value}
-										disabled={!canUpdate}
-										className={errors.specialNeed ? styles.ddlErrorBorder : ""}
-									/>
-								)}
-								name="specialNeed"
-								control={control}
-							/>
-						</div>
-						<div className={styles.ddlField}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<Dropdown
-										label={`* ${t("employee.healthStatus", {
-											framework: "React",
-										})}`}
-										options={dropdownOptions.healthStatuses}
-										onSelect={onChange}
-										value={value}
-										disabled={!canUpdate}
-										className={errors.healthStatus ? styles.ddlErrorBorder : ""}
-									/>
-								)}
-								name="healthStatus"
-								control={control}
-							/>
-						</div>
-						<div className={styles.field}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<TextBox
-										type="text"
-										label={t("employee.passportNo", {
-											framework: "React",
-										})}
-										value={value || ""}
-										onChange={onChange}
-										disabled={!canUpdate}
-									/>
-								)}
+								render={({ messages }) => {
+									return messages
+										? _.entries(messages).map(([type, message]) => (
+												<p
+													key={type}
+													className="error">
+													{message}
+												</p>
+										  ))
+										: null;
+								}}
+							/> */}
+								<ErrorMessage
+									errors={errors}
+									name="specialNeed"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
+								/>
+								<ErrorMessage
+									errors={errors}
+									name="healthStatus"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
+								/>
+								{/* <ErrorMessage
+								errors={errors}
 								name="passportNo"
-								control={control}
-								defaultValue={""}
-							/>
-						</div>
-					</div>
-					<div className={styles.row}>
-						<div className={styles.field}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<TextBox
-										type="text"
-										label={t("employee.familyBook", {
-											framework: "React",
-										})}
-										value={value || ""}
-										onChange={onChange}
-										disabled={!canUpdate}
-									/>
-								)}
-								name="familyBookNo"
-								control={control}
-							/>
-						</div>
-						<div className={styles.field}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<TextBox
-										type="text"
-										label={`* ${t("employee.eid", {
-											framework: "React",
-										})}`}
-										value={value}
-										onChange={onChange}
-										disabled={!canUpdate}
-										className={errors.emiratesIdNo ? styles.errorBorder : ""}
-									/>
-								)}
-								name="emiratesIdNo"
-								control={control}
-								defaultValue={""}
-							/>
-						</div>
-						<div className={styles.field}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<TextBox
-										type="text"
-										label={`* ${t("employee.uid", {
-											framework: "React",
-										})}`}
-										value={value}
-										onChange={onChange}
-										disabled={!canUpdate}
-										className={errors.uidNo ? styles.errorBorder : ""}
-									/>
-								)}
-								name="uidNo"
-								control={control}
-								defaultValue={""}
-							/>
-						</div>
-						<div className={styles.field}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<TextBox
-										type="text"
-										label={t("employee.districtNo", {
-											framework: "React",
-										})}
-										value={value || ""}
-										onChange={onChange}
-										disabled={!canUpdate}
-									/>
-								)}
-								name="districtNo"
-								control={control}
-								defaultValue={""}
-							/>
-						</div>
-					</div>
-					<div className={styles.row}>
-						<div className={styles.field}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<TextBox
-										type="text"
-										label={t("employee.districtName", {
-											framework: "React",
-										})}
-										value={value}
-										onChange={onChange}
-										disabled={!canUpdate}
-									/>
-								)}
-								name="districtName"
-								control={control}
-								defaultValue={""}
-							/>
-						</div>
-						<div className={styles.field}>
-							<Controller
-								render={({ field: { onChange, value } }) => (
-									<DatePicker
-										date={value}
-										onChange={onChange}
-										labeltext={t("employee.lastMedTestDate", {
-											framework: "React",
-										})}
-										disabled={!canUpdate}
-									/>
-								)}
+								render={({ messages }) => {
+									return messages
+										? _.entries(messages).map(([type, message]) => (
+												<p
+													key={type}
+													className="error">
+													{message}
+												</p>
+										  ))
+										: null;
+								}}
+							/> */}
+								<ErrorMessage
+									errors={errors}
+									name="emiratesIdNo"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
+								/>
+								<ErrorMessage
+									errors={errors}
+									name="uidNo"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
+								/>
+								{/* <ErrorMessage
+								errors={errors}
 								name="lastMedicalTestDate"
-								control={control}
-								defaultValue={new Date().toISOString()}
-							/>
-						</div>
-						<div className={styles.ddlField}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<Dropdown
-										label={`* ${t("employee.bloodType", {
-											framework: "React",
-										})}`}
-										options={dropdownOptions.bloodTypes}
-										onSelect={onChange}
-										value={value}
-										disabled={!canUpdate}
-										className={errors.bloodType ? styles.ddlErrorBorder : ""}
-									/>
-								)}
-								name="bloodType"
-								control={control}
-							/>
-						</div>
-						<div className={styles.field}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<TextBox
-										type="text"
-										label={t("employee.height", {
-											framework: "React",
-										})}
-										value={value || ""}
-										onChange={onChange}
-										disabled={!canUpdate}
-									/>
-								)}
-								name="height"
-								control={control}
-								defaultValue={""}
-							/>
-						</div>
+								render={({ messages }) => {
+									return messages
+										? _.entries(messages).map(([type, message]) => (
+												<p
+													key={type}
+													className="error">
+													{message}
+												</p>
+										  ))
+										: null;
+								}}
+							/> */}
+								<ErrorMessage
+									errors={errors}
+									name="bloodType"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
+								/>
+								<ErrorMessage
+									errors={errors}
+									name="emergencyCallName"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
+								/>
+								<ErrorMessage
+									errors={errors}
+									name="emergencyCallRelation"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
+								/>
+								<ErrorMessage
+									errors={errors}
+									name="emergencyCallPhone"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
+								/>
+								<ErrorMessage
+									errors={errors}
+									name="emergencyCallAddress"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
+								/>
+								{/* Photo */}
+								<ErrorMessage
+									errors={errors}
+									name="imageName"
+									render={({ messages }) => {
+										return messages
+											? _.entries(messages).map(([type, message]) => (
+													<p
+														key={type}
+														className="error">
+														{message}
+													</p>
+											  ))
+											: null;
+									}}
+								/>
+							</ShadowedContainer>
+						)}
 					</div>
-					<div className={styles.row}>
-						<div className={styles.field}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<TextBox
-										type="text"
-										label={t("employee.weight", {
-											framework: "React",
-										})}
-										value={value || ""}
-										onChange={onChange}
-										disabled={!canUpdate}
-									/>
-								)}
-								name="weight"
-								control={control}
-								defaultValue={""}
-							/>
-						</div>
-						<div className={styles.field}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<TextBox
-										type="text"
-										label={t("employee.notes", {
-											framework: "React",
-										})}
-										value={value}
-										onChange={onChange}
-										disabled={!canUpdate}
-									/>
-								)}
-								name="notes"
-								control={control}
-								defaultValue={""}
-							/>
-						</div>
-					</div>
-				</ShadowedContainer>
-				<ShadowedContainer className={styles.basic}>
-					<h4 className={styles.heading}>
-						{t("employee.emergency.heading", {
-							framework: "React",
-						})}
-					</h4>
-					<div className={styles.row}>
-						<div className={styles.field}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<TextBox
-										type="text"
-										label={`* ${t("employee.emergency.name", {
-											framework: "React",
-										})}`}
-										value={value}
-										onChange={onChange}
-										disabled={!canUpdate}
-										className={
-											errors.emergencyCallName ? styles.errorBorder : ""
-										}
-									/>
-								)}
-								name="emergencyCallName"
-								control={control}
-								defaultValue={""}
-							/>
-						</div>{" "}
-						<div className={styles.field}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<TextBox
-										type="text"
-										label={`* ${t("employee.emergency.relation", {
-											framework: "React",
-										})}`}
-										value={value}
-										onChange={onChange}
-										disabled={!canUpdate}
-										className={
-											errors.emergencyCallRelation ? styles.errorBorder : ""
-										}
-									/>
-								)}
-								name="emergencyCallRelation"
-								control={control}
-								defaultValue={""}
-							/>
-						</div>{" "}
-						<div className={styles.field}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<TextBox
-										type="text"
-										label={`* ${t("employee.emergency.phone", {
-											framework: "React",
-										})}`}
-										value={value}
-										onChange={onChange}
-										disabled={!canUpdate}
-										className={
-											errors.emergencyCallPhone ? styles.errorBorder : ""
-										}
-									/>
-								)}
-								name="emergencyCallPhone"
-								control={control}
-								defaultValue={""}
-							/>
-						</div>
-						<div className={styles.field}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<TextBox
-										type="text"
-										label={`* ${t("employee.emergency.address", {
-											framework: "React",
-										})}`}
-										value={value}
-										onChange={onChange}
-										disabled={!canUpdate}
-										className={
-											errors.emergencyCallAddress ? styles.errorBorder : ""
-										}
-									/>
-								)}
-								name="emergencyCallAddress"
-								control={control}
-								defaultValue={""}
-							/>
-						</div>
-					</div>{" "}
-					<div className={styles.row}>
-						<div className={styles.field}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<TextBox
-										type="text"
-										label={t("employee.emergency.name", {
-											framework: "React",
-										})}
-										value={value}
-										onChange={onChange}
-										disabled={!canUpdate}
-									/>
-								)}
-								name="emergencyOtherName"
-								control={control}
-								defaultValue={""}
-							/>
-						</div>
-						<div className={styles.field}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<TextBox
-										type="text"
-										label={t("employee.emergency.relation", {
-											framework: "React",
-										})}
-										value={value}
-										onChange={onChange}
-										disabled={!canUpdate}
-									/>
-								)}
-								name="emergencyOtherRelation"
-								control={control}
-								defaultValue={""}
-							/>
-						</div>
-						<div className={styles.field}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<TextBox
-										type="text"
-										label={t("employee.emergency.phone2", {
-											framework: "React",
-										})}
-										value={value}
-										onChange={onChange}
-										disabled={!canUpdate}
-									/>
-								)}
-								name="emergencyOtherPhone"
-								control={control}
-								defaultValue={""}
-							/>
-						</div>
-						<div className={styles.field}>
-							<Controller
-								render={({ field: { value, onChange } }) => (
-									<TextBox
-										type="text"
-										label={t("employee.emergency.address", {
-											framework: "React",
-										})}
-										value={value}
-										onChange={onChange}
-										disabled={!canUpdate}
-									/>
-								)}
-								name="emergencyOtherAddress"
-								control={control}
-								defaultValue={""}
-							/>
-						</div>
-					</div>
-				</ShadowedContainer>
-				<div>
-					{Object.keys(errors).length > 0 && (
+					{serverErrors.length > 0 && (
 						<ShadowedContainer>
-							<ErrorMessage
-								errors={errors}
-								name="employeeNo"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-							<ErrorMessage
-								errors={errors}
-								name="name"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-							<ErrorMessage
-								errors={errors}
-								name="nameEnglish"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-
-							<ErrorMessage
-								errors={errors}
-								name="class"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-
-							<ErrorMessage
-								errors={errors}
-								name="hireDate"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-
-							<ErrorMessage
-								errors={errors}
-								name="joinDate"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-
-							<ErrorMessage
-								errors={errors}
-								name="rank"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-
-							<ErrorMessage
-								errors={errors}
-								name="contractType"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-
-							<ErrorMessage
-								errors={errors}
-								name="profession"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-
-							<ErrorMessage
-								errors={errors}
-								name="nationality"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-
-							<ErrorMessage
-								errors={errors}
-								name="nationalService"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-
-							<ErrorMessage
-								errors={errors}
-								name="status"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-
-							<ErrorMessage
-								errors={errors}
-								name="statusDate"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-
-							<ErrorMessage
-								errors={errors}
-								name="militaryCardExpiryDate"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-
-							<ErrorMessage
-								errors={errors}
-								name="department"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-
-							<ErrorMessage
-								errors={errors}
-								name="section"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-							<ErrorMessage
-								errors={errors}
-								name="professionalTraining"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-							<ErrorMessage
-								errors={errors}
-								name="workMode"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-							<ErrorMessage
-								errors={errors}
-								name="workGroup"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-							<ErrorMessage
-								errors={errors}
-								name="signList"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-							<ErrorMessage
-								errors={errors}
-								name="actJob"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-							<ErrorMessage
-								errors={errors}
-								name="assignedJob"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-							<ErrorMessage
-								errors={errors}
-								name="militaryTrained"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-							<ErrorMessage
-								errors={errors}
-								name="militaryWear"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-							<ErrorMessage
-								errors={errors}
-								name="qualification"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-							{/* <ErrorMessage
-								errors={errors}
-								name="degreeDate"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/> */}
-							{/* <ErrorMessage
-								errors={errors}
-								name="degreeName"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/> */}
-							<ErrorMessage
-								errors={errors}
-								name="degreeCountry"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-							<ErrorMessage
-								errors={errors}
-								name="phone"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-							<ErrorMessage
-								errors={errors}
-								name="gender"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-							<ErrorMessage
-								errors={errors}
-								name="maritalStatus"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-							<ErrorMessage
-								errors={errors}
-								name="religion"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-							<ErrorMessage
-								errors={errors}
-								name="birthDate"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-							{/* <ErrorMessage
-								errors={errors}
-								name="birthPlace"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/> */}
-							<ErrorMessage
-								errors={errors}
-								name="specialNeed"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-							<ErrorMessage
-								errors={errors}
-								name="healthStatus"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-							{/* <ErrorMessage
-								errors={errors}
-								name="passportNo"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/> */}
-							<ErrorMessage
-								errors={errors}
-								name="emiratesIdNo"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-							<ErrorMessage
-								errors={errors}
-								name="uidNo"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-							{/* <ErrorMessage
-								errors={errors}
-								name="lastMedicalTestDate"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/> */}
-							<ErrorMessage
-								errors={errors}
-								name="bloodType"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-							<ErrorMessage
-								errors={errors}
-								name="emergencyCallName"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-							<ErrorMessage
-								errors={errors}
-								name="emergencyCallRelation"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-							<ErrorMessage
-								errors={errors}
-								name="emergencyCallPhone"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-							<ErrorMessage
-								errors={errors}
-								name="emergencyCallAddress"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
-							{/* Photo */}
-							<ErrorMessage
-								errors={errors}
-								name="imageName"
-								render={({ messages }) => {
-									return messages
-										? _.entries(messages).map(([type, message]) => (
-												<p
-													key={type}
-													className="error">
-													{message}
-												</p>
-										  ))
-										: null;
-								}}
-							/>
+							{serverErrors.map((error, index) => (
+								<div
+									className="error"
+									key={index}>
+									{error}
+								</div>
+							))}
+						</ShadowedContainer>
+					)}
+					{canUpdate && (
+						<ShadowedContainer className={styles.row}>
+							<div className={styles.actions}>
+								<div className={language !== "ar" ? styles.btn : styles.btnLTR}>
+									<Button type="submit">{actionButtonText}</Button>
+								</div>
+							</div>
 						</ShadowedContainer>
 					)}
 				</div>
-				{serverErrors.length > 0 && (
-					<ShadowedContainer>
-						{serverErrors.map((error, index) => (
-							<div
-								className="error"
-								key={index}>
-								{error}
-							</div>
-						))}
-					</ShadowedContainer>
-				)}
-				{canUpdate && (
-					<ShadowedContainer className={styles.row}>
-						<div className={styles.actions}>
-							<div className={language !== "ar" ? styles.btn : styles.btnLTR}>
-								<Button type="submit">{actionButtonText}</Button>
-							</div>
-						</div>
-					</ShadowedContainer>
-				)}
-			</div>
-		</form>
+			</form>
+		</FormProvider>
 	);
 };
 

@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import {
 	EmployeeForm,
-	IEmployeeFormInputs,
+	EmployeeFormData,
 	PageContainer,
 } from "../../../components";
 import * as RoutePath from "../../../RouteConfig";
@@ -55,7 +55,7 @@ const EmployeeNewPage = () => {
 		fetch();
 	}, [fetch]);
 
-	const addEmployeeHandler = async (values: IEmployeeFormInputs) => {
+	const addEmployeeHandler = async (values: EmployeeFormData) => {
 		const {
 			class: recruiter,
 			rank,
@@ -85,7 +85,6 @@ const EmployeeNewPage = () => {
 			bloodType,
 			...rest
 		} = values;
-
 		// departmentId: values.department.value,
 		const params: APINewEmployee = {
 			classId: recruiter.value,
@@ -115,9 +114,7 @@ const EmployeeNewPage = () => {
 			bloodTypeId: bloodType.value,
 			...rest,
 		};
-
 		const { data, error } = await addEmployee(params);
-
 		if (data?.success) {
 			toast.success(
 				t("message.employeeCreated", { framework: "React" }).toString()
@@ -125,7 +122,6 @@ const EmployeeNewPage = () => {
 			navigate(RoutePath.EMPLOYEE);
 		} else {
 			toast.error(data?.message!);
-
 			setServerErrors(data?.errors!);
 		}
 	};
@@ -133,7 +129,7 @@ const EmployeeNewPage = () => {
 	return (
 		<PageContainer
 			displayContent={privileges?.updatePrivilege}
-			title="New Employee"
+			title={t("page.employeeNew", { framework: "React" })}
 			showBackButton
 			btnBackUrlLink={RoutePath.EMPLOYEE}>
 			<EmployeeForm

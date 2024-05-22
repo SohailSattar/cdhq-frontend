@@ -2,8 +2,8 @@ import { Route, useNavigate, useParams } from "react-router-dom";
 import {
 	DeleteConfirmation,
 	EmployeeForm,
+	EmployeeFormData,
 	EmployeeHistoryTable,
-	IEmployeeFormInputs,
 	MetaDataDetails,
 	Modal,
 	PageContainer,
@@ -94,7 +94,7 @@ const EmployeeEditPage = () => {
 		}
 	}, [id, fetch]);
 
-	const editEmployeeHandler = async (values: IEmployeeFormInputs) => {
+	const editEmployeeHandler = async (values: EmployeeFormData) => {
 		const {
 			class: recruiter,
 			rank,
@@ -124,7 +124,6 @@ const EmployeeEditPage = () => {
 			bloodType,
 			...rest
 		} = values;
-
 		// departmentId: values.department.value,
 		const params: APIUpdateEmployee = {
 			id: id!,
@@ -155,9 +154,7 @@ const EmployeeEditPage = () => {
 			bloodTypeId: bloodType.value,
 			...rest,
 		};
-
 		const { data, error } = await updateEmployee(params);
-
 		if (data?.success) {
 			toast.success(
 				t("message.employeeUpdated", { framework: "React" }).toString()
@@ -258,7 +255,7 @@ const EmployeeEditPage = () => {
 
 	return (
 		<PageContainer
-			title="Edit Employee"
+			title={t("page.employeeEdit", { framework: "React" })}
 			showBackButton
 			displayContent={privileges?.readPrivilege}
 			btnBackUrlLink={RoutePath.EMPLOYEE}
