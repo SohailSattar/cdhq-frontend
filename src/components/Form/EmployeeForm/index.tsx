@@ -513,13 +513,6 @@ const EmployeeForm: FC<Props> = ({
 			}).toString(),
 		});
 
-		// Status Date
-		register("statusDate", {
-			required: t("error.form.required.statusDate", {
-				framework: "React",
-			}).toString(),
-		});
-
 		// Military Card Expiry Date
 		register("militaryCardExpiryDate", {
 			required: t("error.form.required.milCardExpDate", {
