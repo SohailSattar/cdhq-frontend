@@ -19,7 +19,7 @@
 	flex-grow: 1; /* Both containers will grow equally */
 	padding: 10px; /* Add padding for spacing */
 	box-sizing: border-box; /* Include padding in width/height calculations */
-	overflow-y: auto; /* Add scrollbars if content overflows */
+	// overflow-y: auto; /* Add scrollbars if content overflows */
 }
 
 .hierarchy {
@@ -63,10 +63,14 @@
 	margin-right: 5px;
 }
 
+.rank {
+	width: 100px !important;
+}
+
 .name {
 	display: flex;
 	flex-direction: column;
-	width: max-content !important;
+	// width: max-content !important;
 	// align-items: center !important;
 
 	.arabic {

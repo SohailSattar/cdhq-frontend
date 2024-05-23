@@ -99,7 +99,9 @@
 		"imageNew": "New Image",
 		"qrCodeHome": "QR Codes List",
 		"qrCodeEdit": "Edit QR Code",
-		"qrCodeNew": "New QR Code"
+		"qrCodeNew": "New QR Code",
+		"employeeNew": "New employee information",
+		"employeeEdit": "Edit employee information"
 	},
 	"account": {
 		"login": "Login",

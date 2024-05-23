@@ -53,6 +53,7 @@ import { getClasses } from "../../../api/classes/get/getClasses";
 import { getFilteredEmployees } from "../../../api/employees/get/getFilteredEmployees";
 import { getCategorizedDepartments } from "../../../api/departments/get/getCategorizedDepartments";
 import { getMainDepartments } from "../../../api/departments/get/getMainDepartments";
+import clsx from "clsx";
 
 const EmployeeHomePage = () => {
 	const [t] = useTranslation("common");
@@ -410,7 +411,7 @@ const EmployeeHomePage = () => {
 				id: "rankId",
 				header: rank,
 				cell: (info) => (
-					<div className={styles.name}>
+					<div className={clsx(styles.name, styles.rank)}>
 						{info.getValue()
 							? language !== "ar"
 								? info.getValue()?.name!

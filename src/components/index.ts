@@ -29,6 +29,7 @@ export { default as CheckboxedTree } from "./CheckboxedTree";
 export { default as CheckBoxSelections } from "./CheckBoxSelections";
 export { default as CollapsibleDiv } from "./CollapsibleDiv";
 export { default as Counter } from "./Counter";
+export { default as DatePicker } from "./DatePicker";
 export { default as DeleteConfirmation } from "./DeleteConfirmation";
 export { default as DepartmentTree } from "./DepartmentTree";
 export { default as DisplayCard } from "./DisplayCard";
