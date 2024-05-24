@@ -21,11 +21,12 @@ import { getMilitaryTrained } from "../../../../../api/militaryTrained/get/getMi
 import { getMilitaryWear } from "../../../../../api/militaryWear/get/getMilitaryWear";
 
 import styles from "../../styles.module.scss";
+import { APIActualJobMOI } from "../../../../../api/moi/types";
+import { getSectionsByDepartments } from "../../../../../api/departments/get/getSectionsByDepartments";
 
 // Define an interface for dropdown options
 interface DropdownOptions {
 	departments: DropdownOption[];
-	section: DropdownOption[];
 	professionalTraining: DropdownOption[];
 	workMode: DropdownOption[];
 	workGroup: DropdownOption[];
@@ -39,15 +40,15 @@ interface DropdownOptions {
 interface Props {
 	canUpdate: boolean;
 	mode: "INSERT" | "UPDATE";
+	actJobMoi: APIActualJobMOI;
 }
 
-const ProfessionalInfo: FC<Props> = ({ canUpdate, mode }) => {
+const ProfessionalInfo: FC<Props> = ({ canUpdate, mode, actJobMoi }) => {
 	const [t] = useTranslation("common");
 	const language = useStore((state: { language: any }) => state.language);
 
 	const [dropdownOptions, setDropdownOptions] = useState<DropdownOptions>({
 		departments: [],
-		section: [],
 		professionalTraining: [],
 		workMode: [],
 		workGroup: [],
@@ -61,11 +62,13 @@ const ProfessionalInfo: FC<Props> = ({ canUpdate, mode }) => {
 	const [actJobMoiOptions, setActJobMoiOptions] = useState<DropdownOption[]>(
 		[]
 	);
+	const [sectionOptions, setSectionOptions] = useState<DropdownOption[]>([]);
 
 	const {
 		register,
 		control,
 		setValue,
+		getValues,
 		formState: { errors },
 	} = useFormContext<IEmployeeProfessionalInfoFormInputs>();
 
@@ -73,7 +76,6 @@ const ProfessionalInfo: FC<Props> = ({ canUpdate, mode }) => {
 		try {
 			const [
 				departments,
-				section,
 				professionalTraining,
 				workMode,
 				workGroup,
@@ -91,14 +93,14 @@ const ProfessionalInfo: FC<Props> = ({ canUpdate, mode }) => {
 						}`,
 					}))
 				) as Promise<DropdownOption[]>,
-				getCategorizedDepartments(Project.Employees, mode).then((response) =>
-					response?.data?.map((item) => ({
-						value: item.id,
-						label: `${item.id} - ${
-							language !== "ar" ? item.fullName : item.fullNameEnglish
-						}`,
-					}))
-				) as Promise<DropdownOption[]>,
+				// getCategorizedDepartments(Project.Employees, mode).then((response) =>
+				// 	response?.data?.map((item) => ({
+				// 		value: item.id,
+				// 		label: `${item.id} - ${
+				// 			language !== "ar" ? item.fullName : item.fullNameEnglish
+				// 		}`,
+				// 	}))
+				// ) as Promise<DropdownOption[]>,
 				getProfessionalTrainings().then((response) =>
 					response?.data?.map((item) => ({
 						value: item.id,
@@ -151,7 +153,6 @@ const ProfessionalInfo: FC<Props> = ({ canUpdate, mode }) => {
 
 			setDropdownOptions({
 				departments,
-				section,
 				professionalTraining,
 				workMode,
 				workGroup,
@@ -187,25 +188,61 @@ const ProfessionalInfo: FC<Props> = ({ canUpdate, mode }) => {
 		[language]
 	);
 
-	// useEffect(() => {
-	// 		if (data) {
-	// 			const { actJobMOI } = data;
-	// 			fetchActJobMoi(actJobMOI.groupId);
-	// 		}
-	// 	}, [data, fetchActJobMoi]);
+	useEffect(() => {
+		if (actJobMoi) {
+			fetchActJobMoi(actJobMoi.groupId);
+		}
+	}, [actJobMoi, fetchActJobMoi]);
 
-	// 	useEffect(() => {
-	// 		if (data) {
-	// 			const { actJobMOI } = data;
-	// 			const selectedActJobMoi = actJobMoiOptions.find(
-	// 				(x) => x.value === actJobMOI?.id
-	// 			);
-	// 			setValue("actJob", selectedActJobMoi!);
-	// 		}
-	// 	}, [actJobMoiOptions, setValue]);
+	useEffect(() => {
+		if (actJobMoi) {
+			const selectedActJobMoi = actJobMoiOptions.find(
+				(x) => x.value === actJobMoi?.id
+			);
+			setValue("actJob", selectedActJobMoi!);
+		}
+	}, [actJobMoi, actJobMoiOptions, setValue]);
 
 	const jobCategoryMoiChangeHandler = (option: DropdownOption) => {
 		setValue("jobCatMoi", option);
+
+		if (option) {
+			const id = +option.value;
+			fetchActJobMoi(id);
+		}
+	};
+
+	const fetchChildDepartments = useMemo(
+		() => async (departmentId: Id) => {
+			const { data: list } = await getSectionsByDepartments(departmentId);
+			if (list) {
+				setSectionOptions(
+					list?.map((d) => {
+						return {
+							label: `${d.id} - ${language !== "ar" ? d.name : d.nameEnglish}`,
+							value: d.id,
+						};
+					})
+				);
+			}
+		},
+		[language]
+	);
+
+	useEffect(() => {
+		const deptId = getValues("department.value");
+
+		if (!deptId) {
+			getCategorizedDepartments(Project.Employees, mode);
+		}
+	}, [getValues, mode]);
+
+	const departmentChangeHandler = (option: DropdownOption) => {
+		setValue("department", option);
+
+		if (option) {
+			fetchChildDepartments(option.value);
+		}
 	};
 
 	return (
@@ -219,7 +256,7 @@ const ProfessionalInfo: FC<Props> = ({ canUpdate, mode }) => {
 									framework: "React",
 								})}`}
 								options={dropdownOptions.departments}
-								onSelect={onChange}
+								onSelect={departmentChangeHandler}
 								value={value}
 								disabled={!canUpdate}
 								className={errors.department ? styles.ddlErrorBorder : ""}
@@ -254,7 +291,7 @@ const ProfessionalInfo: FC<Props> = ({ canUpdate, mode }) => {
 								label={`* ${t("employee.workLocation", {
 									framework: "React",
 								})}`}
-								options={dropdownOptions.section}
+								options={sectionOptions}
 								onSelect={onChange}
 								value={value}
 								disabled={!canUpdate}
