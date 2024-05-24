@@ -333,16 +333,21 @@ function Filter({ column }: { column: Column<any, unknown> }) {
 			}
 			case "select": {
 				let options: DropdownOption[] = [];
+				let className: string = "";
 
 				if ("options" in variant) {
 					options = variant?.options as DropdownOption[];
+				}
+
+				if ("className" in variant) {
+					className = variant?.className as string;
 				}
 
 				return (
 					<Dropdown
 						options={options}
 						onSelect={selectHandler}
-						className={styles.ddl}
+						className={clsx(styles.ddl, className)}
 					/>
 					// <select
 					// 	onChange={(e) => column.setFilterValue(e.target.value)}

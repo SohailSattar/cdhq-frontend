@@ -1112,6 +1112,7 @@ const EmployeeForm: FC<Props> = ({
 					<ProfessionalInfo
 						canUpdate={canUpdate}
 						mode={mode}
+						actJobMoi={data?.actJobMOI!}
 					/>
 					<ContactInfo canUpdate={canUpdate} />
 					<QualificationInfo canUpdate={canUpdate} />

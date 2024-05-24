@@ -54,6 +54,7 @@ import { getFilteredEmployees } from "../../../api/employees/get/getFilteredEmpl
 import { getCategorizedDepartments } from "../../../api/departments/get/getCategorizedDepartments";
 import { getMainDepartments } from "../../../api/departments/get/getMainDepartments";
 import clsx from "clsx";
+import { getFilteredEmployeesByDepartments } from "../../../api/employees/get/getFilteredEmployeesByDepartments";
 
 const EmployeeHomePage = () => {
 	const [t] = useTranslation("common");
@@ -164,7 +165,8 @@ const EmployeeHomePage = () => {
 
 	const fetchByDepartment = useMemo(
 		() => async () => {
-			const { data } = await getEmployeesByDepartments(
+			const { data } = await getFilteredEmployeesByDepartments(
+				columnFilters,
 				page,
 				pageSize,
 				departmentIds,
@@ -178,7 +180,7 @@ const EmployeeHomePage = () => {
 				setTotalCount(data?.totalItems);
 			}
 		},
-		[page, pageSize, departmentIds, keyword, statusCode, orderBy]
+		[columnFilters, page, pageSize, departmentIds, keyword, statusCode, orderBy]
 	);
 
 	useEffect(() => {
@@ -422,6 +424,7 @@ const EmployeeHomePage = () => {
 				meta: {
 					filterVariant: "select",
 					options: rankOptions,
+					className: styles.rank,
 				},
 			}),
 			columnHelper.accessor((row) => row, {
